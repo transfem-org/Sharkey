@@ -118,6 +118,7 @@ export interface IPost extends IObject {
 	_misskey_quote?: string;
 	_misskey_content?: string;
 	quoteUrl?: string;
+	quoteUri?: string;
 }
 
 export interface IQuestion extends IObject {
@@ -129,6 +130,7 @@ export interface IQuestion extends IObject {
 	};
 	_misskey_quote?: string;
 	quoteUrl?: string;
+	quoteUri?: string;
 	oneOf?: IQuestionChoice[];
 	anyOf?: IQuestionChoice[];
 	endTime?: Date;
