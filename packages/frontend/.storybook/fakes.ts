@@ -17,6 +17,27 @@ export function abuseUserReport() {
 	};
 }
 
+export function channel() {
+	return {
+		id: 'somechannelid',
+		createdAt: '2016-12-28T22:49:51.000Z',
+		lastNotedAt: '2023-01-01T00:00:00.000Z',
+		name: 'AKANE☆CHANNEL',
+		description: 'sweetie sweet',
+		userId: 'someuserid',
+		bannerUrl: 'https://github.com/misskey-dev/misskey/blob/master/packages/frontend/assets/fedi.jpg?raw=true',
+		pinnedNoteIds: ['somenoteid'],
+		color: '#eb613f',
+		isArchived: false,
+		usersCount: 16,
+		notesCount: 1024,
+		isFollowing: false,
+		isFavorited: false,
+		hasUnreadNote: false,
+		pinnedNotes: [note()],
+	}
+}
+
 export function galleryPost(isSensitive = false) {
 	return {
 		id: 'somepostid',
@@ -58,6 +79,31 @@ export function file(isSensitive = false) {
 		userId: null,
 		user: null,
 	};
+}
+
+export function note() {
+	return {
+		id: 'somenoteid',
+		createdAt: '2016-12-28T22:49:51.000Z',
+		userId: 'someuserid',
+		user: userDetailed(),
+		text: 'make some noise',
+		cw: 'sing along',
+		visibility: 'public',
+		localOnly: false,
+		reactionAcceptance: null,
+		renoteCount: 4,
+		repliesCount: 2,
+		reactions: {
+			'👍': 16,
+			':yo@.:': 8,
+		},
+		reactionEmojis: {},
+		fileIds: [],
+		files: [],
+		replyId: null,
+		renoteId: null,
+	}
 }
 
 export function userDetailed(id = 'someuserid', username = 'miskist', host = 'misskey-hub.net', name = 'Misskey User'): entities.UserDetailed {
