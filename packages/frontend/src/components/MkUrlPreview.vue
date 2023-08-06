@@ -26,13 +26,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</MkButton>
 	</div>
 </template>
-<template v-else-if="tweetId && tweetExpanded">
-	<div ref="twitter">
+<template v-else-if="postExpanded">
+	<div v-if="tweetId" ref="twitter">
 		<iframe ref="tweet" scrolling="no" frameborder="no" :style="{ position: 'relative', width: '100%', height: `${tweetHeight}px` }" :src="`https://platform.twitter.com/embed/index.html?embedId=${embedId}&amp;hideCard=false&amp;hideThread=false&amp;lang=en&amp;theme=${defaultStore.state.darkMode ? 'dark' : 'light'}&amp;id=${tweetId}`"></iframe>
 	</div>
+	<MkNoteSimple v-else-if="note" :note="note" :quoted="true"/>
 	<div :class="$style.action">
-		<MkButton :small="true" inline @click="tweetExpanded = false">
-			<i class="ti ti-x"></i> {{ i18n.ts.close }}
+		<MkButton :small="true" inline @click="postExpanded = false">
+			<i v-if="tweetId" class="ti ti-x"></i> {{ i18n.ts.close }}
 		</MkButton>
 	</div>
 </template>
@@ -59,8 +60,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</component>
 	<template v-if="showActions">
 		<div v-if="tweetId" :class="$style.action">
-			<MkButton :small="true" inline @click="tweetExpanded = true">
+			<MkButton :small="true" inline @click="postExpanded = true">
 				<i class="ti ti-brand-x"></i> {{ i18n.ts.expandTweet }}
+			</MkButton>
+		</div>
+		<div v-if="noteUrl || note" :class="$style.action">
+			<MkButton :small="true" inline @click="resolveNote()">
+				{{ i18n.ts.expandNote }}
 			</MkButton>
 		</div>
 		<div v-if="!playerEnabled && player.url" :class="$style.action">
@@ -78,11 +84,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { defineAsyncComponent, onUnmounted } from 'vue';
 import type { summaly } from 'summaly';
+import type * as misskey from 'misskey-js';
 import { url as local } from '@/config';
 import { i18n } from '@/i18n';
 import * as os from '@/os';
 import { deviceKind } from '@/scripts/device-kind';
 import MkButton from '@/components/MkButton.vue';
+import MkNoteSimple from '@/components/MkNoteSimple.vue';
 import { versatileLang } from '@/scripts/intl-const';
 import { defaultStore } from '@/store';
 
@@ -118,7 +126,9 @@ let player = $ref({
 } as SummalyResult['player']);
 let playerEnabled = $ref(false);
 let tweetId = $ref<string | null>(null);
-let tweetExpanded = $ref(props.detail);
+let noteUrl = $ref<string | null>(null);
+let note = $ref<misskey.entities.Note | null>(null);
+let postExpanded = $ref(props.detail);
 const embedId = `embed${Math.random().toString().replace(/\D/, '')}`;
 let tweetHeight = $ref(150);
 let unknownUrl = $ref(false);
@@ -137,35 +147,60 @@ if (requestUrl.hostname === 'music.youtube.com' && requestUrl.pathname.match('^/
 
 requestUrl.hash = '';
 
-window.fetch(`/url?url=${encodeURIComponent(requestUrl.href)}&lang=${versatileLang}`)
-	.then(res => {
-		if (!res.ok) {
-			fetching = false;
-			unknownUrl = true;
-			return;
-		}
-
-		return res.json();
-	})
-	.then((info: SummalyResult) => {
-		if (info.url == null) {
-			fetching = false;
-			unknownUrl = true;
-			return;
-		}
-
+(async (): Promise<void> => {
+	const res = await window.fetch(`/url?url=${encodeURIComponent(requestUrl.href)}&lang=${versatileLang}`);
+	if (!res.ok) {
 		fetching = false;
-		unknownUrl = false;
+		unknownUrl = true;
+		return;
+	}
 
-		title = info.title;
-		description = info.description;
-		thumbnail = info.thumbnail;
-		icon = info.icon;
-		sitename = info.sitename;
-		player = info.player;
-	});
+	const info = await res.json() as SummalyResult;
 
-function adjustTweetHeight(message: any) {
+	fetching = false;
+	unknownUrl = false;
+
+	title = info.title;
+	description = info.description;
+	thumbnail = info.thumbnail;
+	icon = info.icon;
+	sitename = info.sitename;
+	player = info.player;
+	noteUrl = info.activityPub;
+
+	if (postExpanded) {
+		await resolveNote();
+	}
+})();
+
+async function resolveNote(): Promise<void> {
+	if (note) {
+		// Reuse the data
+		postExpanded = true;
+		return;
+	}
+	if (!noteUrl) {
+		// Note does not exist
+		return;
+	}
+
+	try {
+		fetching = true;
+		const result = await os.api('ap/show', { uri: noteUrl });
+		if (result.type === 'Note') {
+			note = result.object;
+			postExpanded = true;
+		} else {
+			postExpanded = false;
+		}
+	} finally {
+		// Prevent repeated resolving
+		noteUrl = null;
+		fetching = false;
+	}
+}
+
+function adjustTweetHeight(message: any): void {
 	if (message.origin !== 'https://platform.twitter.com') return;
 	const embed = message.data?.['twttr.embed'];
 	if (embed?.method !== 'twttr.private.resize') return;

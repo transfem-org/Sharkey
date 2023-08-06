@@ -4,7 +4,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<div :class="$style.root">
+<div :class="[$style.root, quoted ? $style.quoted : null]">
 	<MkAvatar :class="$style.avatar" :user="note.user" link preview/>
 	<div :class="$style.main">
 		<MkNoteHeader :class="$style.header" :note="note" :mini="true"/>
@@ -32,6 +32,7 @@ import { $i } from '@/account';
 const props = defineProps<{
 	note: misskey.entities.Note;
 	pinned?: boolean;
+	quoted?: boolean;
 }>();
 
 const showContent = $ref(false);
@@ -80,11 +81,23 @@ const showContent = $ref(false);
 	padding: 0;
 }
 
+.quoted {
+	margin: 8px 0;
+	padding: 16px;
+	border: dashed 1px var(--renote);
+	border-radius: 8px;
+	overflow: clip;
+}
+
 @container (min-width: 250px) {
 	.avatar {
 		margin: 0 10px 0 0;
 		width: 40px;
 		height: 40px;
+	}
+
+	.quoted {
+		padding: 12px;
 	}
 }
 
