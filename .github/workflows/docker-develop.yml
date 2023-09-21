@@ -14,6 +14,9 @@ jobs:
     name: Push Docker image to GHCR
     runs-on: ubuntu-latest
     if: github.repository == 'transfem-org/Sharkey'
+    permissions:
+      contents: read
+      packages: write
     steps:
       - name: Check out the repo
         uses: actions/checkout@v4.0.0
@@ -41,7 +44,7 @@ jobs:
           push: true
           platforms: ${{ steps.buildx.outputs.platforms }}
           provenance: false
-          tags: transfem-org/sharkey:develop
+          tags:  ${{ env.REGISTRY }}/transfem-org/sharkey:develop
           labels: develop
           cache-from: type=gha
           cache-to: type=gha,mode=max
