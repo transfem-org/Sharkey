@@ -165,10 +165,20 @@ const remoteMenu = (emoji, ev: MouseEvent) => {
 	os.popupMenu([{
 		type: 'label',
 		text: ':' + emoji.name + ':',
-	}, {
+	},
+	{
 		text: i18n.ts.import,
 		icon: 'ti ti-plus',
 		action: () => { im(emoji); },
+	},
+	{
+		text: i18n.ts.delete,
+		icon: "ti ti-trash",
+		action: () => {
+			os.apiWithDialog("admin/emoji/delete", {
+				id: emoji.id,
+			});
+		},
 	}], ev.currentTarget ?? ev.target);
 };
 
