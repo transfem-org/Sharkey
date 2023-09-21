@@ -48,3 +48,10 @@ jobs:
           labels: develop
           cache-from: type=gha
           cache-to: type=gha,mode=max
+      - name: Push update to server
+        if: steps.build.outcome == 'success'
+        uses: indiesdev/curl@v1.1
+        with:
+          url: ${{ secrets.AUTO_UPDATE_URL }}
+          method: POST
+          timeout: 600000
