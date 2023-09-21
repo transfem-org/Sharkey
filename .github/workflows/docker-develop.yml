@@ -37,6 +37,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build and Push to GHCR
+        id: build
         uses: docker/build-push-action@v5
         with:
           builder: ${{ steps.buildx.outputs.name }}
