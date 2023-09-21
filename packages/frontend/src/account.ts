@@ -300,6 +300,11 @@ export async function openAccountMenu(opts: {
 			icon: 'ti ti-users',
 			text: i18n.ts.manageAccounts,
 			to: '/settings/accounts',
+		}, {
+			type: 'button' as const,
+			icon: 'ti ti-power',
+			text: i18n.ts.logout,
+			action: () => { signout(); },
 		}]], ev.currentTarget ?? ev.target, {
 			align: 'left',
 		});
