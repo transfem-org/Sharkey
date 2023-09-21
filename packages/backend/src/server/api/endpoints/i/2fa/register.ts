@@ -3,7 +3,8 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import bcrypt from 'bcryptjs';
+//import bcrypt from 'bcryptjs';
+import * as argon2 from 'argon2';
 import * as OTPAuth from 'otpauth';
 import * as QRCode from 'qrcode';
 import { Inject, Injectable } from '@nestjs/common';
@@ -48,7 +49,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 			const profile = await this.userProfilesRepository.findOneByOrFail({ userId: me.id });
 
 			// Compare password
-			const same = await bcrypt.compare(ps.password, profile.password ?? '');
+			const same = await argon2.verify(profile.password ?? '', ps.password);
 
 			if (!same) {
 				throw new ApiError(meta.errors.incorrectPassword);

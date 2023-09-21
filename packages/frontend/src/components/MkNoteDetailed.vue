@@ -501,6 +501,7 @@ function loadReplies() {
 		replies.value = res;
 	});
 }
+loadReplies();
 
 const conversationLoaded = ref(false);
 function loadConversation() {
