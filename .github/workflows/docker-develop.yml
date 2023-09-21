@@ -26,7 +26,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: transfem-org/Sharkey
+          images: transfem-org/sharkey
       - name: Log in to GHCR
         uses: docker/login-action@v3
         with:
@@ -41,7 +41,7 @@ jobs:
           push: true
           platforms: ${{ steps.buildx.outputs.platforms }}
           provenance: false
-          tags: transfem-org/Sharkey:develop
+          tags: transfem-org/sharkey:develop
           labels: develop
           cache-from: type=gha
           cache-to: type=gha,mode=max
