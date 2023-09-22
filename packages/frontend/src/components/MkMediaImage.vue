@@ -43,7 +43,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<div v-if="['image/gif', 'image/apng'].includes(image.type)" :class="$style.indicator">GIF</div>
 			<div v-if="image.comment" :class="$style.indicator">ALT</div>
 			<div v-if="image.isSensitive" :class="$style.indicator" style="color: var(--warn);" :title="i18n.ts.sensitive"><i class="ti ti-eye-exclamation"></i></div>
-		</div>
+			<div v-if="!image.comment" :class="$style.indicator" :title="'Image lacks descriptive text'"><i class="ti ti-pencil-off"></i></div>
 		<button :class="$style.menu" class="_button" @click.stop="showMenu"><i class="ti ti-dots" style="vertical-align: middle;"></i></button>
 		<i class="ti ti-eye-off" :class="$style.hide" @click.stop="hide = true"></i>
 	</template>
