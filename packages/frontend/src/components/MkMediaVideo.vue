@@ -13,6 +13,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</div>
 </div>
 <div v-else :class="$style.visible">
+	<div :class="$style.indicators">
+			<div v-if="video.comment" :class="$style.indicator">ALT</div>
+			<div v-if="!video.comment" :class="$style.indicator" title="Video lacks descriptive text"><i class="ti ti-pencil-off"></i></div>
+	</div>
 	<video
 		:class="$style.video"
 		:poster="video.thumbnailUrl"
@@ -53,7 +57,7 @@ const hide = ref((defaultStore.state.nsfw === 'force' || defaultStore.state.enab
 	display: block;
 	position: absolute;
 	border-radius: 6px;
-	background-color: var(--fg);
+	background-color: black;
 	color: var(--accentLighten);
 	font-size: 14px;
 	opacity: .5;
@@ -88,5 +92,25 @@ const hide = ref((defaultStore.state.nsfw === 'force' || defaultStore.state.enab
 	display: table-cell;
 	text-align: center;
 	font-size: 12px;
+}
+.indicators {
+	display: inline-flex;
+	position: absolute;
+	top: 10px;
+	left: 10px;
+	pointer-events: none;
+	opacity: .5;
+	gap: 6px;
+}
+
+.indicator {
+	/* Hardcode to black because either --bg or --fg makes it hard to read in dark/light mode */
+	background-color: black;
+	border-radius: 6px;
+	color: var(--accentLighten);
+	display: inline-block;
+	font-weight: bold;
+	font-size: 0.8em;
+	padding: 2px 5px;
 }
 </style>

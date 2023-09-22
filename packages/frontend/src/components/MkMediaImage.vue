@@ -142,7 +142,7 @@ function showMenu(ev: MouseEvent) {
 	display: block;
 	position: absolute;
 	border-radius: 6px;
-	background-color: var(--fg);
+	background-color: black;
 	color: var(--accentLighten);
 	font-size: 12px;
 	opacity: .5;
