@@ -366,7 +366,7 @@ export function getNoteMenu(props: {
 					text: i18n.ts.edit,
 					danger: true,
 					action: edit,
-				}: undefined,
+				} : undefined,
 				{
 					icon: 'ti ti-edit',
 					text: i18n.ts.deleteAndEdit,

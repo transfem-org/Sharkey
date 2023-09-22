@@ -214,7 +214,7 @@ export class NoteEditService implements OnApplicationShutdown {
 
 		if (!editid) {
 			throw new Error('fail');
-		};
+		}
 
 		const oldnote = await this.notesRepository.findOneBy({
 			id: editid,
@@ -222,11 +222,11 @@ export class NoteEditService implements OnApplicationShutdown {
 
 		if (oldnote == null) {
 			throw new Error('no such note');
-		};
+		}
 
 		if (oldnote.userId !== user.id) {
 			throw new Error('not the author');
-		};
+		}
 
 		// チャンネル外にリプライしたら対象のスコープに合わせる
 		// (クライアントサイドでやっても良い処理だと思うけどとりあえずサーバーサイドで)
