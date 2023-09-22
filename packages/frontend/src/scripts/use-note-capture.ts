@@ -7,6 +7,7 @@ import { onUnmounted, Ref } from 'vue';
 import * as Misskey from 'misskey-js';
 import { useStream } from '@/stream.js';
 import { $i } from '@/account.js';
+import * as os from '@/os.js';
 
 export function useNoteCapture(props: {
 	rootEl: Ref<HTMLElement>;
@@ -16,7 +17,7 @@ export function useNoteCapture(props: {
 	const note = props.note;
 	const connection = $i ? useStream() : null;
 
-	function onStreamNoteUpdated(noteData): void {
+	async function onStreamNoteUpdated(noteData): void {
 		const { type, id, body } = noteData;
 
 		if (id !== note.value.id) return;
@@ -75,6 +76,22 @@ export function useNoteCapture(props: {
 				props.isDeletedRef.value = true;
 				break;
 			}
+
+			case "updated": {
+				const editedNote = await os.api("notes/show", {
+					noteId: id,
+				});
+
+				const keys = new Set<string>();
+				Object.keys(editedNote)
+					.concat(Object.keys(note.value))
+					.forEach((key) => keys.add(key));
+				keys.forEach((key) => {
+					note.value[key] = editedNote[key];
+				});
+				break;
+			}
+
 		}
 	}
 

@@ -142,6 +142,9 @@ export interface NoteStreamTypes {
 		reaction: string;
 		userId: MiUser['id'];
 	};
+	updated: {
+		updatedAt: Date;
+	}
 }
 type NoteStreamEventTypes = {
 	[key in keyof NoteStreamTypes]: {
