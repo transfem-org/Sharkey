@@ -211,7 +211,6 @@ export class NoteEditService implements OnApplicationShutdown {
 		createdAt: MiUser['createdAt'];
 		isBot: MiUser['isBot'];
 	}, editid: MiNote['id'], data: Option, silent = false): Promise<MiNote> {
-
 		if (!editid) {
 			throw new Error('fail');
 		}
@@ -447,7 +446,6 @@ export class NoteEditService implements OnApplicationShutdown {
 		createdAt: MiUser['createdAt'];
 		isBot: MiUser['isBot'];
 	}, data: Option, silent: boolean, tags: string[], mentionedUsers: MinimumUser[]) {
-
 		// Register host
 		if (this.userEntityService.isRemoteUser(user)) {
 			this.federatedInstanceService.fetch(user.host).then(async i => {

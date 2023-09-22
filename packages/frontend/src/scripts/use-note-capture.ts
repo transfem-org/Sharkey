@@ -91,7 +91,6 @@ export function useNoteCapture(props: {
 				});
 				break;
 			}
-
 		}
 	}
 
