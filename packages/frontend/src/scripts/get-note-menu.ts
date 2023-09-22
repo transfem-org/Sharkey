@@ -364,7 +364,6 @@ export function getNoteMenu(props: {
 				appearNote.userId === $i.id ? {
 					icon: 'ti ti-pencil',
 					text: i18n.ts.edit,
-					danger: true,
 					action: edit,
 				} : undefined,
 				{
