@@ -388,8 +388,8 @@ interface Watcher {
 /**
  * 常にメモリにロードしておく必要がないような設定情報を保管するストレージ(非リアクティブ)
  */
-import lightTheme from '@/themes/l-light.json5';
-import darkTheme from '@/themes/d-green-lime.json5';
+import lightTheme from '@/themes/l-cherry.json5';
+import darkTheme from '@/themes/d-transfem-cherry.json5';
 
 export class ColdDeviceStorage {
 	public static default = {
