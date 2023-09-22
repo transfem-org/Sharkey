@@ -141,6 +141,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					</template>
 					<MkNotes v-if="!disableNotes" :class="$style.tl" :noGap="true" :pagination="pagination"/>
 				</MkStickyContainer>
+			</div>
 		</div>
 		<div v-if="!narrow" class="sub _gaps" style="container-type: inline-size;">
 			<XPhotos :key="user.id" :user="user"/>
