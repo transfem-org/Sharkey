@@ -13,7 +13,7 @@ import { extractHashtags } from '@/misc/extract-hashtags.js';
 import * as Acct from '@/misc/acct.js';
 import type { UsersRepository, DriveFilesRepository, UserProfilesRepository, PagesRepository } from '@/models/_.js';
 import type { MiLocalUser, MiUser } from '@/models/User.js';
-import { birthdaySchema, descriptionSchema, locationSchema, nameSchema } from '@/models/User.js';
+import { birthdaySchema, listenbrainzSchema, descriptionSchema, locationSchema, nameSchema } from '@/models/User.js';
 import type { MiUserProfile } from '@/models/UserProfile.js';
 import { notificationTypes } from '@/types.js';
 import { normalizeForSearch } from '@/misc/normalize-for-search.js';
@@ -129,6 +129,7 @@ export const paramDef = {
 		description: { ...descriptionSchema, nullable: true },
 		location: { ...locationSchema, nullable: true },
 		birthday: { ...birthdaySchema, nullable: true },
+		listenbrainz: { ...listenbrainzSchema, nullable: true },
 		lang: { type: 'string', enum: [null, ...Object.keys(langmap)] as string[], nullable: true },
 		avatarId: { type: 'string', format: 'misskey:id', nullable: true },
 		bannerId: { type: 'string', format: 'misskey:id', nullable: true },
@@ -224,6 +225,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 			if (ps.lang !== undefined) profileUpdates.lang = ps.lang;
 			if (ps.location !== undefined) profileUpdates.location = ps.location;
 			if (ps.birthday !== undefined) profileUpdates.birthday = ps.birthday;
+			if (ps.listenbrainz !== undefined) profileUpdates.listenbrainz = ps.listenbrainz;
 			if (ps.ffVisibility !== undefined) profileUpdates.ffVisibility = ps.ffVisibility;
 			if (ps.mutedWords !== undefined) {
 				// TODO: ちゃんと数える

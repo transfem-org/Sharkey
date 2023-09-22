@@ -137,6 +137,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<div v-if="!narrow" class="sub _gaps" style="container-type: inline-size;">
 			<XPhotos :key="user.id" :user="user"/>
 			<XActivity :key="user.id" :user="user"/>
+			<XListenBrainz
+					v-if="user.listenbrainz && listenbrainzdata"
+					:key="user.id"
+					:user="user"
+					style="margin-top: var(--margin)"
+				/>
 		</div>
 	</div>
 </MkSpacer>
@@ -166,7 +172,6 @@ import { confetti } from '@/scripts/confetti.js';
 import MkNotes from '@/components/MkNotes.vue';
 import { api } from '@/os.js';
 import { isFfVisibleForMe } from '@/scripts/isFfVisibleForMe.js';
-
 function calcAge(birthdate: string): number {
 	const date = new Date(birthdate);
 	const now = new Date();
@@ -184,6 +189,7 @@ function calcAge(birthdate: string): number {
 
 const XPhotos = defineAsyncComponent(() => import('./index.photos.vue'));
 const XActivity = defineAsyncComponent(() => import('./index.activity.vue'));
+const XListenBrainz = defineAsyncComponent(() => import("./index.listenbrainz.vue"));;
 
 const props = withDefaults(defineProps<{
 	user: Misskey.entities.UserDetailed;
@@ -204,6 +210,24 @@ let memoDraft = $ref(props.user.memo);
 let isEditingMemo = $ref(false);
 let moderationNote = $ref(props.user.moderationNote);
 let editModerationNote = $ref(false);
+
+let listenbrainzdata = false;
+if (props.user.listenbrainz) {
+	try {
+		const response = await fetch(`https://api.listenbrainz.org/1/user/${props.user.listenbrainz}/playing-now`, {
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+		});
+		const data = await response.json();
+		if (data.payload.listens && data.payload.listens.length !== 0) {
+			listenbrainzdata = true;
+		}
+	} catch(err) {
+		listenbrainzdata = false;
+	}
+}
 
 watch($$(moderationNote), async () => {
 	await os.api('admin/update-user-note', { userId: props.user.id, text: moderationNote });
