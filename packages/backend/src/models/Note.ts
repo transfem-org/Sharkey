@@ -239,6 +239,12 @@ export class MiNote {
 		comment: '[Denormalized]',
 	})
 	public renoteUserHost: string | null;
+
+	@Index()
+	@Column('timestamp with time zone', {
+		comment: 'The update time of the Note.',
+	})
+	public updatedAt: Date | null;
 	//#endregion
 
 	constructor(data: Partial<MiNote>) {

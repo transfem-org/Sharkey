@@ -171,6 +171,15 @@ export function getNoteMenu(props: {
 			}
 		});
 	}
+	function edit(): void {
+		os.post({
+			initialNote: appearNote,
+			renote: appearNote.renote,
+			reply: appearNote.reply,
+			channel: appearNote.channel,
+			editId: appearNote.id,
+		});
+}
 
 	function toggleFavorite(favorite: boolean): void {
 		claimAchievement('noteFavorited1');
@@ -353,10 +362,17 @@ export function getNoteMenu(props: {
 			...(appearNote.userId === $i.id || $i.isModerator || $i.isAdmin ? [
 				null,
 				appearNote.userId === $i.id ? {
+					icon: 'ti ti-pencil',
+					text: i18n.ts.edit,
+					danger: true,
+					action: edit,
+				}: undefined,
+				{
 					icon: 'ti ti-edit',
 					text: i18n.ts.deleteAndEdit,
+					danger: true,
 					action: delEdit,
-				} : undefined,
+				}, 
 				{
 					icon: 'ti ti-trash',
 					text: i18n.ts.delete,

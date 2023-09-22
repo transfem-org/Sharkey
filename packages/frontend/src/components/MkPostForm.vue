@@ -143,6 +143,7 @@ const props = withDefaults(defineProps<{
 	fixed?: boolean;
 	autofocus?: boolean;
 	freezeAfterPosted?: boolean;
+	editId?: Misskey.entities.Note["id"];
 }>(), {
 	initialVisibleUsers: () => [],
 	autofocus: true,
@@ -709,6 +710,7 @@ async function post(ev?: MouseEvent) {
 		visibility: visibility,
 		visibleUserIds: visibility === 'specified' ? visibleUsers.map(u => u.id) : undefined,
 		reactionAcceptance,
+		editId: props.editId ? props.editId : undefined,
 	};
 
 	if (withHashtags && hashtags && hashtags.trim() !== '') {
@@ -731,7 +733,7 @@ async function post(ev?: MouseEvent) {
 	}
 
 	posting = true;
-	os.api('notes/create', postData, token).then(() => {
+	os.api(postData.editId ? "notes/edit" : "notes/create", postData, token).then(() => {
 		if (props.freezeAfterPosted) {
 			posted = true;
 		} else {
@@ -755,7 +757,7 @@ async function post(ev?: MouseEvent) {
 
 			const text = postData.text ?? '';
 			const lowerCase = text.toLowerCase();
-			if ((lowerCase.includes('love') || lowerCase.includes('❤')) && lowerCase.includes('misskey')) {
+			if ((lowerCase.includes('love') || lowerCase.includes('❤')) && lowerCase.includes('sharkey')) {
 				claimAchievement('iLoveMisskey');
 			}
 			if ([

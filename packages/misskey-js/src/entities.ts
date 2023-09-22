@@ -194,6 +194,7 @@ export type Note = {
 	uri?: string;
 	url?: string;
 	isHidden?: boolean;
+	updatedAt?: DateString;
 };
 
 export type NoteReaction = {
@@ -202,6 +203,15 @@ export type NoteReaction = {
 	user: UserLite;
 	type: string;
 };
+
+export type NoteEdit = {
+	noteId: Note['id'];
+	note: Note;
+	text: string;
+	cw: string;
+	fileIds: DriveFile['id'][];
+	updatedAt?: DateString;
+}
 
 export type Notification = {
 	id: ID;

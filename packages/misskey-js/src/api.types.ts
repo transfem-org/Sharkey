@@ -508,6 +508,24 @@ export type Endpoints = {
 		};
 	}; res: { createdNote: Note }; };
 	'notes/delete': { req: { noteId: Note['id']; }; res: null; };
+	'notes/edit': { req: {
+		visibility?: 'public' | 'home' | 'followers' | 'specified',
+		visibleUserIds?: User['id'][];
+		text?: null | string;
+		cw?: null | string;
+		viaMobile?: boolean;
+		localOnly?: boolean;
+		fileIds?: DriveFile['id'][];
+		replyId?: null | Note['id'];
+		renoteId?: null | Note['id'];
+		channelId?: null | Channel['id'];
+		poll?: null | {
+			choices: string[];
+			multiple?: boolean;
+			expiresAt?: null | number;
+			expiredAfter?: null | number;
+		};
+	}; res: { createdNote: Note }; };
 	'notes/favorites/create': { req: { noteId: Note['id']; }; res: null; };
 	'notes/favorites/delete': { req: { noteId: Note['id']; }; res: null; };
 	'notes/featured': { req: TODO; res: Note[]; };
