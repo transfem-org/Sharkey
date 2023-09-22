@@ -28,6 +28,7 @@
 </template>
 
 <script lang="ts" setup>
+/* eslint-disable no-mixed-spaces-and-tabs */
 import {} from "vue";
 import * as misskey from "misskey-js";
 import MkContainer from "@/components/MkContainer.vue";
@@ -37,7 +38,7 @@ const props = withDefaults(
 	}>(),
 	{},
 );
-const listenbrainz = {title: '', artist: '', lastlisten: '', img: '', musicbrainzurl: '', listenbrainzurl: ''};
+const listenbrainz = { title: '', artist: '', lastlisten: '', img: '', musicbrainzurl: '', listenbrainzurl: '' };
 if (props.user.listenbrainz) {
 	const getLMData = async (title: string, artist: string) => {
 		const response = await fetch(`https://api.listenbrainz.org/1/metadata/lookup/?artist_name=${artist}&recording_name=${title}`, {
@@ -45,7 +46,7 @@ if (props.user.listenbrainz) {
 			headers: {
 				'Content-Type': 'application/json'
 			},
-		})
+		});
 		const data = await response.json();
 		if (!data.recording_name) {
 		return null;
@@ -60,7 +61,7 @@ if (props.user.listenbrainz) {
 	const response = await fetch(`https://api.listenbrainz.org/1/user/${props.user.listenbrainz}/playing-now`, {
         method: 'GET',
         headers: {
-        	'Content-Type': 'application/json'
+			'Content-Type': 'application/json'
         },
     });
     const data = await response.json();
@@ -135,4 +136,4 @@ if (props.user.listenbrainz) {
 	font-size: 1.7rem;
 	padding-left: 3rem;
 }
-</style> 
+</style>
