@@ -335,9 +335,10 @@ export class NoteEntityService implements OnModuleInit {
 				color: channel.color,
 				isSensitive: channel.isSensitive,
 			} : undefined,
-			mentions: note.mentions.length > 0 ? note.mentions : undefined,
+			mentions: note.mentions && note.mentions.length > 0 ? note.mentions : undefined,
 			uri: note.uri ?? undefined,
 			url: note.url ?? undefined,
+			updatedAt: note.updatedAt != null ? note.updatedAt.toISOString() : undefined,
 
 			...(opts.detail ? {
 				clippedCount: note.clippedCount,
