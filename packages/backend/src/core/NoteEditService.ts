@@ -216,7 +216,7 @@ export class NoteEditService implements OnApplicationShutdown {
 			throw new Error('fail');
 		};
 
-		let oldnote = await this.notesRepository.findOneBy({
+		const oldnote = await this.notesRepository.findOneBy({
 			id: editid,
 		});	
 
@@ -711,10 +711,12 @@ export class NoteEditService implements OnApplicationShutdown {
 	@bindThis
 	private async renderNoteOrRenoteActivity(data: Option, note: MiNote) {
 		if (data.localOnly) return null;
+		const user = await this.usersRepository.findOneBy({ id: note.userId });
+		if (user == null) throw new Error('user not found');
 
 		const content = data.renote && data.text == null && data.poll == null && (data.files == null || data.files.length === 0)
 			? this.apRendererService.renderAnnounce(data.renote.uri ? data.renote.uri : `${this.config.url}/notes/${data.renote.id}`, note)
-			: this.apRendererService.renderCreate(await this.apRendererService.renderNote(note, false), note);
+			: this.apRendererService.renderUpdate(await this.apRendererService.renderNote(note, false), user);
 
 		return this.apRendererService.addContext(content);
 	}
