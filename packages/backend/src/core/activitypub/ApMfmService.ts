@@ -27,6 +27,6 @@ export class ApMfmService {
 	@bindThis
 	public getNoteHtml(note: MiNote): string | null {
 		if (!note.text) return '';
-		return this.mfmService.toHtml(mfm.parse(note.text), JSON.parse(note.mentionedRemoteUsers));
+		return this.mfmService.toHtml(mfm.parse(note.text), note.mentionedRemoteUsers ? JSON.parse(note.mentionedRemoteUsers) : []);
 	}
 }

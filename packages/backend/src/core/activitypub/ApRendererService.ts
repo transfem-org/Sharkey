@@ -353,7 +353,7 @@ export class ApRendererService {
 
 		const attributedTo = this.userEntityService.genLocalUserUri(note.userId);
 
-		const mentions = (JSON.parse(note.mentionedRemoteUsers) as IMentionedRemoteUsers).map(x => x.uri);
+		const mentions = note.mentionedRemoteUsers ? (JSON.parse(note.mentionedRemoteUsers) as IMentionedRemoteUsers).map(x => x.uri) : [];
 
 		let to: string[] = [];
 		let cc: string[] = [];
@@ -371,7 +371,7 @@ export class ApRendererService {
 			to = mentions;
 		}
 
-		const mentionedUsers = note.mentions.length > 0 ? await this.usersRepository.findBy({
+		const mentionedUsers = note.mentions && note.mentions.length > 0 ? await this.usersRepository.findBy({
 			id: In(note.mentions),
 		}) : [];
 
