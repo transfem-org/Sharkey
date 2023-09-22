@@ -57,7 +57,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<Mfm v-if="appearNote.cw != ''" style="margin-right: 8px;" :text="appearNote.cw" :author="appearNote.user" :i="$i"/>
 					<MkCwButton v-model="showContent" :note="appearNote"/>
 				</p>
-				<div v-show="appearNote.cw == null || showContent" :class="[{ [$style.contentCollapsed]: collapsed }]">
+				<div v-show="appearNote.cw == null || showContent" :class="[{ [$style.contentCollapsed]: collapsed }]" @click="noteclick(appearNote.id)">
 					<div :class="$style.text">
 						<span v-if="appearNote.isHidden" style="opacity: 0.5">({{ i18n.ts.private }})</span>
 						<MkA v-if="appearNote.replyId" :class="$style.replyIcon" :to="`/notes/${appearNote.replyId}`"><i class="ti ti-arrow-back-up"></i></MkA>
@@ -170,16 +170,23 @@ import { MenuItem } from '@/types/menu';
 import MkRippleEffect from '@/components/MkRippleEffect.vue';
 import { showMovedDialog } from '@/scripts/show-moved-dialog.js';
 import { shouldCollapsed } from '@/scripts/collapsed.js';
+import { useRouter } from '@/router.js';
 
 const props = defineProps<{
 	note: Misskey.entities.Note;
 	pinned?: boolean;
 }>();
 
+const router = useRouter();
+
 const inChannel = inject('inChannel', null);
 const currentClip = inject<Ref<Misskey.entities.Clip> | null>('currentClip', null);
 
 let note = $ref(deepClone(props.note));
+
+function noteclick(id: string) {
+	router.push(`/notes/${id}`);
+}
 
 // plugin
 if (noteViewInterruptors.length > 0) {
