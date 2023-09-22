@@ -58,7 +58,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 							<i v-else-if="appearNote.visibility === 'followers'" class="ti ti-lock"></i>
 							<i v-else-if="appearNote.visibility === 'specified'" ref="specified" class="ti ti-mail"></i>
 						</span>
-						<span v-if="appearNote.updatedAt" style="margin-left: 0.5em;" :title="'Edited'"><i class="ti ti-pencil"></i></span>
+						<span v-if="appearNote.updatedAt" style="margin-left: 0.5em;" title="Edited"><i class="ti ti-pencil"></i></span>
 						<span v-if="appearNote.localOnly" style="margin-left: 0.5em;" :title="i18n.ts._visibility['disableFederation']"><i class="ti ti-rocket-off"></i></span>
 					</div>
 				</div>
