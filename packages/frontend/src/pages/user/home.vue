@@ -132,14 +132,15 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<XActivity :key="user.id" :user="user"/>
 				</template>
 				<MkStickyContainer>
-					<MkTab v-model="noteview" :class="$style.tab">
-						<option :value="null">{{ i18n.ts.notes }}</option>
-						<option value="replies">{{ i18n.ts.notesAndReplies }}</option>
-						<option value="files">{{ i18n.ts.withFiles }}</option>
-					</MkTab>
+					<template #header>
+						<MkTab v-model="noteview" :class="$style.tab">
+							<option :value="null">{{ i18n.ts.notes }}</option>
+							<option value="replies">{{ i18n.ts.notesAndReplies }}</option>
+							<option value="files">{{ i18n.ts.withFiles }}</option>
+						</MkTab>
+					</template>
+					<MkNotes v-if="!disableNotes" :class="$style.tl" :noGap="true" :pagination="pagination"/>
 				</MkStickyContainer>
-				<MkNotes v-if="!disableNotes" :class="$style.tl" :noGap="true" :pagination="pagination"/>
-			</div>
 		</div>
 		<div v-if="!narrow" class="sub _gaps" style="container-type: inline-size;">
 			<XPhotos :key="user.id" :user="user"/>
