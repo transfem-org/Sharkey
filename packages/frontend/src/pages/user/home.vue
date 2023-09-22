@@ -131,18 +131,18 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<XPhotos :key="user.id" :user="user"/>
 					<XActivity :key="user.id" :user="user"/>
 				</template>
+				<MkTab v-model="noteview" :class="$style.tab">
+					<option :value="null">{{ i18n.ts.notes }}</option>
+					<option value="replies">{{ i18n.ts.notesAndReplies }}</option>
+					<option value="files">{{ i18n.ts.withFiles }}</option>
+				</MkTab>
 				<MkNotes v-if="!disableNotes" :class="$style.tl" :noGap="true" :pagination="pagination"/>
 			</div>
 		</div>
 		<div v-if="!narrow" class="sub _gaps" style="container-type: inline-size;">
 			<XPhotos :key="user.id" :user="user"/>
 			<XActivity :key="user.id" :user="user"/>
-			<XListenBrainz
-					v-if="user.listenbrainz && listenbrainzdata"
-					:key="user.id"
-					:user="user"
-					style="margin-top: var(--margin)"
-				/>
+			<XListenBrainz v-if="user.listenbrainz && listenbrainzdata" :key="user.id" :user="user"/>
 		</div>
 	</div>
 </MkSpacer>
@@ -151,6 +151,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { defineAsyncComponent, computed, onMounted, onUnmounted, nextTick, watch } from 'vue';
 import * as Misskey from 'misskey-js';
+import MkTab from '@/components/MkTab.vue';
 import MkNote from '@/components/MkNote.vue';
 import MkFollowButton from '@/components/MkFollowButton.vue';
 import MkAccountMoved from '@/components/MkAccountMoved.vue';
@@ -172,6 +173,7 @@ import { confetti } from '@/scripts/confetti.js';
 import MkNotes from '@/components/MkNotes.vue';
 import { api } from '@/os.js';
 import { isFfVisibleForMe } from '@/scripts/isFfVisibleForMe.js';
+
 function calcAge(birthdate: string): number {
 	const date = new Date(birthdate);
 	const now = new Date();
@@ -210,6 +212,7 @@ let memoDraft = $ref(props.user.memo);
 let isEditingMemo = $ref(false);
 let moderationNote = $ref(props.user.moderationNote);
 let editModerationNote = $ref(false);
+let noteview = $ref<string | null>(null);
 
 let listenbrainzdata = false;
 if (props.user.listenbrainz) {
@@ -238,6 +241,8 @@ const pagination = {
 	limit: 10,
 	params: computed(() => ({
 		userId: props.user.id,
+		includeReplies: noteview === 'replies' || noteview === 'files',
+		withFiles: noteview === 'files',
 	})),
 };
 
@@ -335,6 +340,12 @@ onUnmounted(() => {
 		> .punished {
 			font-size: 0.8em;
 			padding: 16px;
+		}
+
+		> .tab {
+			margin: calc(var(--margin) / 2) 0;
+			padding: calc(var(--margin) / 2) 0;
+			background: var(--bg);
 		}
 
 		> .profile {
