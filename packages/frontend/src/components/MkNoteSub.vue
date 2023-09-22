@@ -15,7 +15,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<Mfm v-if="note.cw != ''" style="margin-right: 8px;" :text="note.cw" :author="note.user" :i="$i"/>
 					<MkCwButton v-model="showContent" :note="note"/>
 				</p>
-				<div v-show="note.cw == null || showContent">
+				<div v-show="note.cw == null || showContent" @click="noteclick(note.id)">
 					<MkSubNoteContent :class="$style.text" :note="note"/>
 				</div>
 			</div>
@@ -52,6 +52,7 @@ import { $i } from '@/account.js';
 import { userPage } from "@/filters/user";
 import { checkWordMute } from "@/scripts/check-word-mute";
 import { defaultStore } from "@/store";
+import { useRouter } from '@/router.js';
 
 const props = withDefaults(defineProps<{
 	note: Misskey.entities.Note;
@@ -63,7 +64,13 @@ const props = withDefaults(defineProps<{
 	depth: 1,
 });
 
+const router = useRouter();
+
 const muted = ref(checkWordMute(props.note, $i, defaultStore.state.mutedWords));
+
+function noteclick(id: string) {
+	router.push(`/notes/${id}`);
+}
 
 let showContent = $ref(false);
 let replies: Misskey.entities.Note[] = $ref([]);

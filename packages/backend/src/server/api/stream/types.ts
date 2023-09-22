@@ -144,7 +144,7 @@ export interface NoteStreamTypes {
 	};
 	updated: {
 		updatedAt: Date;
-	}
+	};
 }
 type NoteStreamEventTypes = {
 	[key in keyof NoteStreamTypes]: {
