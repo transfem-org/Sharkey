@@ -9,7 +9,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<XTimeline class="tl"/>
 	<div class="shape1"></div>
 	<div class="shape2"></div>
-	<img src="/client-assets/misskey.svg" class="misskey"/>
+	<img src="/client-assets/sharkey.svg" class="misskey"/>
 	<div class="emojis">
 		<MkEmoji :normal="true" :noStyle="true" emoji="👍"/>
 		<MkEmoji :normal="true" :noStyle="true" emoji="❤"/>

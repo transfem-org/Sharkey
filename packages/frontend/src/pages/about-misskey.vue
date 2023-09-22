@@ -12,7 +12,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<div v-panel class="about">
 					<div ref="containerEl" class="container" :class="{ playing: easterEggEngine != null }">
 						<img src="/client-assets/about-icon.png" alt="" class="icon" draggable="false" @load="iconLoaded" @click="gravity"/>
-						<div class="misskey">Misskey</div>
+						<div class="misskey">Sharkey</div>
 						<div class="version">v{{ version }}</div>
 						<span v-for="emoji in easterEggEmojis" :key="emoji.id" class="emoji" :data-physics-x="emoji.left" :data-physics-y="emoji.top" :class="{ _physics_circle_: !emoji.emoji.startsWith(':') }">
 							<MkCustomEmoji v-if="emoji.emoji[0] === ':'" class="emoji" :name="emoji.emoji" :normal="true" :noStyle="true"/>
@@ -25,24 +25,19 @@ SPDX-License-Identifier: AGPL-3.0-only
 					{{ i18n.ts._aboutMisskey.about }}<br><a href="https://misskey-hub.net/docs/misskey.html" target="_blank" class="_link">{{ i18n.ts.learnMore }}</a>
 				</div>
 				<div v-if="$i != null" style="text-align: center;">
-					<MkButton primary rounded inline @click="iLoveMisskey">I <Mfm text="$[jelly ❤]"/> #Misskey</MkButton>
+					<MkButton primary rounded inline @click="iLoveMisskey">I <Mfm text="$[jelly ❤]"/> #Sharkey</MkButton>
 				</div>
 				<FormSection>
 					<div class="_formLinks">
-						<FormLink to="https://github.com/misskey-dev/misskey" external>
+						<FormLink to="https://github.com/transfem-org/Sharkey" external>
 							<template #icon><i class="ti ti-code"></i></template>
 							{{ i18n.ts._aboutMisskey.source }}
 							<template #suffix>GitHub</template>
 						</FormLink>
-						<FormLink to="https://crowdin.com/project/misskey" external>
-							<template #icon><i class="ti ti-language-hiragana"></i></template>
-							{{ i18n.ts._aboutMisskey.translation }}
-							<template #suffix>Crowdin</template>
-						</FormLink>
-						<FormLink to="https://www.patreon.com/syuilo" external>
+						<FormLink to="https://ko-fi.com/transfem" external>
 							<template #icon><i class="ti ti-pig-money"></i></template>
 							{{ i18n.ts._aboutMisskey.donate }}
-							<template #suffix>Patreon</template>
+							<template #suffix>Ko-Fi</template>
 						</FormLink>
 					</div>
 				</FormSection>
