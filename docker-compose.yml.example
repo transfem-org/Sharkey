@@ -16,8 +16,8 @@ services:
     ports:
       - "3000:3000"
     networks:
-      - internal_network
-      - external_network
+      - shonk
+      - web
     volumes:
       - ./files:/sharkey/files
       - ./.config:/sharkey/.config:ro
@@ -26,7 +26,7 @@ services:
     restart: always
     image: redis:7-alpine
     networks:
-      - internal_network
+      - shonk
     volumes:
       - ./redis:/data
     healthcheck:
@@ -38,7 +38,7 @@ services:
     restart: always
     image: postgres:15-alpine
     networks:
-      - internal_network
+      - shonk
     env_file:
       - .config/docker.env
     volumes:
@@ -57,11 +57,11 @@ services:
 #    env_file:
 #      - .config/meilisearch.env
 #    networks:
-#      - internal_network
+#      - shonk
 #    volumes:
 #      - ./meili_data:/meili_data
 
 networks:
-  internal_network:
-    internal: true
-  external_network:
+  shonk:
+  web:
+		external: true
