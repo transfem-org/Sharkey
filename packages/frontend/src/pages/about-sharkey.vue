@@ -44,6 +44,20 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<FormSection>
 					<template #label>{{ i18n.ts._aboutMisskey.contributors }}</template>
 					<div :class="$style.contributors">
+						<a href="https://github.com/mar0xy" target="_blank" :class="$style.contributor">
+							<img src="https://avatars.githubusercontent.com/u/8841466?v=4" :class="$style.contributorAvatar">
+							<span :class="$style.contributorUsername">@mar0rxy</span>
+						</a>
+						<a href="https://github.com/insert5starname" target="_blank" :class="$style.contributor">
+							<img src="https://avatars.githubusercontent.com/u/123300075?v=4" :class="$style.contributorAvatar">
+							<span :class="$style.contributorUsername">@insert5starname</span>
+						</a>
+					</div>
+					<template #caption><MkLink url="https://github.com/transfem-org/sharkey/graphs/contributors">{{ i18n.ts._aboutMisskey.allContributors }}</MkLink></template>
+				</FormSection>
+				<FormSection>
+					<template #label>Misskey Contributors</template>
+					<div :class="$style.contributors">
 						<a href="https://github.com/syuilo" target="_blank" :class="$style.contributor">
 							<img src="https://avatars.githubusercontent.com/u/4439005?v=4" :class="$style.contributorAvatar">
 							<span :class="$style.contributorUsername">@syuilo</span>
@@ -69,20 +83,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 							<span :class="$style.contributorUsername">@robflop</span>
 						</a>
 					</div>
-					<template #caption><MkLink url="https://github.com/misskey-dev/misskey/graphs/contributors">{{ i18n.ts._aboutMisskey.allContributors }}</MkLink></template>
-				</FormSection>
-				<FormSection>
-					<template #label><Mfm text="$[jelly ❤]"/> {{ i18n.ts._aboutMisskey.patrons }}</template>
-					<div :class="$style.patronsWithIcon">
-						<div v-for="patron in patronsWithIcon" :class="$style.patronWithIcon">
-							<img :src="patron.icon" :class="$style.patronIcon">
-							<span :class="$style.patronName">{{ patron.name }}</span>
-						</div>
-					</div>
-					<div style="margin-top: 16px; display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); grid-gap: 12px;">
-						<div v-for="patron in patrons" :key="patron">{{ patron }}</div>
-					</div>
-					<p>{{ i18n.ts._aboutMisskey.morePatrons }}</p>
 				</FormSection>
 				<FormSection>
 					<template #label>Special thanks</template>
@@ -119,171 +119,6 @@ import { definePageMetadata } from '@/scripts/page-metadata.js';
 import { claimAchievement, claimedAchievements } from '@/scripts/achievements.js';
 import { $i } from '@/account.js';
 
-const patronsWithIcon = [{
-	name: 'カイヤン',
-	icon: 'https://misskey-hub.net/patrons/a2820716883e408cb87773e377ce7c8d.jpg',
-}, {
-	name: 'だれかさん',
-	icon: 'https://misskey-hub.net/patrons/f7409b5e5a88477a9b9d740c408de125.jpg',
-}, {
-	name: 'narazaka',
-	icon: 'https://misskey-hub.net/patrons/e3affff31ffb4877b1196c7360abc3e5.jpg',
-}, {
-	name: 'ひとぅ',
-	icon: 'https://misskey-hub.net/patrons/8cc0d0a0a6d84c88bca1aedabf6ed5ab.jpg',
-}, {
-	name: 'ぱーこ',
-	icon: 'https://misskey-hub.net/patrons/79c6602ffade489e8df2fcf2c2bc5d9d.jpg',
-}, {
-	name: 'わっほー☆',
-	icon: 'https://misskey-hub.net/patrons/d31d5d13924443a082f3da7966318a0a.jpg',
-}, {
-	name: 'mollinaca',
-	icon: 'https://misskey-hub.net/patrons/ceb36b8f66e549bdadb3b90d5da62314.jpg',
-}, {
-	name: '坂本龍',
-	icon: 'https://misskey-hub.net/patrons/a631cf8b490145cf8dbbe4e7508cfbc2.jpg',
-}, {
-	name: 'takke',
-	icon: 'https://misskey-hub.net/patrons/6c3327e626c046f2914fbcd9f7557935.jpg',
-}, {
-	name: 'ぺんぎん',
-	icon: 'https://misskey-hub.net/patrons/6a652e0534ff4cb1836e7ce4968d76a7.jpg',
-}, {
-	name: 'かみらえっと',
-	icon: 'https://misskey-hub.net/patrons/be1326bda7d940a482f3758ffd9ffaf6.jpg',
-}, {
-	name: 'へてて',
-	icon: 'https://misskey-hub.net/patrons/0431eacd7c6843d09de8ea9984307e86.jpg',
-}, {
-	name: 'spinlock',
-	icon: 'https://misskey-hub.net/patrons/6a1cebc819d540a78bf20e9e3115baa8.jpg',
-}, {
-	name: 'じゅくま',
-	icon: 'https://misskey-hub.net/patrons/3e56bdac69dd42f7a06e0f12cf2fc895.jpg',
-}, {
-	name: '清遊あみ',
-	icon: 'https://misskey-hub.net/patrons/de25195b88e940a388388bea2e7637d8.jpg',
-}, {
-	name: 'Nagi8410',
-	icon: 'https://misskey-hub.net/patrons/31b102ab4fc540ed806b0461575d38be.jpg',
-}, {
-	name: '山岡士郎',
-	icon: 'https://misskey-hub.net/patrons/84b9056341684266bb1eda3e680d094d.jpg',
-}, {
-	name: 'よもやまたろう',
-	icon: 'https://misskey-hub.net/patrons/4273c9cce50d445f8f7d0f16113d6d7f.jpg',
-}, {
-	name: '花咲ももか',
-	icon: 'https://misskey-hub.net/patrons/8c9b2b9128cb4fee99f04bb4f86f2efa.jpg',
-}, {
-	name: 'カガミ',
-	icon: 'https://misskey-hub.net/patrons/226ea3a4617749548580ec2d9a263e24.jpg',
-}, {
-	name: 'フランギ・シュウ',
-	icon: 'https://misskey-hub.net/patrons/3016d37e35f3430b90420176c912d304.jpg',
-}];
-
-const patrons = [
-	'まっちゃとーにゅ',
-	'mametsuko',
-	'noellabo',
-	'AureoleArk',
-	'Gargron',
-	'Nokotaro Takeda',
-	'Suji Yan',
-	'oi_yekssim',
-	'regtan',
-	'Hekovic',
-	'nenohi',
-	'Gitmo Life Services',
-	'naga_rus',
-	'Efertone',
-	'Melilot',
-	'motcha',
-	'nanami kan',
-	'sevvie Rose',
-	'Hayato Ishikawa',
-	'Puniko',
-	'skehmatics',
-	'Quinton Macejkovic',
-	'YUKIMOCHI',
-	'dansup',
-	'mewl hayabusa',
-	'Emilis',
-	'Fristi',
-	'makokunsan',
-	'chidori ninokura',
-	'Peter G.',
-	'見当かなみ',
-	'natalie',
-	'Maronu',
-	'Steffen K9',
-	'takimura',
-	'sikyosyounin',
-	'Nesakko',
-	'YuzuRyo61',
-	'blackskye',
-	'sheeta.s',
-	'osapon',
-	'public_yusuke',
-	'CG',
-	'吴浥',
-	't_w',
-	'Jerry',
-	'nafuchoco',
-	'Takumi Sugita',
-	'GLaTAN',
-	'mkatze',
-	'kabo2468y',
-	'mydarkstar',
-	'Roujo',
-	'DignifiedSilence',
-	'uroco @99',
-	'totokoro',
-	'うし',
-	'kiritan',
-	'weepjp',
-	'Liaizon Wakest',
-	'Duponin',
-	'Blue',
-	'Naoki Hirayama',
-	'wara',
-	'Wataru Manji (manji0)',
-	'みなしま',
-	'kanoy',
-	'xianon',
-	'Denshi',
-	'Osushimaru',
-	'にょんへら',
-	'おのだい',
-	'Leni',
-	'oss',
-	'Weeble',
-	'蝉暮せせせ',
-	'ThatOneCalculator',
-	'pixeldesu',
-	'あめ玉',
-	'氷月氷華里',
-	'Ebise Lutica',
-	'巣黒るい@リスケモ男の娘VTuber!',
-	'ふぇいぽむ',
-	'依古田イコ',
-	'戸塚こだま',
-	'すー。',
-	'秋雨/Slime-hatena.jp',
-	'けそ',
-	'ずも',
-	'binvinyl',
-	'渡志郎',
-	'ぷーざ',
-	'越貝鯛丸',
-	'Nick / pprmint.',
-	'kino3277',
-	'美少女JKぐーちゃん',
-	'てば',
-];
-
 let thereIsTreasure = $ref($i && !claimedAchievements.includes('foundTreasure'));
 
 let easterEggReady = false;
@@ -316,7 +151,7 @@ function gravity() {
 
 function iLoveMisskey() {
 	os.post({
-		initialText: 'I $[jelly ❤] #Misskey',
+		initialText: 'I $[jelly ❤] #Sharkey',
 		instant: true,
 	});
 }

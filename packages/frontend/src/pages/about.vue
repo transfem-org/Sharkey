@@ -25,12 +25,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<FormSection>
 				<div class="_gaps_m">
 					<MkKeyValue :copy="version">
-						<template #key>Misskey</template>
+						<template #key>Sharkey</template>
 						<template #value>{{ version }}</template>
 					</MkKeyValue>
 					<div v-html="i18n.t('poweredByMisskeyDescription', { name: instance.name ?? host })">
 					</div>
-					<FormLink to="/about-misskey">{{ i18n.ts.aboutMisskey }}</FormLink>
+					<FormLink to="/about-sharkey">{{ i18n.ts.aboutMisskey }}</FormLink>
 				</div>
 			</FormSection>
 
