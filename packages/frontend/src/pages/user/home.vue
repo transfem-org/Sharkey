@@ -346,12 +346,6 @@ onUnmounted(() => {
 			padding: 16px;
 		}
 
-		> .tab {
-			margin: calc(var(--margin) / 2) 0;
-			padding: calc(var(--margin) / 2) 0;
-			background: var(--bg);
-		}
-
 		> .profile {
 
 			> .main {
@@ -713,6 +707,12 @@ onUnmounted(() => {
 	background: var(--bg);
 	border-radius: var(--radius);
 	overflow: clip;
+}
+
+.tab {
+	margin: calc(var(--margin) / 2) 0;
+	padding: calc(var(--margin) / 2) 0;
+	background: var(--bg);
 }
 
 .verifiedLink {
