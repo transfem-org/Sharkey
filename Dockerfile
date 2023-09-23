@@ -16,7 +16,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
 
 RUN corepack enable
 
-WORKDIR /misskey
+WORKDIR /sharkey
 
 COPY --link ["pnpm-lock.yaml", "pnpm-workspace.yaml", "package.json", "./"]
 COPY --link ["scripts", "./scripts"]
@@ -46,7 +46,7 @@ RUN apt-get update \
 
 RUN corepack enable
 
-WORKDIR /misskey
+WORKDIR /sharkey
 
 COPY --link ["pnpm-lock.yaml", "pnpm-workspace.yaml", "package.json", "./"]
 COPY --link ["scripts", "./scripts"]
@@ -65,8 +65,8 @@ RUN apt-get update \
 	ffmpeg tini curl libjemalloc-dev libjemalloc2 \
 	&& ln -s /usr/lib/$(uname -m)-linux-gnu/libjemalloc.so.2 /usr/local/lib/libjemalloc.so \
 	&& corepack enable \
-	&& groupadd -g "${GID}" misskey \
-	&& useradd -l -u "${UID}" -g "${GID}" -m -d /misskey misskey \
+	&& groupadd -g "${GID}" sharkey \
+	&& useradd -l -u "${UID}" -g "${GID}" -m -d /sharkey sharkey \
 	&& find / -type d -path /proc -prune -o -type f -perm /u+s -ignore_readdir_race -exec chmod u-s {} \; \
 	&& find / -type d -path /proc -prune -o -type f -perm /g+s -ignore_readdir_race -exec chmod g-s {} \; \
 	&& apt-get clean \
@@ -75,15 +75,15 @@ RUN apt-get update \
 USER misskey
 WORKDIR /misskey
 
-COPY --chown=misskey:misskey --from=target-builder /misskey/node_modules ./node_modules
-COPY --chown=misskey:misskey --from=target-builder /misskey/packages/backend/node_modules ./packages/backend/node_modules
-COPY --chown=misskey:misskey --from=native-builder /misskey/built ./built
-COPY --chown=misskey:misskey --from=native-builder /misskey/packages/backend/built ./packages/backend/built
-COPY --chown=misskey:misskey --from=native-builder /misskey/fluent-emojis /misskey/fluent-emojis
-COPY --chown=misskey:misskey . ./
+COPY --chown=sharkey:sharkey --from=target-builder /sharkey/node_modules ./node_modules
+COPY --chown=sharkey:sharkey --from=target-builder /sharkey/packages/backend/node_modules ./packages/backend/node_modules
+COPY --chown=sharkey:sharkey --from=native-builder /sharkey/built ./built
+COPY --chown=sharkey:sharkey --from=native-builder /sharkey/packages/backend/built ./packages/backend/built
+COPY --chown=sharkey:sharkey --from=native-builder /sharkey/fluent-emojis /sharkey/fluent-emojis
+COPY --chown=sharkey:sharkey . ./
 
 ENV LD_PRELOAD=/usr/local/lib/libjemalloc.so
 ENV NODE_ENV=production
-HEALTHCHECK --interval=5s --retries=20 CMD ["/bin/bash", "/misskey/healthcheck.sh"]
+HEALTHCHECK --interval=5s --retries=20 CMD ["/bin/bash", "/sharkey/healthcheck.sh"]
 ENTRYPOINT ["/usr/bin/tini", "--"]
 CMD ["pnpm", "run", "migrateandstart"]
