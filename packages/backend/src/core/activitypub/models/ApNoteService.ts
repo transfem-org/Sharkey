@@ -7,7 +7,7 @@ import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import promiseLimit from 'promise-limit';
 import { In } from 'typeorm';
 import { DI } from '@/di-symbols.js';
-import type { PollsRepository, EmojisRepository } from '@/models/_.js';
+import type { PollsRepository, EmojisRepository, NotesRepository } from '@/models/_.js';
 import type { Config } from '@/config.js';
 import type { MiRemoteUser } from '@/models/User.js';
 import type { MiNote } from '@/models/Note.js';
@@ -49,6 +49,9 @@ export class ApNoteService {
 
 		@Inject(DI.pollsRepository)
 		private pollsRepository: PollsRepository,
+
+		@Inject(DI.notesRepository)
+		private notesRepository: NotesRepository,
 
 		@Inject(DI.emojisRepository)
 		private emojisRepository: EmojisRepository,
@@ -310,6 +313,16 @@ export class ApNoteService {
 	 */
 	@bindThis
 	public async updateNote(value: string | IObject, resolver?: Resolver, silent = false): Promise<MiNote | null> {
+		const uri = typeof value === 'string' ? value : value.id;
+		if (uri == null) throw new Error('uri is null');
+
+		// URIがこのサーバーを指しているならスキップ
+		if (uri.startsWith(this.config.url + '/')) throw new Error('uri points local');
+
+		//#region このサーバーに既に登録されているか
+		const UpdatedNote = await this.notesRepository.findOneBy({ uri });
+		if (UpdatedNote == null) throw new Error('Note is not registered');
+
 		// eslint-disable-next-line no-param-reassign
 		if (resolver == null) resolver = this.apResolverService.createResolver();
 
