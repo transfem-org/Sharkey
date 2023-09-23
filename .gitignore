@@ -58,6 +58,9 @@ ormconfig.json
 temp
 /packages/frontend/src/**/*.stories.ts
 
+# Sharkey
+/packages/megalodon/lib
+
 # blender backups
 *.blend1
 *.blend2

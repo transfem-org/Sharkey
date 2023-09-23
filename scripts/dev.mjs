@@ -35,6 +35,12 @@ await execa('pnpm', ['--filter', 'misskey-js', 'build'], {
 	stderr: process.stderr,
 });
 
+await execa("pnpm", ['--filter', 'megalodon', 'build'], {
+	cwd: _dirname + '/../',
+	stdout: process.stdout,
+	stderr: process.stderr,
+});
+
 execa('pnpm', ['build-assets', '--watch'], {
 	cwd: _dirname + '/../',
 	stdout: process.stdout,

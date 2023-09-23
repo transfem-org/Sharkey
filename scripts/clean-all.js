@@ -16,6 +16,8 @@ const fs = require('fs');
 	fs.rmSync(__dirname + '/../packages/sw/built', { recursive: true, force: true });
 	fs.rmSync(__dirname + '/../packages/sw/node_modules', { recursive: true, force: true });
 
+	fs.rmSync(__dirname + '/../packages/megalodon/lib', { recursive: true, force: true });
+
 	fs.rmSync(__dirname + '/../built', { recursive: true, force: true });
 	fs.rmSync(__dirname + '/../node_modules', { recursive: true, force: true });
 
