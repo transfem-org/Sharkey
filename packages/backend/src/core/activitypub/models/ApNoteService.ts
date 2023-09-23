@@ -17,6 +17,7 @@ import { MetaService } from '@/core/MetaService.js';
 import { AppLockService } from '@/core/AppLockService.js';
 import type { MiDriveFile } from '@/models/DriveFile.js';
 import { NoteCreateService } from '@/core/NoteCreateService.js';
+import { NoteEditService } from '@/core/NoteEditService.js';
 import type Logger from '@/logger.js';
 import { IdService } from '@/core/IdService.js';
 import { PollService } from '@/core/PollService.js';
@@ -69,6 +70,7 @@ export class ApNoteService {
 		private appLockService: AppLockService,
 		private pollService: PollService,
 		private noteCreateService: NoteCreateService,
+		private noteEditService: NoteEditService,
 		private apDbResolverService: ApDbResolverService,
 		private apLoggerService: ApLoggerService,
 	) {
@@ -273,6 +275,204 @@ export class ApNoteService {
 
 		try {
 			return await this.noteCreateService.create(actor, {
+				createdAt: note.published ? new Date(note.published) : null,
+				files,
+				reply,
+				renote: quote,
+				name: note.name,
+				cw,
+				text,
+				localOnly: false,
+				visibility,
+				visibleUsers,
+				apMentions,
+				apHashtags,
+				apEmojis,
+				poll,
+				uri: note.id,
+				url: url,
+			}, silent);
+		} catch (err: any) {
+			if (err.name !== 'duplicated') {
+				throw err;
+			}
+			this.logger.info('The note is already inserted while creating itself, reading again');
+			const duplicate = await this.fetchNote(value);
+			if (!duplicate) {
+				throw new Error('The note creation failed with duplication error even when there is no duplication');
+			}
+			return duplicate;
+		}
+	}
+
+	/**
+	 * Noteを作成します。
+	 */
+	@bindThis
+	public async updateNote(value: string | IObject, resolver?: Resolver, silent = false): Promise<MiNote | null> {
+		// eslint-disable-next-line no-param-reassign
+		if (resolver == null) resolver = this.apResolverService.createResolver();
+
+		const object = await resolver.resolve(value);
+
+		const entryUri = getApId(value);
+		const err = this.validateNote(object, entryUri);
+		if (err) {
+			this.logger.error(err.message, {
+				resolver: { history: resolver.getHistory() },
+				value,
+				object,
+			});
+			throw new Error('invalid note');
+		}
+
+		const note = object as IPost;
+
+		this.logger.debug(`Note fetched: ${JSON.stringify(note, null, 2)}`);
+
+		if (note.id && !checkHttps(note.id)) {
+			throw new Error('unexpected schema of note.id: ' + note.id);
+		}
+
+		const url = getOneApHrefNullable(note.url);
+
+		if (url && !checkHttps(url)) {
+			throw new Error('unexpected schema of note url: ' + url);
+		}
+
+		this.logger.info(`Creating the Note: ${note.id}`);
+
+		// 投稿者をフェッチ
+		if (note.attributedTo == null) {
+			throw new Error('invalid note.attributedTo: ' + note.attributedTo);
+		}
+
+		const actor = await this.apPersonService.resolvePerson(getOneApId(note.attributedTo), resolver) as MiRemoteUser;
+
+		// 投稿者が凍結されていたらスキップ
+		if (actor.isSuspended) {
+			throw new Error('actor has been suspended');
+		}
+
+		const noteAudience = await this.apAudienceService.parseAudience(actor, note.to, note.cc, resolver);
+		let visibility = noteAudience.visibility;
+		const visibleUsers = noteAudience.visibleUsers;
+
+		// Audience (to, cc) が指定されてなかった場合
+		if (visibility === 'specified' && visibleUsers.length === 0) {
+			if (typeof value === 'string') {	// 入力がstringならばresolverでGETが発生している
+				// こちらから匿名GET出来たものならばpublic
+				visibility = 'public';
+			}
+		}
+
+		const apMentions = await this.apMentionService.extractApMentions(note.tag, resolver);
+		const apHashtags = extractApHashtags(note.tag);
+
+		// 添付ファイル
+		// TODO: attachmentは必ずしもImageではない
+		// TODO: attachmentは必ずしも配列ではない
+		const limit = promiseLimit<MiDriveFile>(2);
+		const files = (await Promise.all(toArray(note.attachment).map(attach => (
+			limit(() => this.apImageService.resolveImage(actor, {
+				...attach,
+				sensitive: note.sensitive, // Noteがsensitiveなら添付もsensitiveにする
+			}))
+		))));
+
+		// リプライ
+		const reply: MiNote | null = note.inReplyTo
+			? await this.resolveNote(note.inReplyTo, { resolver })
+				.then(x => {
+					if (x == null) {
+						this.logger.warn('Specified inReplyTo, but not found');
+						throw new Error('inReplyTo not found');
+					}
+
+					return x;
+				})
+				.catch(async err => {
+					this.logger.warn(`Error in inReplyTo ${note.inReplyTo} - ${err.statusCode ?? err}`);
+					throw err;
+				})
+			: null;
+
+		// 引用
+		let quote: MiNote | undefined | null = null;
+
+		if (note._misskey_quote ?? note.quoteUrl) {
+			const tryResolveNote = async (uri: string): Promise<
+				| { status: 'ok'; res: MiNote }
+				| { status: 'permerror' | 'temperror' }
+			> => {
+				if (!/^https?:/.test(uri)) return { status: 'permerror' };
+				try {
+					const res = await this.resolveNote(uri);
+					if (res == null) return { status: 'permerror' };
+					return { status: 'ok', res };
+				} catch (e) {
+					return {
+						status: (e instanceof StatusError && e.isClientError) ? 'permerror' : 'temperror',
+					};
+				}
+			};
+
+			const uris = unique([note._misskey_quote, note.quoteUrl].filter((x): x is string => typeof x === 'string'));
+			const results = await Promise.all(uris.map(tryResolveNote));
+
+			quote = results.filter((x): x is { status: 'ok', res: MiNote } => x.status === 'ok').map(x => x.res).at(0);
+			if (!quote) {
+				if (results.some(x => x.status === 'temperror')) {
+					throw new Error('quote resolve failed');
+				}
+			}
+		}
+
+		const cw = note.summary === '' ? null : note.summary;
+
+		// テキストのパース
+		let text: string | null = null;
+		if (note.source?.mediaType === 'text/x.misskeymarkdown' && typeof note.source.content === 'string') {
+			text = note.source.content;
+		} else if (typeof note._misskey_content !== 'undefined') {
+			text = note._misskey_content;
+		} else if (typeof note.content === 'string') {
+			text = this.apMfmService.htmlToMfm(note.content, note.tag);
+		}
+
+		// vote
+		if (reply && reply.hasPoll) {
+			const poll = await this.pollsRepository.findOneByOrFail({ noteId: reply.id });
+
+			const tryCreateVote = async (name: string, index: number): Promise<null> => {
+				if (poll.expiresAt && Date.now() > new Date(poll.expiresAt).getTime()) {
+					this.logger.warn(`vote to expired poll from AP: actor=${actor.username}@${actor.host}, note=${note.id}, choice=${name}`);
+				} else if (index >= 0) {
+					this.logger.info(`vote from AP: actor=${actor.username}@${actor.host}, note=${note.id}, choice=${name}`);
+					await this.pollService.vote(actor, reply, index);
+
+					// リモートフォロワーにUpdate配信
+					this.pollService.deliverQuestionUpdate(reply.id);
+				}
+				return null;
+			};
+
+			if (note.name) {
+				return await tryCreateVote(note.name, poll.choices.findIndex(x => x === note.name));
+			}
+		}
+
+		const emojis = await this.extractEmojis(note.tag ?? [], actor.host).catch(e => {
+			this.logger.info(`extractEmojis: ${e}`);
+			return [];
+		});
+
+		const apEmojis = emojis.map(emoji => emoji.name);
+
+		const poll = await this.apQuestionService.extractPollFromQuestion(note, resolver).catch(() => undefined);
+
+		try {
+			return await this.noteEditService.edit(actor, note.id!, {
 				createdAt: note.published ? new Date(note.published) : null,
 				files,
 				reply,
