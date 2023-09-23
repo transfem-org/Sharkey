@@ -1,7 +1,7 @@
 ---
 _lang_: "English"
 headlineMisskey: "A network connected by notes"
-introMisskey: "Welcome! Misskey is an open source, decentralized microblogging service.\nCreate \"notes\" to share your thoughts with everyone around you. 📡\nWith \"reactions\", you can also quickly express your feelings about everyone's notes. 👍\nLet's explore a new world! 🚀"
+introMisskey: "Welcome! Sharkey is an open source, decentralized microblogging service.\nCreate \"notes\" to share your thoughts with everyone around you. 📡\nWith \"reactions\", you can also quickly express your feelings about everyone's notes. 👍\nLet's explore a new world! 🚀"
 poweredByMisskeyDescription: "{name} is one of the services powered by the open source platform <b>Sharkey</b> which is based on Misskey (referred to as a \"Misskey instance\")."
 monthAndDay: "{month}/{day}"
 search: "Search"
