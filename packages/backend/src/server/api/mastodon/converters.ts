@@ -83,8 +83,6 @@ export function convertNotification(notification: Entity.Notification) {
 	notification.id = convertId(notification.id, IdConvertType.MastodonId);
 	if (notification.status)
 		notification.status = convertStatus(notification.status);
-	if (notification.reaction)
-		notification.reaction = convertReaction(notification.reaction);
 	return notification;
 }
 
@@ -120,8 +118,6 @@ export function convertStatus(status: Entity.Status) {
 	}));
 	if (status.poll) status.poll = convertPoll(status.poll);
 	if (status.reblog) status.reblog = convertStatus(status.reblog);
-	if (status.quote) status.quote = convertStatus(status.quote);
-	status.reactions = status.reactions.map(convertReaction);
 
 	return status;
 }

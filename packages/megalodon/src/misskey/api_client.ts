@@ -1,727 +1,629 @@
-import axios, { AxiosResponse, AxiosRequestConfig } from "axios";
-import dayjs from "dayjs";
-import FormData from "form-data";
+import axios, { AxiosResponse, AxiosRequestConfig } from 'axios'
+import dayjs from 'dayjs'
+import FormData from 'form-data'
 
-import { DEFAULT_UA } from "../default";
-import proxyAgent, { ProxyConfig } from "../proxy_config";
-import Response from "../response";
-import MisskeyEntity from "./entity";
-import MegalodonEntity from "../entity";
-import WebSocket from "./web_socket";
-import MisskeyNotificationType from "./notification";
-import NotificationType from "../notification";
+import { DEFAULT_UA } from '../default'
+import proxyAgent, { ProxyConfig } from '../proxy_config'
+import Response from '../response'
+import MisskeyEntity from './entity'
+import MegalodonEntity from '../entity'
+import WebSocket from './web_socket'
+import MisskeyNotificationType from './notification'
+import NotificationType, { UnknownNotificationTypeError } from '../notification'
 
 namespace MisskeyAPI {
-	export namespace Entity {
-		export type App = MisskeyEntity.App;
-		export type Announcement = MisskeyEntity.Announcement;
-		export type Blocking = MisskeyEntity.Blocking;
-		export type Choice = MisskeyEntity.Choice;
-		export type CreatedNote = MisskeyEntity.CreatedNote;
-		export type Emoji = MisskeyEntity.Emoji;
-		export type Favorite = MisskeyEntity.Favorite;
-		export type Field = MisskeyEntity.Field;
-		export type File = MisskeyEntity.File;
-		export type Follower = MisskeyEntity.Follower;
-		export type Following = MisskeyEntity.Following;
-		export type FollowRequest = MisskeyEntity.FollowRequest;
-		export type Hashtag = MisskeyEntity.Hashtag;
-		export type List = MisskeyEntity.List;
-		export type Meta = MisskeyEntity.Meta;
-		export type Mute = MisskeyEntity.Mute;
-		export type Note = MisskeyEntity.Note;
-		export type Notification = MisskeyEntity.Notification;
-		export type Poll = MisskeyEntity.Poll;
-		export type Reaction = MisskeyEntity.Reaction;
-		export type Relation = MisskeyEntity.Relation;
-		export type User = MisskeyEntity.User;
-		export type UserDetail = MisskeyEntity.UserDetail;
-		export type UserDetailMe = MisskeyEntity.UserDetailMe;
-		export type GetAll = MisskeyEntity.GetAll;
-		export type UserKey = MisskeyEntity.UserKey;
-		export type Session = MisskeyEntity.Session;
-		export type Stats = MisskeyEntity.Stats;
-		export type State = MisskeyEntity.State;
-		export type APIEmoji = { emojis: Emoji[] };
-	}
+  export namespace Entity {
+    export type Announcement = MisskeyEntity.Announcement
+    export type App = MisskeyEntity.App
+    export type Blocking = MisskeyEntity.Blocking
+    export type Choice = MisskeyEntity.Choice
+    export type CreatedNote = MisskeyEntity.CreatedNote
+    export type Emoji = MisskeyEntity.Emoji
+    export type Favorite = MisskeyEntity.Favorite
+    export type File = MisskeyEntity.File
+    export type Follower = MisskeyEntity.Follower
+    export type Following = MisskeyEntity.Following
+    export type FollowRequest = MisskeyEntity.FollowRequest
+    export type Hashtag = MisskeyEntity.Hashtag
+    export type List = MisskeyEntity.List
+    export type Meta = MisskeyEntity.Meta
+    export type Mute = MisskeyEntity.Mute
+    export type Note = MisskeyEntity.Note
+    export type Notification = MisskeyEntity.Notification
+    export type Poll = MisskeyEntity.Poll
+    export type Reaction = MisskeyEntity.Reaction
+    export type Relation = MisskeyEntity.Relation
+    export type User = MisskeyEntity.User
+    export type UserDetail = MisskeyEntity.UserDetail
+    export type UserKey = MisskeyEntity.UserKey
+    export type Session = MisskeyEntity.Session
+    export type Stats = MisskeyEntity.Stats
+  }
 
-	export class Converter {
-		private baseUrl: string;
-		private instanceHost: string;
-		private plcUrl: string;
-		private modelOfAcct = {
-			id: "1",
-			username: "none",
-			acct: "none",
-			display_name: "none",
-			locked: true,
-			bot: true,
-			discoverable: false,
-			group: false,
-			created_at: "1971-01-01T00:00:00.000Z",
-			note: "",
-			url: "plc",
-			avatar: "plc",
-			avatar_static: "plc",
-			header: "plc",
-			header_static: "plc",
-			followers_count: -1,
-			following_count: 0,
-			statuses_count: 0,
-			last_status_at: "1971-01-01T00:00:00.000Z",
-			noindex: true,
-			emojis: [],
-			fields: [],
-			moved: null,
-		};
+  export namespace Converter {
+    export const announcement = (a: Entity.Announcement): MegalodonEntity.Announcement => ({
+      id: a.id,
+      content: a.title + '\n' + a.text,
+      starts_at: null,
+      ends_at: null,
+      published: true,
+      all_day: true,
+      published_at: a.createdAt,
+      updated_at: a.updatedAt,
+      read: a.isRead !== undefined ? a.isRead : null,
+      mentions: [],
+      statuses: [],
+      tags: [],
+      emojis: [],
+      reactions: []
+    })
 
-		constructor(baseUrl: string) {
-			this.baseUrl = baseUrl;
-			this.instanceHost = baseUrl.substring(baseUrl.indexOf("//") + 2);
-			this.plcUrl = `${baseUrl}/static-assets/transparent.png`;
-			this.modelOfAcct.url = this.plcUrl;
-			this.modelOfAcct.avatar = this.plcUrl;
-			this.modelOfAcct.avatar_static = this.plcUrl;
-			this.modelOfAcct.header = this.plcUrl;
-			this.modelOfAcct.header_static = this.plcUrl;
-		}
+    export const emoji = (e: Entity.Emoji): MegalodonEntity.Emoji => {
+      return {
+        shortcode: e.name,
+        static_url: e.url,
+        url: e.url,
+        visible_in_picker: true,
+        category: e.category
+      }
+    }
 
-		// FIXME: Properly render MFM instead of just escaping HTML characters.
-		escapeMFM = (text: string): string =>
-			text
-				.replace(/&/g, "&amp;")
-				.replace(/</g, "&lt;")
-				.replace(/>/g, "&gt;")
-				.replace(/"/g, "&quot;")
-				.replace(/'/g, "&#39;")
-				.replace(/`/g, "&#x60;")
-				.replace(/\r?\n/g, "<br>");
+    export const user = (u: Entity.User): MegalodonEntity.Account => {
+      let acct = u.username
+      if (u.host) {
+        acct = `${u.username}@${u.host}`
+      }
+      return {
+        id: u.id,
+        username: u.username,
+        acct: acct,
+        display_name: u.name,
+        locked: false,
+        group: null,
+        noindex: null,
+        suspended: null,
+        limited: null,
+        created_at: '',
+        followers_count: 0,
+        following_count: 0,
+        statuses_count: 0,
+        note: '',
+        url: acct,
+        avatar: u.avatarUrl,
+        avatar_static: u.avatarColor,
+        header: '',
+        header_static: '',
+        emojis: mapEmojis(u.emojis),
+        moved: null,
+        fields: [],
+        bot: null
+      }
+    }
 
-		emoji = (e: Entity.Emoji): MegalodonEntity.Emoji => {
-			return {
-				shortcode: e.name,
-				static_url: e.url,
-				url: e.url,
-				visible_in_picker: true,
-				category: e.category,
-			};
-		};
+    export const userDetail = (u: Entity.UserDetail): MegalodonEntity.Account => {
+      let acct = u.username
+      if (u.host) {
+        acct = `${u.username}@${u.host}`
+      }
+      return {
+        id: u.id,
+        username: u.username,
+        acct: acct,
+        display_name: u.name,
+        locked: u.isLocked,
+        group: null,
+        noindex: null,
+        suspended: null,
+        limited: null,
+        created_at: u.createdAt,
+        followers_count: u.followersCount,
+        following_count: u.followingCount,
+        statuses_count: u.notesCount,
+        note: u.description,
+        url: acct,
+        avatar: u.avatarUrl,
+        avatar_static: u.avatarColor,
+        header: u.bannerUrl,
+        header_static: u.bannerColor,
+        emojis: mapEmojis(u.emojis),
+        moved: null,
+        fields: [],
+        bot: u.isBot
+      }
+    }
 
-		field = (f: Entity.Field): MegalodonEntity.Field => ({
-			name: f.name,
-			value: this.escapeMFM(f.value),
-			verified_at: null,
-		});
+    export const visibility = (v: 'public' | 'home' | 'followers' | 'specified'): 'public' | 'unlisted' | 'private' | 'direct' => {
+      switch (v) {
+        case 'public':
+          return v
+        case 'home':
+          return 'unlisted'
+        case 'followers':
+          return 'private'
+        case 'specified':
+          return 'direct'
+      }
+    }
 
-		user = (u: Entity.User): MegalodonEntity.Account => {
-			let acct = u.username;
-			let acctUrl = `https://${u.host || this.instanceHost}/@${u.username}`;
-			if (u.host) {
-				acct = `${u.username}@${u.host}`;
-				acctUrl = `https://${u.host}/@${u.username}`;
-			}
-			return {
-				id: u.id,
-				username: u.username,
-				acct: acct,
-				display_name: u.name || u.username,
-				locked: false,
-				created_at: new Date().toISOString(),
-				followers_count: 0,
-				following_count: 0,
-				statuses_count: 0,
-				note: "",
-				url: acctUrl,
-				avatar: u.avatarUrl,
-				avatar_static: u.avatarUrl,
-				header: this.plcUrl,
-				header_static: this.plcUrl,
-				emojis: u.emojis && u.emojis.length > 0 ? u.emojis.map((e) => this.emoji(e)) : [],
-				moved: null,
-				fields: [],
-				bot: false,
-			};
-		};
+    export const encodeVisibility = (v: 'public' | 'unlisted' | 'private' | 'direct'): 'public' | 'home' | 'followers' | 'specified' => {
+      switch (v) {
+        case 'public':
+          return v
+        case 'unlisted':
+          return 'home'
+        case 'private':
+          return 'followers'
+        case 'direct':
+          return 'specified'
+      }
+    }
 
-		userDetail = (
-			u: Entity.UserDetail,
-			host: string,
-		): MegalodonEntity.Account => {
-			let acct = u.username;
-			host = host.replace("https://", "");
-			let acctUrl = `https://${host || u.host || this.instanceHost}/@${
-				u.username
-			}`;
-			if (u.host) {
-				acct = `${u.username}@${u.host}`;
-				acctUrl = `https://${u.host}/@${u.username}`;
-			}
-			return {
-				id: u.id,
-				username: u.username,
-				acct: acct,
-				display_name: u.name || u.username,
-				locked: u.isLocked,
-				created_at: u.createdAt,
-				followers_count: u.followersCount,
-				following_count: u.followingCount,
-				statuses_count: u.notesCount,
-				note: u.description?.replace(/\n|\\n/g, "<br>") ?? "",
-				url: acctUrl,
-				avatar: u.avatarUrl,
-				avatar_static: u.avatarUrl,
-				header: u.bannerUrl ?? this.plcUrl,
-				header_static: u.bannerUrl ?? this.plcUrl,
-				emojis: u.emojis && u.emojis.length > 0 ? u.emojis.map((e) => this.emoji(e)) : [],
-				moved: null,
-				fields: u.fields.map((f) => this.field(f)),
-				bot: u.isBot,
-			};
-		};
+    export const fileType = (s: string): 'unknown' | 'image' | 'gifv' | 'video' | 'audio' => {
+      if (s === 'image/gif') {
+        return 'gifv'
+      }
+      if (s.includes('image')) {
+        return 'image'
+      }
+      if (s.includes('video')) {
+        return 'video'
+      }
+      if (s.includes('audio')) {
+        return 'audio'
+      }
+      return 'unknown'
+    }
 
-		userPreferences = (
-			u: MisskeyAPI.Entity.UserDetailMe,
-			v: "public" | "unlisted" | "private" | "direct",
-		): MegalodonEntity.Preferences => {
-			return {
-				"reading:expand:media": "default",
-				"reading:expand:spoilers": false,
-				"posting:default:language": u.lang,
-				"posting:default:sensitive": u.alwaysMarkNsfw,
-				"posting:default:visibility": v,
-			};
-		};
+    export const file = (f: Entity.File): MegalodonEntity.Attachment => {
+      return {
+        id: f.id,
+        type: fileType(f.type),
+        url: f.url,
+        remote_url: f.url,
+        preview_url: f.thumbnailUrl,
+        text_url: f.url,
+        meta: {
+          width: f.properties.width,
+          height: f.properties.height
+        },
+        description: null,
+        blurhash: null
+      }
+    }
 
-		visibility = (
-			v: "public" | "home" | "followers" | "specified",
-		): "public" | "unlisted" | "private" | "direct" => {
-			switch (v) {
-				case "public":
-					return v;
-				case "home":
-					return "unlisted";
-				case "followers":
-					return "private";
-				case "specified":
-					return "direct";
-			}
-		};
+    export const follower = (f: Entity.Follower): MegalodonEntity.Account => {
+      return user(f.follower)
+    }
 
-		encodeVisibility = (
-			v: "public" | "unlisted" | "private" | "direct",
-		): "public" | "home" | "followers" | "specified" => {
-			switch (v) {
-				case "public":
-					return v;
-				case "unlisted":
-					return "home";
-				case "private":
-					return "followers";
-				case "direct":
-					return "specified";
-			}
-		};
+    export const following = (f: Entity.Following): MegalodonEntity.Account => {
+      return user(f.followee)
+    }
 
-		fileType = (
-			s: string,
-		): "unknown" | "image" | "gifv" | "video" | "audio" => {
-			if (s === "image/gif") {
-				return "gifv";
-			}
-			if (s.includes("image")) {
-				return "image";
-			}
-			if (s.includes("video")) {
-				return "video";
-			}
-			if (s.includes("audio")) {
-				return "audio";
-			}
-			return "unknown";
-		};
+    export const relation = (r: Entity.Relation): MegalodonEntity.Relationship => {
+      return {
+        id: r.id,
+        following: r.isFollowing,
+        followed_by: r.isFollowed,
+        blocking: r.isBlocking,
+        blocked_by: r.isBlocked,
+        muting: r.isMuted,
+        muting_notifications: false,
+        requested: r.hasPendingFollowRequestFromYou,
+        domain_blocking: false,
+        showing_reblogs: true,
+        endorsed: false,
+        notifying: false,
+        note: null
+      }
+    }
 
-		file = (f: Entity.File): MegalodonEntity.Attachment => {
-			return {
-				id: f.id,
-				type: this.fileType(f.type),
-				url: f.url,
-				remote_url: f.url,
-				preview_url: f.thumbnailUrl,
-				text_url: f.url,
-				meta: {
-					width: f.properties.width,
-					height: f.properties.height,
-				},
-				description: f.comment,
-				blurhash: f.blurhash,
-			};
-		};
+    export const choice = (c: Entity.Choice): MegalodonEntity.PollOption => {
+      return {
+        title: c.text,
+        votes_count: c.votes
+      }
+    }
 
-		follower = (f: Entity.Follower): MegalodonEntity.Account => {
-			return this.user(f.follower);
-		};
+    export const poll = (p: Entity.Poll): MegalodonEntity.Poll => {
+      const now = dayjs()
+      const expire = dayjs(p.expiresAt)
+      const count = p.choices.reduce((sum, choice) => sum + choice.votes, 0)
+      return {
+        id: '',
+        expires_at: p.expiresAt,
+        expired: now.isAfter(expire),
+        multiple: p.multiple,
+        votes_count: count,
+        options: Array.isArray(p.choices) ? p.choices.map(c => choice(c)) : [],
+        voted: Array.isArray(p.choices) ? p.choices.some(c => c.isVoted) : false
+      }
+    }
 
-		following = (f: Entity.Following): MegalodonEntity.Account => {
-			return this.user(f.followee);
-		};
+    export const note = (n: Entity.Note): MegalodonEntity.Status => {
+      return {
+        id: n.id,
+        uri: n.uri ? n.uri : '',
+        url: n.uri ? n.uri : '',
+        account: user(n.user),
+        in_reply_to_id: n.replyId,
+        in_reply_to_account_id: null,
+        reblog: n.renote ? note(n.renote) : null,
+        content: n.text
+          ? n.text
+              .replace(/&/g, '&amp;')
+              .replace(/</g, '&lt;')
+              .replace(/>/g, '&gt;')
+              .replace(/"/g, '&quot;')
+              .replace(/'/g, '&#39;')
+              .replace(/`/g, '&#x60;')
+              .replace(/\r?\n/g, '<br>')
+          : '',
+        plain_content: n.text ? n.text : null,
+        created_at: n.createdAt,
+        emojis: mapEmojis(n.emojis).concat(mapReactionEmojis(n.reactionEmojis)),
+        replies_count: n.repliesCount,
+        reblogs_count: n.renoteCount,
+        favourites_count: 0,
+        reblogged: false,
+        favourited: false,
+        muted: false,
+        sensitive: Array.isArray(n.files) ? n.files.some(f => f.isSensitive) : false,
+        spoiler_text: n.cw ? n.cw : '',
+        visibility: visibility(n.visibility),
+        media_attachments: Array.isArray(n.files) ? n.files.map(f => file(f)) : [],
+        mentions: [],
+        tags: [],
+        card: null,
+        poll: n.poll ? poll(n.poll) : null,
+        application: null,
+        language: null,
+        pinned: null,
+        emoji_reactions: typeof n.reactions === 'object' ? mapReactions(n.reactions, n.myReaction) : [],
+        bookmarked: false,
+        quote: n.renote !== undefined && n.text !== null
+      }
+    }
 
-		relation = (r: Entity.Relation): MegalodonEntity.Relationship => {
-			return {
-				id: r.id,
-				following: r.isFollowing,
-				followed_by: r.isFollowed,
-				blocking: r.isBlocking,
-				blocked_by: r.isBlocked,
-				muting: r.isMuted,
-				muting_notifications: false,
-				requested: r.hasPendingFollowRequestFromYou,
-				domain_blocking: false,
-				showing_reblogs: true,
-				endorsed: false,
-				notifying: false,
-			};
-		};
+    const mapEmojis = (e: Array<Entity.Emoji> | { [key: string]: string }): Array<MegalodonEntity.Emoji> => {
+      if (Array.isArray(e)) {
+        return e.map(e => emoji(e))
+      } else if (e) {
+        return mapReactionEmojis(e)
+      } else {
+        return []
+      }
+    }
 
-		choice = (c: Entity.Choice): MegalodonEntity.PollOption => {
-			return {
-				title: c.text,
-				votes_count: c.votes,
-			};
-		};
+    export const mapReactions = (r: { [key: string]: number }, myReaction?: string): Array<MegalodonEntity.Reaction> => {
+      return Object.keys(r).map(key => {
+        if (myReaction && key === myReaction) {
+          return {
+            count: r[key],
+            me: true,
+            name: key
+          }
+        }
+        return {
+          count: r[key],
+          me: false,
+          name: key
+        }
+      })
+    }
 
-		poll = (p: Entity.Poll, id: string): MegalodonEntity.Poll => {
-			const now = dayjs();
-			const expire = dayjs(p.expiresAt);
-			const count = p.choices.reduce((sum, choice) => sum + choice.votes, 0);
-			return {
-				id: id,
-				expires_at: p.expiresAt,
-				expired: now.isAfter(expire),
-				multiple: p.multiple,
-				votes_count: count,
-				options: p.choices.map((c) => this.choice(c)),
-				voted: p.choices.some((c) => c.isVoted),
-				own_votes: p.choices
-					.filter((c) => c.isVoted)
-					.map((c) => p.choices.indexOf(c)),
-			};
-		};
+    const mapReactionEmojis = (r: { [key: string]: string }): Array<MegalodonEntity.Emoji> => {
+      return Object.keys(r).map(key => ({
+        shortcode: key,
+        static_url: r[key],
+        url: r[key],
+        visible_in_picker: true,
+        category: ''
+      }))
+    }
 
-		note = (n: Entity.Note, host: string): MegalodonEntity.Status => {
-			host = host.replace("https://", "");
+    export const reactions = (r: Array<Entity.Reaction>): Array<MegalodonEntity.Reaction> => {
+      const result: Array<MegalodonEntity.Reaction> = []
+      r.map(e => {
+        const i = result.findIndex(res => res.name === e.type)
+        if (i >= 0) {
+          result[i].count++
+        } else {
+          result.push({
+            count: 1,
+            me: false,
+            name: e.type
+          })
+        }
+      })
+      return result
+    }
 
-			return {
-				id: n.id,
-				uri: n.uri ? n.uri : `https://${host}/notes/${n.id}`,
-				url: n.uri ? n.uri : `https://${host}/notes/${n.id}`,
-				account: this.user(n.user),
-				in_reply_to_id: n.replyId,
-				in_reply_to_account_id: n.reply?.userId ?? null,
-				reblog: n.renote ? this.note(n.renote, host) : null,
-				content: n.text ? this.escapeMFM(n.text) : "",
-				plain_content: n.text ? n.text : null,
-				created_at: n.createdAt,
-				// Remove reaction emojis with names containing @ from the emojis list.
-				emojis: n.emojis && n.emojis.length > 0 ? n.emojis
-					.filter((e) => e.name.indexOf("@") === -1)
-					.map((e) => this.emoji(e)) : [],
-				replies_count: n.repliesCount,
-				reblogs_count: n.renoteCount,
-				favourites_count: this.getTotalReactions(n.reactions),
-				reblogged: false,
-				favourited: !!n.myReaction,
-				muted: false,
-				sensitive: n.files ? n.files.some((f) => f.isSensitive) : false,
-				spoiler_text: n.cw ? n.cw : "",
-				visibility: this.visibility(n.visibility),
-				media_attachments: n.files ? n.files.map((f) => this.file(f)) : [],
-				mentions: [],
-				tags: [],
-				card: null,
-				poll: n.poll ? this.poll(n.poll, n.id) : null,
-				application: null,
-				language: null,
-				pinned: null,
-				// Use emojis list to provide URLs for emoji reactions.
-				reactions: n.emojis && n.emojis.length > 0 ? this.mapReactions(n.emojis, n.reactions, n.myReaction) : [],
-				bookmarked: false,
-				quote: n.renote && n.text ? this.note(n.renote, host) : null,
-			};
-		};
+    export const noteToConversation = (n: Entity.Note): MegalodonEntity.Conversation => {
+      const accounts: Array<MegalodonEntity.Account> = [user(n.user)]
+      if (n.reply) {
+        accounts.push(user(n.reply.user))
+      }
+      return {
+        id: n.id,
+        accounts: accounts,
+        last_status: note(n),
+        unread: false
+      }
+    }
 
-		mapReactions = (
-			emojis: Array<MisskeyEntity.Emoji>,
-			r: { [key: string]: number },
-			myReaction?: string,
-		): Array<MegalodonEntity.Reaction> => {
-			// Map of emoji shortcodes to image URLs.
-			const emojiUrls = new Map<string, string>(
-				emojis.map((e) => [e.name, e.url]),
-			);
-			return Object.keys(r).map((key) => {
-				// Strip colons from custom emoji reaction names to match emoji shortcodes.
-				const shortcode = key.replaceAll(":", "");
-				// If this is a custom emoji (vs. a Unicode emoji), find its image URL.
-				const url = emojiUrls.get(shortcode);
-				// Finally, remove trailing @. from local custom emoji reaction names.
-				const name = shortcode.replace("@.", "");
-				return {
-					count: r[key],
-					me: key === myReaction,
-					name,
-					url,
-					// We don't actually have a static version of the asset, but clients expect one anyway.
-					static_url: url,
-				};
-			});
-		};
+    export const list = (l: Entity.List): MegalodonEntity.List => ({
+      id: l.id,
+      title: l.name,
+      replies_policy: null
+    })
 
-		getTotalReactions = (r: { [key: string]: number }): number => {
-			return Object.values(r).length > 0
-				? Object.values(r).reduce(
-						(previousValue, currentValue) => previousValue + currentValue,
-				  )
-				: 0;
-		};
+    export const encodeNotificationType = (
+      e: MegalodonEntity.NotificationType
+    ): MisskeyEntity.NotificationType | UnknownNotificationTypeError => {
+      switch (e) {
+        case NotificationType.Follow:
+          return MisskeyNotificationType.Follow
+        case NotificationType.Mention:
+          return MisskeyNotificationType.Reply
+        case NotificationType.Favourite:
+        case NotificationType.EmojiReaction:
+          return MisskeyNotificationType.Reaction
+        case NotificationType.Reblog:
+          return MisskeyNotificationType.Renote
+        case NotificationType.PollVote:
+          return MisskeyNotificationType.PollVote
+        case NotificationType.FollowRequest:
+          return MisskeyNotificationType.ReceiveFollowRequest
+        default:
+          return new UnknownNotificationTypeError()
+      }
+    }
 
-		reactions = (
-			r: Array<Entity.Reaction>,
-		): Array<MegalodonEntity.Reaction> => {
-			const result: Array<MegalodonEntity.Reaction> = [];
-			for (const e of r) {
-				const i = result.findIndex((res) => res.name === e.type);
-				if (i >= 0) {
-					result[i].count++;
-				} else {
-					result.push({
-						count: 1,
-						me: false,
-						name: e.type,
-					});
-				}
-			}
-			return result;
-		};
+    export const decodeNotificationType = (
+      e: MisskeyEntity.NotificationType
+    ): MegalodonEntity.NotificationType | UnknownNotificationTypeError => {
+      switch (e) {
+        case MisskeyNotificationType.Follow:
+          return NotificationType.Follow
+        case MisskeyNotificationType.Mention:
+        case MisskeyNotificationType.Reply:
+          return NotificationType.Mention
+        case MisskeyNotificationType.Renote:
+        case MisskeyNotificationType.Quote:
+          return NotificationType.Reblog
+        case MisskeyNotificationType.Reaction:
+          return NotificationType.EmojiReaction
+        case MisskeyNotificationType.PollVote:
+          return NotificationType.PollVote
+        case MisskeyNotificationType.ReceiveFollowRequest:
+          return NotificationType.FollowRequest
+        case MisskeyNotificationType.FollowRequestAccepted:
+          return NotificationType.Follow
+        default:
+          return new UnknownNotificationTypeError()
+      }
+    }
 
-		noteToConversation = (
-			n: Entity.Note,
-			host: string,
-		): MegalodonEntity.Conversation => {
-			const accounts: Array<MegalodonEntity.Account> = [this.user(n.user)];
-			if (n.reply) {
-				accounts.push(this.user(n.reply.user));
-			}
-			return {
-				id: n.id,
-				accounts: accounts,
-				last_status: this.note(n, host),
-				unread: false,
-			};
-		};
+    export const notification = (n: Entity.Notification): MegalodonEntity.Notification | UnknownNotificationTypeError => {
+      const notificationType = decodeNotificationType(n.type)
+      if (notificationType instanceof UnknownNotificationTypeError) {
+        return notificationType
+      }
+      let notification = {
+        id: n.id,
+        account: user(n.user),
+        created_at: n.createdAt,
+        type: notificationType
+      }
+      if (n.note) {
+        notification = Object.assign(notification, {
+          status: note(n.note)
+        })
+      }
+      if (n.reaction) {
+        notification = Object.assign(notification, {
+          emoji: n.reaction
+        })
+      }
+      return notification
+    }
 
-		list = (l: Entity.List): MegalodonEntity.List => ({
-			id: l.id,
-			title: l.name,
-		});
+    export const stats = (s: Entity.Stats): MegalodonEntity.Stats => {
+      return {
+        user_count: s.usersCount,
+        status_count: s.notesCount,
+        domain_count: s.instances
+      }
+    }
 
-		encodeNotificationType = (
-			e: MegalodonEntity.NotificationType,
-		): MisskeyEntity.NotificationType => {
-			switch (e) {
-				case NotificationType.Follow:
-					return MisskeyNotificationType.Follow;
-				case NotificationType.Mention:
-					return MisskeyNotificationType.Reply;
-				case NotificationType.Favourite:
-				case NotificationType.Reaction:
-					return MisskeyNotificationType.Reaction;
-				case NotificationType.Reblog:
-					return MisskeyNotificationType.Renote;
-				case NotificationType.Poll:
-					return MisskeyNotificationType.PollEnded;
-				case NotificationType.FollowRequest:
-					return MisskeyNotificationType.ReceiveFollowRequest;
-				default:
-					return e;
-			}
-		};
+    export const meta = (m: Entity.Meta, s: Entity.Stats): MegalodonEntity.Instance => {
+      const wss = m.uri.replace(/^https:\/\//, 'wss://')
+      return {
+        uri: m.uri,
+        title: m.name,
+        description: m.description,
+        email: m.maintainerEmail,
+        version: m.version,
+        thumbnail: m.bannerUrl,
+        urls: {
+          streaming_api: `${wss}/streaming`
+        },
+        stats: stats(s),
+        languages: m.langs,
+        registrations: !m.disableRegistration,
+        approval_required: false,
+        configuration: {
+          statuses: {
+            max_characters: m.maxNoteTextLength,
+            max_media_attachments: m.policies.clipLimit
+          }
+        }
+      }
+    }
 
-		decodeNotificationType = (
-			e: MisskeyEntity.NotificationType,
-		): MegalodonEntity.NotificationType => {
-			switch (e) {
-				case MisskeyNotificationType.Follow:
-					return NotificationType.Follow;
-				case MisskeyNotificationType.Mention:
-				case MisskeyNotificationType.Reply:
-					return NotificationType.Mention;
-				case MisskeyNotificationType.Renote:
-				case MisskeyNotificationType.Quote:
-					return NotificationType.Reblog;
-				case MisskeyNotificationType.Reaction:
-					return NotificationType.Reaction;
-				case MisskeyNotificationType.PollEnded:
-					return NotificationType.Poll;
-				case MisskeyNotificationType.ReceiveFollowRequest:
-					return NotificationType.FollowRequest;
-				case MisskeyNotificationType.FollowRequestAccepted:
-					return NotificationType.Follow;
-				default:
-					return e;
-			}
-		};
+    export const hashtag = (h: Entity.Hashtag): MegalodonEntity.Tag => {
+      return {
+        name: h.tag,
+        url: h.tag,
+        history: [],
+        following: false
+      }
+    }
+  }
 
-		announcement = (a: Entity.Announcement): MegalodonEntity.Announcement => ({
-			id: a.id,
-			content: `<h1>${this.escapeMFM(a.title)}</h1>${this.escapeMFM(a.text)}`,
-			starts_at: null,
-			ends_at: null,
-			published: true,
-			all_day: false,
-			published_at: a.createdAt,
-			updated_at: a.updatedAt,
-			read: a.isRead,
-			mentions: [],
-			statuses: [],
-			tags: [],
-			emojis: [],
-			reactions: [],
-		});
+  export const DEFAULT_SCOPE = [
+    'read:account',
+    'write:account',
+    'read:blocks',
+    'write:blocks',
+    'read:drive',
+    'write:drive',
+    'read:favorites',
+    'write:favorites',
+    'read:following',
+    'write:following',
+    'read:mutes',
+    'write:mutes',
+    'write:notes',
+    'read:notifications',
+    'write:notifications',
+    'read:reactions',
+    'write:reactions',
+    'write:votes'
+  ]
 
-		notification = (
-			n: Entity.Notification,
-			host: string,
-		): MegalodonEntity.Notification => {
-			let notification = {
-				id: n.id,
-				account: n.user ? this.user(n.user) : this.modelOfAcct,
-				created_at: n.createdAt,
-				type: this.decodeNotificationType(n.type),
-			};
-			if (n.note) {
-				notification = Object.assign(notification, {
-					status: this.note(n.note, host),
-				});
-				if (notification.type === NotificationType.Poll) {
-					notification = Object.assign(notification, {
-						account: this.note(n.note, host).account,
-					});
-				}
-				if (n.reaction) {
-					notification = Object.assign(notification, {
-						reaction: this.mapReactions(n.note.emojis, { [n.reaction]: 1 })[0],
-					});
-				}
-			}
-			return notification;
-		};
+  /**
+   * Interface
+   */
+  export interface Interface {
+    get<T = any>(path: string, params?: any, headers?: { [key: string]: string }): Promise<Response<T>>
+    post<T = any>(path: string, params?: any, headers?: { [key: string]: string }): Promise<Response<T>>
+    cancel(): void
+    socket(channel: 'user' | 'localTimeline' | 'hybridTimeline' | 'globalTimeline' | 'conversation' | 'list', listId?: string): WebSocket
+  }
 
-		stats = (s: Entity.Stats): MegalodonEntity.Stats => {
-			return {
-				user_count: s.usersCount,
-				status_count: s.notesCount,
-				domain_count: s.instances,
-			};
-		};
+  /**
+   * Misskey API client.
+   *
+   * Usign axios for request, you will handle promises.
+   */
+  export class Client implements Interface {
+    private accessToken: string | null
+    private baseUrl: string
+    private userAgent: string
+    private abortController: AbortController
+    private proxyConfig: ProxyConfig | false = false
 
-		meta = (m: Entity.Meta, s: Entity.Stats): MegalodonEntity.Instance => {
-			const wss = m.uri.replace(/^https:\/\//, "wss://");
-			return {
-				uri: m.uri,
-				title: m.name,
-				description: m.description,
-				email: m.maintainerEmail,
-				version: m.version,
-				thumbnail: m.bannerUrl,
-				urls: {
-					streaming_api: `${wss}/streaming`,
-				},
-				stats: this.stats(s),
-				languages: m.langs,
-				contact_account: null,
-				max_toot_chars: m.maxNoteTextLength,
-				registrations: !m.disableRegistration,
-			};
-		};
+    /**
+     * @param baseUrl hostname or base URL
+     * @param accessToken access token from OAuth2 authorization
+     * @param userAgent UserAgent is specified in header on request.
+     * @param proxyConfig Proxy setting, or set false if don't use proxy.
+     */
+    constructor(baseUrl: string, accessToken: string | null, userAgent: string = DEFAULT_UA, proxyConfig: ProxyConfig | false = false) {
+      this.accessToken = accessToken
+      this.baseUrl = baseUrl
+      this.userAgent = userAgent
+      this.proxyConfig = proxyConfig
+      this.abortController = new AbortController()
+      axios.defaults.signal = this.abortController.signal
+    }
 
-		hashtag = (h: Entity.Hashtag): MegalodonEntity.Tag => {
-			return {
-				name: h.tag,
-				url: h.tag,
-				history: null,
-				following: false,
-			};
-		};
-	}
+    /**
+     * GET request to misskey API.
+     **/
+    public async get<T>(path: string, params: any = {}, headers: { [key: string]: string } = {}): Promise<Response<T>> {
+      let options: AxiosRequestConfig = {
+        params: params,
+        headers: headers,
+        maxContentLength: Infinity,
+        maxBodyLength: Infinity
+      }
+      if (this.proxyConfig) {
+        options = Object.assign(options, {
+          httpAgent: proxyAgent(this.proxyConfig),
+          httpsAgent: proxyAgent(this.proxyConfig)
+        })
+      }
+      return axios.get<T>(this.baseUrl + path, options).then((resp: AxiosResponse<T>) => {
+        const res: Response<T> = {
+          data: resp.data,
+          status: resp.status,
+          statusText: resp.statusText,
+          headers: resp.headers
+        }
+        return res
+      })
+    }
 
-	export const DEFAULT_SCOPE = [
-		"read:account",
-		"write:account",
-		"read:blocks",
-		"write:blocks",
-		"read:drive",
-		"write:drive",
-		"read:favorites",
-		"write:favorites",
-		"read:following",
-		"write:following",
-		"read:mutes",
-		"write:mutes",
-		"write:notes",
-		"read:notifications",
-		"write:notifications",
-		"read:reactions",
-		"write:reactions",
-		"write:votes",
-	];
+    /**
+     * POST request to misskey REST API.
+     * @param path relative path from baseUrl
+     * @param params Form data
+     * @param headers Request header object
+     */
+    public async post<T>(path: string, params: any = {}, headers: { [key: string]: string } = {}): Promise<Response<T>> {
+      let options: AxiosRequestConfig = {
+        headers: headers,
+        maxContentLength: Infinity,
+        maxBodyLength: Infinity
+      }
+      if (this.proxyConfig) {
+        options = Object.assign(options, {
+          httpAgent: proxyAgent(this.proxyConfig),
+          httpsAgent: proxyAgent(this.proxyConfig)
+        })
+      }
+      let bodyParams = params
+      if (this.accessToken) {
+        if (params instanceof FormData) {
+          bodyParams.append('i', this.accessToken)
+        } else {
+          bodyParams = Object.assign(params, {
+            i: this.accessToken
+          })
+        }
+      }
+      return axios.post<T>(this.baseUrl + path, bodyParams, options).then((resp: AxiosResponse<T>) => {
+        const res: Response<T> = {
+          data: resp.data,
+          status: resp.status,
+          statusText: resp.statusText,
+          headers: resp.headers
+        }
+        return res
+      })
+    }
 
-	/**
-	 * Interface
-	 */
-	export interface Interface {
-		post<T = any>(
-			path: string,
-			params?: any,
-			headers?: { [key: string]: string },
-		): Promise<Response<T>>;
-		cancel(): void;
-		socket(
-			channel:
-				| "user"
-				| "localTimeline"
-				| "hybridTimeline"
-				| "globalTimeline"
-				| "conversation"
-				| "list",
-			listId?: string,
-		): WebSocket;
-	}
+    /**
+     * Cancel all requests in this instance.
+     * @returns void
+     */
+    public cancel(): void {
+      return this.abortController.abort()
+    }
 
-	/**
-	 * Misskey API client.
-	 *
-	 * Usign axios for request, you will handle promises.
-	 */
-	export class Client implements Interface {
-		private accessToken: string | null;
-		private baseUrl: string;
-		private userAgent: string;
-		private abortController: AbortController;
-		private proxyConfig: ProxyConfig | false = false;
-		private converter: Converter;
-
-		/**
-		 * @param baseUrl hostname or base URL
-		 * @param accessToken access token from OAuth2 authorization
-		 * @param userAgent UserAgent is specified in header on request.
-		 * @param proxyConfig Proxy setting, or set false if don't use proxy.
-		 * @param converter Converter instance.
-		 */
-		constructor(
-			baseUrl: string,
-			accessToken: string | null,
-			userAgent: string = DEFAULT_UA,
-			proxyConfig: ProxyConfig | false = false,
-			converter: Converter,
-		) {
-			this.accessToken = accessToken;
-			this.baseUrl = baseUrl;
-			this.userAgent = userAgent;
-			this.proxyConfig = proxyConfig;
-			this.abortController = new AbortController();
-			this.converter = converter;
-			axios.defaults.signal = this.abortController.signal;
-		}
-
-		/**
-		 * POST request to mastodon REST API.
-		 * @param path relative path from baseUrl
-		 * @param params Form data
-		 * @param headers Request header object
-		 */
-		public async post<T>(
-			path: string,
-			params: any = {},
-			headers: { [key: string]: string } = {},
-		): Promise<Response<T>> {
-			let options: AxiosRequestConfig = {
-				headers: headers,
-				maxContentLength: Infinity,
-				maxBodyLength: Infinity,
-			};
-			if (this.proxyConfig) {
-				options = Object.assign(options, {
-					httpAgent: proxyAgent(this.proxyConfig),
-					httpsAgent: proxyAgent(this.proxyConfig),
-				});
-			}
-			let bodyParams = params;
-			if (this.accessToken) {
-				if (params instanceof FormData) {
-					bodyParams.append("i", this.accessToken);
-				} else {
-					bodyParams = Object.assign(params, {
-						i: this.accessToken,
-					});
-				}
-			}
-
-			return axios
-				.post<T>(this.baseUrl + path, bodyParams, options)
-				.then((resp: AxiosResponse<T>) => {
-					const res: Response<T> = {
-						data: resp.data,
-						status: resp.status,
-						statusText: resp.statusText,
-						headers: resp.headers,
-					};
-					return res;
-				});
-		}
-
-		/**
-		 * Cancel all requests in this instance.
-		 * @returns void
-		 */
-		public cancel(): void {
-			return this.abortController.abort();
-		}
-
-		/**
-		 * Get connection and receive websocket connection for Misskey API.
-		 *
-		 * @param channel Channel name is user, localTimeline, hybridTimeline, globalTimeline, conversation or list.
-		 * @param listId This parameter is required only list channel.
-		 */
-		public socket(
-			channel:
-				| "user"
-				| "localTimeline"
-				| "hybridTimeline"
-				| "globalTimeline"
-				| "conversation"
-				| "list",
-			listId?: string,
-		): WebSocket {
-			if (!this.accessToken) {
-				throw new Error("accessToken is required");
-			}
-			const url = `${this.baseUrl}/streaming`;
-			const streaming = new WebSocket(
-				url,
-				channel,
-				this.accessToken,
-				listId,
-				this.userAgent,
-				this.proxyConfig,
-				this.converter,
-			);
-			process.nextTick(() => {
-				streaming.start();
-			});
-			return streaming;
-		}
-	}
+    /**
+     * Get connection and receive websocket connection for Misskey API.
+     *
+     * @param channel Channel name is user, localTimeline, hybridTimeline, globalTimeline, conversation or list.
+     * @param listId This parameter is required only list channel.
+     */
+    public socket(
+      channel: 'user' | 'localTimeline' | 'hybridTimeline' | 'globalTimeline' | 'conversation' | 'list',
+      listId?: string
+    ): WebSocket {
+      if (!this.accessToken) {
+        throw new Error('accessToken is required')
+      }
+      const url = this.baseUrl + '/streaming'
+      const streaming = new WebSocket(url, channel, this.accessToken, listId, this.userAgent, this.proxyConfig)
+      process.nextTick(() => {
+        streaming.start()
+      })
+      return streaming
+    }
+  }
 }
 
-export default MisskeyAPI;
+export default MisskeyAPI

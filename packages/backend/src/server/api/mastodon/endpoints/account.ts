@@ -46,7 +46,7 @@ export class apiAccountMastodon {
 			acct.source = {
 				note: acct.note,
 				fields: acct.fields,
-				privacy: await (this.client as any).getDefaultPostPrivacy(),
+				privacy: "",
 				sensitive: false,
 				language: "",
 			};
@@ -72,7 +72,7 @@ export class apiAccountMastodon {
 
     public async lookup() {
         try {
-            const data = await this.client.search((this.request.query as any).acct, "accounts");
+            const data = await this.client.search((this.request.query as any).acct, { type: "accounts" });
             return convertAccount(data.data.accounts[0]);
         } catch (e: any) {
             console.error(e);

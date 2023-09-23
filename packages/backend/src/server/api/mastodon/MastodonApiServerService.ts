@@ -20,7 +20,7 @@ export function getClient(BASE_URL: string, authorization: string | undefined): 
 	const accessTokenArr = authorization?.split(" ") ?? [null];
 	const accessToken = accessTokenArr[accessTokenArr.length - 1];
 	const generator = (megalodon as any).default;
-	const client = generator(BASE_URL, accessToken) as MegalodonInterface;
+	const client = generator('misskey', BASE_URL, accessToken) as MegalodonInterface;
 	return client;
 }
 
@@ -303,7 +303,7 @@ export class MastodonApiServerService {
             const accessTokens = _request.headers.authorization;
             const client = getClient(BASE_URL, accessTokens);
             try {
-                const data = await client.getAccountFeaturedTags(convertId(_request.params.id, IdType.SharkeyId));
+                const data = await client.getFeaturedTags();
                 reply.send(data.data.map((tag) => convertFeaturedTag(tag)));
             } catch (e: any) {
                 console.error(e);
