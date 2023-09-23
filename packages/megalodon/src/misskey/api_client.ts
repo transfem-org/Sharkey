@@ -136,7 +136,7 @@ namespace MisskeyAPI {
 				avatar_static: u.avatarUrl,
 				header: this.plcUrl,
 				header_static: this.plcUrl,
-				emojis: u.emojis.map((e) => this.emoji(e)),
+				emojis: u.emojis && u.emojis.length > 0 ? u.emojis.map((e) => this.emoji(e)) : [],
 				moved: null,
 				fields: [],
 				bot: false,
@@ -322,9 +322,9 @@ namespace MisskeyAPI {
 				plain_content: n.text ? n.text : null,
 				created_at: n.createdAt,
 				// Remove reaction emojis with names containing @ from the emojis list.
-				emojis: n.emojis
+				emojis: n.emojis && n.emojis.length > 0 ? n.emojis
 					.filter((e) => e.name.indexOf("@") === -1)
-					.map((e) => this.emoji(e)),
+					.map((e) => this.emoji(e)) : [],
 				replies_count: n.repliesCount,
 				reblogs_count: n.renoteCount,
 				favourites_count: this.getTotalReactions(n.reactions),
@@ -343,7 +343,7 @@ namespace MisskeyAPI {
 				language: null,
 				pinned: null,
 				// Use emojis list to provide URLs for emoji reactions.
-				reactions: this.mapReactions(n.emojis, n.reactions, n.myReaction),
+				reactions: n.emojis && n.emojis.length > 0 ? this.mapReactions(n.emojis, n.reactions, n.myReaction) : [],
 				bookmarked: false,
 				quote: n.renote && n.text ? this.note(n.renote, host) : null,
 			};
