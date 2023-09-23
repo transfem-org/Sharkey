@@ -26,7 +26,8 @@ export function convertId(in_id: string, id_convert_type: IdConvertType): string
             outStr = charFromNum(remainder) + outStr;
             input /= BigInt(36);
           }
-          return outStr;
+		  let ReversedoutStr = outStr.split("").reduce((acc, char) => char + acc, "");
+          return ReversedoutStr;
     
         default:
           throw new Error('Invalid ID conversion type');
