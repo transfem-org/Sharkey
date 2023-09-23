@@ -25,10 +25,10 @@ export function getClient(BASE_URL: string, authorization: string | undefined): 
 @Injectable()
 export class MastodonApiServerService {
 	constructor(
-		@Inject(DI.usersRepository)
-		private usersRepository: UsersRepository,
+        @Inject(DI.usersRepository)
+        private usersRepository: UsersRepository,
         @Inject(DI.config)
-		private config: Config,
+        private config: Config,
         private metaService: MetaService,
 	) { }
 
