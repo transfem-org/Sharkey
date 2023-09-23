@@ -72,8 +72,8 @@ RUN apt-get update \
 	&& apt-get clean \
 	&& rm -rf /var/lib/apt/lists
 
-USER misskey
-WORKDIR /misskey
+USER sharkey
+WORKDIR /sharkey
 
 COPY --chown=sharkey:sharkey --from=target-builder /sharkey/node_modules ./node_modules
 COPY --chown=sharkey:sharkey --from=target-builder /sharkey/packages/backend/node_modules ./packages/backend/node_modules
