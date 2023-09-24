@@ -46,10 +46,9 @@ export class MastodonApiServerService {
 		});
 
 		fastify.addContentTypeParser(['application/x-www-form-urlencoded'], { parseAs: 'string' }, (req, body, done) => {
-			const dataObj = {};
+			const dataObj: any = {};
 			const parsedData = new URLSearchParams(body as string);
 			for (let pair of parsedData.entries()) {
-				//@ts-expect-error
 				dataObj[pair[0]] = pair[1];
 			}
 			done(null, dataObj);
