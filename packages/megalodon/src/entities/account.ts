@@ -15,6 +15,7 @@ namespace Entity {
     suspended: boolean | null
     limited: boolean | null
     created_at: string
+    createdAt: string | null
     followers_count: number
     following_count: number
     statuses_count: number
