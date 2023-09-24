@@ -750,6 +750,16 @@ export class MastodonApiServerService {
         //#endregion
 
         //#region Status
+        const NoteEndpoint = new apiStatusMastodon(fastify);
+
+        // GET Endpoints
+        NoteEndpoint.getStatus();
+        NoteEndpoint.getContext();
+        NoteEndpoint.getHistory();
+        NoteEndpoint.getReblogged();
+        NoteEndpoint.getFavourites();
+        NoteEndpoint.getMedia();
+        NoteEndpoint.getPoll();
 
         //#endregion
 		done();
