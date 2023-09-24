@@ -1,5 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import megalodon, { Entity, MegalodonInterface } from 'megalodon';
+import multipart from '@fastify/multipart';
 import { IsNull } from 'typeorm';
 import multer from 'fastify-multer';
 import type { UsersRepository } from '@/models/_.js';
@@ -41,6 +42,13 @@ export class MastodonApiServerService {
 		});
 
 		fastify.register(multer.contentParser);
+
+		fastify.register(multipart, {
+			limits: {
+				fileSize: this.config.maxFileSize ?? 262144000,
+				files: 1,
+			},
+		});
 
 		fastify.get('/v1/custom_emojis', async (_request, reply) => {
 			const BASE_URL = `${_request.protocol}://${_request.hostname}`;
