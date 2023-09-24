@@ -46,12 +46,12 @@ export class MastodonApiServerService {
 			done();
 		});
 
-		fastify.addContentTypeParser('application/x-www-form-urlencoded', function (request, payload, done) {
+		fastify.addContentTypeParser('application/x-www-form-urlencoded', (request, payload, done) => {
 			let body = '';
-			payload.on('data', function (data) {
+			payload.on('data', (data) => {
 				body += data;
 			});
-			payload.on('end', function () {
+			payload.on('end', () => {
 				try {
 					const parsed = querystring.parse(body);
 					done(null, parsed);
