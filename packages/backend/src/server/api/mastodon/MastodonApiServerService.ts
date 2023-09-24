@@ -13,6 +13,7 @@ import { MetaService } from '@/core/MetaService.js';
 import multer from 'fastify-multer';
 import { apiAuthMastodon } from './endpoints/auth.js';
 import { apiAccountMastodon } from './endpoints/account.js';
+import { apiSearchMastodon } from './endpoints/search.js';
 
 const staticAssets = fileURLToPath(new URL('../../../../assets/', import.meta.url));
 
@@ -543,6 +544,64 @@ export class MastodonApiServerService {
             try {
                 const account = new apiAccountMastodon(_request, client, BASE_URL);
                 reply.send(await account.rejectFollow());
+            } catch (e: any) {
+                console.error(e);
+                console.error(e.response.data);
+                reply.code(401).send(e.response.data);
+            }
+        });
+        //#endregion
+
+        //#region Search
+        fastify.get("/v1/search", async (_request, reply) => {
+            const BASE_URL = `${_request.protocol}://${_request.hostname}`;
+            const accessTokens = _request.headers.authorization;
+            const client = getClient(BASE_URL, accessTokens);
+            try {
+                const search = new apiSearchMastodon(_request, client, BASE_URL);
+                reply.send(await search.SearchV1());
+            } catch (e: any) {
+                console.error(e);
+                console.error(e.response.data);
+                reply.code(401).send(e.response.data);
+            }
+        });
+
+        fastify.get("/v2/search", async (_request, reply) => {
+            const BASE_URL = `${_request.protocol}://${_request.hostname}`;
+            const accessTokens = _request.headers.authorization;
+            const client = getClient(BASE_URL, accessTokens);
+            try {
+                const search = new apiSearchMastodon(_request, client, BASE_URL);
+                reply.send(await search.SearchV2());
+            } catch (e: any) {
+                console.error(e);
+                console.error(e.response.data);
+                reply.code(401).send(e.response.data);
+            }
+        });
+
+        fastify.get("/v1/trends/statuses", async (_request, reply) => {
+            const BASE_URL = `${_request.protocol}://${_request.hostname}`;
+            const accessTokens = _request.headers.authorization;
+            const client = getClient(BASE_URL, accessTokens);
+            try {
+                const search = new apiSearchMastodon(_request, client, BASE_URL);
+                reply.send(await search.getStatusTrends());
+            } catch (e: any) {
+                console.error(e);
+                console.error(e.response.data);
+                reply.code(401).send(e.response.data);
+            }
+        });
+
+        fastify.get("/v2/suggestions", async (_request, reply) => {
+            const BASE_URL = `${_request.protocol}://${_request.hostname}`;
+            const accessTokens = _request.headers.authorization;
+            const client = getClient(BASE_URL, accessTokens);
+            try {
+                const search = new apiSearchMastodon(_request, client, BASE_URL);
+                reply.send(await search.getSuggestions());
             } catch (e: any) {
                 console.error(e);
                 console.error(e.response.data);
