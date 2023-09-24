@@ -252,7 +252,7 @@ namespace MisskeyAPI {
       return {
         id: n.id,
         uri: n.uri ? n.uri : host ? `https://${host}/notes/${n.id}` : '',
-        url: n.uri ? n.uri : host ? `https://${host}/notes/${n.id}` : '',
+        url: n.url ? n.url : host ? `https://${host}/notes/${n.id}` : '',
         account: user(n.user, host ? host : null),
         in_reply_to_id: n.replyId,
         in_reply_to_account_id: null,

@@ -23,6 +23,7 @@ namespace MisskeyEntity {
     replyId: string | null
     renoteId: string | null
     uri?: string
+    url?: string
     reply?: Note
     renote?: Note
     viaMobile?: boolean
