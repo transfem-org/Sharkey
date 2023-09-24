@@ -14,7 +14,6 @@ import type { FastifyInstance } from 'fastify';
 
 @Injectable()
 export class OAuth2ProviderService {
-
 	constructor(
 		/* @Inject(DI.config)
 		private config: Config, */
@@ -64,7 +63,6 @@ export class OAuth2ProviderService {
 			const BASE_URL = `${request.protocol}://${request.hostname}`;
 			const generator = (megalodon as any).default;
 			const client = generator(BASE_URL, null) as MegalodonInterface;
-			let m = null;
 			let token = null;
 			if (body.code) {
 				//m = body.code.match(/^([a-zA-Z0-9]{8})([a-zA-Z0-9]{4})([a-zA-Z0-9]{4})([a-zA-Z0-9]{4})([a-zA-Z0-9]{12})/);
