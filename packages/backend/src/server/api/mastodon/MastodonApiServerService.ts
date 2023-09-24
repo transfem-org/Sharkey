@@ -143,7 +143,7 @@ export class MastodonApiServerService {
 				const data = await client.uploadMedia(multipartData);
 				reply.send(convertAttachment(data.data as Entity.Attachment));
 			} catch (e: any) {
-				/* console.error(e); */
+				console.error(e);
 				reply.code(401).send(e.response.data);
 			}
 		});
@@ -161,7 +161,7 @@ export class MastodonApiServerService {
 				const data = await client.uploadMedia(multipartData, _request.body!);
 				reply.send(convertAttachment(data.data as Entity.Attachment));
 			} catch (e: any) {
-				/* console.error(e); */
+				console.error(e);
 				reply.code(401).send(e.response.data);
 			}
 		});        
