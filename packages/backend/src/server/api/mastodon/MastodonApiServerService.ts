@@ -11,7 +11,7 @@ import type { Config } from '@/config.js';
 import { getInstance } from './endpoints/meta.js';
 import { MetaService } from '@/core/MetaService.js';
 import multer from 'fastify-multer';
-import { apiAuthMastodon, apiAccountMastodon, apiFilterMastodon, apiNotifyMastodon, apiSearchMastodon } from './endpoints.js';
+import { apiAuthMastodon, apiAccountMastodon, apiFilterMastodon, apiNotifyMastodon, apiSearchMastodon, apiTimelineMastodon } from './endpoints.js';
 
 const staticAssets = fileURLToPath(new URL('../../../../assets/', import.meta.url));
 
@@ -722,6 +722,31 @@ export class MastodonApiServerService {
                 reply.code(401).send(e.response.data);
             }
         });
+        //#endregion
+
+        //#region Timelines
+        const TLEndpoint = new apiTimelineMastodon(fastify);
+
+        // GET Endpoints
+        TLEndpoint.getTL();
+        TLEndpoint.getHomeTl();
+        TLEndpoint.getListTL();
+        TLEndpoint.getTagTl();
+        TLEndpoint.getConversations();
+        TLEndpoint.getList();
+        TLEndpoint.getLists();
+        TLEndpoint.getListAccounts();
+
+        // POST Endpoints
+        TLEndpoint.createList();
+        TLEndpoint.addListAccount();
+
+        // PUT Endpoint
+        TLEndpoint.updateList();
+
+        // DELETE Endpoints
+        TLEndpoint.deleteList();
+        TLEndpoint.rmListAccount();
         //#endregion
 		done();
 	}

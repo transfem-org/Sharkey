@@ -1,5 +1,8 @@
 import { convertId, IdConvertType as IdType, convertAccount, convertConversation, convertList, convertStatus } from '../converters.js';
 import { ParsedUrlQuery } from 'querystring';
+import type { Entity, MegalodonInterface } from 'megalodon';
+import type { FastifyInstance } from 'fastify';
+import { getClient } from '../MastodonApiServerService.js';
 
 export function limitToInt(q: ParsedUrlQuery) {
 	let object: any = q;
@@ -65,4 +68,250 @@ function nl2br(str: string) {
 	str = str.replace(/\r\n/g, '<br />');
 	str = str.replace(/(\n|\r)/g, '<br />');
 	return str;
+}
+
+export class apiTimelineMastodon {
+	private fastify: FastifyInstance;
+
+    constructor(fastify: FastifyInstance) {
+		this.fastify = fastify;
+    }
+
+	public async getTL() {
+		this.fastify.get('/v1/timelines/public', async (_request, reply) => {
+            const BASE_URL = `${_request.protocol}://${_request.hostname}`;
+            const accessTokens = _request.headers.authorization;
+            const client = getClient(BASE_URL, accessTokens);
+            try {
+                const query: any = _request.query;
+				const data = query.local === 'true'
+					? await client.getLocalTimeline(convertTimelinesArgsId(argsToBools(limitToInt(query))))
+					: await client.getPublicTimeline(convertTimelinesArgsId(argsToBools(limitToInt(query))));
+            	reply.send(data.data.map((status: Entity.Status) => convertStatus(status)));
+            } catch (e: any) {
+                console.error(e);
+                console.error(e.response.data);
+                reply.code(401).send(e.response.data);
+            }
+        });
+	}
+
+	public async getHomeTl() {
+		this.fastify.get('/v1/timelines/home', async (_request, reply) => {
+            const BASE_URL = `${_request.protocol}://${_request.hostname}`;
+            const accessTokens = _request.headers.authorization;
+            const client = getClient(BASE_URL, accessTokens);
+            try {
+                const query: any = _request.query;
+				const data = await client.getHomeTimeline(convertTimelinesArgsId(limitToInt(query)));
+				reply.send(data.data.map((status: Entity.Status) => convertStatus(status)));
+            } catch (e: any) {
+                console.error(e);
+                console.error(e.response.data);
+                reply.code(401).send(e.response.data);
+            }
+        });
+	}
+
+	public async getTagTl() {
+		this.fastify.get<{ Params: { hashtag: string } }>('/v1/timelines/tag/:hashtag', async (_request, reply) => {
+            const BASE_URL = `${_request.protocol}://${_request.hostname}`;
+            const accessTokens = _request.headers.authorization;
+            const client = getClient(BASE_URL, accessTokens);
+            try {
+                const query: any = _request.query;
+				const params: any = _request.params;
+				const data = await client.getTagTimeline(params.hashtag, convertTimelinesArgsId(limitToInt(query)));
+				reply.send(data.data.map((status: Entity.Status) => convertStatus(status)));
+            } catch (e: any) {
+                console.error(e);
+                console.error(e.response.data);
+                reply.code(401).send(e.response.data);
+            }
+        });
+	}
+
+	public async getListTL() {
+		this.fastify.get<{ Params: { id: string } }>('/v1/timelines/list/:id', async (_request, reply) => {
+            const BASE_URL = `${_request.protocol}://${_request.hostname}`;
+            const accessTokens = _request.headers.authorization;
+            const client = getClient(BASE_URL, accessTokens);
+            try {
+                const query: any = _request.query;
+				const params: any = _request.params;
+				const data = await client.getListTimeline(convertId(params.id, IdType.SharkeyId), convertTimelinesArgsId(limitToInt(query)));
+				reply.send(data.data.map((status: Entity.Status) => convertStatus(status)));
+            } catch (e: any) {
+                console.error(e);
+                console.error(e.response.data);
+                reply.code(401).send(e.response.data);
+            }
+        });
+	}
+
+	public async getConversations() {
+		this.fastify.get('/v1/conversations', async (_request, reply) => {
+            const BASE_URL = `${_request.protocol}://${_request.hostname}`;
+            const accessTokens = _request.headers.authorization;
+            const client = getClient(BASE_URL, accessTokens);
+            try {
+				const query: any = _request.query;
+				const data = await client.getConversationTimeline(convertTimelinesArgsId(limitToInt(query)));
+                reply.send(data.data.map((conversation: Entity.Conversation) => convertConversation(conversation)));
+            } catch (e: any) {
+                console.error(e);
+                console.error(e.response.data);
+                reply.code(401).send(e.response.data);
+            }
+        });
+	}
+
+	public async getList(){
+		this.fastify.get<{ Params: { id: string } }>('/v1/lists/:id', async (_request, reply) => {
+            try {
+				const BASE_URL = `${_request.protocol}://${_request.hostname}`;
+            	const accessTokens = _request.headers.authorization;
+            	const client = getClient(BASE_URL, accessTokens);
+                const params: any = _request.params;
+				const data = await client.getList(convertId(params.id, IdType.SharkeyId));
+            	reply.send(convertList(data.data));
+            } catch (e: any) {
+                console.error(e);
+                console.error(e.response.data);
+                reply.code(401).send(e.response.data);
+            }
+        });
+	}
+
+	public async getLists() {
+		this.fastify.get('/v1/lists', async (_request, reply) => {
+			try {
+				const BASE_URL = `${_request.protocol}://${_request.hostname}`;
+				const accessTokens = _request.headers.authorization;
+				const client = getClient(BASE_URL, accessTokens);
+				const account = await client.verifyAccountCredentials();
+				const data = await client.getLists(account.data.id);
+				reply.send(data.data.map((list: Entity.List) => convertList(list)));
+			} catch (e: any) {
+				console.error(e);
+				return e.response.data;
+			}
+		});
+    }
+
+	public async getListAccounts(){
+		this.fastify.get<{ Params: { id: string } }>('/v1/lists/:id/accounts', async (_request, reply) => {
+            try {
+				const BASE_URL = `${_request.protocol}://${_request.hostname}`;
+            	const accessTokens = _request.headers.authorization;
+            	const client = getClient(BASE_URL, accessTokens);
+                const params: any = _request.params;
+				const query: any = _request.query;
+				const data = await client.getAccountsInList(
+					convertId(params.id, IdType.SharkeyId),
+					convertTimelinesArgsId(query)
+				);
+            	reply.send(data.data.map((account: Entity.Account) => convertAccount(account)));
+            } catch (e: any) {
+                console.error(e);
+                console.error(e.response.data);
+                reply.code(401).send(e.response.data);
+            }
+        });
+	}
+
+	public async addListAccount() {
+		this.fastify.post<{ Params: { id: string } }>('/v1/lists/:id/accounts', async (_request, reply) => {
+            try {
+				const BASE_URL = `${_request.protocol}://${_request.hostname}`;
+            	const accessTokens = _request.headers.authorization;
+            	const client = getClient(BASE_URL, accessTokens);
+                const params: any = _request.params;
+				const query: any = _request.query;
+				const data = await client.addAccountsToList(
+					convertId(params.id, IdType.SharkeyId),
+					(query.accounts_id as string[]).map((id) => convertId(id, IdType.SharkeyId))
+				);
+            	reply.send(data.data);
+            } catch (e: any) {
+                console.error(e);
+                console.error(e.response.data);
+                reply.code(401).send(e.response.data);
+            }
+        });
+	}
+
+	public async rmListAccount() {
+		this.fastify.delete<{ Params: { id: string } }>('/v1/lists/:id/accounts', async (_request, reply) => {
+            try {
+				const BASE_URL = `${_request.protocol}://${_request.hostname}`;
+            	const accessTokens = _request.headers.authorization;
+            	const client = getClient(BASE_URL, accessTokens);
+				const params: any = _request.params;
+				const query: any = _request.query;
+				const data = await client.deleteAccountsFromList(
+					convertId(params.id, IdType.SharkeyId),
+					(query.accounts_id as string[]).map((id) => convertId(id, IdType.SharkeyId))
+				);
+            	reply.send(data.data);
+            } catch (e: any) {
+                console.error(e);
+                console.error(e.response.data);
+                reply.code(401).send(e.response.data);
+            }
+        });
+	}
+
+	public async createList() {
+		this.fastify.post('/v1/lists', async (_request, reply) => {
+            try {
+				const BASE_URL = `${_request.protocol}://${_request.hostname}`;
+            	const accessTokens = _request.headers.authorization;
+            	const client = getClient(BASE_URL, accessTokens);
+                const body: any = _request.body;
+				const data = await client.createList(body.title);
+            	reply.send(convertList(data.data));
+            } catch (e: any) {
+                console.error(e);
+                console.error(e.response.data);
+                reply.code(401).send(e.response.data);
+            }
+        });
+	}
+
+	public async updateList() {
+		this.fastify.put<{ Params: { id: string } }>('/v1/lists/:id', async (_request, reply) => {
+            try {
+				const BASE_URL = `${_request.protocol}://${_request.hostname}`;
+            	const accessTokens = _request.headers.authorization;
+            	const client = getClient(BASE_URL, accessTokens);
+                const body: any = _request.body;
+				const params: any = _request.params;
+				const data = await client.updateList(convertId(params.id, IdType.SharkeyId), body.title);
+            	reply.send(convertList(data.data));
+            } catch (e: any) {
+                console.error(e);
+                console.error(e.response.data);
+                reply.code(401).send(e.response.data);
+            }
+        });
+	}
+
+	public async deleteList() {
+		this.fastify.delete<{ Params: { id: string } }>('/v1/lists/:id', async (_request, reply) => {
+            try {
+				const BASE_URL = `${_request.protocol}://${_request.hostname}`;
+            	const accessTokens = _request.headers.authorization;
+            	const client = getClient(BASE_URL, accessTokens);
+				const params: any = _request.params;
+				const data = await client.deleteList(convertId(params.id, IdType.SharkeyId));
+            	reply.send(data.data);
+            } catch (e: any) {
+                console.error(e);
+                console.error(e.response.data);
+                reply.code(401).send(e.response.data);
+            }
+        });
+	}
+    
 }
