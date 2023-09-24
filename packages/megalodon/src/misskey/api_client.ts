@@ -68,10 +68,14 @@ namespace MisskeyAPI {
       }
     }
 
-    export const user = (u: Entity.User): MegalodonEntity.Account => {
+    export const user = (u: Entity.User, host: string | null = null): MegalodonEntity.Account => {
+      host ? host = host.replace("https://", "") : null;
       let acct = u.username
       if (u.host) {
         acct = `${u.username}@${u.host}`
+      }
+      if (host) {
+        acct = `${u.username}@${host}`
       }
       return {
         id: u.id,
@@ -100,10 +104,14 @@ namespace MisskeyAPI {
       }
     }
 
-    export const userDetail = (u: Entity.UserDetail): MegalodonEntity.Account => {
+    export const userDetail = (u: Entity.UserDetail, host: string | null = null): MegalodonEntity.Account => {
+      host ? host = host.replace("https://", "") : null;
       let acct = u.username
       if (u.host) {
         acct = `${u.username}@${u.host}`
+      }
+      if (host) {
+        acct = `${u.username}@${host}`
       }
       return {
         id: u.id,
@@ -239,12 +247,13 @@ namespace MisskeyAPI {
       }
     }
 
-    export const note = (n: Entity.Note): MegalodonEntity.Status => {
+    export const note = (n: Entity.Note, host: string | null = null): MegalodonEntity.Status => {
+      host ? host = host.replace("https://", "") : null;
       return {
         id: n.id,
-        uri: n.uri ? n.uri : '',
-        url: n.uri ? n.uri : '',
-        account: user(n.user),
+        uri: n.uri ? n.uri : host ? `https://${host}/notes/${n.id}` : '',
+        url: n.uri ? n.uri : host ? `https://${host}/notes/${n.id}` : '',
+        account: user(n.user, host ? host : null),
         in_reply_to_id: n.replyId,
         in_reply_to_account_id: null,
         reblog: n.renote ? note(n.renote) : null,
