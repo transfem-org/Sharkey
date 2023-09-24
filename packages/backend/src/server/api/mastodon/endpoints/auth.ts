@@ -43,7 +43,7 @@ export async function ApiAuthMastodon(request: FastifyRequest, client: Megalodon
 	const body: any = request.body || request.query;
 	try {
 		let scope = body.scopes;
-		if (typeof scope === 'string') scope = scope.split(' ');
+		if (typeof scope === 'string') scope = scope.split(' ') || scope.split('+');
 		const pushScope = new Set<string>();
 		for (const s of scope) {
 			if (s.match(/^read/)) for (const r of readScope) pushScope.add(r);
