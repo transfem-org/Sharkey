@@ -34,7 +34,7 @@ export class ApiAccountMastodon {
 	public async verifyCredentials() {
 		try {
 			const data = await this.client.verifyAccountCredentials();
-			let acct = data.data;
+			const acct = data.data;
 			acct.id = convertId(acct.id, IdType.MastodonId);
 			acct.display_name = acct.display_name || acct.username;
 			acct.url = `${this.BASE_URL}/@${acct.url}`;

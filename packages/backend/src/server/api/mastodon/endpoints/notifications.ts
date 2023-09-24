@@ -22,7 +22,7 @@ export class ApiNotifyMastodon {
 			const data = await this.client.getNotifications( convertTimelinesArgsId(toLimitToInt(this.request.query)) );
 			const notifs = data.data;
 			const processed = notifs.map((n: Entity.Notification) => {
-				let convertedn = convertNotification(n);
+				const convertedn = convertNotification(n);
 				if (convertedn.type !== 'follow' && convertedn.type !== 'follow_request') {
 					if (convertedn.type === 'reaction') convertedn.type = 'favourite';
 					return convertedn;
