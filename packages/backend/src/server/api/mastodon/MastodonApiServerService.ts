@@ -761,6 +761,25 @@ export class MastodonApiServerService {
         NoteEndpoint.getMedia();
         NoteEndpoint.getPoll();
 
+        //POST Endpoints
+        NoteEndpoint.postStatus();
+        NoteEndpoint.addFavourite();
+        NoteEndpoint.rmFavourite();
+        NoteEndpoint.reblogStatus();
+        NoteEndpoint.unreblogStatus();
+        NoteEndpoint.bookmarkStatus();
+        NoteEndpoint.unbookmarkStatus();
+        NoteEndpoint.pinStatus();
+        NoteEndpoint.unpinStatus();
+        NoteEndpoint.reactStatus();
+        NoteEndpoint.unreactStatus();
+        NoteEndpoint.votePoll();
+
+        // PUT Endpoint
+        NoteEndpoint.updateMedia();
+
+        // DELETE Endpoint
+        NoteEndpoint.deleteStatus();
         //#endregion
 		done();
 	}
