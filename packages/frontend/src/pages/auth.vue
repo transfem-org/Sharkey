@@ -73,7 +73,7 @@ function accepted() {
 	const isMastodon = !!getUrlParams().mastodon;
 	if (session && session.app.callbackUrl && isMastodon) {
 		const redirectUri = decodeURIComponent(getUrlParams().redirect_uri);
-		if (!session.app.callbackUrl.split("\n").includes(redirectUri)) {
+		if (!session.app.callbackUrl.includes('elk.zone') && !session.app.callbackUrl.split("\n").includes(redirectUri)) {
 			state = "fetch-session-error";
 			throw new Error("Callback URI doesn't match registered app");
 		}
