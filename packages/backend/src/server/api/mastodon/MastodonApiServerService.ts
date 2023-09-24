@@ -3,9 +3,9 @@ import { Inject, Injectable } from '@nestjs/common';
 import type { UsersRepository } from '@/models/_.js';
 import { DI } from '@/di-symbols.js';
 import { bindThis } from '@/decorators.js';
-import megalodon, { MegalodonInterface } from "megalodon";
+import megalodon, { Entity, MegalodonInterface } from "megalodon";
 import type { FastifyInstance, FastifyPluginOptions } from 'fastify';
-import { convertId, IdConvertType as IdType, convertAccount, convertAnnouncement, convertFilter, convertAttachment, convertFeaturedTag } from './converters.js';
+import { convertId, IdConvertType as IdType, convertAccount, convertAnnouncement, convertFilter, convertAttachment, convertFeaturedTag, convertList } from './converters.js';
 import { IsNull } from 'typeorm';
 import type { Config } from '@/config.js';
 import { getInstance } from './endpoints/meta.js';
@@ -333,6 +333,216 @@ export class MastodonApiServerService {
             try {
                 const account = new apiAccountMastodon(_request, client, BASE_URL);
                 reply.send(await account.getFollowing());
+            } catch (e: any) {
+                console.error(e);
+                console.error(e.response.data);
+                reply.code(401).send(e.response.data);
+            }
+        });
+
+        fastify.get<{ Params: { id: string } }>("/v1/accounts/:id/lists", async (_request, reply) => {
+            const BASE_URL = `${_request.protocol}://${_request.hostname}`;
+            const accessTokens = _request.headers.authorization;
+            const client = getClient(BASE_URL, accessTokens);
+            try {
+                const data = await client.getAccountLists(convertId(_request.params.id, IdType.SharkeyId));
+                reply.send(data.data.map((list) => convertList(list)));
+            } catch (e: any) {
+                console.error(e);
+                console.error(e.response.data);
+                reply.code(401).send(e.response.data);
+            }
+        });
+
+        fastify.post<{ Params: { id: string } }>("/v1/accounts/:id/follow", async (_request, reply) => {
+            const BASE_URL = `${_request.protocol}://${_request.hostname}`;
+            const accessTokens = _request.headers.authorization;
+            const client = getClient(BASE_URL, accessTokens);
+            try {
+                const account = new apiAccountMastodon(_request, client, BASE_URL);
+                reply.send(await account.addFollow());
+            } catch (e: any) {
+                console.error(e);
+                console.error(e.response.data);
+                reply.code(401).send(e.response.data);
+            }
+        });
+
+        fastify.post<{ Params: { id: string } }>("/v1/accounts/:id/unfollow", async (_request, reply) => {
+            const BASE_URL = `${_request.protocol}://${_request.hostname}`;
+            const accessTokens = _request.headers.authorization;
+            const client = getClient(BASE_URL, accessTokens);
+            try {
+                const account = new apiAccountMastodon(_request, client, BASE_URL);
+                reply.send(await account.rmFollow());
+            } catch (e: any) {
+                console.error(e);
+                console.error(e.response.data);
+                reply.code(401).send(e.response.data);
+            }
+        });
+
+        fastify.post<{ Params: { id: string } }>("/v1/accounts/:id/block", async (_request, reply) => {
+            const BASE_URL = `${_request.protocol}://${_request.hostname}`;
+            const accessTokens = _request.headers.authorization;
+            const client = getClient(BASE_URL, accessTokens);
+            try {
+                const account = new apiAccountMastodon(_request, client, BASE_URL);
+                reply.send(await account.addBlock());
+            } catch (e: any) {
+                console.error(e);
+                console.error(e.response.data);
+                reply.code(401).send(e.response.data);
+            }
+        });
+
+        fastify.post<{ Params: { id: string } }>("/v1/accounts/:id/unblock", async (_request, reply) => {
+            const BASE_URL = `${_request.protocol}://${_request.hostname}`;
+            const accessTokens = _request.headers.authorization;
+            const client = getClient(BASE_URL, accessTokens);
+            try {
+                const account = new apiAccountMastodon(_request, client, BASE_URL);
+                reply.send(await account.rmBlock());
+            } catch (e: any) {
+                console.error(e);
+                console.error(e.response.data);
+                reply.code(401).send(e.response.data);
+            }
+        });
+
+        fastify.post<{ Params: { id: string } }>("/v1/accounts/:id/mute", async (_request, reply) => {
+            const BASE_URL = `${_request.protocol}://${_request.hostname}`;
+            const accessTokens = _request.headers.authorization;
+            const client = getClient(BASE_URL, accessTokens);
+            try {
+                const account = new apiAccountMastodon(_request, client, BASE_URL);
+                reply.send(await account.addMute());
+            } catch (e: any) {
+                console.error(e);
+                console.error(e.response.data);
+                reply.code(401).send(e.response.data);
+            }
+        });
+
+        fastify.post<{ Params: { id: string } }>("/v1/accounts/:id/unmute", async (_request, reply) => {
+            const BASE_URL = `${_request.protocol}://${_request.hostname}`;
+            const accessTokens = _request.headers.authorization;
+            const client = getClient(BASE_URL, accessTokens);
+            try {
+                const account = new apiAccountMastodon(_request, client, BASE_URL);
+                reply.send(await account.rmMute());
+            } catch (e: any) {
+                console.error(e);
+                console.error(e.response.data);
+                reply.code(401).send(e.response.data);
+            }
+        });
+
+        fastify.get("/v1/followed_tags", async (_request, reply) => {
+            const BASE_URL = `${_request.protocol}://${_request.hostname}`;
+            const accessTokens = _request.headers.authorization;
+            const client = getClient(BASE_URL, accessTokens);
+            try {
+                const data = await client.getFollowedTags();
+                reply.send(data.data);
+            } catch (e: any) {
+                console.error(e);
+                console.error(e.response.data);
+                reply.code(401).send(e.response.data);
+            }
+        });
+
+        fastify.get("/v1/bookmarks", async (_request, reply) => {
+            const BASE_URL = `${_request.protocol}://${_request.hostname}`;
+            const accessTokens = _request.headers.authorization;
+            const client = getClient(BASE_URL, accessTokens);
+            try {
+                const account = new apiAccountMastodon(_request, client, BASE_URL);
+                reply.send(await account.getBookmarks());
+            } catch (e: any) {
+                console.error(e);
+                console.error(e.response.data);
+                reply.code(401).send(e.response.data);
+            }
+        });
+
+        fastify.get("/v1/favourites", async (_request, reply) => {
+            const BASE_URL = `${_request.protocol}://${_request.hostname}`;
+            const accessTokens = _request.headers.authorization;
+            const client = getClient(BASE_URL, accessTokens);
+            try {
+                const account = new apiAccountMastodon(_request, client, BASE_URL);
+                reply.send(await account.getFavourites());
+            } catch (e: any) {
+                console.error(e);
+                console.error(e.response.data);
+                reply.code(401).send(e.response.data);
+            }
+        });
+
+        fastify.get("/v1/mutes", async (_request, reply) => {
+            const BASE_URL = `${_request.protocol}://${_request.hostname}`;
+            const accessTokens = _request.headers.authorization;
+            const client = getClient(BASE_URL, accessTokens);
+            try {
+                const account = new apiAccountMastodon(_request, client, BASE_URL);
+                reply.send(await account.getMutes());
+            } catch (e: any) {
+                console.error(e);
+                console.error(e.response.data);
+                reply.code(401).send(e.response.data);
+            }
+        });
+
+        fastify.get("/v1/blocks", async (_request, reply) => {
+            const BASE_URL = `${_request.protocol}://${_request.hostname}`;
+            const accessTokens = _request.headers.authorization;
+            const client = getClient(BASE_URL, accessTokens);
+            try {
+                const account = new apiAccountMastodon(_request, client, BASE_URL);
+                reply.send(await account.getBlocks());
+            } catch (e: any) {
+                console.error(e);
+                console.error(e.response.data);
+                reply.code(401).send(e.response.data);
+            }
+        });
+
+        fastify.get("/v1/follow_requests", async (_request, reply) => {
+            const BASE_URL = `${_request.protocol}://${_request.hostname}`;
+            const accessTokens = _request.headers.authorization;
+            const client = getClient(BASE_URL, accessTokens);
+            try {
+                const data = await client.getFollowRequests( ((_request.query as any) || { limit: 20 }).limit );
+                reply.send(data.data.map((account) => convertAccount(account as Entity.Account)));
+            } catch (e: any) {
+                console.error(e);
+                console.error(e.response.data);
+                reply.code(401).send(e.response.data);
+            }
+        });
+
+        fastify.post<{ Params: { id: string } }>("/v1/follow_requests/:id/authorize", async (_request, reply) => {
+            const BASE_URL = `${_request.protocol}://${_request.hostname}`;
+            const accessTokens = _request.headers.authorization;
+            const client = getClient(BASE_URL, accessTokens);
+            try {
+                const account = new apiAccountMastodon(_request, client, BASE_URL);
+                reply.send(await account.acceptFollow());
+            } catch (e: any) {
+                console.error(e);
+                console.error(e.response.data);
+                reply.code(401).send(e.response.data);
+            }
+        });
+
+        fastify.post<{ Params: { id: string } }>("/v1/follow_requests/:id/reject", async (_request, reply) => {
+            const BASE_URL = `${_request.protocol}://${_request.hostname}`;
+            const accessTokens = _request.headers.authorization;
+            const client = getClient(BASE_URL, accessTokens);
+            try {
+                const account = new apiAccountMastodon(_request, client, BASE_URL);
+                reply.send(await account.rejectFollow());
             } catch (e: any) {
                 console.error(e);
                 console.error(e.response.data);

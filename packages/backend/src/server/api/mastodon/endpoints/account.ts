@@ -144,4 +144,143 @@ export class apiAccountMastodon {
             return e.response.data;
         }
     }
+
+    public async addFollow() {
+        try {
+            const data = await this.client.followAccount( convertId((this.request.params as any).id, IdType.SharkeyId) );
+            let acct = convertRelationship(data.data);
+            acct.following = true;
+			return acct;
+        } catch (e: any) {
+            console.error(e);
+			console.error(e.response.data);
+            return e.response.data;
+        }
+    }
+
+    public async rmFollow() {
+        try {
+            const data = await this.client.unfollowAccount( convertId((this.request.params as any).id, IdType.SharkeyId) );
+            let acct = convertRelationship(data.data);
+            acct.following = false;
+			return acct;
+        } catch (e: any) {
+            console.error(e);
+			console.error(e.response.data);
+            return e.response.data;
+        }
+    }
+
+    public async addBlock() {
+        try {
+            const data = await this.client.blockAccount( convertId((this.request.params as any).id, IdType.SharkeyId) );
+			return convertRelationship(data.data);
+        } catch (e: any) {
+            console.error(e);
+			console.error(e.response.data);
+            return e.response.data;
+        }
+    }
+
+    public async rmBlock() {
+        try {
+            const data = await this.client.unblockAccount( convertId((this.request.params as any).id, IdType.SharkeyId) );
+			return convertRelationship(data.data);
+        } catch (e: any) {
+            console.error(e);
+			console.error(e.response.data);
+            return e.response.data;
+        }
+    }
+
+    public async addMute() {
+        try {
+            const data = await this.client.muteAccount(
+                convertId((this.request.params as any).id, IdType.SharkeyId),
+                this.request.body as any
+            );
+			return convertRelationship(data.data);
+        } catch (e: any) {
+            console.error(e);
+			console.error(e.response.data);
+            return e.response.data;
+        }
+    }
+
+    public async rmMute() {
+        try {
+            const data = await this.client.unmuteAccount( convertId((this.request.params as any).id, IdType.SharkeyId) );
+			return convertRelationship(data.data);
+        } catch (e: any) {
+            console.error(e);
+			console.error(e.response.data);
+            return e.response.data;
+        }
+    }
+
+    public async getBookmarks() {
+        try {
+            const data = await this.client.getBookmarks( convertTimelinesArgsId(limitToInt(this.request.query as any)) );
+			return data.data.map((status) => convertStatus(status));
+        } catch (e: any) {
+            console.error(e);
+			console.error(e.response.data);
+            return e.response.data;
+        }
+    }
+
+    public async getFavourites() {
+        try {
+            const data = await this.client.getFavourites( convertTimelinesArgsId(limitToInt(this.request.query as any)) );
+			return data.data.map((status) => convertStatus(status));
+        } catch (e: any) {
+            console.error(e);
+			console.error(e.response.data);
+            return e.response.data;
+        }
+    }
+
+    public async getMutes() {
+        try {
+            const data = await this.client.getMutes( convertTimelinesArgsId(limitToInt(this.request.query as any)) );
+			return data.data.map((account) => convertAccount(account));
+        } catch (e: any) {
+            console.error(e);
+			console.error(e.response.data);
+            return e.response.data;
+        }
+    }
+
+    public async getBlocks() {
+        try {
+            const data = await this.client.getBlocks( convertTimelinesArgsId(limitToInt(this.request.query as any)) );
+			return data.data.map((account) => convertAccount(account));
+        } catch (e: any) {
+            console.error(e);
+			console.error(e.response.data);
+            return e.response.data;
+        }
+    }
+
+    public async acceptFollow() {
+        try {
+            const data = await this.client.acceptFollowRequest( convertId((this.request.params as any).id, IdType.SharkeyId) );
+			return convertRelationship(data.data);
+        } catch (e: any) {
+            console.error(e);
+			console.error(e.response.data);
+            return e.response.data;
+        }
+    }
+
+    public async rejectFollow() {
+        try {
+            const data = await this.client.rejectFollowRequest( convertId((this.request.params as any).id, IdType.SharkeyId) );
+			return convertRelationship(data.data);
+        } catch (e: any) {
+            console.error(e);
+			console.error(e.response.data);
+            return e.response.data;
+        }
+    }
 }
