@@ -4,6 +4,7 @@ import { apiSearchMastodon } from './endpoints/search.js';
 import { apiNotifyMastodon } from './endpoints/notifications.js';
 import { apiFilterMastodon } from './endpoints/filter.js';
 import { apiTimelineMastodon } from './endpoints/timeline.js';
+import { apiStatusMastodon } from './endpoints/status.js';
 
 export {
     apiAccountMastodon,
@@ -11,5 +12,6 @@ export {
     apiSearchMastodon,
     apiNotifyMastodon,
     apiFilterMastodon,
-    apiTimelineMastodon
+    apiTimelineMastodon,
+    apiStatusMastodon
 }
