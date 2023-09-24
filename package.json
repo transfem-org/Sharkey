@@ -1,10 +1,10 @@
 {
-	"name": "misskey",
+	"name": "sharkey",
 	"version": "2023.9.0-beta.10",
 	"codename": "nasubi",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/misskey-dev/misskey.git"
+		"url": "https://github.com/transfem-org/sharkey.git"
 	},
 	"packageManager": "pnpm@8.7.6",
 	"workspaces": [
