@@ -1,6 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
 import megalodon, { Entity, MegalodonInterface } from 'megalodon';
-import multipart from '@fastify/multipart';
 import { IsNull } from 'typeorm';
 import multer from 'fastify-multer';
 import type { UsersRepository } from '@/models/_.js';
@@ -41,14 +40,19 @@ export class MastodonApiServerService {
 			},
 		});
 
-		fastify.register(multer.contentParser);
-
-		fastify.register(multipart, {
-			limits: {
-				fileSize: this.config.maxFileSize ?? 262144000,
-				files: 1,
-			},
+		fastify.addHook('onRequest', (request, reply, done) => {
+			reply.header('Content-Security-Policy', `default-src * data: mediastream: blob: filesystem: about: ws: wss: 'unsafe-eval' 'wasm-unsafe-eval' 'unsafe-inline'; 
+			script-src * data: blob: 'unsafe-inline' 'unsafe-eval'; 
+			connect-src * data: blob: 'unsafe-inline'; 
+			img-src * data: blob: 'unsafe-inline'; 
+			frame-src * data: blob: ; 
+			style-src * data: blob: 'unsafe-inline';
+			font-src * data: blob: 'unsafe-inline';
+			frame-ancestors * data: blob: 'unsafe-inline';`);
+			done();
 		});
+
+		fastify.register(multer.contentParser);
 
 		fastify.get('/v1/custom_emojis', async (_request, reply) => {
 			const BASE_URL = `${_request.protocol}://${_request.hostname}`;
