@@ -23,7 +23,7 @@ async function getHighlight(
 			});
 		const api = await apicall.json();
 		const data: MisskeyEntity.Note[] = api;
-		return data.map((note) => Converter.note(note, domain));
+		return data.map((note) => new Converter(BASE_URL).note(note, domain));
 	} catch (e: any) {
 		console.log(e);
 		console.log(e.response.data);
@@ -49,7 +49,7 @@ async function getFeaturedUser( BASE_URL: string, host: string, accessTokens: st
 		return data.map((u) => {
 			return {
 				source: 'past_interactions',
-				account: Converter.userDetail(u, host),
+				account: new Converter(BASE_URL).userDetail(u, host),
 			};
 		});
 	} catch (e: any) {

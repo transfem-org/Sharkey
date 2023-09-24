@@ -71,7 +71,7 @@ export class ApiAccountMastodon {
 
 	public async lookup() {
 		try {
-			const data = await this.client.search((this.request.query as any).acct, { type: 'accounts' });
+			const data = await this.client.search((this.request.query as any).acct, 'accounts');
 			return convertAccount(data.data.accounts[0]);
 		} catch (e: any) {
 			/* console.error(e);

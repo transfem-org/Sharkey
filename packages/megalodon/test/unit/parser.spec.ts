@@ -7,10 +7,6 @@ const account: Entity.Account = {
   acct: 'h3poteto@pleroma.io',
   display_name: 'h3poteto',
   locked: false,
-  group: false,
-  noindex: null,
-  suspended: null,
-  limited: null,
   created_at: '2019-03-26T21:30:32',
   followers_count: 10,
   following_count: 10,
@@ -58,9 +54,9 @@ const status: Entity.Status = {
   } as Entity.Application,
   language: null,
   pinned: null,
-  emoji_reactions: [],
+  reactions: [],
   bookmarked: false,
-  quote: false
+  quote: null
 }
 
 const notification: Entity.Notification = {

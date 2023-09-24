@@ -2,7 +2,7 @@ import MisskeyEntity from '@/misskey/entity'
 import MisskeyNotificationType from '@/misskey/notification'
 import Misskey from '@/misskey'
 import MegalodonNotificationType from '@/notification'
-import axios, { AxiosHeaders, AxiosResponse, InternalAxiosRequestConfig } from 'axios'
+import axios, { AxiosResponse } from 'axios'
 
 jest.mock('axios')
 
@@ -27,7 +27,6 @@ const note: MisskeyEntity.Note = {
   renoteCount: 0,
   repliesCount: 0,
   reactions: {},
-  reactionEmojis: {},
   emojis: [],
   fileIds: [],
   files: [],
@@ -94,7 +93,7 @@ const pollVote: MisskeyEntity.Notification = {
   createdAt: '2021-02-01T01:49:29',
   userId: user.id,
   user: user,
-  type: MisskeyNotificationType.PollVote,
+  type: MisskeyNotificationType.PollEnded,
   note: note
 }
 
@@ -164,12 +163,12 @@ describe('getNotifications', () => {
     },
     {
       event: reaction,
-      expected: MegalodonNotificationType.EmojiReaction,
+      expected: MegalodonNotificationType.Reaction,
       title: 'reaction'
     },
     {
       event: pollVote,
-      expected: MegalodonNotificationType.PollVote,
+      expected: MegalodonNotificationType.Poll,
       title: 'pollVote'
     },
     {
@@ -181,38 +180,25 @@ describe('getNotifications', () => {
       event: followRequestAccepted,
       expected: MegalodonNotificationType.Follow,
       title: 'followRequestAccepted'
+    },
+    {
+      event: groupInvited,
+      expected: MisskeyNotificationType.GroupInvited,
+      title: 'groupInvited'
     }
   ]
   cases.forEach(c => {
     it(`should be ${c.title} event`, async () => {
-      const config: InternalAxiosRequestConfig<any> = {
-        headers: new AxiosHeaders()
-      }
       const mockResponse: AxiosResponse<Array<MisskeyEntity.Notification>> = {
         data: [c.event],
         status: 200,
         statusText: '200OK',
         headers: {},
-        config: config
+        config: {}
       }
       ;(axios.post as any).mockResolvedValue(mockResponse)
       const res = await client.getNotifications()
       expect(res.data[0].type).toEqual(c.expected)
     })
-  })
-  it('groupInvited event should be ignored', async () => {
-    const config: InternalAxiosRequestConfig<any> = {
-      headers: new AxiosHeaders()
-    }
-    const mockResponse: AxiosResponse<Array<MisskeyEntity.Notification>> = {
-      data: [groupInvited],
-      status: 200,
-      statusText: '200OK',
-      headers: {},
-      config: config
-    }
-    ;(axios.post as any).mockResolvedValue(mockResponse)
-    const res = await client.getNotifications()
-    expect(res.data).toEqual([])
   })
 })

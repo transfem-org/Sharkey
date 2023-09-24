@@ -3,7 +3,7 @@
 /// <reference path="note.ts" />
 
 namespace MisskeyEntity {
-	export type UserDetail = {
+	export type UserDetailMe = {
 		id: string;
 		name: string;
 		username: string;
@@ -30,5 +30,7 @@ namespace MisskeyEntity {
 		pinnedNoteIds?: Array<string>;
 		pinnedNotes?: Array<Note>;
 		fields: Array<Field>;
+		alwaysMarkNsfw: boolean;
+		lang: string | null;
 	};
 }

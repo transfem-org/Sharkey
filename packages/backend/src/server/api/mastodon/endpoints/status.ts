@@ -171,7 +171,7 @@ export class ApiStatusMastodon {
 					try {
 						const id = body.in_reply_to_id;
 						const post = await client.getStatus(id);
-						const react = post.data.emoji_reactions.filter((e: any) => e.me)[0].name;
+						const react = post.data.reactions.filter((e: any) => e.me)[0].name;
 						const data = await client.deleteEmojiReaction(id, react);
 						reply.send(data.data);
 					} catch (e: any) {
