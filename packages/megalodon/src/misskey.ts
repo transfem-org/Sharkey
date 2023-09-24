@@ -1,5 +1,5 @@
 import FormData from 'form-data'
-
+import fs from 'fs';
 import MisskeyAPI from './misskey/api_client'
 import { DEFAULT_UA } from './default'
 import { ProxyConfig } from './proxy_config'
@@ -1311,7 +1311,13 @@ export default class Misskey implements MegalodonInterface {
    */
   public async uploadMedia(file: any, _options?: { description?: string; focus?: string }): Promise<Response<Entity.Attachment>> {
     const formData = new FormData()
-    formData.append('file', file)
+    formData.append('file', fs.createReadStream(file.path), {
+			contentType: file.mimetype,
+		});
+
+		if (file.originalname != null && file.originalname !== "file") formData.append("name", file.originalname);
+
+		if (_options?.description != null) formData.append("comment", _options.description);
     let headers: { [key: string]: string } = {}
     if (typeof formData.getHeaders === 'function') {
       headers = formData.getHeaders()
