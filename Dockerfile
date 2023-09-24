@@ -51,6 +51,7 @@ WORKDIR /sharkey
 
 COPY --link ["pnpm-lock.yaml", "pnpm-workspace.yaml", "package.json", "./"]
 COPY --link ["scripts", "./scripts"]
+COPY --link ["packages/megalodon/package.json", "./packages/megalodon/"]
 COPY --link ["packages/backend/package.json", "./packages/backend/"]
 
 RUN --mount=type=cache,target=/root/.local/share/pnpm/store,sharing=locked \
@@ -77,6 +78,7 @@ USER sharkey
 WORKDIR /sharkey
 
 COPY --chown=sharkey:sharkey --from=target-builder /sharkey/node_modules ./node_modules
+COPY --chown=sharkey:sharkey --from=target-builder /sharkey/packages/megalodon/node_modules ./packages/megalodon/node_modules
 COPY --chown=sharkey:sharkey --from=target-builder /sharkey/packages/backend/node_modules ./packages/backend/node_modules
 COPY --chown=sharkey:sharkey --from=native-builder /sharkey/built ./built
 COPY --chown=sharkey:sharkey --from=native-builder /sharkey/packages/megalodon/lib ./packages/megalodon/lib
