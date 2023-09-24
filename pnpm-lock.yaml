@@ -389,6 +389,9 @@ importers:
       ulid:
         specifier: 2.3.0
         version: 2.3.0
+      uuid:
+        specifier: ^9.0.1
+        version: 9.0.1
       vary:
         specifier: 1.1.2
         version: 1.1.2
@@ -607,6 +610,9 @@ importers:
       '@types/tmp':
         specifier: 0.2.4
         version: 0.2.4
+      '@types/uuid':
+        specifier: ^9.0.4
+        version: 9.0.4
       '@types/vary':
         specifier: 1.1.0
         version: 1.1.0
@@ -19184,7 +19190,7 @@ packages:
       reflect-metadata: 0.1.13
       sha.js: 2.4.11
       tslib: 2.5.3
-      uuid: 9.0.0
+      uuid: 9.0.1
       yargs: 17.6.2
     transitivePeerDependencies:
       - supports-color
@@ -19452,10 +19458,6 @@ packages:
   /uuid@8.3.2:
     resolution: {integrity: sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==}
     hasBin: true
-
-  /uuid@9.0.0:
-    resolution: {integrity: sha512-MXcSTerfPa4uqyzStbRoTgt5XIe3x5+42+q1sDuy3R5MDk66URdLMOZe5aPX/SQd+kuYAh0FdP/pO28IkQyTeg==}
-    dev: false
 
   /uuid@9.0.1:
     resolution: {integrity: sha512-b+1eJOlsR9K8HJpow9Ok3fiWOWSIcIzXodvv0rQjVoOVNpWMpxf1wZNpt4y9h10odCNrqnYp1OBzRktckBe3sA==}
