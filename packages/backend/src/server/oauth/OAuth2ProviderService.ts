@@ -5,12 +5,21 @@
 
 import { Inject, Injectable } from '@nestjs/common';
 import megalodon, { MegalodonInterface } from 'megalodon';
+import querystring from 'querystring';
 import { v4 as uuid } from 'uuid';
 /* import { kinds } from '@/misc/api-permissions.js';
 import type { Config } from '@/config.js';
 import { DI } from '@/di-symbols.js'; */
 import { bindThis } from '@/decorators.js';
 import type { FastifyInstance } from 'fastify';
+
+function getClient(BASE_URL: string, authorization: string | undefined): MegalodonInterface {
+	const accessTokenArr = authorization?.split(' ') ?? [null];
+	const accessToken = accessTokenArr[accessTokenArr.length - 1];
+	const generator = (megalodon as any).default;
+	const client = generator('misskey', BASE_URL, accessToken) as MegalodonInterface;
+	return client;
+}
 
 @Injectable()
 export class OAuth2ProviderService {
@@ -42,13 +51,20 @@ export class OAuth2ProviderService {
 			done();
 		});
 
-		fastify.addContentTypeParser(['application/x-www-form-urlencoded'], { parseAs: 'string' }, (req, body, done) => {
-			const dataObj: any = {};
-			const parsedData = new URLSearchParams(body as string);
-			for (const pair of parsedData.entries()) {
-				dataObj[pair[0]] = pair[1];
-			}
-			done(null, dataObj);
+		fastify.addContentTypeParser('application/x-www-form-urlencoded', function (request, payload, done) {
+			let body = '';
+			payload.on('data', function (data) {
+				body += data;
+			});
+			payload.on('end', function () {
+				try {
+					const parsed = querystring.parse(body);
+					done(null, parsed);
+				} catch (e: any) {
+					done(e);
+				}
+			});
+			payload.on('error', done);
 		});
 
 		fastify.get('/oauth/authorize', async (request, reply) => {
@@ -75,8 +91,7 @@ export class OAuth2ProviderService {
 			}
 			let client_id: any = body.client_id;
 			const BASE_URL = `${request.protocol}://${request.hostname}`;
-			const generator = (megalodon as any).default;
-			const client = generator(BASE_URL, null) as MegalodonInterface;
+			const client = getClient(BASE_URL, '');
 			let token = null;
 			if (body.code) {
 				//m = body.code.match(/^([a-zA-Z0-9]{8})([a-zA-Z0-9]{4})([a-zA-Z0-9]{4})([a-zA-Z0-9]{4})([a-zA-Z0-9]{12})/);
@@ -107,8 +122,8 @@ export class OAuth2ProviderService {
 				};
 				reply.send(ret);
 			} catch (err: any) {
-				/* console.error(err); */
-				reply.code(401).send(err.response);
+				console.error(err);
+				reply.code(401).send(err.response.data);
 			}
 		});
 	}

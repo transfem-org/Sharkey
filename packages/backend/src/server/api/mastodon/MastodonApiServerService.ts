@@ -1,5 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import megalodon, { Entity, MegalodonInterface } from 'megalodon';
+import querystring from 'querystring';
 import { IsNull } from 'typeorm';
 import multer from 'fastify-multer';
 import type { UsersRepository } from '@/models/_.js';
@@ -45,13 +46,20 @@ export class MastodonApiServerService {
 			done();
 		});
 
-		fastify.addContentTypeParser(['application/x-www-form-urlencoded'], { parseAs: 'string' }, (req, body, done) => {
-			const dataObj: any = {};
-			const parsedData = new URLSearchParams(body as string);
-			for (const pair of parsedData.entries()) {
-				dataObj[pair[0]] = pair[1];
-			}
-			done(null, dataObj);
+		fastify.addContentTypeParser('application/x-www-form-urlencoded', function (request, payload, done) {
+			let body = '';
+			payload.on('data', function (data) {
+				body += data;
+			});
+			payload.on('end', function () {
+				try {
+					const parsed = querystring.parse(body);
+					done(null, parsed);
+				} catch (e: any) {
+					done(e);
+				}
+			});
+			payload.on('error', done);
 		});
 
 		fastify.register(multer.contentParser);
