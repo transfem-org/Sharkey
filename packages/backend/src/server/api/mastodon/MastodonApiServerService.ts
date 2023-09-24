@@ -11,7 +11,7 @@ import type { Config } from '@/config.js';
 import { getInstance } from './endpoints/meta.js';
 import { MetaService } from '@/core/MetaService.js';
 import multer from 'fastify-multer';
-import { apiAuthMastodon, apiAccountMastodon, apiFilterMastodon, apiNotifyMastodon, apiSearchMastodon, apiTimelineMastodon } from './endpoints.js';
+import { apiAuthMastodon, apiAccountMastodon, apiFilterMastodon, apiNotifyMastodon, apiSearchMastodon, apiTimelineMastodon, apiStatusMastodon } from './endpoints.js';
 
 const staticAssets = fileURLToPath(new URL('../../../../assets/', import.meta.url));
 
@@ -747,6 +747,10 @@ export class MastodonApiServerService {
         // DELETE Endpoints
         TLEndpoint.deleteList();
         TLEndpoint.rmListAccount();
+        //#endregion
+
+        //#region Status
+
         //#endregion
 		done();
 	}
