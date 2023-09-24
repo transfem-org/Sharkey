@@ -45,14 +45,14 @@ export class MastodonApiServerService {
 			done();
 		});
 
-		fastify.addContentTypeParser(['application/x-www-form-urlencoded'], { parseAs: 'string' }, function (req, body, done) {
+		fastify.addContentTypeParser(['application/x-www-form-urlencoded'], { parseAs: 'string' }, (req, body, done) => {
 			const dataObj = {};
 			const parsedData = new URLSearchParams(body as string);
-			for (var pair of parsedData.entries()) {
+			for (let pair of parsedData.entries()) {
 				//@ts-expect-error
 				dataObj[pair[0]] = pair[1];
 			}
-			done(null, dataObj)
+			done(null, dataObj);
 		});
 
 		fastify.register(multer.contentParser);
