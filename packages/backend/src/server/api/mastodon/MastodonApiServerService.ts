@@ -49,7 +49,7 @@ export class MastodonApiServerService {
 			const dataObj = {};
 			const parsedData = new URLSearchParams(body as string);
 			for (var pair of parsedData.entries()) {
-				//@ts-ignore
+				//@ts-expect-error
 				dataObj[pair[0]] = pair[1];
 			}
 			done(null, dataObj)
