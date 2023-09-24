@@ -14,6 +14,7 @@ import multer from 'fastify-multer';
 import { apiAuthMastodon } from './endpoints/auth.js';
 import { apiAccountMastodon } from './endpoints/account.js';
 import { apiSearchMastodon } from './endpoints/search.js';
+import { apiNotifyMastodon } from './endpoints/notifications.js';
 
 const staticAssets = fileURLToPath(new URL('../../../../assets/', import.meta.url));
 
@@ -602,6 +603,64 @@ export class MastodonApiServerService {
             try {
                 const search = new apiSearchMastodon(_request, client, BASE_URL);
                 reply.send(await search.getSuggestions());
+            } catch (e: any) {
+                console.error(e);
+                console.error(e.response.data);
+                reply.code(401).send(e.response.data);
+            }
+        });
+        //#endregion
+
+        //#region Notifications
+        fastify.get("/v1/notifications", async (_request, reply) => {
+            const BASE_URL = `${_request.protocol}://${_request.hostname}`;
+            const accessTokens = _request.headers.authorization;
+            const client = getClient(BASE_URL, accessTokens);
+            try {
+                const notify = new apiNotifyMastodon(_request, client);
+                reply.send(await notify.getNotifications());
+            } catch (e: any) {
+                console.error(e);
+                console.error(e.response.data);
+                reply.code(401).send(e.response.data);
+            }
+        });
+
+        fastify.get<{ Params: { id: string } }>("/v1/notification/:id", async (_request, reply) => {
+            const BASE_URL = `${_request.protocol}://${_request.hostname}`;
+            const accessTokens = _request.headers.authorization;
+            const client = getClient(BASE_URL, accessTokens);
+            try {
+                const notify = new apiNotifyMastodon(_request, client);
+                reply.send(await notify.getNotification());
+            } catch (e: any) {
+                console.error(e);
+                console.error(e.response.data);
+                reply.code(401).send(e.response.data);
+            }
+        });
+
+        fastify.post<{ Params: { id: string } }>("/v1/notification/:id/dismiss", async (_request, reply) => {
+            const BASE_URL = `${_request.protocol}://${_request.hostname}`;
+            const accessTokens = _request.headers.authorization;
+            const client = getClient(BASE_URL, accessTokens);
+            try {
+                const notify = new apiNotifyMastodon(_request, client);
+                reply.send(await notify.rmNotification());
+            } catch (e: any) {
+                console.error(e);
+                console.error(e.response.data);
+                reply.code(401).send(e.response.data);
+            }
+        });
+
+        fastify.post("/v1/notifications/clear", async (_request, reply) => {
+            const BASE_URL = `${_request.protocol}://${_request.hostname}`;
+            const accessTokens = _request.headers.authorization;
+            const client = getClient(BASE_URL, accessTokens);
+            try {
+                const notify = new apiNotifyMastodon(_request, client);
+                reply.send(await notify.rmNotifications());
             } catch (e: any) {
                 console.error(e);
                 console.error(e.response.data);
