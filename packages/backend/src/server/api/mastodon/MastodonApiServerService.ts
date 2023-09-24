@@ -41,14 +41,7 @@ export class MastodonApiServerService {
 		});
 
 		fastify.addHook('onRequest', (request, reply, done) => {
-			reply.header('Content-Security-Policy', `default-src * data: mediastream: blob: filesystem: about: ws: wss: 'unsafe-eval' 'wasm-unsafe-eval' 'unsafe-inline'; 
-			script-src * data: blob: 'unsafe-inline' 'unsafe-eval'; 
-			connect-src * data: blob: 'unsafe-inline'; 
-			img-src * data: blob: 'unsafe-inline'; 
-			frame-src * data: blob: ; 
-			style-src * data: blob: 'unsafe-inline';
-			font-src * data: blob: 'unsafe-inline';
-			frame-ancestors * data: blob: 'unsafe-inline';`);
+			reply.header('Access-Control-Allow-Origin', '*');
 			done();
 		});
 
