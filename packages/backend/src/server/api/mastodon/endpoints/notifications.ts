@@ -1,10 +1,10 @@
-import type { MegalodonInterface } from "megalodon";
+import type { MegalodonInterface } from 'megalodon';
 import type { FastifyRequest } from 'fastify';
-import { convertTimelinesArgsId } from "./timeline.js";
+import { convertTimelinesArgsId } from './timeline.js';
 import { IdConvertType as IdType, convertId, convertNotification } from '../converters.js';
 
 function toLimitToInt(q: any) {
-    if (q.limit) if (typeof q.limit === "string") q.limit = parseInt(q.limit, 10);
+    if (q.limit) if (typeof q.limit === 'string') q.limit = parseInt(q.limit, 10);
     return q;
 }
 
@@ -23,8 +23,8 @@ export class apiNotifyMastodon {
             const notifs = data.data;
             const processed = notifs.map((n) => {
                 n = convertNotification(n);
-                if (n.type !== "follow" && n.type !== "follow_request") {
-                    if (n.type === "reaction") n.type = "favourite";
+                if (n.type !== 'follow' && n.type !== 'follow_request') {
+                    if (n.type === 'reaction') n.type = 'favourite';
                     return n;
                 } else {
                     return n;
@@ -41,7 +41,7 @@ export class apiNotifyMastodon {
         try {
 			const data = await this.client.getNotification( convertId((this.request.params as any).id, IdType.SharkeyId) );
             const notif = convertNotification(data.data);
-            if (notif.type !== "follow" && notif.type !== "follow_request" && notif.type === "reaction") notif.type = "favourite";
+            if (notif.type !== 'follow' && notif.type !== 'follow_request' && notif.type === 'reaction') notif.type = 'favourite';
 			return notif;
 		} catch (e: any) {
 			console.error(e);

@@ -1,6 +1,5 @@
-import type { MegalodonInterface } from "megalodon";
+import type { MegalodonInterface } from 'megalodon';
 import type { FastifyRequest } from 'fastify';
-import { convertTimelinesArgsId } from "./timeline.js";
 import { IdConvertType as IdType, convertId, convertFilter } from '../converters.js';
 
 export class apiFilterMastodon {

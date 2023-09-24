@@ -1,7 +1,7 @@
-import { Entity } from "megalodon";
-import { MAX_NOTE_TEXT_LENGTH, FILE_TYPE_BROWSERSAFE } from "@/const.js";
+import { Entity } from 'megalodon';
+import { MAX_NOTE_TEXT_LENGTH, FILE_TYPE_BROWSERSAFE } from '@/const.js';
 import type { Config } from '@/config.js';
-import type { MiMeta } from "@/models/Meta.js";
+import type { MiMeta } from '@/models/Meta.js';
 
 export async function getInstance(
 	response: Entity.Instance,
@@ -11,13 +11,13 @@ export async function getInstance(
 ) {
 	return {
 		uri: config.url,
-		title: meta.name || "Sharkey",
+		title: meta.name || 'Sharkey',
 		short_description:
-			meta.description?.substring(0, 50) || "See real server website",
+			meta.description?.substring(0, 50) || 'See real server website',
 		description:
 			meta.description ||
 			"This is a vanilla Sharkey Instance. It doesn't seem to have a description.",
-		email: response.email || "",
+		email: response.email || '',
 		version: `3.0.0 (compatible; Sharkey ${config.version})`,
 		urls: response.urls,
 		stats: {
@@ -25,7 +25,7 @@ export async function getInstance(
 			status_count: response.stats.status_count,
 			domain_count: response.stats.domain_count,
 		},
-		thumbnail: meta.backgroundImageUrl || "/static-assets/transparent.png",
+		thumbnail: meta.backgroundImageUrl || '/static-assets/transparent.png',
 		languages: meta.langs,
 		registrations: !meta.disableRegistration || response.registrations,
 		approval_required: !response.registrations,

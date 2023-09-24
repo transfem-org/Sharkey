@@ -1,11 +1,10 @@
-import { FindOptionsWhere, IsNull } from "typeorm";
-import type { MegalodonInterface } from "megalodon";
+import type { MegalodonInterface } from 'megalodon';
 import type { FastifyRequest } from 'fastify';
-import { argsToBools, convertTimelinesArgsId, limitToInt } from "./timeline.js";
-import { convertId, IdConvertType as IdType, convertAccount, convertFeaturedTag, convertList, convertRelationship, convertStatus } from '../converters.js';
+import { argsToBools, convertTimelinesArgsId, limitToInt } from './timeline.js';
+import { convertId, IdConvertType as IdType, convertAccount, convertRelationship, convertStatus } from '../converters.js';
 
 const relationshipModel = {
-	id: "",
+	id: '',
 	following: false,
 	followed_by: false,
 	delivery_following: false,
@@ -18,7 +17,7 @@ const relationshipModel = {
 	showing_reblogs: false,
 	endorsed: false,
 	notifying: false,
-	note: "",
+	note: '',
 };
 
 export class apiAccountMastodon {
@@ -39,16 +38,16 @@ export class apiAccountMastodon {
 			acct.id = convertId(acct.id, IdType.MastodonId);
 			acct.display_name = acct.display_name || acct.username;
 			acct.url = `${this.BASE_URL}/@${acct.url}`;
-			acct.note = acct.note || "";
+			acct.note = acct.note || '';
 			acct.avatar_static = acct.avatar;
-			acct.header = acct.header || "/static-assets/transparent.png";
-			acct.header_static = acct.header || "/static-assets/transparent.png";
+			acct.header = acct.header || '/static-assets/transparent.png';
+			acct.header_static = acct.header || '/static-assets/transparent.png';
 			acct.source = {
 				note: acct.note,
 				fields: acct.fields,
-				privacy: "",
+				privacy: '',
 				sensitive: false,
-				language: "",
+				language: '',
 			};
 			console.log(acct);
 			return acct;
@@ -72,7 +71,7 @@ export class apiAccountMastodon {
 
     public async lookup() {
         try {
-            const data = await this.client.search((this.request.query as any).acct, { type: "accounts" });
+            const data = await this.client.search((this.request.query as any).acct, { type: 'accounts' });
             return convertAccount(data.data.accounts[0]);
         } catch (e: any) {
             console.error(e);
@@ -83,7 +82,7 @@ export class apiAccountMastodon {
 
     public async getRelationships(users: [string]) {
         try {
-            relationshipModel.id = users?.toString() || "1";
+            relationshipModel.id = users?.toString() || '1';
 
 			if (!users) {
 				return [relationshipModel];

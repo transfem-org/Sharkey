@@ -1,6 +1,6 @@
-import { Entity } from "megalodon";
+import { Entity } from 'megalodon';
 
-const CHAR_COLLECTION: string = "0123456789abcdefghijklmnopqrstuvwxyz";
+const CHAR_COLLECTION: string = '0123456789abcdefghijklmnopqrstuvwxyz';
 
 export enum IdConvertType {
     MastodonId,
@@ -26,7 +26,7 @@ export function convertId(in_id: string, id_convert_type: IdConvertType): string
             outStr = charFromNum(remainder) + outStr;
             input /= BigInt(36);
           }
-		  let ReversedoutStr = outStr.split("").reduce((acc, char) => char + acc, "");
+		  let ReversedoutStr = outStr.split('').reduce((acc, char) => char + acc, '');
           return ReversedoutStr;
     
         default:

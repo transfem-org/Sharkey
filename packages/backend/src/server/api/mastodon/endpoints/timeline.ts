@@ -1,19 +1,19 @@
 import { convertId, IdConvertType as IdType, convertAccount, convertConversation, convertList, convertStatus } from '../converters.js';
-import { ParsedUrlQuery } from "querystring";
+import { ParsedUrlQuery } from 'querystring';
 
 export function limitToInt(q: ParsedUrlQuery) {
 	let object: any = q;
 	if (q.limit)
-		if (typeof q.limit === "string") object.limit = parseInt(q.limit, 10);
+		if (typeof q.limit === 'string') object.limit = parseInt(q.limit, 10);
 	if (q.offset)
-		if (typeof q.offset === "string") object.offset = parseInt(q.offset, 10);
+		if (typeof q.offset === 'string') object.offset = parseInt(q.offset, 10);
 	return object;
 }
 
 export function argsToBools(q: ParsedUrlQuery) {
 	// Values taken from https://docs.joinmastodon.org/client/intro/#boolean
 	const toBoolean = (value: string) =>
-		!["0", "f", "F", "false", "FALSE", "off", "OFF"].includes(value);
+		!['0', 'f', 'F', 'false', 'FALSE', 'off', 'OFF'].includes(value);
 
 	// Keys taken from:
 	// - https://docs.joinmastodon.org/methods/accounts/#statuses
@@ -21,27 +21,48 @@ export function argsToBools(q: ParsedUrlQuery) {
 	// - https://docs.joinmastodon.org/methods/timelines/#tag
 	let object: any = q;
 	if (q.only_media)
-		if (typeof q.only_media === "string")
+		if (typeof q.only_media === 'string')
 			object.only_media = toBoolean(q.only_media);
 	if (q.exclude_replies)
-		if (typeof q.exclude_replies === "string")
+		if (typeof q.exclude_replies === 'string')
 			object.exclude_replies = toBoolean(q.exclude_replies);
 	if (q.exclude_reblogs)
-		if (typeof q.exclude_reblogs === "string")
+		if (typeof q.exclude_reblogs === 'string')
 			object.exclude_reblogs = toBoolean(q.exclude_reblogs);
 	if (q.pinned)
-		if (typeof q.pinned === "string") object.pinned = toBoolean(q.pinned);
+		if (typeof q.pinned === 'string') object.pinned = toBoolean(q.pinned);
 	if (q.local)
-		if (typeof q.local === "string") object.local = toBoolean(q.local);
+		if (typeof q.local === 'string') object.local = toBoolean(q.local);
 	return q;
 }
 
 export function convertTimelinesArgsId(q: ParsedUrlQuery) {
-	if (typeof q.min_id === "string")
+	if (typeof q.min_id === 'string')
 		q.min_id = convertId(q.min_id, IdType.SharkeyId);
-	if (typeof q.max_id === "string")
+	if (typeof q.max_id === 'string')
 		q.max_id = convertId(q.max_id, IdType.SharkeyId);
-	if (typeof q.since_id === "string")
+	if (typeof q.since_id === 'string')
 		q.since_id = convertId(q.since_id, IdType.SharkeyId);
 	return q;
+}
+
+function escapeHTML(str: string) {
+	if (!str) {
+		return '';
+	}
+	return str
+		.replace(/&/g, '&amp;')
+		.replace(/</g, '&lt;')
+		.replace(/>/g, '&gt;')
+		.replace(/'/g, '&quot;')
+		.replace(/'/g, '&#039;');
+}
+
+function nl2br(str: string) {
+	if (!str) {
+		return '';
+	}
+	str = str.replace(/\r\n/g, '<br />');
+	str = str.replace(/(\n|\r)/g, '<br />');
+	return str;
 }

@@ -1,7 +1,7 @@
-import type { MegalodonInterface } from "megalodon";
-import  { Converter } from "megalodon";
+import type { MegalodonInterface } from 'megalodon';
+import  { Converter } from 'megalodon';
 import type { FastifyRequest } from 'fastify';
-import { convertTimelinesArgsId, limitToInt } from "./timeline.js";
+import { convertTimelinesArgsId, limitToInt } from './timeline.js';
 import { convertAccount, convertStatus } from '../converters.js';
 
 async function getHighlight(
