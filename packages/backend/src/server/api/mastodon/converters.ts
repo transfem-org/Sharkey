@@ -1,6 +1,6 @@
 import { Entity } from 'megalodon';
 
-const CHAR_COLLECTION: string = '0123456789abcdefghijklmnopqrstuvwxyz';
+const CHAR_COLLECTION = '0123456789abcdefghijklmnopqrstuvwxyz';
 
 export enum IdConvertType {
     MastodonId,
@@ -8,48 +8,50 @@ export enum IdConvertType {
 }
 
 export function convertId(in_id: string, id_convert_type: IdConvertType): string {
-    switch (id_convert_type) {
-        case IdConvertType.MastodonId:
-          let out: bigint = BigInt(0);
-          const lowerCaseId = in_id.toLowerCase();
-          for (let i = 0; i < lowerCaseId.length; i++) {
-            const charValue = numFromChar(lowerCaseId.charAt(i));
-            out += BigInt(charValue) * BigInt(36) ** BigInt(i);
-          }
-          return out.toString();
+	switch (id_convert_type) {
+		case IdConvertType.MastodonId: {
+			let out = BigInt(0);
+			const lowerCaseId = in_id.toLowerCase();
+			for (let i = 0; i < lowerCaseId.length; i++) {
+				const charValue = numFromChar(lowerCaseId.charAt(i));
+				out += BigInt(charValue) * BigInt(36) ** BigInt(i);
+			}
+			return out.toString();
+		}
     
-        case IdConvertType.SharkeyId:
-          let input: bigint = BigInt(in_id);
-          let outStr = '';
-          while (input > BigInt(0)) {
-            const remainder = Number(input % BigInt(36));
-            outStr = charFromNum(remainder) + outStr;
-            input /= BigInt(36);
-          }
-		  let ReversedoutStr = outStr.split('').reduce((acc, char) => char + acc, '');
-          return ReversedoutStr;
+		case IdConvertType.SharkeyId: {
+			let input = BigInt(in_id);
+			let outStr = '';
+			while (input > BigInt(0)) {
+				const remainder = Number(input % BigInt(36));
+				outStr = charFromNum(remainder) + outStr;
+				input /= BigInt(36);
+			}
+			const ReversedoutStr = outStr.split('').reduce((acc, char) => char + acc, '');
+			return ReversedoutStr;
+		}
     
-        default:
-          throw new Error('Invalid ID conversion type');
-    }
+		default:
+			throw new Error('Invalid ID conversion type');
+	}
 }
 
 function numFromChar(character: string): number {
-    for (let i = 0; i < CHAR_COLLECTION.length; i++) {
-      if (CHAR_COLLECTION.charAt(i) === character) {
-        return i;
-      }
-    }
+	for (let i = 0; i < CHAR_COLLECTION.length; i++) {
+		if (CHAR_COLLECTION.charAt(i) === character) {
+			return i;
+		}
+	}
 
-    throw new Error('Invalid character in parsed base36 id');
+	throw new Error('Invalid character in parsed base36 id');
 }
 
 function charFromNum(number: number): string {
-    if (number >= 0 && number < CHAR_COLLECTION.length) {
-      return CHAR_COLLECTION.charAt(number);
-    } else {
-      throw new Error('Invalid number for base-36 encoding');
-    }
+	if (number >= 0 && number < CHAR_COLLECTION.length) {
+		return CHAR_COLLECTION.charAt(number);
+	} else {
+		throw new Error('Invalid number for base-36 encoding');
+	}
 }
 
 function simpleConvert(data: any) {
@@ -81,8 +83,7 @@ export function convertFeaturedTag(tag: Entity.FeaturedTag) {
 export function convertNotification(notification: Entity.Notification) {
 	notification.account = convertAccount(notification.account);
 	notification.id = convertId(notification.id, IdConvertType.MastodonId);
-	if (notification.status)
-		notification.status = convertStatus(notification.status);
+	if (notification.status) notification.status = convertStatus(notification.status);
 	return notification;
 }
 
@@ -102,13 +103,11 @@ export function convertRelationship(relationship: Entity.Relationship) {
 export function convertStatus(status: Entity.Status) {
 	status.account = convertAccount(status.account);
 	status.id = convertId(status.id, IdConvertType.MastodonId);
-	if (status.in_reply_to_account_id)
-		status.in_reply_to_account_id = convertId(
-			status.in_reply_to_account_id,
-			IdConvertType.MastodonId,
-		);
-	if (status.in_reply_to_id)
-		status.in_reply_to_id = convertId(status.in_reply_to_id, IdConvertType.MastodonId);
+	if (status.in_reply_to_account_id) status.in_reply_to_account_id = convertId(
+		status.in_reply_to_account_id,
+		IdConvertType.MastodonId,
+	);
+	if (status.in_reply_to_id) status.in_reply_to_id = convertId(status.in_reply_to_id, IdConvertType.MastodonId);
 	status.media_attachments = status.media_attachments.map((attachment) =>
 		convertAttachment(attachment),
 	);

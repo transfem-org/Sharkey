@@ -6,8 +6,8 @@ import type { MiMeta } from '@/models/Meta.js';
 export async function getInstance(
 	response: Entity.Instance,
 	contact: Entity.Account,
-    config: Config,
-    meta: MiMeta,
+	config: Config,
+	meta: MiMeta,
 ) {
 	return {
 		uri: config.url,
@@ -16,7 +16,7 @@ export async function getInstance(
 			meta.description?.substring(0, 50) || 'See real server website',
 		description:
 			meta.description ||
-			"This is a vanilla Sharkey Instance. It doesn't seem to have a description.",
+			'This is a vanilla Sharkey Instance. It doesn\'t seem to have a description.',
 		email: response.email || '',
 		version: `3.0.0 (compatible; Sharkey ${config.version})`,
 		urls: response.urls,

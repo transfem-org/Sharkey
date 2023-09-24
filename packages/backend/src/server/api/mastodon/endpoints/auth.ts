@@ -39,36 +39,36 @@ const writeScope = [
 	'write:gallery-likes',
 ];
 
-export async function apiAuthMastodon(request: FastifyRequest, client: MegalodonInterface) {
-		const body: any = request.body || request.query;
-		try {
-			let scope = body.scopes;
-			if (typeof scope === 'string') scope = scope.split(' ');
-			const pushScope = new Set<string>();
-			for (const s of scope) {
-				if (s.match(/^read/)) for (const r of readScope) pushScope.add(r);
-				if (s.match(/^write/)) for (const r of writeScope) pushScope.add(r);
-			}
-			const scopeArr = Array.from(pushScope);
-
-			const red = body.redirect_uris;
-			const appData = await client.registerApp(body.client_name, {
-				scopes: scopeArr,
-				redirect_uris: red,
-				website: body.website,
-			});
-			const returns = {
-				id: Math.floor(Math.random() * 100).toString(),
-				name: appData.name,
-				website: body.website,
-				redirect_uri: red,
-				client_id: Buffer.from(appData.url || '').toString('base64'),
-				client_secret: appData.clientSecret,
-			};
-            
-			return returns;
-		} catch (e: any) {
-			console.error(e);
-			return e.response.data;
+export async function ApiAuthMastodon(request: FastifyRequest, client: MegalodonInterface) {
+	const body: any = request.body || request.query;
+	try {
+		let scope = body.scopes;
+		if (typeof scope === 'string') scope = scope.split(' ');
+		const pushScope = new Set<string>();
+		for (const s of scope) {
+			if (s.match(/^read/)) for (const r of readScope) pushScope.add(r);
+			if (s.match(/^write/)) for (const r of writeScope) pushScope.add(r);
 		}
+		const scopeArr = Array.from(pushScope);
+
+		const red = body.redirect_uris;
+		const appData = await client.registerApp(body.client_name, {
+			scopes: scopeArr,
+			redirect_uris: red,
+			website: body.website,
+		});
+		const returns = {
+			id: Math.floor(Math.random() * 100).toString(),
+			name: appData.name,
+			website: body.website,
+			redirect_uri: red,
+			client_id: Buffer.from(appData.url || '').toString('base64'),
+			client_secret: appData.clientSecret,
+		};
+            
+		return returns;
+	} catch (e: any) {
+		console.error(e);
+		return e.response.data;
+	}
 }
