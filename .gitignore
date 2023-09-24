@@ -60,7 +60,6 @@ temp
 
 # Sharkey
 /packages/megalodon/lib
-/packages/megalodon-bk
 
 # blender backups
 *.blend1
