@@ -22,6 +22,12 @@
 Not on Sharky? No problem! Not only can Sharky instances talk to each other, but you can make friends with people on other networks like Mastodon and Pixelfed!
 - **Reactions**\
 You can add emoji reactions to any post! No longer are you bound by a like button, show everyone exactly how you feel with the tap of a button.
+- **Post Editing**\
+In Sharkey you can edit your post, this is not possible in normal Misskey
+- **Mastodon API**\
+Sharkey implements the mastodon api unlike normal Misskey
+- **UI/UX Improvements**\
+Sharkey makes some Ui/UX improvements to make it easier to navigate
 - **Drive**\
 With Sharky's built in drive, you get cloud storage right in your social media, where you can upload any files, make folders, and find media from posts you've made!
 - **Rich Web UI**\
