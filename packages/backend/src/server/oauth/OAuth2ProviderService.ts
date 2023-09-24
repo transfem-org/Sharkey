@@ -37,6 +37,20 @@ export class OAuth2ProviderService {
 			});
 		}); */
 
+		fastify.addHook('onRequest', (request, reply, done) => {
+			reply.header('Access-Control-Allow-Origin', '*');
+			done();
+		});
+
+		fastify.addContentTypeParser(['application/x-www-form-urlencoded'], { parseAs: 'string' }, (req, body, done) => {
+			const dataObj: any = {};
+			const parsedData = new URLSearchParams(body as string);
+			for (const pair of parsedData.entries()) {
+				dataObj[pair[0]] = pair[1];
+			}
+			done(null, dataObj);
+		});
+
 		fastify.get('/oauth/authorize', async (request, reply) => {
 			const query: any = request.query;
 			let param = "mastodon=true";
