@@ -20,11 +20,11 @@ WORKDIR /sharkey
 
 COPY --link ["pnpm-lock.yaml", "pnpm-workspace.yaml", "package.json", "./"]
 COPY --link ["scripts", "./scripts"]
+COPY --link ["packages/megalodon/package.json", "./packages/megalodon/"]
 COPY --link ["packages/backend/package.json", "./packages/backend/"]
 COPY --link ["packages/frontend/package.json", "./packages/frontend/"]
 COPY --link ["packages/sw/package.json", "./packages/sw/"]
 COPY --link ["packages/misskey-js/package.json", "./packages/misskey-js/"]
-COPY --link ["packages/megalodon/package.json", "./packages/megalodon/"]
 
 RUN --mount=type=cache,target=/root/.local/share/pnpm/store,sharing=locked \
 	pnpm i --frozen-lockfile --aggregate-output
@@ -79,6 +79,7 @@ WORKDIR /sharkey
 COPY --chown=sharkey:sharkey --from=target-builder /sharkey/node_modules ./node_modules
 COPY --chown=sharkey:sharkey --from=target-builder /sharkey/packages/backend/node_modules ./packages/backend/node_modules
 COPY --chown=sharkey:sharkey --from=native-builder /sharkey/built ./built
+COPY --chown=sharkey:sharkey --from=native-builder /sharkey/packages/megalodon/lib ./packages/megalodon/lib
 COPY --chown=sharkey:sharkey --from=native-builder /sharkey/packages/backend/built ./packages/backend/built
 COPY --chown=sharkey:sharkey --from=native-builder /sharkey/fluent-emojis /sharkey/fluent-emojis
 COPY --chown=sharkey:sharkey . ./
