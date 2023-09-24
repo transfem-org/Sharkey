@@ -1041,7 +1041,7 @@ export interface MegalodonInterface {
    *
    * @return Array of lists.
    */
-  getLists(): Promise<Response<Array<Entity.List>>>
+  getLists(id: string): Promise<Response<Array<Entity.List>>>
   /**
    * Show a single list.
    *
