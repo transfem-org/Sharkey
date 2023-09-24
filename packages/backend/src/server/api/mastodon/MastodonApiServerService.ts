@@ -74,7 +74,7 @@ export class MastodonApiServerService {
 				const contact = admin == null ? null : convertAccount((await client.getAccount(admin.id)).data);
 				reply.send(await getInstance(data.data, contact, this.config, await this.metaService.fetch()));
 			} catch (e: any) {
-				console.error(e);
+				/* console.error(e); */
 				reply.code(401).send(e.response.data);
 			}
 		});
@@ -87,7 +87,7 @@ export class MastodonApiServerService {
 				const data = await client.getInstanceAnnouncements();
 				reply.send(data.data.map((announcement) => convertAnnouncement(announcement)));
 			} catch (e: any) {
-				console.error(e);
+				/* console.error(e); */
 				reply.code(401).send(e.response.data);
 			}
 		});
@@ -102,7 +102,7 @@ export class MastodonApiServerService {
 				);
 				reply.send(data.data);
 			} catch (e: any) {
-				console.error(e);
+				/* console.error(e); */
 				reply.code(401).send(e.response.data);
 			}
 		},
@@ -121,7 +121,7 @@ export class MastodonApiServerService {
 				const data = await client.uploadMedia(multipartData);
 				reply.send(convertAttachment(data.data as Entity.Attachment));
 			} catch (e: any) {
-				console.error(e);
+				/* console.error(e); */
 				reply.code(401).send(e.response.data);
 			}
 		});
@@ -139,7 +139,7 @@ export class MastodonApiServerService {
 				const data = await client.uploadMedia(multipartData, _request.body!);
 				reply.send(convertAttachment(data.data as Entity.Attachment));
 			} catch (e: any) {
-				console.error(e);
+				/* console.error(e); */
 				reply.code(401).send(e.response.data);
 			}
 		});        
@@ -153,7 +153,7 @@ export class MastodonApiServerService {
 				const data = await client.getFilters();
 				reply.send(data.data.map((filter) => convertFilter(filter)));
 			} catch (e: any) {
-				console.error(e);
+				/* console.error(e); */
 				reply.code(401).send(e.response.data);
 			}
 		});
@@ -167,7 +167,7 @@ export class MastodonApiServerService {
 				const data = await client.getInstanceTrends();
 				reply.send(data.data);
 			} catch (e: any) {
-				console.error(e);
+				/* console.error(e); */
 				reply.code(401).send(e.response.data);
 			}
 		});
@@ -180,7 +180,7 @@ export class MastodonApiServerService {
 				const data = await ApiAuthMastodon(_request, client);
 				reply.send(data);
 			} catch (e: any) {
-				console.error(e);
+				/* console.error(e); */
 				reply.code(401).send(e.response.data);
 			}
 		});
@@ -194,7 +194,7 @@ export class MastodonApiServerService {
 				const data = await client.getPreferences();
 				reply.send(data.data);
 			} catch (e: any) {
-				console.error(e);
+				/* console.error(e); */
 				reply.code(401).send(e.response.data);
 			}
 		});
@@ -209,7 +209,7 @@ export class MastodonApiServerService {
 				const account = new ApiAccountMastodon(_request, client, BASE_URL);
 				reply.send(await account.verifyCredentials());
 			} catch (e: any) {
-				console.error(e);
+				/* console.error(e); */
 				reply.code(401).send(e.response.data);
 			}
 		});
@@ -223,7 +223,7 @@ export class MastodonApiServerService {
 				const account = new ApiAccountMastodon(_request, client, BASE_URL);
 				reply.send(await account.updateCredentials());
 			} catch (e: any) {
-				console.error(e);
+				/* console.error(e); */
 				reply.code(401).send(e.response.data);
 			}
 		});
@@ -237,7 +237,7 @@ export class MastodonApiServerService {
 				const account = new ApiAccountMastodon(_request, client, BASE_URL);
 				reply.send(await account.lookup());
 			} catch (e: any) {
-				console.error(e);
+				/* console.error(e); */
 				reply.code(401).send(e.response.data);
 			}
 		});
@@ -257,7 +257,7 @@ export class MastodonApiServerService {
 				const account = new ApiAccountMastodon(_request, client, BASE_URL);
 				reply.send(await account.getRelationships(users));
 			} catch (e: any) {
-				console.error(e);
+				/* console.error(e); */
 				const data = e.response.data;
 				data.users = users;
 				console.error(data);
@@ -274,8 +274,8 @@ export class MastodonApiServerService {
 				const data = await client.getAccount(sharkId);
 				reply.send(convertAccount(data.data));
 			} catch (e: any) {
-				console.error(e);
-				console.error(e.response.data);
+				/* console.error(e);
+				console.error(e.response.data); */
 				reply.code(401).send(e.response.data);
 			}
 		});
@@ -288,8 +288,8 @@ export class MastodonApiServerService {
 				const account = new ApiAccountMastodon(_request, client, BASE_URL);
 				reply.send(await account.getStatuses());
 			} catch (e: any) {
-				console.error(e);
-				console.error(e.response.data);
+				/* console.error(e);
+				console.error(e.response.data); */
 				reply.code(401).send(e.response.data);
 			}
 		});
@@ -302,8 +302,8 @@ export class MastodonApiServerService {
 				const data = await client.getFeaturedTags();
 				reply.send(data.data.map((tag) => convertFeaturedTag(tag)));
 			} catch (e: any) {
-				console.error(e);
-				console.error(e.response.data);
+				/* console.error(e);
+				console.error(e.response.data); */
 				reply.code(401).send(e.response.data);
 			}
 		});
@@ -316,8 +316,8 @@ export class MastodonApiServerService {
 				const account = new ApiAccountMastodon(_request, client, BASE_URL);
 				reply.send(await account.getFollowers());
 			} catch (e: any) {
-				console.error(e);
-				console.error(e.response.data);
+				/* console.error(e);
+				console.error(e.response.data); */
 				reply.code(401).send(e.response.data);
 			}
 		});
@@ -330,8 +330,8 @@ export class MastodonApiServerService {
 				const account = new ApiAccountMastodon(_request, client, BASE_URL);
 				reply.send(await account.getFollowing());
 			} catch (e: any) {
-				console.error(e);
-				console.error(e.response.data);
+				/* console.error(e);
+				console.error(e.response.data); */
 				reply.code(401).send(e.response.data);
 			}
 		});
@@ -344,8 +344,8 @@ export class MastodonApiServerService {
 				const data = await client.getAccountLists(convertId(_request.params.id, IdType.SharkeyId));
 				reply.send(data.data.map((list) => convertList(list)));
 			} catch (e: any) {
-				console.error(e);
-				console.error(e.response.data);
+				/* console.error(e);
+				console.error(e.response.data); */
 				reply.code(401).send(e.response.data);
 			}
 		});
@@ -358,8 +358,8 @@ export class MastodonApiServerService {
 				const account = new ApiAccountMastodon(_request, client, BASE_URL);
 				reply.send(await account.addFollow());
 			} catch (e: any) {
-				console.error(e);
-				console.error(e.response.data);
+				/* console.error(e);
+				console.error(e.response.data); */
 				reply.code(401).send(e.response.data);
 			}
 		});
@@ -372,8 +372,8 @@ export class MastodonApiServerService {
 				const account = new ApiAccountMastodon(_request, client, BASE_URL);
 				reply.send(await account.rmFollow());
 			} catch (e: any) {
-				console.error(e);
-				console.error(e.response.data);
+				/* console.error(e);
+				console.error(e.response.data); */
 				reply.code(401).send(e.response.data);
 			}
 		});
@@ -386,8 +386,8 @@ export class MastodonApiServerService {
 				const account = new ApiAccountMastodon(_request, client, BASE_URL);
 				reply.send(await account.addBlock());
 			} catch (e: any) {
-				console.error(e);
-				console.error(e.response.data);
+				/* console.error(e);
+				console.error(e.response.data); */
 				reply.code(401).send(e.response.data);
 			}
 		});
@@ -400,8 +400,8 @@ export class MastodonApiServerService {
 				const account = new ApiAccountMastodon(_request, client, BASE_URL);
 				reply.send(await account.rmBlock());
 			} catch (e: any) {
-				console.error(e);
-				console.error(e.response.data);
+				/* console.error(e);
+				console.error(e.response.data); */
 				reply.code(401).send(e.response.data);
 			}
 		});
@@ -414,8 +414,8 @@ export class MastodonApiServerService {
 				const account = new ApiAccountMastodon(_request, client, BASE_URL);
 				reply.send(await account.addMute());
 			} catch (e: any) {
-				console.error(e);
-				console.error(e.response.data);
+				/* console.error(e);
+				console.error(e.response.data); */
 				reply.code(401).send(e.response.data);
 			}
 		});
@@ -428,8 +428,8 @@ export class MastodonApiServerService {
 				const account = new ApiAccountMastodon(_request, client, BASE_URL);
 				reply.send(await account.rmMute());
 			} catch (e: any) {
-				console.error(e);
-				console.error(e.response.data);
+				/* console.error(e);
+				console.error(e.response.data); */
 				reply.code(401).send(e.response.data);
 			}
 		});
@@ -442,8 +442,8 @@ export class MastodonApiServerService {
 				const data = await client.getFollowedTags();
 				reply.send(data.data);
 			} catch (e: any) {
-				console.error(e);
-				console.error(e.response.data);
+				/* console.error(e);
+				console.error(e.response.data); */
 				reply.code(401).send(e.response.data);
 			}
 		});
@@ -456,8 +456,8 @@ export class MastodonApiServerService {
 				const account = new ApiAccountMastodon(_request, client, BASE_URL);
 				reply.send(await account.getBookmarks());
 			} catch (e: any) {
-				console.error(e);
-				console.error(e.response.data);
+				/* console.error(e);
+				console.error(e.response.data); */
 				reply.code(401).send(e.response.data);
 			}
 		});
@@ -470,8 +470,8 @@ export class MastodonApiServerService {
 				const account = new ApiAccountMastodon(_request, client, BASE_URL);
 				reply.send(await account.getFavourites());
 			} catch (e: any) {
-				console.error(e);
-				console.error(e.response.data);
+				/* console.error(e);
+				console.error(e.response.data); */
 				reply.code(401).send(e.response.data);
 			}
 		});
@@ -484,8 +484,8 @@ export class MastodonApiServerService {
 				const account = new ApiAccountMastodon(_request, client, BASE_URL);
 				reply.send(await account.getMutes());
 			} catch (e: any) {
-				console.error(e);
-				console.error(e.response.data);
+				/* console.error(e);
+				console.error(e.response.data); */
 				reply.code(401).send(e.response.data);
 			}
 		});
@@ -498,8 +498,8 @@ export class MastodonApiServerService {
 				const account = new ApiAccountMastodon(_request, client, BASE_URL);
 				reply.send(await account.getBlocks());
 			} catch (e: any) {
-				console.error(e);
-				console.error(e.response.data);
+				/* console.error(e);
+				console.error(e.response.data); */
 				reply.code(401).send(e.response.data);
 			}
 		});
@@ -512,8 +512,8 @@ export class MastodonApiServerService {
 				const data = await client.getFollowRequests( ((_request.query as any) || { limit: 20 }).limit );
 				reply.send(data.data.map((account) => convertAccount(account as Entity.Account)));
 			} catch (e: any) {
-				console.error(e);
-				console.error(e.response.data);
+				/* console.error(e);
+				console.error(e.response.data); */
 				reply.code(401).send(e.response.data);
 			}
 		});
@@ -526,8 +526,8 @@ export class MastodonApiServerService {
 				const account = new ApiAccountMastodon(_request, client, BASE_URL);
 				reply.send(await account.acceptFollow());
 			} catch (e: any) {
-				console.error(e);
-				console.error(e.response.data);
+				/* console.error(e);
+				console.error(e.response.data); */
 				reply.code(401).send(e.response.data);
 			}
 		});
@@ -540,8 +540,8 @@ export class MastodonApiServerService {
 				const account = new ApiAccountMastodon(_request, client, BASE_URL);
 				reply.send(await account.rejectFollow());
 			} catch (e: any) {
-				console.error(e);
-				console.error(e.response.data);
+				/* console.error(e);
+				console.error(e.response.data); */
 				reply.code(401).send(e.response.data);
 			}
 		});
@@ -556,8 +556,8 @@ export class MastodonApiServerService {
 				const search = new ApiSearchMastodon(_request, client, BASE_URL);
 				reply.send(await search.SearchV1());
 			} catch (e: any) {
-				console.error(e);
-				console.error(e.response.data);
+				/* console.error(e);
+				console.error(e.response.data); */
 				reply.code(401).send(e.response.data);
 			}
 		});
@@ -570,8 +570,8 @@ export class MastodonApiServerService {
 				const search = new ApiSearchMastodon(_request, client, BASE_URL);
 				reply.send(await search.SearchV2());
 			} catch (e: any) {
-				console.error(e);
-				console.error(e.response.data);
+				/* console.error(e);
+				console.error(e.response.data); */
 				reply.code(401).send(e.response.data);
 			}
 		});
@@ -584,8 +584,8 @@ export class MastodonApiServerService {
 				const search = new ApiSearchMastodon(_request, client, BASE_URL);
 				reply.send(await search.getStatusTrends());
 			} catch (e: any) {
-				console.error(e);
-				console.error(e.response.data);
+				/* console.error(e);
+				console.error(e.response.data); */
 				reply.code(401).send(e.response.data);
 			}
 		});
@@ -598,8 +598,8 @@ export class MastodonApiServerService {
 				const search = new ApiSearchMastodon(_request, client, BASE_URL);
 				reply.send(await search.getSuggestions());
 			} catch (e: any) {
-				console.error(e);
-				console.error(e.response.data);
+				/* console.error(e);
+				console.error(e.response.data); */
 				reply.code(401).send(e.response.data);
 			}
 		});
@@ -614,8 +614,8 @@ export class MastodonApiServerService {
 				const notify = new ApiNotifyMastodon(_request, client);
 				reply.send(await notify.getNotifications());
 			} catch (e: any) {
-				console.error(e);
-				console.error(e.response.data);
+				/* console.error(e);
+				console.error(e.response.data); */
 				reply.code(401).send(e.response.data);
 			}
 		});
@@ -628,8 +628,8 @@ export class MastodonApiServerService {
 				const notify = new ApiNotifyMastodon(_request, client);
 				reply.send(await notify.getNotification());
 			} catch (e: any) {
-				console.error(e);
-				console.error(e.response.data);
+				/* console.error(e);
+				console.error(e.response.data); */
 				reply.code(401).send(e.response.data);
 			}
 		});
@@ -642,8 +642,8 @@ export class MastodonApiServerService {
 				const notify = new ApiNotifyMastodon(_request, client);
 				reply.send(await notify.rmNotification());
 			} catch (e: any) {
-				console.error(e);
-				console.error(e.response.data);
+				/* console.error(e);
+				console.error(e.response.data); */
 				reply.code(401).send(e.response.data);
 			}
 		});
@@ -656,8 +656,8 @@ export class MastodonApiServerService {
 				const notify = new ApiNotifyMastodon(_request, client);
 				reply.send(await notify.rmNotifications());
 			} catch (e: any) {
-				console.error(e);
-				console.error(e.response.data);
+				/* console.error(e);
+				console.error(e.response.data); */
 				reply.code(401).send(e.response.data);
 			}
 		});

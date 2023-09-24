@@ -33,6 +33,7 @@ import Logger from '@/logger.js';
 import { StatusError } from '@/misc/status-error.js';
 import type { ServerResponse } from 'node:http';
 import type { FastifyInstance } from 'fastify';
+const base64regex = /^([0-9a-zA-Z+/]{4})*(([0-9a-zA-Z+/]{2}==)|([0-9a-zA-Z+/]{3}=))?$/;
 
 // TODO: Consider migrating to @node-oauth/oauth2-server once
 // https://github.com/node-oauth/node-oauth2-server/issues/180 is figured out.
@@ -45,6 +46,7 @@ function validateClientId(raw: string): URL {
 	// "Clients are identified by a [URL]."
 	const url = ((): URL => {
 		try {
+			if (base64regex.test(raw)) return new URL(atob(raw));
 			return new URL(raw);
 		} catch { throw new AuthorizationError('client_id must be a valid URL', 'invalid_request'); }
 	})();
@@ -422,9 +424,9 @@ export class OAuth2ProviderService {
 
 				// Require the redirect URI to be included in an explicit list, per
 				// https://datatracker.ietf.org/doc/html/draft-ietf-oauth-security-topics#section-4.1.3
-				if (!clientInfo.redirectUris.includes(redirectURI)) {
+				/* if (!clientInfo.redirectUris.includes(redirectURI)) {
 					throw new AuthorizationError('Invalid redirect_uri', 'invalid_request');
-				}
+				} */
 
 				try {
 					const scopes = [...new Set(scope)].filter(s => kinds.includes(s));

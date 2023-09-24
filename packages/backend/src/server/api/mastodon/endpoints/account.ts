@@ -52,9 +52,9 @@ export class ApiAccountMastodon {
 			console.log(acct);
 			return acct;
 		} catch (e: any) {
-			console.error(e);
-			console.error(e.response.data);
-			return e.response.data;
+			/* console.error(e);
+			console.error(e.response.data); */
+			return e.response;
 		}
 	}
 
@@ -63,9 +63,9 @@ export class ApiAccountMastodon {
 			const data = await this.client.updateCredentials(this.request.body as any);
 			return convertAccount(data.data);
 		} catch (e: any) {
-			console.error(e);
-			console.error(e.response.data);
-			return e.response.data;
+			/* console.error(e);
+			console.error(e.response.data); */
+			return e.response;
 		}
 	}
 
@@ -74,9 +74,9 @@ export class ApiAccountMastodon {
 			const data = await this.client.search((this.request.query as any).acct, { type: 'accounts' });
 			return convertAccount(data.data.accounts[0]);
 		} catch (e: any) {
-			console.error(e);
-			console.error(e.response.data);
-			return e.response.data;
+			/* console.error(e);
+			console.error(e.response.data); */
+			return e.response;
 		}
 	}
 
