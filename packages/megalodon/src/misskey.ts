@@ -220,47 +220,77 @@ export default class Misskey implements MegalodonInterface {
       language?: string
     } | null
     fields_attributes?: Array<{ name: string; value: string }>
-  }): Promise<Response<Entity.Account>> {
+  }, file?: any): Promise<Response<Entity.Account>> {
     let params = {}
-    if (options) {
-      if (options.bot !== undefined) {
-        params = Object.assign(params, {
-          isBot: options.bot
-        })
-      }
-      if (options.display_name) {
-        params = Object.assign(params, {
-          name: options.display_name
-        })
-      }
-      if (options.note) {
-        params = Object.assign(params, {
-          description: options.note
-        })
-      }
-      if (options.locked !== undefined) {
-        params = Object.assign(params, {
-          isLocked: options.locked
-        })
-      }
-      if (options.source) {
-        if (options.source.language) {
+    if (!file) {
+      if (options) {
+        if (options.bot !== undefined) {
           params = Object.assign(params, {
-            lang: options.source.language
+            isBot: options.bot
           })
         }
-        if (options.source.sensitive) {
+        if (options.display_name) {
           params = Object.assign(params, {
-            alwaysMarkNsfw: options.source.sensitive
+            name: options.display_name
           })
         }
+        if (options.note) {
+          params = Object.assign(params, {
+            description: options.note
+          })
+        }
+        if (options.locked !== undefined) {
+          params = Object.assign(params, {
+            isLocked: options.locked
+          })
+        }
+        if (options.source) {
+          if (options.source.language) {
+            params = Object.assign(params, {
+              lang: options.source.language
+            })
+          }
+          if (options.source.sensitive) {
+            params = Object.assign(params, {
+              alwaysMarkNsfw: options.source.sensitive
+            })
+          }
+        }
       }
-    }
-    return this.client.post<MisskeyAPI.Entity.UserDetail>('/api/i/update', params).then(res => {
-      return Object.assign(res, {
-        data: MisskeyAPI.Converter.userDetail(res.data)
+      return this.client.post<MisskeyAPI.Entity.UserDetail>('/api/i/update', params).then(res => {
+        return Object.assign(res, {
+          data: MisskeyAPI.Converter.userDetail(res.data)
+        })
       })
-    })
+    } else {
+      const formData = new FormData()
+      formData.append('file', fs.createReadStream(file.path), {
+        contentType: file.mimetype,
+      });
+      if (file.originalname != null && file.originalname !== "file") formData.append("name", file.originalname);
+      let headers: { [key: string]: string } = {}
+      if (typeof formData.getHeaders === 'function') {
+        headers = formData.getHeaders()
+      }
+      await this.client
+        .post<MisskeyAPI.Entity.File>('/api/drive/files/create', formData, headers)
+        .then(res => {
+          if (file.name === "header") {
+            params = Object.assign(params, {
+              bannerId: res.data.id
+            })
+          } else if (file.name === "avatar") {
+            params = Object.assign(params, {
+              avatarId: res.data.id
+            })
+          }
+        })
+      return this.client.post<MisskeyAPI.Entity.UserDetail>('/api/i/update', params).then(res => {
+        return Object.assign(res, {
+          data: MisskeyAPI.Converter.userDetail(res.data)
+        })
+      })
+    }
   }
 
   /**
