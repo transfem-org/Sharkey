@@ -49,7 +49,7 @@ async function getFeaturedUser( BASE_URL: string, host: string, accessTokens: st
 		return data.map((u) => {
 			return {
 				source: 'past_interactions',
-				account: Converter.userDetail(u, BASE_URL),
+				account: Converter.userDetail(u, host),
 			};
 		});
 	} catch (e: any) {
