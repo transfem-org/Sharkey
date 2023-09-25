@@ -264,7 +264,7 @@ namespace MisskeyAPI {
         id: n.id,
         uri: n.uri ? n.uri : host ? `https://${host}/notes/${n.id}` : '',
         url: n.url ? n.url : host ? `https://${host}/notes/${n.id}` : '',
-        account: userDetail(n.user, n.user.host ? n.user.host : host ? host : null),
+        account: user(n.user, n.user.host ? n.user.host : host ? host : null),
         in_reply_to_id: n.replyId,
         in_reply_to_account_id: n.reply?.userId ?? null,
         reblog: n.renote ? note(n.renote, n.user.host ? n.user.host : host ? host : null) : null,

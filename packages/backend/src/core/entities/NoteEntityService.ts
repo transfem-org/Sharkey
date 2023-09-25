@@ -310,7 +310,7 @@ export class NoteEntityService implements OnModuleInit {
 			createdAt: note.createdAt.toISOString(),
 			userId: note.userId,
 			user: this.userEntityService.pack(note.user ?? note.userId, me, {
-				detail: true,
+				detail: false,
 			}),
 			text: text,
 			cw: note.cw,
