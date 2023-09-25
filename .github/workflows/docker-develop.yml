@@ -5,8 +5,8 @@ on:
     branches:
       - develop
     paths:
-      - packages
-      - locales
+      - packages/**
+      - locales/**
   workflow_dispatch:
 
 env:
