@@ -10,5 +10,6 @@ namespace Entity {
     options: Array<PollOption>
     voted: boolean
     emojis?: []
+    own_votes?: Array<number>
   }
 }

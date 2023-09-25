@@ -242,18 +242,19 @@ namespace MisskeyAPI {
       }
     }
 
-    export const poll = (p: Entity.Poll): MegalodonEntity.Poll => {
+    export const poll = (p: Entity.Poll, id: string): MegalodonEntity.Poll => {
       const now = dayjs()
       const expire = dayjs(p.expiresAt)
       const count = p.choices.reduce((sum, choice) => sum + choice.votes, 0)
       return {
-        id: '',
+        id: id,
         expires_at: p.expiresAt,
         expired: now.isAfter(expire),
         multiple: p.multiple,
         votes_count: count,
         options: Array.isArray(p.choices) ? p.choices.map(c => choice(c)) : [],
         voted: Array.isArray(p.choices) ? p.choices.some(c => c.isVoted) : false,
+        own_votes: Array.isArray(p.choices) ? p.choices.filter((c) => c.isVoted).map((c) => p.choices.indexOf(c)) : [],
         emojis: [],
       }
     }
@@ -294,7 +295,7 @@ namespace MisskeyAPI {
         mentions: [],
         tags: [],
         card: null,
-        poll: n.poll ? poll(n.poll) : null,
+        poll: n.poll ? poll(n.poll, n.id) : null,
         application: null,
         language: null,
         pinned: null,

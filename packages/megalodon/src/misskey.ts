@@ -1502,42 +1502,50 @@ export default class Misskey implements MegalodonInterface {
   // statuses/polls
   // ======================================
   public async getPoll(_id: string): Promise<Response<Entity.Poll>> {
-    return new Promise((_, reject) => {
-      const err = new NoImplementedError('misskey does not support')
-      reject(err)
-    })
+    const res = await this.getStatus(_id);
+		if (res.data.poll == null) throw new Error("poll not found");
+		return { ...res, data: res.data.poll };
   }
 
   /**
    * POST /api/notes/polls/vote
    */
-  public async votePoll(_id: string, choices: Array<number>, status_id?: string | null): Promise<Response<Entity.Poll>> {
-    if (!status_id) {
-      return new Promise((_, reject) => {
-        const err = new ArgumentError('status_id is required')
-        reject(err)
-      })
-    }
-    const params = {
-      noteId: status_id,
-      choice: choices[0]
-    }
-    await this.client.post<{}>('/api/notes/polls/vote', params)
+  public async votePoll(_id: string, choices: Array<number>): Promise<Response<Entity.Poll>> {
+    if (!_id) {
+			return new Promise((_, reject) => {
+				const err = new ArgumentError("id is required");
+				reject(err);
+			});
+		}
+
+		for (const c of choices) {
+			const params = {
+				noteId: _id,
+				choice: +c,
+			};
+			await this.client.post<{}>("/api/notes/polls/vote", params);
+		}
+
     const res = await this.client
-      .post<MisskeyAPI.Entity.Note>('/api/notes/show', {
-        noteId: status_id
-      })
-      .then(res => {
-        const note = MisskeyAPI.Converter.note(res.data, this.baseUrl)
-        return { ...res, data: note.poll }
-      })
+    .post<MisskeyAPI.Entity.Note>("/api/notes/show", {
+      noteId: _id,
+    })
+    .then(async (res) => {
+      const note = await MisskeyAPI.Converter.note(
+        res.data,
+        this.baseUrl,
+      );
+      return { ...res, data: note.poll };
+    });
+
     if (!res.data) {
       return new Promise((_, reject) => {
-        const err = new UnexpectedError('poll does not exist')
-        reject(err)
-      })
+        const err = new UnexpectedError("poll does not exist");
+        reject(err);
+      });
     }
-    return { ...res, data: res.data }
+    
+    return { ...res, data: res.data };
   }
 
   // ======================================
