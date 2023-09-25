@@ -256,7 +256,7 @@ namespace MisskeyAPI {
         account: user(n.user, n.user.host ? n.user.host : host ? host : null),
         in_reply_to_id: n.replyId,
         in_reply_to_account_id: null,
-        reblog: n.renote ? note(n.renote) : null,
+        reblog: n.renote ? note(n.renote, n.user.host ? n.user.host : host ? host : null) : null,
         content: n.text
           ? n.text
               .replace(/&/g, '&amp;')
@@ -269,6 +269,7 @@ namespace MisskeyAPI {
           : '',
         plain_content: n.text ? n.text : null,
         created_at: n.createdAt,
+        createdAt: n.createdAt,
         emojis: mapEmojis(n.emojis).concat(mapReactionEmojis(n.reactionEmojis)),
         replies_count: n.repliesCount,
         reblogs_count: n.renoteCount,

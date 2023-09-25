@@ -1177,25 +1177,25 @@ export default class Misskey implements MegalodonInterface {
   /**
    * POST /api/notes/renotes
    */
-  public async getStatusRebloggedBy(id: string): Promise<Response<Array<Entity.Account>>> {
+  public async getStatusRebloggedBy(id: string, host?: string): Promise<Response<Array<Entity.Account>>> {
     return this.client
       .post<Array<MisskeyAPI.Entity.Note>>('/api/notes/renotes', {
         noteId: id
       })
       .then(res => ({
         ...res,
-        data: res.data.map(n => MisskeyAPI.Converter.user(n.user))
+        data: res.data.map(n => MisskeyAPI.Converter.user(n.user, host))
       }))
   }
 
-  public async getStatusFavouritedBy(_id: string): Promise<Response<Array<Entity.Account>>> {
+  public async getStatusFavouritedBy(_id: string, host?: string): Promise<Response<Array<Entity.Account>>> {
     return this.client.post<Array<MisskeyAPI.Entity.Reaction>>("/api/notes/reactions", {
       noteId: _id,
     })
     .then(async (res) => ({
       ...res,
       data: (
-        await Promise.all(res.data.map((n) => this.getAccount(n.user.id)))
+        await Promise.all(res.data.map((n) => this.getAccount(n.user.id, host)))
       ).map((p) => p.data),
     }));
   }

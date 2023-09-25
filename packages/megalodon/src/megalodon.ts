@@ -734,14 +734,14 @@ export interface MegalodonInterface {
    * @param id The target status id.
    * @return Array of accounts.
    */
-  getStatusRebloggedBy(id: string): Promise<Response<Array<Entity.Account>>>
+  getStatusRebloggedBy(id: string, host?: string): Promise<Response<Array<Entity.Account>>>
   /**
    * See who favourited a status
    *
    * @param id The target status id.
    * @return Array of accounts.
    */
-  getStatusFavouritedBy(id: string): Promise<Response<Array<Entity.Account>>>
+  getStatusFavouritedBy(id: string, host?: string): Promise<Response<Array<Entity.Account>>>
   /**
    * Favourite a status.
    *
