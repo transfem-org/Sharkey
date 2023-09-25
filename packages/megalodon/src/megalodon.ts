@@ -149,7 +149,7 @@ export interface MegalodonInterface {
       language?: string
     }
     fields_attributes?: Array<{ name: string; value: string }>
-  }, file?: any): Promise<Response<Entity.Account>>
+  }): Promise<Response<Entity.Account>>
   /**
    * View information about a profile.
    *

@@ -236,20 +236,14 @@ export class MastodonApiServerService {
 			}
 		});
 
-		fastify.patch('/v1/accounts/update_credentials', { preHandler: upload.single('file') }, async (_request, reply) => {
+		fastify.patch('/v1/accounts/update_credentials', async (_request, reply) => {
 			const BASE_URL = `${_request.protocol}://${_request.hostname}`;
 			const accessTokens = _request.headers.authorization;
 			const client = getClient(BASE_URL, accessTokens); // we are using this here, because in private mode some info isnt
 			// displayed without being logged in
 			try {
-				const multipartData = await _request.file;
-				if (!multipartData) {
-					const data = await client.updateCredentials(_request.body!);
-					reply.send(convertAccount(data.data));
-				} else {
-					const data = await client.updateCredentials(_request.body!, multipartData);
-					reply.send(convertAccount(data.data));
-				}
+				const data = await client.updateCredentials(_request.body!);
+				reply.send(convertAccount(data.data));
 			} catch (e: any) {
 				/* console.error(e); */
 				reply.code(401).send(e.response.data);

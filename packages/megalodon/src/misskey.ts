@@ -220,7 +220,7 @@ export default class Misskey implements MegalodonInterface {
       language?: string
     } | null
     fields_attributes?: Array<{ name: string; value: string }>
-  }, file?: any): Promise<Response<Entity.Account>> {
+  }): Promise<Response<Entity.Account>> {
     let params = {}
     if (options) {
       if (options.bot !== undefined) {
@@ -231,18 +231,6 @@ export default class Misskey implements MegalodonInterface {
       if (options.display_name) {
         params = Object.assign(params, {
           name: options.display_name
-        })
-      }
-      if (options.avatar) {
-        const media = await this.uploadMedia(file);
-        params = Object.assign(params, {
-          avatarId: media.data.id
-        })
-      }
-      if (options.header) {
-        const media = await this.uploadMedia(file);
-        params = Object.assign(params, {
-          headerId: media.data.id
         })
       }
       if (options.note) {
