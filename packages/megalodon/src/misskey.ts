@@ -1086,7 +1086,7 @@ export default class Misskey implements MegalodonInterface {
         let pollParam = {
           choices: options.poll.options,
           expiresAt: null,
-          expiredAfter: parseInt(options.poll.expires_in.toString())
+          expiredAfter: options.poll.expires_in * 1000
         }
         if (options.poll.multiple !== undefined) {
           pollParam = Object.assign(pollParam, {
