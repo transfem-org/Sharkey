@@ -1503,7 +1503,7 @@ export default class Misskey implements MegalodonInterface {
   // ======================================
   public async getPoll(_id: string): Promise<Response<Entity.Poll>> {
     const res = await this.getStatus(_id);
-		if (res.data.poll == null) throw new Error("poll not found");
+		if (res.data.poll == null) throw new Error('poll not found');
 		return { ...res, data: res.data.poll };
   }
 
@@ -1513,7 +1513,7 @@ export default class Misskey implements MegalodonInterface {
   public async votePoll(_id: string, choices: Array<number>): Promise<Response<Entity.Poll>> {
     if (!_id) {
 			return new Promise((_, reject) => {
-				const err = new ArgumentError("id is required");
+				const err = new ArgumentError('id is required');
 				reject(err);
 			});
 		}
@@ -1523,11 +1523,11 @@ export default class Misskey implements MegalodonInterface {
 				noteId: _id,
 				choice: +c,
 			};
-			await this.client.post<{}>("/api/notes/polls/vote", params);
+			await this.client.post<{}>('/api/notes/polls/vote', params);
 		}
 
     const res = await this.client
-    .post<MisskeyAPI.Entity.Note>("/api/notes/show", {
+    .post<MisskeyAPI.Entity.Note>('/api/notes/show', {
       noteId: _id,
     })
     .then(async (res) => {
@@ -1540,11 +1540,11 @@ export default class Misskey implements MegalodonInterface {
 
     if (!res.data) {
       return new Promise((_, reject) => {
-        const err = new UnexpectedError("poll does not exist");
+        const err = new UnexpectedError('poll does not exist');
         reject(err);
       });
     }
-    
+
     return { ...res, data: res.data };
   }
 
