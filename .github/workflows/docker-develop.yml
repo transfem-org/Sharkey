@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - develop
+    paths:
+      - packages
+      - locales
   workflow_dispatch:
 
 env:
