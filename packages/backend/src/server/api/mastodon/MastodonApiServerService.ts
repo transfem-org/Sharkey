@@ -236,7 +236,7 @@ export class MastodonApiServerService {
 			}
 		});
 
-		fastify.patch('/v1/accounts/update_credentials', async (_request, reply) => {
+		fastify.patch('/v1/accounts/update_credentials', { preHandler: upload.none() }, async (_request, reply) => {
 			const BASE_URL = `${_request.protocol}://${_request.hostname}`;
 			const accessTokens = _request.headers.authorization;
 			const client = getClient(BASE_URL, accessTokens); // we are using this here, because in private mode some info isnt
