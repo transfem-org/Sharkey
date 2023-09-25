@@ -225,7 +225,7 @@ export default class Misskey implements MegalodonInterface {
     if (options) {
       if (options.bot !== undefined) {
         params = Object.assign(params, {
-          isBot: Boolean(options.bot)
+          isBot: options.bot.toString() === 'true' ? true : false
         })
       }
       if (options.display_name) {
@@ -240,7 +240,7 @@ export default class Misskey implements MegalodonInterface {
       }
       if (options.locked !== undefined) {
         params = Object.assign(params, {
-          isLocked: Boolean(options.locked)
+          isLocked: options.locked.toString() === 'true' ? true : false
         })
       }
       if (options.source) {
