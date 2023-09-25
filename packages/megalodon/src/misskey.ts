@@ -1203,7 +1203,7 @@ export default class Misskey implements MegalodonInterface {
       );
       const context: Entity.Context = {
         ancestors: parents.reverse(),
-        descendants: res.data.map(n => MisskeyAPI.Converter.note(n, this.baseUrl))
+        descendants: this.dfs(await Promise.all(res.data.map(n => MisskeyAPI.Converter.note(n, this.baseUrl))))
       }
       return {
         ...res,
@@ -1211,6 +1211,48 @@ export default class Misskey implements MegalodonInterface {
       }
     })
   }
+
+  private dfs(graph: Entity.Status[]) {
+		// we don't need to run dfs if we have zero or one elements
+		if (graph.length <= 1) {
+			return graph;
+		}
+
+		// sort the graph first, so we can grab the correct starting point
+		graph = graph.sort((a, b) => {
+			if (a.id < b.id) return -1;
+			if (a.id > b.id) return 1;
+			return 0;
+		});
+
+		const initialPostId = graph[0].in_reply_to_id;
+
+		// populate stack with all top level replies
+		const stack = graph
+			.filter((reply) => reply.in_reply_to_id === initialPostId)
+			.reverse();
+		const visited = new Set();
+		const result = [];
+
+		while (stack.length) {
+			const currentPost = stack.pop();
+
+			if (currentPost === undefined) return result;
+
+			if (!visited.has(currentPost)) {
+				visited.add(currentPost);
+				result.push(currentPost);
+
+				for (const reply of graph
+					.filter((reply) => reply.in_reply_to_id === currentPost.id)
+					.reverse()) {
+					stack.push(reply);
+				}
+			}
+		}
+
+		return result;
+	}
 
   public async getStatusSource(_id: string): Promise<Response<Entity.StatusSource>> {
     return new Promise((_, reject) => {
