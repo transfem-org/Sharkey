@@ -204,8 +204,8 @@ namespace MisskeyAPI {
           width: f.properties.width,
           height: f.properties.height
         },
-        description: null,
-        blurhash: null
+        description: f.comment ? f.comment : null,
+        blurhash: f.blurhash ? f.blurhash : null
       }
     }
 

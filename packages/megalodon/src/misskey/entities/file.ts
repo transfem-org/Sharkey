@@ -13,6 +13,8 @@ namespace MisskeyEntity {
       avgColor: string
     }
     url: string
+    comment?: string
+    blurhash?: string
     thumbnailUrl: string
   }
 }
