@@ -225,7 +225,7 @@ export default class Misskey implements MegalodonInterface {
     if (options) {
       if (options.bot !== undefined) {
         params = Object.assign(params, {
-          isBot: options.bot
+          isBot: options.bot ? true : false
         })
       }
       if (options.display_name) {
