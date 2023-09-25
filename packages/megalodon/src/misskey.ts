@@ -1145,7 +1145,7 @@ export default class Misskey implements MegalodonInterface {
       status?: string
       spoiler_text?: string
       sensitive?: boolean
-      media_ids?: Array<string>
+      media_ids?: Array<string> | null
       poll?: { options?: Array<string>; expires_in?: number; multiple?: boolean; hide_totals?: boolean }
       visibility?: "public" | "unlisted" | "private" | "direct"
     }
@@ -1155,10 +1155,12 @@ export default class Misskey implements MegalodonInterface {
       text: _options.status
     }
     if (_options) {
-      if (_options.media_ids) {
+      if (_options.media_ids && _options.media_ids.length > 0) {
         params = Object.assign(params, {
           fileIds: _options.media_ids
         })
+      } else {
+        _options.media_ids = null;
       }
       if (_options.poll) {
         let pollParam = {
