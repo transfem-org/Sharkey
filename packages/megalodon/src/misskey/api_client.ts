@@ -92,7 +92,7 @@ namespace MisskeyAPI {
         followers_count: u.followersCount ? u.followersCount : 0,
         following_count: u.followingCount ? u.followingCount : 0,
         statuses_count: u.notesCount ? u.notesCount : 0,
-        note: '',
+        note: u.description ? u.description : '',
         url: acctUrl,
         avatar: u.avatarUrl,
         avatar_static: u.avatarUrl,

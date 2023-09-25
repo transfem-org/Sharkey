@@ -6,6 +6,7 @@ namespace MisskeyEntity {
     name: string
     username: string
     createdAt?: string
+    description?: string
     followingCount?: number
     followersCount?: number
     notesCount?: number
