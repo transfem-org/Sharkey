@@ -224,7 +224,7 @@ export class ApiStatusMastodon {
 				if (body.media_ids) {
 					body.media_ids = (body.media_ids as string[]).map((p) => convertId(p, IdType.SharkeyId));
 				}
-				const data = await client.editStatus(convertId(_request.params.id, IdType.SharkeyId), _request.body!);
+				const data = await client.editStatus(convertId(_request.params.id, IdType.SharkeyId), body);
 				reply.send(convertStatus(data.data));
 			} catch (e: any) {
 				console.error(e);
