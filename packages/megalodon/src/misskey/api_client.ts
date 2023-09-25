@@ -72,10 +72,10 @@ namespace MisskeyAPI {
       host ? host = host.replace("https://", "") : null;
       let acct = u.username
       if (host) {
-        acct = `${u.username}@${host}`
+        acct = `@${u.username}@${host}`
       }
       if (u.host) {
-        acct = `${u.username}@${u.host}`
+        acct = `@${u.username}@${u.host}`
       }
       return {
         id: u.id,
@@ -108,10 +108,10 @@ namespace MisskeyAPI {
       host ? host = host.replace("https://", "") : null;
       let acct = u.username
       if (host) {
-        acct = `${u.username}@${host}`
+        acct = `@${u.username}@${host}`
       }
       if (u.host) {
-        acct = `${u.username}@${u.host}`
+        acct = `@${u.username}@${u.host}`
       }
       return {
         id: u.id,
