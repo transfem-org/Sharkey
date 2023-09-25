@@ -127,7 +127,7 @@ namespace MisskeyAPI {
         followers_count: u.followersCount,
         following_count: u.followingCount,
         statuses_count: u.notesCount,
-        note: u.description ? u.description : '',
+        note: u.description !== null || undefined ? u.description : '',
         url: u.host ? `https://${u.host}/@${u.username}` : host ? `https://${host}/@${u.username}` : acct,
         avatar: u.avatarUrl,
         avatar_static: u.avatarColor,
