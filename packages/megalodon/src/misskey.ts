@@ -2035,6 +2035,27 @@ export default class Misskey implements MegalodonInterface {
             })
           }
         }
+        const match = q.match(/^@?(?<user>[a-zA-Z0-9_]+)(?:@(?<host>[a-zA-Z0-9-.]+\.[a-zA-Z0-9-]+)|)$/);
+        if (match) {
+          const lookupQuery = {
+            username: match.groups?.user,
+            host: match.groups?.host,
+          };
+
+          return await this.client.post<MisskeyAPI.Entity.UserDetail>('/api/users/show', lookupQuery).then((res) => ({
+            ...res,
+            data: {
+              accounts: [
+                MisskeyAPI.Converter.userDetail(
+                  res.data,
+                  this.baseUrl,
+                ),
+              ],
+              statuses: [],
+              hashtags: [],
+            },
+          }));
+        }
         return this.client.post<Array<MisskeyAPI.Entity.UserDetail>>('/api/users/search', params).then(res => ({
           ...res,
           data: {
