@@ -217,7 +217,13 @@ export class ApiStatusMastodon {
 			const BASE_URL = `${_request.protocol}://${_request.hostname}`;
 			const accessTokens = _request.headers.authorization;
 			const client = getClient(BASE_URL, accessTokens);
+			const body: any = _request.body;
 			try {
+				if (body.media_ids) body.media_ids = undefined;
+				if (body.media_ids && !body.media_ids.length) body.media_ids = undefined;
+				if (body.media_ids) {
+					body.media_ids = (body.media_ids as string[]).map((p) => convertId(p, IdType.SharkeyId));
+				}
 				const data = await client.editStatus(convertId(_request.params.id, IdType.SharkeyId), _request.body!);
 				reply.send(convertStatus(data.data));
 			} catch (e: any) {
