@@ -156,7 +156,7 @@ export interface MegalodonInterface {
    * @param id The account ID.
    * @return An account.
    */
-  getAccount(id: string): Promise<Response<Entity.Account>>
+  getAccount(id: string, host?: string): Promise<Response<Entity.Account>>
   /**
    * Statuses posted to the given account.
    *

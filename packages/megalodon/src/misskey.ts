@@ -266,14 +266,14 @@ export default class Misskey implements MegalodonInterface {
   /**
    * POST /api/users/show
    */
-  public async getAccount(id: string): Promise<Response<Entity.Account>> {
+  public async getAccount(id: string, host?: string): Promise<Response<Entity.Account>> {
     return this.client
       .post<MisskeyAPI.Entity.UserDetail>('/api/users/show', {
         userId: id
       })
       .then(res => {
         return Object.assign(res, {
-          data: MisskeyAPI.Converter.userDetail(res.data)
+          data: MisskeyAPI.Converter.userDetail(res.data, host)
         })
       })
   }
