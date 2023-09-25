@@ -234,31 +234,13 @@ export default class Misskey implements MegalodonInterface {
         })
       }
       if (options.avatar) {
-        const formData = new FormData()
-        formData.append('file', fs.createReadStream(file.path), {
-          contentType: file.mimetype,
-        });
-        if (file.originalname != null && file.originalname !== "file") formData.append("name", file.originalname);
-        let headers: { [key: string]: string } = {}
-        if (typeof formData.getHeaders === 'function') {
-          headers = formData.getHeaders()
-        }
-        const media = await this.client.post<MisskeyAPI.Entity.File>('/api/drive/files/create', formData, headers);
+        const media = await this.uploadMedia(file);
         params = Object.assign(params, {
           avatarId: media.data.id
         })
       }
       if (options.header) {
-        const formData = new FormData()
-        formData.append('file', fs.createReadStream(file.path), {
-          contentType: file.mimetype,
-        });
-        if (file.originalname != null && file.originalname !== "file") formData.append("name", file.originalname);
-        let headers: { [key: string]: string } = {}
-        if (typeof formData.getHeaders === 'function') {
-          headers = formData.getHeaders()
-        }
-        const media = await this.client.post<MisskeyAPI.Entity.File>('/api/drive/files/create', formData, headers);
+        const media = await this.uploadMedia(file);
         params = Object.assign(params, {
           headerId: media.data.id
         })
