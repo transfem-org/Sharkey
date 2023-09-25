@@ -219,7 +219,7 @@ export class ApiStatusMastodon {
 			const client = getClient(BASE_URL, accessTokens);
 			const body: any = _request.body;
 			try {
-				if (body.media_ids) body.media_ids = undefined;
+				if (!body.media_ids) body.media_ids = undefined;
 				if (body.media_ids && !body.media_ids.length) body.media_ids = undefined;
 				if (body.media_ids) {
 					body.media_ids = (body.media_ids as string[]).map((p) => convertId(p, IdType.SharkeyId));

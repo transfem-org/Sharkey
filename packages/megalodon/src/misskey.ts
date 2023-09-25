@@ -1155,12 +1155,10 @@ export default class Misskey implements MegalodonInterface {
       text: _options.status
     }
     if (_options) {
-      if (_options.media_ids && _options.media_ids.length > 0) {
+      if (_options.media_ids) {
         params = Object.assign(params, {
           fileIds: _options.media_ids
         })
-      } else {
-        _options.media_ids = null;
       }
       if (_options.poll) {
         let pollParam = {
