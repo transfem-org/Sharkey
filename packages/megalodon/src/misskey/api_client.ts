@@ -265,7 +265,7 @@ namespace MisskeyAPI {
         url: n.url ? n.url : host ? `https://${host}/notes/${n.id}` : '',
         account: user(n.user, n.user.host ? n.user.host : host ? host : null),
         in_reply_to_id: n.replyId,
-        in_reply_to_account_id: null,
+        in_reply_to_account_id: n.reply?.userId ?? null,
         reblog: n.renote ? note(n.renote, n.user.host ? n.user.host : host ? host : null) : null,
         content: n.text
           ? n.text
@@ -282,9 +282,9 @@ namespace MisskeyAPI {
         emojis: mapEmojis(n.emojis).concat(mapReactionEmojis(n.reactionEmojis)),
         replies_count: n.repliesCount,
         reblogs_count: n.renoteCount,
-        favourites_count: 0,
+        favourites_count: getTotalReactions(n.reactions),
         reblogged: false,
-        favourited: false,
+        favourited: !!n.myReaction,
         muted: false,
         sensitive: Array.isArray(n.files) ? n.files.some(f => f.isSensitive) : false,
         spoiler_text: n.cw ? n.cw : '',
@@ -312,6 +312,12 @@ namespace MisskeyAPI {
         return []
       }
     }
+
+    export const getTotalReactions = (r: { [key: string]: number }): number => {
+			return Object.values(r).length > 0 ? Object.values(r).reduce(
+					(previousValue, currentValue) => previousValue + currentValue,
+				) : 0;
+		};
 
     export const mapReactions = (r: { [key: string]: number }, myReaction?: string): Array<MegalodonEntity.Reaction> => {
       return Object.keys(r).map(key => {
