@@ -1748,7 +1748,7 @@ export default class Misskey implements MegalodonInterface {
     }
     return this.client
       .post<Array<MisskeyAPI.Entity.Note>>('/api/notes/user-list-timeline', params)
-      .then(res => ({ ...res, data: res.data.map(n => MisskeyAPI.Converter.note(n)) }))
+      .then(res => ({ ...res, data: res.data.map(n => MisskeyAPI.Converter.note(n, this.baseUrl)) }))
   }
 
   // ======================================
