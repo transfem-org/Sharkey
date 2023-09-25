@@ -299,7 +299,7 @@ namespace MisskeyAPI {
         pinned: null,
         emoji_reactions: typeof n.reactions === 'object' ? mapReactions(n.reactions, n.myReaction) : [],
         bookmarked: false,
-        quote: n.renote && n.text ? note(n.renote, host) : null
+        quote: n.renote && n.text ? note(n.renote, host) : false
       }
     }
 
