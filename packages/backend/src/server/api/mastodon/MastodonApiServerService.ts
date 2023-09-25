@@ -93,7 +93,7 @@ export class MastodonApiServerService {
 					},
 					order: { id: 'ASC' },
 				});
-				const contact = admin == null ? null : convertAccount((await client.getAccount(admin.id, BASE_URL)).data);
+				const contact = admin == null ? null : convertAccount((await client.getAccount(admin.id)).data);
 				reply.send(await getInstance(data.data, contact, this.config, await this.metaService.fetch()));
 			} catch (e: any) {
 				/* console.error(e); */

@@ -266,14 +266,14 @@ export default class Misskey implements MegalodonInterface {
   /**
    * POST /api/users/show
    */
-  public async getAccount(id: string, host?: string): Promise<Response<Entity.Account>> {
+  public async getAccount(id: string): Promise<Response<Entity.Account>> {
     return this.client
       .post<MisskeyAPI.Entity.UserDetail>('/api/users/show', {
         userId: id
       })
       .then(res => {
         return Object.assign(res, {
-          data: MisskeyAPI.Converter.userDetail(res.data, host)
+          data: MisskeyAPI.Converter.userDetail(res.data, this.baseUrl)
         })
       })
   }
@@ -301,7 +301,7 @@ export default class Misskey implements MegalodonInterface {
         })
         .then(res => {
           if (res.data.pinnedNotes) {
-            return { ...res, data: res.data.pinnedNotes.map(n => MisskeyAPI.Converter.note(n, host)) }
+            return { ...res, data: res.data.pinnedNotes.map(n => MisskeyAPI.Converter.note(n, this.baseUrl)) }
           }
           return { ...res, data: [] }
         })
@@ -630,7 +630,7 @@ export default class Misskey implements MegalodonInterface {
     }
     return this.client.post<Array<MisskeyAPI.Entity.UserDetail>>('/api/users/search', params).then(res => {
       return Object.assign(res, {
-        data: res.data.map(u => MisskeyAPI.Converter.userDetail(u))
+        data: res.data.map(u => MisskeyAPI.Converter.userDetail(u, this.baseUrl))
       })
     })
   }
@@ -1225,14 +1225,14 @@ export default class Misskey implements MegalodonInterface {
       }))
   }
 
-  public async getStatusFavouritedBy(_id: string, host?: string): Promise<Response<Array<Entity.Account>>> {
+  public async getStatusFavouritedBy(_id: string): Promise<Response<Array<Entity.Account>>> {
     return this.client.post<Array<MisskeyAPI.Entity.Reaction>>("/api/notes/reactions", {
       noteId: _id,
     })
     .then(async (res) => ({
       ...res,
       data: (
-        await Promise.all(res.data.map((n) => this.getAccount(n.user.id, host)))
+        await Promise.all(res.data.map((n) => this.getAccount(n.user.id)))
       ).map((p) => p.data),
     }));
   }
@@ -2059,7 +2059,7 @@ export default class Misskey implements MegalodonInterface {
         return this.client.post<Array<MisskeyAPI.Entity.UserDetail>>('/api/users/search', params).then(res => ({
           ...res,
           data: {
-            accounts: res.data.map(u => MisskeyAPI.Converter.userDetail(u)),
+            accounts: res.data.map(u => MisskeyAPI.Converter.userDetail(u, this.baseUrl)),
             statuses: [],
             hashtags: []
           }
