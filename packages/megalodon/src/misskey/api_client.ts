@@ -87,7 +87,7 @@ namespace MisskeyAPI {
         noindex: null,
         suspended: null,
         limited: null,
-        created_at: '',
+        created_at: u.createdAt ? u.createdAt : '',
         createdAt: u.createdAt,
         followers_count: 0,
         following_count: 0,
