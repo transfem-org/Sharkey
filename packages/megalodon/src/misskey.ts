@@ -291,7 +291,8 @@ export default class Misskey implements MegalodonInterface {
       exclude_replies: boolean
       exclude_reblogs: boolean
       only_media?: boolean
-    }
+    },
+    host?: string
   ): Promise<Response<Array<Entity.Status>>> {
     if (options && options.pinned) {
       return this.client
@@ -300,7 +301,7 @@ export default class Misskey implements MegalodonInterface {
         })
         .then(res => {
           if (res.data.pinnedNotes) {
-            return { ...res, data: res.data.pinnedNotes.map(n => MisskeyAPI.Converter.note(n)) }
+            return { ...res, data: res.data.pinnedNotes.map(n => MisskeyAPI.Converter.note(n, host)) }
           }
           return { ...res, data: [] }
         })
@@ -342,7 +343,7 @@ export default class Misskey implements MegalodonInterface {
       }
     }
     return this.client.post<Array<MisskeyAPI.Entity.Note>>('/api/users/notes', params).then(res => {
-      const statuses: Array<Entity.Status> = res.data.map(note => MisskeyAPI.Converter.note(note))
+      const statuses: Array<Entity.Status> = res.data.map(note => MisskeyAPI.Converter.note(note, host))
       return Object.assign(res, {
         data: statuses
       })

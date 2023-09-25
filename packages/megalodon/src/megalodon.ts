@@ -182,7 +182,8 @@ export interface MegalodonInterface {
       exclude_replies?: boolean
       exclude_reblogs?: boolean
       only_media?: boolean
-    }
+    },
+    host?: string
   ): Promise<Response<Array<Entity.Status>>>
   /**
    * Favourites timeline of any user.

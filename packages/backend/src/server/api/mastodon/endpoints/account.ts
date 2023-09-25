@@ -107,6 +107,7 @@ export class ApiAccountMastodon {
 			const data = await this.client.getAccountStatuses(
 				convertId((this.request.params as any).id, IdType.SharkeyId), 
 				convertTimelinesArgsId(argsToBools(limitToInt(this.request.query as any))),
+				this.BASE_URL,
 			);
 			return data.data.map((status) => convertStatus(status));
 		} catch (e: any) {
