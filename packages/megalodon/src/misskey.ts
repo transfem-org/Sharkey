@@ -2320,10 +2320,9 @@ export default class Misskey implements MegalodonInterface {
   }
 
   public async dismissInstanceAnnouncement(_id: string): Promise<Response<Record<never, never>>> {
-    return new Promise((_, reject) => {
-      const err = new NoImplementedError('misskey does not support')
-      reject(err)
-    })
+    return this.client.post<{}>("/api/i/read-announcement", {
+			announcementId: _id,
+		});
   }
 
   public async addReactionToAnnouncement(_id: string, _name: string): Promise<Response<Record<never, never>>> {
