@@ -5,7 +5,11 @@ namespace MisskeyEntity {
     id: string
     name: string
     username: string
+    description?: string
     createdAt?: string
+    followingCount?: number
+    followersCount?: number
+    notesCount?: number
     host: string | null
     avatarUrl: string
     avatarColor: string
