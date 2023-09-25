@@ -800,13 +800,14 @@ export class MastodonApiServerService {
 			const accessTokens = _request.headers.authorization;
 			const client = getClient(BASE_URL, accessTokens);
 			try {
-				const data = await client.updateMedia(convertId(_request.params.id, IdType.SharkeyId), _request.body as any);
+				const data = await client.updateMedia(convertId(_request.params.id, IdType.SharkeyId), _request.body!);
 				reply.send(convertAttachment(data.data));
 			} catch (e: any) {
 				/* console.error(e); */
 				reply.code(401).send(e.response.data);
 			}
 		});
+		NoteEndpoint.updateStatus();
 
 		// DELETE Endpoint
 		NoteEndpoint.deleteStatus();

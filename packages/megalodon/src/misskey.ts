@@ -1147,12 +1147,53 @@ export default class Misskey implements MegalodonInterface {
       sensitive?: boolean
       media_ids?: Array<string>
       poll?: { options?: Array<string>; expires_in?: number; multiple?: boolean; hide_totals?: boolean }
+      visibility?: "public" | "unlisted" | "private" | "direct"
     }
   ): Promise<Response<Entity.Status>> {
-    return new Promise((_, reject) => {
-      const err = new NoImplementedError('misskey does not support')
-      reject(err)
-    })
+    let params = {
+      editId: _id,
+      text: _options.status
+    }
+    if (_options) {
+      if (_options.media_ids) {
+        params = Object.assign(params, {
+          fileIds: _options.media_ids
+        })
+      }
+      if (_options.poll) {
+        let pollParam = {
+          choices: _options.poll.options,
+          expiresAt: null,
+          expiredAfter: _options.poll.expires_in
+        }
+        if (_options.poll.multiple !== undefined) {
+          pollParam = Object.assign(pollParam, {
+            multiple: _options.poll.multiple
+          })
+        }
+        params = Object.assign(params, {
+          poll: pollParam
+        })
+      }
+      if (_options.sensitive) {
+        params = Object.assign(params, {
+          cw: ''
+        })
+      }
+      if (_options.spoiler_text) {
+        params = Object.assign(params, {
+          cw: _options.spoiler_text
+        })
+      }
+      if (_options.visibility) {
+        params = Object.assign(params, {
+          visibility: MisskeyAPI.Converter.encodeVisibility(_options.visibility)
+        })
+      }
+    }
+    return this.client
+      .post<MisskeyAPI.Entity.CreatedNote>('/api/notes/edit', params)
+      .then(res => ({ ...res, data: MisskeyAPI.Converter.note(res.data.createdNote, this.baseUrl) }))
   }
 
   /**

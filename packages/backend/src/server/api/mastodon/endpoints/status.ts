@@ -212,6 +212,21 @@ export class ApiStatusMastodon {
 		});
 	}
 
+	public async updateStatus() {
+		this.fastify.put<{ Params: { id: string } }>('/v1/statuses/:id', async (_request, reply) => {
+			const BASE_URL = `${_request.protocol}://${_request.hostname}`;
+			const accessTokens = _request.headers.authorization;
+			const client = getClient(BASE_URL, accessTokens);
+			try {
+				const data = await client.editStatus(convertId(_request.params.id, IdType.SharkeyId), _request.body!);
+				reply.send(convertStatus(data.data));
+			} catch (e: any) {
+				console.error(e);
+				reply.code(_request.is404 ? 404 : 401).send(e.response.data);
+			}
+		});
+	}
+
 	public async addFavourite() {
 		this.fastify.post<{ Params: { id: string } }>('/v1/statuses/:id/favourite', async (_request, reply) => {
 			const BASE_URL = `${_request.protocol}://${_request.hostname}`;
