@@ -11,6 +11,7 @@ namespace MisskeyEntity {
     notesCount?: number
     host: string | null
     avatarUrl: string
+    bannerUrl?: string | null
     avatarColor: string
     emojis: Array<Emoji> | { [key: string]: string }
   }
