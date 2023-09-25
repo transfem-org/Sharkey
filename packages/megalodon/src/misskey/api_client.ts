@@ -71,11 +71,11 @@ namespace MisskeyAPI {
     export const user = (u: Entity.User, host: string | null = null): MegalodonEntity.Account => {
       host ? host = host.replace("https://", "") : null;
       let acct = u.username
-      if (u.host) {
-        acct = `${u.username}@${u.host}`
-      }
       if (host) {
         acct = `${u.username}@${host}`
+      }
+      if (u.host) {
+        acct = `${u.username}@${u.host}`
       }
       return {
         id: u.id,
@@ -92,7 +92,7 @@ namespace MisskeyAPI {
         following_count: 0,
         statuses_count: 0,
         note: '',
-        url: acct,
+        url: u.host ? `https://${u.host}/@${u.username}` : host ? `https://${host}/@${u.username}` : acct,
         avatar: u.avatarUrl,
         avatar_static: u.avatarColor,
         header: '',
@@ -107,11 +107,11 @@ namespace MisskeyAPI {
     export const userDetail = (u: Entity.UserDetail, host: string | null = null): MegalodonEntity.Account => {
       host ? host = host.replace("https://", "") : null;
       let acct = u.username
-      if (u.host) {
-        acct = `${u.username}@${u.host}`
-      }
       if (host) {
         acct = `${u.username}@${host}`
+      }
+      if (u.host) {
+        acct = `${u.username}@${u.host}`
       }
       return {
         id: u.id,
@@ -128,7 +128,7 @@ namespace MisskeyAPI {
         following_count: u.followingCount,
         statuses_count: u.notesCount,
         note: u.description ? u.description : '',
-        url: acct,
+        url: u.host ? `https://${u.host}/@${u.username}` : host ? `https://${host}/@${u.username}` : acct,
         avatar: u.avatarUrl,
         avatar_static: u.avatarColor,
         header: u.bannerUrl,
