@@ -253,7 +253,7 @@ namespace MisskeyAPI {
         multiple: p.multiple,
         votes_count: count,
         options: Array.isArray(p.choices) ? p.choices.map(c => choice(c)) : [],
-        voted: Array.isArray(p.choices) ? p.choices.some(c => c.isVoted) : false
+        voted: Array.isArray(p.choices) ? p.choices.some(c => c.isVoted) : false,
       }
     }
 
@@ -299,7 +299,7 @@ namespace MisskeyAPI {
         pinned: null,
         emoji_reactions: typeof n.reactions === 'object' ? mapReactions(n.reactions, n.myReaction) : [],
         bookmarked: false,
-        quote: n.renote !== undefined && n.text !== null
+        quote: n.renote && n.text ? note(n.renote, host) : null
       }
     }
 
