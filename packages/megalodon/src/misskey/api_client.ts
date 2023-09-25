@@ -69,14 +69,15 @@ namespace MisskeyAPI {
     }
 
     export const user = (u: Entity.User, host: string | null = null): MegalodonEntity.Account => {
-      host ? host = host.replace("https://", "") : null;
-      let acct = u.username
-      if (host) {
-        acct = `@${u.username}@${host}`
-      }
-      if (u.host) {
-        acct = `@${u.username}@${u.host}`
-      }
+      let acct = u.username;
+			host ? host = host.replace("https://", "") : undefined;
+			let acctUrl = `https://${host || u.host || host}/@${
+				u.username
+			}`;
+			if (u.host) {
+				acct = `${u.username}@${u.host}`;
+				acctUrl = `https://${u.host}/@${u.username}`;
+			}
       return {
         id: u.id,
         username: u.username,
@@ -92,9 +93,9 @@ namespace MisskeyAPI {
         following_count: u.followingCount ? u.followingCount : 0,
         statuses_count: u.notesCount ? u.notesCount : 0,
         note: '',
-        url: u.host ? `https://${u.host}/@${u.username}` : host ? `https://${host}/@${u.username}` : acct,
+        url: acctUrl,
         avatar: u.avatarUrl,
-        avatar_static: u.avatarColor,
+        avatar_static: u.avatarUrl,
         header: '',
         header_static: '',
         emojis: mapEmojis(u.emojis),
@@ -105,14 +106,12 @@ namespace MisskeyAPI {
     }
 
     export const userDetail = (u: Entity.UserDetail, host: string | null = null): MegalodonEntity.Account => {
-      host ? host = host.replace("https://", "") : null;
-      let acct = u.username
-      if (host) {
-        acct = `@${u.username}@${host}`
-      }
-      if (u.host) {
-        acct = `@${u.username}@${u.host}`
-      }
+      let acct = u.username;
+			let acctUrl = `https://${u.host || host}/@${u.username}`;
+			if (u.host) {
+				acct = `${u.username}@${u.host}`;
+				acctUrl = `https://${u.host}/@${u.username}`;
+			}
       return {
         id: u.id,
         username: u.username,
@@ -128,11 +127,11 @@ namespace MisskeyAPI {
         following_count: u.followingCount,
         statuses_count: u.notesCount,
         note: u.description ? u.description : '',
-        url: u.host ? `https://${u.host}/@${u.username}` : host ? `https://${host}/@${u.username}` : acct,
+        url: acctUrl,
         avatar: u.avatarUrl,
-        avatar_static: u.avatarColor,
+        avatar_static: u.avatarUrl,
         header: u.bannerUrl,
-        header_static: u.bannerColor,
+        header_static: u.bannerUrl,
         emojis: mapEmojis(u.emojis),
         moved: null,
         fields: [],
