@@ -628,15 +628,6 @@ export default class Misskey implements MegalodonInterface {
       }
     }
     return this.client.post<Array<MisskeyAPI.Entity.UserDetail>>('/api/users/search', params).then(res => {
-      if ((res.data as any)["error"]) {
-        return Object.assign(res, {
-          data: {
-            accounts: [],
-            statuses: [],
-            hashtags: [],
-          }
-        })
-      }
       return Object.assign(res, {
         data: res.data.map(u => MisskeyAPI.Converter.userDetail(u, this.baseUrl))
       })
@@ -2135,7 +2126,11 @@ export default class Misskey implements MegalodonInterface {
             params = Object.assign(params, {
               limit: options.limit
             })
-          }
+          } else {
+						params = Object.assign(params, {
+							limit: 20,
+						});
+					}
           if (options.offset) {
             params = Object.assign(params, {
               offset: options.offset
@@ -2146,28 +2141,46 @@ export default class Misskey implements MegalodonInterface {
               localOnly: options.resolve
             })
           }
-        }
-        const match = q.match(/^@?(?<user>[a-zA-Z0-9_]+)(?:@(?<host>[a-zA-Z0-9-.]+\.[a-zA-Z0-9-]+)|)$/);
-        if (match) {
-          const lookupQuery = {
-            username: match.groups?.user,
-            host: match.groups?.host,
-          };
+        } else {
+					params = Object.assign(params, {
+						limit: 20,
+					});
+				}
+        try {
+          const match = q.match(/^@?(?<user>[a-zA-Z0-9_]+)(?:@(?<host>[a-zA-Z0-9-.]+\.[a-zA-Z0-9-]+)|)$/);
+          if (match) {
+            const lookupQuery = {
+              username: match.groups?.user,
+              host: match.groups?.host,
+            };
 
-          return await this.client.post<MisskeyAPI.Entity.UserDetail>('/api/users/show', lookupQuery).then((res) => ({
-            ...res,
-            data: {
-              accounts: [
-                MisskeyAPI.Converter.userDetail(
-                  res.data,
-                  this.baseUrl,
-                ),
-              ],
-              statuses: [],
-              hashtags: [],
-            },
-          }));
-        }
+            const result = await this.client.post<MisskeyAPI.Entity.UserDetail>('/api/users/show', lookupQuery).then((res) => ({
+              ...res,
+              data: {
+                accounts: [
+                  MisskeyAPI.Converter.userDetail(
+                    res.data,
+                    this.baseUrl,
+                  ),
+                ],
+                statuses: [],
+                hashtags: [],
+              },
+            }));
+            
+            if (result.status !== 200) {
+							result.status = 200;
+							result.statusText = "OK";
+							result.data = {
+								accounts: [],
+								statuses: [],
+								hashtags: [],
+							};
+						}
+
+						return result;
+          }
+        } catch {}
         return this.client.post<Array<MisskeyAPI.Entity.UserDetail>>('/api/users/search', params).then(res => ({
           ...res,
           data: {
