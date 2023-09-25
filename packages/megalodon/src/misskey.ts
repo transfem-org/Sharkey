@@ -610,7 +610,7 @@ export default class Misskey implements MegalodonInterface {
       max_id?: string
       since_id?: string
     }
-  ): Promise<Response<Array<Entity.Account>>> {
+  ): Promise<Response<Array<Entity.Account>> | any> {
     let params = {
       query: q,
       detail: true
@@ -631,7 +631,13 @@ export default class Misskey implements MegalodonInterface {
       return Object.assign(res, {
         data: res.data.map(u => MisskeyAPI.Converter.userDetail(u, this.baseUrl))
       })
-    })
+    }).catch(() => ({
+      data: {
+          accounts: [],
+          statuses: [],
+          hashtags: [],
+      }
+    }))
   }
 
   // ======================================
