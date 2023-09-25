@@ -256,7 +256,7 @@ export default class Misskey implements MegalodonInterface {
         }
       }
     }
-    return this.client.post<MisskeyAPI.Entity.UserDetail>('/api/i', params).then(res => {
+    return this.client.post<MisskeyAPI.Entity.UserDetail>('/api/i/update', params).then(res => {
       return Object.assign(res, {
         data: MisskeyAPI.Converter.userDetail(res.data)
       })
