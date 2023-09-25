@@ -24,7 +24,7 @@ export class ApiStatusMastodon {
 			const accessTokens = _request.headers.authorization;
 			const client = getClient(BASE_URL, accessTokens);
 			try {
-				const data = await client.getStatus(convertId(_request.params.id, IdType.SharkeyId), BASE_URL);
+				const data = await client.getStatus(convertId(_request.params.id, IdType.SharkeyId));
 				reply.send(convertStatus(data.data));
 			} catch (e: any) {
 				console.error(e);
@@ -71,7 +71,7 @@ export class ApiStatusMastodon {
 			const accessTokens = _request.headers.authorization;
 			const client = getClient(BASE_URL, accessTokens);
 			try {
-				const data = await client.getStatusRebloggedBy(convertId(_request.params.id, IdType.SharkeyId), BASE_URL);
+				const data = await client.getStatusRebloggedBy(convertId(_request.params.id, IdType.SharkeyId));
 				reply.send(data.data.map((account: Entity.Account) => convertAccount(account)));
 			} catch (e: any) {
 				console.error(e);
@@ -86,7 +86,7 @@ export class ApiStatusMastodon {
 			const accessTokens = _request.headers.authorization;
 			const client = getClient(BASE_URL, accessTokens);
 			try {
-				const data = await client.getStatusFavouritedBy(convertId(_request.params.id, IdType.SharkeyId), BASE_URL);
+				const data = await client.getStatusFavouritedBy(convertId(_request.params.id, IdType.SharkeyId));
 				reply.send(data.data.map((account: Entity.Account) => convertAccount(account)));
 			} catch (e: any) {
 				console.error(e);

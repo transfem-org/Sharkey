@@ -156,7 +156,7 @@ export interface MegalodonInterface {
    * @param id The account ID.
    * @return An account.
    */
-  getAccount(id: string, host?: string): Promise<Response<Entity.Account>>
+  getAccount(id: string): Promise<Response<Entity.Account>>
   /**
    * Statuses posted to the given account.
    *
@@ -182,8 +182,7 @@ export interface MegalodonInterface {
       exclude_replies?: boolean
       exclude_reblogs?: boolean
       only_media?: boolean
-    },
-    host?: string
+    }
   ): Promise<Response<Array<Entity.Status>>>
   /**
    * Favourites timeline of any user.
@@ -683,7 +682,7 @@ export interface MegalodonInterface {
    * @param id The target status id.
    * @return Status
    */
-  getStatus(id: string, host?: string): Promise<Response<Entity.Status>>
+  getStatus(id: string): Promise<Response<Entity.Status>>
   /**
    * Edit a given status to change its text, sensitivity, media attachments, or poll. Note that editing a poll’s options will reset the votes.
    *
@@ -734,14 +733,14 @@ export interface MegalodonInterface {
    * @param id The target status id.
    * @return Array of accounts.
    */
-  getStatusRebloggedBy(id: string, host?: string): Promise<Response<Array<Entity.Account>>>
+  getStatusRebloggedBy(id: string): Promise<Response<Array<Entity.Account>>>
   /**
    * See who favourited a status
    *
    * @param id The target status id.
    * @return Array of accounts.
    */
-  getStatusFavouritedBy(id: string, host?: string): Promise<Response<Array<Entity.Account>>>
+  getStatusFavouritedBy(id: string): Promise<Response<Array<Entity.Account>>>
   /**
    * Favourite a status.
    *
@@ -926,7 +925,7 @@ export interface MegalodonInterface {
     max_id?: string
     since_id?: string
     min_id?: string
-  }, host?: string): Promise<Response<Array<Entity.Status>>>
+  }): Promise<Response<Array<Entity.Status>>>
   /**
    * View local timeline.
    *
@@ -943,7 +942,7 @@ export interface MegalodonInterface {
     max_id?: string
     since_id?: string
     min_id?: string
-  }, host?: string): Promise<Response<Array<Entity.Status>>>
+  }): Promise<Response<Array<Entity.Status>>>
   /**
    * View hashtag timeline.
    *
@@ -965,8 +964,7 @@ export interface MegalodonInterface {
       max_id?: string
       since_id?: string
       min_id?: string
-    },
-    host?: string
+    }
   ): Promise<Response<Array<Entity.Status>>>
   /**
    * View home timeline.
@@ -984,7 +982,7 @@ export interface MegalodonInterface {
     max_id?: string
     since_id?: string
     min_id?: string
-  }, host?: string): Promise<Response<Array<Entity.Status>>>
+  }): Promise<Response<Array<Entity.Status>>>
   /**
    * View list timeline.
    *
