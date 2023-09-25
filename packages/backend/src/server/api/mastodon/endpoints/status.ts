@@ -220,7 +220,7 @@ export class ApiStatusMastodon {
 			try {
 				const data = (await client.createEmojiReaction(
 					convertId(_request.params.id, IdType.SharkeyId),
-					'⭐',
+					'❤',
 				)) as any;
 				reply.send(convertStatus(data.data));
 			} catch (e: any) {
@@ -238,7 +238,7 @@ export class ApiStatusMastodon {
 			try {
 				const data = await client.deleteEmojiReaction(
 					convertId(_request.params.id, IdType.SharkeyId),
-					'⭐',
+					'❤',
 				);
 				reply.send(convertStatus(data.data));
 			} catch (e: any) {
