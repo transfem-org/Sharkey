@@ -58,17 +58,6 @@ export class ApiAccountMastodon {
 		}
 	}
 
-	public async updateCredentials() {
-		try {
-			const data = await this.client.updateCredentials(this.request.body as any);
-			return convertAccount(data.data);
-		} catch (e: any) {
-			/* console.error(e);
-			console.error(e.response.data); */
-			return e.response;
-		}
-	}
-
 	public async lookup() {
 		try {
 			const data = await this.client.search((this.request.query as any).acct, { type: 'accounts' });
