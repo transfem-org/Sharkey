@@ -254,6 +254,7 @@ namespace MisskeyAPI {
         votes_count: count,
         options: Array.isArray(p.choices) ? p.choices.map(c => choice(c)) : [],
         voted: Array.isArray(p.choices) ? p.choices.some(c => c.isVoted) : false,
+        emojis: [],
       }
     }
 

@@ -9,5 +9,6 @@ namespace Entity {
     votes_count: number
     options: Array<PollOption>
     voted: boolean
+    emojis?: []
   }
 }
