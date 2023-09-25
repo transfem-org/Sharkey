@@ -961,21 +961,54 @@ export default class Misskey implements MegalodonInterface {
   // ======================================
   // accounts/preferences
   // ======================================
+
+  private async getDefaultPostPrivacy(): Promise<"public" | "unlisted" | "private" | "direct"> {
+		// NOTE: get-unsecure is sharkey's extension.
+		//       Misskey doesn't have this endpoint and regular `/i/registry/get` won't work
+		//       unless you have a 'nativeToken', which is reserved for the frontend webapp.
+
+		return this.client
+			.post<string>("/api/i/registry/get-unsecure", {
+				key: "defaultNoteVisibility",
+				scope: ["client", "base"],
+			})
+			.then((res) => {
+				if (
+					!res.data ||
+					(res.data != "public" &&
+						res.data != "home" &&
+						res.data != "followers" &&
+						res.data != "specified")
+				)
+					return "public";
+				return MisskeyAPI.Converter.visibility(res.data);
+			})
+			.catch((_) => "public");
+	}
+
   public async getPreferences(): Promise<Response<Entity.Preferences>> {
-    return new Promise((_, reject) => {
-      const err = new NoImplementedError('misskey does not support')
-      reject(err)
-    })
+    return this.client.post<MisskeyAPI.Entity.UserDetail>("/api/i")
+			.then(async (res) => {
+				return Object.assign(res, {
+					data: MisskeyAPI.Converter.userPreferences(
+						await this.getDefaultPostPrivacy(),
+					),
+				});
+		});
   }
 
   // ======================================
   // accounts/followed_tags
   // ======================================
   public async getFollowedTags(): Promise<Response<Array<Entity.Tag>>> {
-    return new Promise((_, reject) => {
-      const err = new NoImplementedError('misskey does not support')
-      reject(err)
-    })
+    const tags: Entity.Tag[] = [];
+		const res: Response = {
+			headers: undefined,
+			statusText: "",
+			status: 200,
+			data: tags,
+		};
+		return new Promise((resolve) => resolve(res));
   }
 
   // ======================================

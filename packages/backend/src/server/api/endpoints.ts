@@ -219,6 +219,7 @@ import * as ep___i_readAllUnreadNotes from './endpoints/i/read-all-unread-notes.
 import * as ep___i_readAnnouncement from './endpoints/i/read-announcement.js';
 import * as ep___i_regenerateToken from './endpoints/i/regenerate-token.js';
 import * as ep___i_registry_getAll from './endpoints/i/registry/get-all.js';
+import * as ep___i_registry_getUnsecure from './endpoints/i/registry/get-unsecure.js';
 import * as ep___i_registry_getDetail from './endpoints/i/registry/get-detail.js';
 import * as ep___i_registry_get from './endpoints/i/registry/get.js';
 import * as ep___i_registry_keysWithType from './endpoints/i/registry/keys-with-type.js';
@@ -566,6 +567,7 @@ const eps = [
 	['i/read-announcement', ep___i_readAnnouncement],
 	['i/regenerate-token', ep___i_regenerateToken],
 	['i/registry/get-all', ep___i_registry_getAll],
+	['i/registry/get-unsecure', ep___i_registry_getUnsecure],
 	['i/registry/get-detail', ep___i_registry_getDetail],
 	['i/registry/get', ep___i_registry_get],
 	['i/registry/keys-with-type', ep___i_registry_keysWithType],

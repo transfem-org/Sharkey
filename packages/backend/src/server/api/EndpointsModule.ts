@@ -219,6 +219,7 @@ import * as ep___i_readAllUnreadNotes from './endpoints/i/read-all-unread-notes.
 import * as ep___i_readAnnouncement from './endpoints/i/read-announcement.js';
 import * as ep___i_regenerateToken from './endpoints/i/regenerate-token.js';
 import * as ep___i_registry_getAll from './endpoints/i/registry/get-all.js';
+import * as ep___i_registry_getUnsecure from './endpoints/i/registry/get-unsecure.js';
 import * as ep___i_registry_getDetail from './endpoints/i/registry/get-detail.js';
 import * as ep___i_registry_get from './endpoints/i/registry/get.js';
 import * as ep___i_registry_keysWithType from './endpoints/i/registry/keys-with-type.js';
@@ -568,6 +569,7 @@ const $i_readAllUnreadNotes: Provider = { provide: 'ep:i/read-all-unread-notes',
 const $i_readAnnouncement: Provider = { provide: 'ep:i/read-announcement', useClass: ep___i_readAnnouncement.default };
 const $i_regenerateToken: Provider = { provide: 'ep:i/regenerate-token', useClass: ep___i_regenerateToken.default };
 const $i_registry_getAll: Provider = { provide: 'ep:i/registry/get-all', useClass: ep___i_registry_getAll.default };
+const $i_registry_getUnsecure: Provider = { provide: 'ep:i/registry/get-unsecure', useClass: ep___i_registry_getUnsecure.default };
 const $i_registry_getDetail: Provider = { provide: 'ep:i/registry/get-detail', useClass: ep___i_registry_getDetail.default };
 const $i_registry_get: Provider = { provide: 'ep:i/registry/get', useClass: ep___i_registry_get.default };
 const $i_registry_keysWithType: Provider = { provide: 'ep:i/registry/keys-with-type', useClass: ep___i_registry_keysWithType.default };
@@ -921,6 +923,7 @@ const $retention: Provider = { provide: 'ep:retention', useClass: ep___retention
 		$i_readAnnouncement,
 		$i_regenerateToken,
 		$i_registry_getAll,
+		$i_registry_getUnsecure,
 		$i_registry_getDetail,
 		$i_registry_get,
 		$i_registry_keysWithType,
@@ -1268,6 +1271,7 @@ const $retention: Provider = { provide: 'ep:retention', useClass: ep___retention
 		$i_readAnnouncement,
 		$i_regenerateToken,
 		$i_registry_getAll,
+		$i_registry_getUnsecure,
 		$i_registry_getDetail,
 		$i_registry_get,
 		$i_registry_keysWithType,

@@ -140,6 +140,16 @@ namespace MisskeyAPI {
       }
     }
 
+    export const userPreferences = (v: "public" | "unlisted" | "private" | "direct"): MegalodonEntity.Preferences => {
+			return {
+				"reading:expand:media": "default",
+				"reading:expand:spoilers": false,
+				"posting:default:language": "english",
+				"posting:default:sensitive": false,
+				"posting:default:visibility": v,
+			};
+		};
+
     export const visibility = (v: 'public' | 'home' | 'followers' | 'specified'): 'public' | 'unlisted' | 'private' | 'direct' => {
       switch (v) {
         case 'public':
