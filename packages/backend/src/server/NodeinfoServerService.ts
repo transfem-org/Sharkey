@@ -77,7 +77,7 @@ export class NodeinfoServerService {
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			const document: any = {
 				software: {
-					name: 'misskey',
+					name: 'sharkey',
 					version: this.config.version,
 					homepage: nodeinfo_homepage,
 					repository: meta.repositoryUrl,
