@@ -107,6 +107,7 @@ namespace MisskeyAPI {
 
     export const userDetail = (u: Entity.UserDetail, host: string | null = null): MegalodonEntity.Account => {
       let acct = u.username;
+      host ? host = host.replace("https://", "") : undefined;
 			let acctUrl = `https://${u.host || host}/@${u.username}`;
 			if (u.host) {
 				acct = `${u.username}@${u.host}`;
