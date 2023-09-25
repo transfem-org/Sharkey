@@ -24,7 +24,7 @@ export class ApiStatusMastodon {
 			const accessTokens = _request.headers.authorization;
 			const client = getClient(BASE_URL, accessTokens);
 			try {
-				const data = await client.getStatus(convertId(_request.params.id, IdType.SharkeyId));
+				const data = await client.getStatus(convertId(_request.params.id, IdType.SharkeyId), BASE_URL);
 				reply.send(convertStatus(data.data));
 			} catch (e: any) {
 				console.error(e);

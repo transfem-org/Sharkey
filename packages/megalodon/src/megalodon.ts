@@ -682,7 +682,7 @@ export interface MegalodonInterface {
    * @param id The target status id.
    * @return Status
    */
-  getStatus(id: string): Promise<Response<Entity.Status>>
+  getStatus(id: string, host?: string): Promise<Response<Entity.Status>>
   /**
    * Edit a given status to change its text, sensitivity, media attachments, or poll. Note that editing a poll’s options will reset the votes.
    *
@@ -925,7 +925,7 @@ export interface MegalodonInterface {
     max_id?: string
     since_id?: string
     min_id?: string
-  }): Promise<Response<Array<Entity.Status>>>
+  }, host?: string): Promise<Response<Array<Entity.Status>>>
   /**
    * View local timeline.
    *
@@ -942,7 +942,7 @@ export interface MegalodonInterface {
     max_id?: string
     since_id?: string
     min_id?: string
-  }): Promise<Response<Array<Entity.Status>>>
+  }, host?: string): Promise<Response<Array<Entity.Status>>>
   /**
    * View hashtag timeline.
    *
@@ -964,7 +964,8 @@ export interface MegalodonInterface {
       max_id?: string
       since_id?: string
       min_id?: string
-    }
+    },
+    host?: string
   ): Promise<Response<Array<Entity.Status>>>
   /**
    * View home timeline.
@@ -982,7 +983,7 @@ export interface MegalodonInterface {
     max_id?: string
     since_id?: string
     min_id?: string
-  }): Promise<Response<Array<Entity.Status>>>
+  }, host?: string): Promise<Response<Array<Entity.Status>>>
   /**
    * View list timeline.
    *

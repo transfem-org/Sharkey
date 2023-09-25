@@ -51,8 +51,8 @@ export class ApiTimelineMastodon {
 			try {
 				const query: any = _request.query;
 				const data = query.local === 'true'
-					? await client.getLocalTimeline(convertTimelinesArgsId(argsToBools(limitToInt(query))))
-					: await client.getPublicTimeline(convertTimelinesArgsId(argsToBools(limitToInt(query))));
+					? await client.getLocalTimeline(convertTimelinesArgsId(argsToBools(limitToInt(query))), BASE_URL)
+					: await client.getPublicTimeline(convertTimelinesArgsId(argsToBools(limitToInt(query))), BASE_URL);
 				reply.send(data.data.map((status: Entity.Status) => convertStatus(status)));
 			} catch (e: any) {
 				console.error(e);
@@ -69,7 +69,7 @@ export class ApiTimelineMastodon {
 			const client = getClient(BASE_URL, accessTokens);
 			try {
 				const query: any = _request.query;
-				const data = await client.getHomeTimeline(convertTimelinesArgsId(limitToInt(query)));
+				const data = await client.getHomeTimeline(convertTimelinesArgsId(limitToInt(query)), BASE_URL);
 				reply.send(data.data.map((status: Entity.Status) => convertStatus(status)));
 			} catch (e: any) {
 				console.error(e);
@@ -87,7 +87,7 @@ export class ApiTimelineMastodon {
 			try {
 				const query: any = _request.query;
 				const params: any = _request.params;
-				const data = await client.getTagTimeline(params.hashtag, convertTimelinesArgsId(limitToInt(query)));
+				const data = await client.getTagTimeline(params.hashtag, convertTimelinesArgsId(limitToInt(query)), BASE_URL);
 				reply.send(data.data.map((status: Entity.Status) => convertStatus(status)));
 			} catch (e: any) {
 				console.error(e);

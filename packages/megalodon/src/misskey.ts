@@ -1094,12 +1094,12 @@ export default class Misskey implements MegalodonInterface {
   /**
    * POST /api/notes/show
    */
-  public async getStatus(id: string): Promise<Response<Entity.Status>> {
+  public async getStatus(id: string, host: string): Promise<Response<Entity.Status>> {
     return this.client
       .post<MisskeyAPI.Entity.Note>('/api/notes/show', {
         noteId: id
       })
-      .then(res => ({ ...res, data: MisskeyAPI.Converter.note(res.data) }))
+      .then(res => ({ ...res, data: MisskeyAPI.Converter.note(res.data, host) }))
   }
 
   public async editStatus(
@@ -1449,7 +1449,7 @@ export default class Misskey implements MegalodonInterface {
     max_id?: string
     since_id?: string
     min_id?: string
-  }): Promise<Response<Array<Entity.Status>>> {
+  }, host?: string): Promise<Response<Array<Entity.Status>>> {
     let params = {}
     if (options) {
       if (options.only_media !== undefined) {
@@ -1480,7 +1480,7 @@ export default class Misskey implements MegalodonInterface {
     }
     return this.client
       .post<Array<MisskeyAPI.Entity.Note>>('/api/notes/global-timeline', params)
-      .then(res => ({ ...res, data: res.data.map(n => MisskeyAPI.Converter.note(n)) }))
+      .then(res => ({ ...res, data: res.data.map(n => MisskeyAPI.Converter.note(n, host)) }))
   }
 
   /**
@@ -1492,7 +1492,7 @@ export default class Misskey implements MegalodonInterface {
     max_id?: string
     since_id?: string
     min_id?: string
-  }): Promise<Response<Array<Entity.Status>>> {
+  }, host?: string): Promise<Response<Array<Entity.Status>>> {
     let params = {}
     if (options) {
       if (options.only_media !== undefined) {
@@ -1523,7 +1523,7 @@ export default class Misskey implements MegalodonInterface {
     }
     return this.client
       .post<Array<MisskeyAPI.Entity.Note>>('/api/notes/local-timeline', params)
-      .then(res => ({ ...res, data: res.data.map(n => MisskeyAPI.Converter.note(n)) }))
+      .then(res => ({ ...res, data: res.data.map(n => MisskeyAPI.Converter.note(n, host)) }))
   }
 
   /**
@@ -1538,7 +1538,8 @@ export default class Misskey implements MegalodonInterface {
       max_id?: string
       since_id?: string
       min_id?: string
-    }
+    },
+    host?: string
   ): Promise<Response<Array<Entity.Status>>> {
     let params = {
       tag: hashtag
@@ -1572,7 +1573,7 @@ export default class Misskey implements MegalodonInterface {
     }
     return this.client
       .post<Array<MisskeyAPI.Entity.Note>>('/api/notes/search-by-tag', params)
-      .then(res => ({ ...res, data: res.data.map(n => MisskeyAPI.Converter.note(n)) }))
+      .then(res => ({ ...res, data: res.data.map(n => MisskeyAPI.Converter.note(n, host)) }))
   }
 
   /**
@@ -1584,7 +1585,7 @@ export default class Misskey implements MegalodonInterface {
     max_id?: string
     since_id?: string
     min_id?: string
-  }): Promise<Response<Array<Entity.Status>>> {
+  }, host?: string): Promise<Response<Array<Entity.Status>>> {
     let params = {
       withFiles: false
     }
@@ -1612,7 +1613,7 @@ export default class Misskey implements MegalodonInterface {
     }
     return this.client
       .post<Array<MisskeyAPI.Entity.Note>>('/api/notes/timeline', params)
-      .then(res => ({ ...res, data: res.data.map(n => MisskeyAPI.Converter.note(n)) }))
+      .then(res => ({ ...res, data: res.data.map(n => MisskeyAPI.Converter.note(n, host)) }))
   }
 
   /**
