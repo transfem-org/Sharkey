@@ -1446,6 +1446,11 @@ export default class Misskey implements MegalodonInterface {
           isSensitive: options.is_sensitive
         })
       }
+      if (options.description !== undefined) {
+				params = Object.assign(params, {
+					comment: options.description,
+				});
+			}
     }
     return this.client
       .post<MisskeyAPI.Entity.File>('/api/drive/files/update', params)
