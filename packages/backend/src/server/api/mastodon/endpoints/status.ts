@@ -156,7 +156,7 @@ export class ApiStatusMastodon {
 				) {
 					body = normalizeQuery(body);
 				}
-				const text = body.status ? body.status : '';
+				const text = body.status ? body.status : ' ';
 				const removed = text.replace(/@\S+/g, '').replace(/\s|/g, '');
 				const isDefaultEmoji = emojiRegexAtStartToEnd.test(removed);
 				const isCustomEmoji = /^:[a-zA-Z0-9@_]+:$/.test(removed);
