@@ -1191,10 +1191,19 @@ export default class Misskey implements MegalodonInterface {
         })
       }
     }
-    return this.client.post<Array<MisskeyAPI.Entity.Note>>('/api/notes/children', params).then(res => {
+    return this.client.post<Array<MisskeyAPI.Entity.Note>>('/api/notes/children', params).then(async res => {
+      const conversation = await this.client.post<Array<MisskeyAPI.Entity.Note>>("/api/notes/conversation", params);
+      const parents = await Promise.all(
+        conversation.data.map((n) =>
+        MisskeyAPI.Converter.note(
+            n,
+            this.baseUrl
+          ),
+        ),
+      );
       const context: Entity.Context = {
-        ancestors: [],
-        descendants: res.data.map(n => MisskeyAPI.Converter.note(n))
+        ancestors: parents.reverse(),
+        descendants: res.data.map(n => MisskeyAPI.Converter.note(n, this.baseUrl))
       }
       return {
         ...res,
