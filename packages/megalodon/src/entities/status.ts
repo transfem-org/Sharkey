@@ -19,7 +19,6 @@ namespace Entity {
     content: string
     plain_content: string | null
     created_at: string
-    createdAt?: string
     emojis: Emoji[]
     replies_count: number
     reblogs_count: number
