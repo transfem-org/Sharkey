@@ -931,10 +931,14 @@ export default class Misskey implements MegalodonInterface {
   // accounts/featured_tags
   // ======================================
   public async getFeaturedTags(): Promise<Response<Array<Entity.FeaturedTag>>> {
-    return new Promise((_, reject) => {
-      const err = new NoImplementedError('misskey does not support')
-      reject(err)
-    })
+    const tags: Entity.FeaturedTag[] = [];
+		const res: Response = {
+			headers: undefined,
+			statusText: "",
+			status: 200,
+			data: tags,
+		};
+		return new Promise((resolve) => resolve(res));
   }
 
   public async createFeaturedTag(_name: string): Promise<Response<Entity.FeaturedTag>> {
