@@ -5,6 +5,7 @@ namespace MisskeyEntity {
     id: string
     name: string
     username: string
+    createdAt?: string
     host: string | null
     avatarUrl: string
     avatarColor: string
