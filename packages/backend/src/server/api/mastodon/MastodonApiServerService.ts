@@ -795,7 +795,18 @@ export class MastodonApiServerService {
 		NoteEndpoint.votePoll();
 
 		// PUT Endpoint
-		NoteEndpoint.updateMedia();
+		fastify.put<{ Params: { id: string } }>('/v1/media/:id', { preHandler: upload.none() }, async (_request, reply) => {
+			const BASE_URL = `${_request.protocol}://${_request.hostname}`;
+			const accessTokens = _request.headers.authorization;
+			const client = getClient(BASE_URL, accessTokens);
+			try {
+				const data = await client.updateMedia(convertId(_request.params.id, IdType.SharkeyId), _request.body as any);
+				reply.send(convertAttachment(data.data));
+			} catch (e: any) {
+				/* console.error(e); */
+				reply.code(401).send(e.response.data);
+			}
+		});
 
 		// DELETE Endpoint
 		NoteEndpoint.deleteStatus();
