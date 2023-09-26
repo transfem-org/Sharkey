@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      packages: read|write
+      packages: write
     steps:
       - uses: actions/delete-package-versions@v4
         with: 
