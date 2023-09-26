@@ -19,6 +19,7 @@ import { UtilityService } from '@/core/UtilityService.js';
 import { query } from '@/misc/prelude/url.js';
 import type { Serialized } from '@/server/api/stream/types.js';
 import { ModerationLogService } from '@/core/ModerationLogService.js';
+import type { Config } from '@/config.js';
 
 const parseEmojiStrRegexp = /^(\w+)(?:@([\w.-]+))?$/;
 
@@ -30,6 +31,9 @@ export class CustomEmojiService implements OnApplicationShutdown {
 	constructor(
 		@Inject(DI.redis)
 		private redisClient: Redis.Redis,
+
+		@Inject(DI.config)
+		private config: Config,
 
 		@Inject(DI.emojisRepository)
 		private emojisRepository: EmojisRepository,
@@ -330,9 +334,11 @@ export class CustomEmojiService implements OnApplicationShutdown {
 		if (name == null) return null;
 		if (host == null) return null;
 
+		const newHost = host === this.config.host ? null : host; 
+
 		const queryOrNull = async () => (await this.emojisRepository.findOneBy({
 			name,
-			host: host ?? IsNull(),
+			host: newHost ?? IsNull(),
 		})) ?? null;
 
 		const emoji = await this.cache.fetch(`${name} ${host}`, queryOrNull);

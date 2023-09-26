@@ -339,6 +339,8 @@ export class UserEntityService implements OnModuleInit {
 
 		const falsy = opts.detail ? false : undefined;
 
+		const checkHost = user.host == null ? this.config.host : user.host;
+
 		const packed = {
 			id: user.id,
 			name: user.name,
@@ -361,7 +363,7 @@ export class UserEntityService implements OnModuleInit {
 			followersCount: followersCount ?? 0,
 			followingCount: followingCount ?? 0,
 			notesCount: user.notesCount,
-			emojis: this.customEmojiService.populateEmojis(user.emojis, user.host),
+			emojis: this.customEmojiService.populateEmojis(user.emojis, checkHost),
 			onlineStatus: this.getOnlineStatus(user),
 			// パフォーマンス上の理由でローカルユーザーのみ
 			badgeRoles: user.host == null ? this.roleService.getUserBadgeRoles(user.id).then(rs => rs.sort((a, b) => b.displayOrder - a.displayOrder).map(r => ({
