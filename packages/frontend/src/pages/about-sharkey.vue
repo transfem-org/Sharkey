@@ -44,13 +44,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<FormSection>
 					<template #label>{{ i18n.ts._aboutMisskey.contributors }}</template>
 					<div :class="$style.contributors">
-						<a href="https://github.com/mar0xy" target="_blank" :class="$style.contributor">
+						<a href="https://github.com/Mar0xy" target="_blank" :class="$style.contributor">
 							<img src="https://avatars.githubusercontent.com/u/8841466?v=4" :class="$style.contributorAvatar">
-							<span :class="$style.contributorUsername">@mar0rxy</span>
+							<span :class="$style.contributorUsername">@Mar0xy</span>
 						</a>
-						<a href="https://github.com/insert5starname" target="_blank" :class="$style.contributor">
+						<a href="https://github.com/Insert5StarName" target="_blank" :class="$style.contributor">
 							<img src="https://avatars.githubusercontent.com/u/123300075?v=4" :class="$style.contributorAvatar">
-							<span :class="$style.contributorUsername">@insert5starname</span>
+							<span :class="$style.contributorUsername">@Insert5StarName</span>
 						</a>
 					</div>
 					<template #caption><MkLink url="https://github.com/transfem-org/sharkey/graphs/contributors">{{ i18n.ts._aboutMisskey.allContributors }}</MkLink></template>
