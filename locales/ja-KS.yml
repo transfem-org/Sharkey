@@ -1510,6 +1510,7 @@ _plugin:
   install: "プラグインのインストール"
   installWarn: "信頼できへんプラグインはインストールせんとってな"
   manage: "プラグインの管理"
+  viewSource: "ソースを表示"
 _preferencesBackups:
   list: "作ったバックアップ"
   saveNew: "新しく保存"
@@ -1697,7 +1698,6 @@ _timelineTutorial:
 _2fa:
   alreadyRegistered: "もう設定終わっとるわ。"
   registerTOTP: "認証アプリの設定はじめる"
-  passwordToTOTP: "パスワードを入れてーや"
   step1: "ほんなら、{a}や{b}とかの認証アプリを使っとるデバイスにインストールしてな。"
   step2: "次に、ここにあるQRコードをアプリでスキャンしてな～。"
   step2Click: "QRコードをクリックすると、今使とる端末に入っとる認証アプリとかキーリングに登録できるで。"
@@ -2058,3 +2058,6 @@ _webhookSettings:
     renote: "Renoteされるとき～！"
     reaction: "ツッコミがあるとき～！"
     mention: "メンションがあるとき～！"
+_moderationLogTypes:
+  suspend: "凍結"
+  resetPassword: "パスワードをリセット"

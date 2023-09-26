@@ -15,6 +15,7 @@ import type { Config } from '@/config.js';
 import { DI } from '@/di-symbols.js';
 import { GlobalEventService } from '@/core/GlobalEventService.js';
 import { L_CHARS, secureRndstr } from '@/misc/secure-rndstr.js';
+import { UserAuthService } from '@/core/UserAuthService.js';
 import { ApiError } from '../../error.js';
 
 export const meta = {
@@ -47,6 +48,7 @@ export const paramDef = {
 	properties: {
 		password: { type: 'string' },
 		email: { type: 'string', nullable: true },
+		token: { type: 'string', nullable: true },
 	},
 	required: ['password'],
 } as const;
@@ -62,15 +64,27 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 
 		private userEntityService: UserEntityService,
 		private emailService: EmailService,
+		private userAuthService: UserAuthService,
 		private globalEventService: GlobalEventService,
 	) {
 		super(meta, paramDef, async (ps, me) => {
+			const token = ps.token;
 			const profile = await this.userProfilesRepository.findOneByOrFail({ userId: me.id });
 
-			// Compare password
-			const same = await argon2.verify(profile.password!, ps.password);
+			if (profile.twoFactorEnabled) {
+				if (token == null) {
+					throw new Error('authentication failed');
+				}
 
-			if (!same) {
+				try {
+					await this.userAuthService.twoFactorAuthenticate(profile, token);
+				} catch (e) {
+					throw new Error('authentication failed');
+				}
+			}
+
+			const passwordMatched = await argon2.verify(profile.password!, ps.password);;
+			if (!passwordMatched) {
 				throw new ApiError(meta.errors.incorrectPassword);
 			}
 

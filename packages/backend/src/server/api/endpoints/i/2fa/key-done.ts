@@ -13,6 +13,7 @@ import { GlobalEventService } from '@/core/GlobalEventService.js';
 import type { UserProfilesRepository, UserSecurityKeysRepository } from '@/models/_.js';
 import { WebAuthnService } from '@/core/WebAuthnService.js';
 import { ApiError } from '@/server/api/error.js';
+import { UserAuthService } from '@/core/UserAuthService.js';
 
 export const meta = {
 	requireCredential: true,
@@ -38,6 +39,7 @@ export const paramDef = {
 	type: 'object',
 	properties: {
 		password: { type: 'string' },
+		token: { type: 'string', nullable: true },
 		name: { type: 'string', minLength: 1, maxLength: 30 },
 		credential: { type: 'object' },
 	},
@@ -55,16 +57,28 @@ export default class extends Endpoint<typeof meta, typeof paramDef> {
 		private userSecurityKeysRepository: UserSecurityKeysRepository,
 
 		private webAuthnService: WebAuthnService,
+		private userAuthService: UserAuthService,
 		private userEntityService: UserEntityService,
 		private globalEventService: GlobalEventService,
 	) {
 		super(meta, paramDef, async (ps, me) => {
+			const token = ps.token;
 			const profile = await this.userProfilesRepository.findOneByOrFail({ userId: me.id });
 
-			// Compare password
-			const same = await argon2.verify(profile.password ?? '', ps.password);
+			if (profile.twoFactorEnabled) {
+				if (token == null) {
+					throw new Error('authentication failed');
+				}
 
-			if (!same) {
+				try {
+					await this.userAuthService.twoFactorAuthenticate(profile, token);
+				} catch (e) {
+					throw new Error('authentication failed');
+				}
+			}
+
+			const passwordMatched = await argon2.verify(profile.password ?? '', ps.password);;
+			if (!passwordMatched) {
 				throw new ApiError(meta.errors.incorrectPassword);
 			}
 

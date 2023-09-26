@@ -1512,6 +1512,7 @@ _plugin:
   install: "플러그인 설치"
   installWarn: "신뢰할 수 없는 플러그인은 설치하지 않는 것이 좋습니다."
   manage: "플러그인 관리"
+  viewSource: "소스 보기"
 _preferencesBackups:
   list: "생성한 백업"
   saveNew: "새 백업 만들기"
@@ -1699,7 +1700,6 @@ _timelineTutorial:
 _2fa:
   alreadyRegistered: "이미 설정이 완료되었습니다."
   registerTOTP: "인증 앱 설정 시작"
-  passwordToTOTP: "비밀번호를 입력하세요."
   step1: "먼저, {a}나 {b}등의 인증 앱을 사용 중인 디바이스에 설치합니다."
   step2: "그 후, 표시되어 있는 QR코드를 앱으로 스캔합니다."
   step2Click: "QR 코드를 클릭하면 기기에 설치된 인증 앱에 등록할 수 있습니다."
@@ -2073,3 +2073,6 @@ _webhookSettings:
     renote: "누군가 내 글을 Renote했을 때"
     reaction: "누군가 내 노트에 리액션했을 때"
     mention: "누군가 나를 멘션했을 때"
+_moderationLogTypes:
+  suspend: "정지"
+  resetPassword: "비밀번호 재설정"

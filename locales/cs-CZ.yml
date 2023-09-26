@@ -1492,6 +1492,7 @@ _plugin:
   install: "Instalovat plugin"
   installWarn: "Neinstalujte nedůvěryhodné pluginy."
   manage: "Správce pluginů"
+  viewSource: "Zobrazit zdroj"
 _preferencesBackups:
   list: "Vytvořit backup"
   saveNew: "Uložit novou zálohu"
@@ -1679,7 +1680,6 @@ _timelineTutorial:
 _2fa:
   alreadyRegistered: "Již jste zaregistrovali dvoufaktorové ověřovací zařízení."
   registerTOTP: "Registrovat aplikaci autentizátoru"
-  passwordToTOTP: "Zadejte své heslo"
   step1: "Nejprve si do zařízení nainstalujte aplikaci pro ověřování (například {a} nebo {b})."
   step2: "Poté naskenujte QR kód zobrazený na této obrazovce."
   step2Click: "Kliknutím na tento QR kód můžete zaregistrovat 2FA do bezpečnostního klíče nebo aplikace autentizace telefonu."
@@ -2036,3 +2036,6 @@ _webhookSettings:
     renote: "Při renotaci poznámky"
     reaction: "Při obdržení reakce"
     mention: "Při zmínce"
+_moderationLogTypes:
+  suspend: "Zmrazit"
+  resetPassword: "Resetovat heslo"

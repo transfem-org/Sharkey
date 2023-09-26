@@ -9,6 +9,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { Endpoint } from '@/server/api/endpoint-base.js';
 import type { UserProfilesRepository } from '@/models/_.js';
 import { DI } from '@/di-symbols.js';
+import { UserAuthService } from '@/core/UserAuthService.js';
 
 export const meta = {
 	requireCredential: true,
@@ -21,6 +22,7 @@ export const paramDef = {
 	properties: {
 		currentPassword: { type: 'string' },
 		newPassword: { type: 'string', minLength: 1 },
+		token: { type: 'string', nullable: true },
 	},
 	required: ['currentPassword', 'newPassword'],
 } as const;
@@ -30,14 +32,28 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 	constructor(
 		@Inject(DI.userProfilesRepository)
 		private userProfilesRepository: UserProfilesRepository,
+
+		private userAuthService: UserAuthService,
 	) {
 		super(meta, paramDef, async (ps, me) => {
+			const token = ps.token;
 			const profile = await this.userProfilesRepository.findOneByOrFail({ userId: me.id });
 
-			// Compare password
-			const same = await argon2.verify(profile.password!, ps.currentPassword);
+			if (profile.twoFactorEnabled) {
+				if (token == null) {
+					throw new Error('authentication failed');
+				}
 
-			if (!same) {
+				try {
+					await this.userAuthService.twoFactorAuthenticate(profile, token);
+				} catch (e) {
+					throw new Error('authentication failed');
+				}
+			}
+
+			const passwordMatched = await argon2.verify(profile.password!, ps.currentPassword);
+
+			if (!passwordMatched) {
 				throw new Error('incorrect password');
 			}
 
