@@ -160,7 +160,7 @@ export class ApiStatusMastodon {
 				const removed = text.replace(/@\S+/g, '').replace(/\s|/g, '');
 				const isDefaultEmoji = emojiRegexAtStartToEnd.test(removed);
 				const isCustomEmoji = /^:[a-zA-Z0-9@_]+:$/.test(removed);
-				if ((body.in_reply_to_id && isDefaultEmoji) || isCustomEmoji) {
+				if ((body.in_reply_to_id && isDefaultEmoji) || (body.in_reply_to_id && isCustomEmoji)) {
 					const a = await client.createEmojiReaction(
 						body.in_reply_to_id,
 						removed,
