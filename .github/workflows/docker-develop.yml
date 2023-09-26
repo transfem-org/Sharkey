@@ -56,6 +56,6 @@ jobs:
         if: steps.build.outcome == 'success'
         uses: indiesdev/curl@v1.1
         with:
-          url: ${{ secrets.AUTO_UPDATE_URL }}
+          url: ${{ secrets.AUTO_UPDATE_DEV_URL }}
           method: POST
           timeout: 600000
