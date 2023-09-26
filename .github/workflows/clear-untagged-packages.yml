@@ -1,0 +1,18 @@
+name: Remove old package versions
+
+on:
+  workflow_dispatch:
+
+jobs:
+  remove-package-versions:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/delete-package-versions@v4
+        with: 
+          package-name: sharkey
+          package-type: container
+          min-versions-to-keep: 10
+          delete-only-untagged-versions: 'true'
