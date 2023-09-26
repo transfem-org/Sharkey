@@ -77,7 +77,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> {
 				}
 			}
 
-			const passwordMatched = await argon2.verify(profile.password ?? '', ps.password);;
+			const passwordMatched = await argon2.verify(profile.password ?? '', ps.password);
 			if (!passwordMatched) {
 				throw new ApiError(meta.errors.incorrectPassword);
 			}
