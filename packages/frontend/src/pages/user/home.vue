@@ -165,7 +165,6 @@ import MkOmit from '@/components/MkOmit.vue';
 import MkInfo from '@/components/MkInfo.vue';
 import MkButton from '@/components/MkButton.vue';
 import { getScrollPosition } from '@/scripts/scroll.js';
-import { getStaticImageUrl } from '@/scripts/media-proxy.js';
 import { getUserMenu } from '@/scripts/get-user-menu.js';
 import number from '@/filters/number.js';
 import { userPage } from '@/filters/user.js';
@@ -178,7 +177,6 @@ import { confetti } from '@/scripts/confetti.js';
 import MkNotes from '@/components/MkNotes.vue';
 import { api } from '@/os.js';
 import { isFfVisibleForMe } from '@/scripts/isFfVisibleForMe.js';
-import { defaultStore } from '@/store.js';
 
 function calcAge(birthdate: string): number {
 	const date = new Date(birthdate);
@@ -256,9 +254,6 @@ const style = $computed(() => {
 	if (props.user.bannerUrl == null) return {};
 	return {
 		backgroundImage: `url(${ props.user.bannerUrl })`,
-		'--backgroundImageStatic': defaultStore.state.useBlurEffect && props.user.bannerUrl 
-			? `url('${getStaticImageUrl(props.user.bannerUrl,)}')`
-			: null,
 	};
 });
 
@@ -371,16 +366,6 @@ onUnmounted(() => {
 						background-position: center;
 						box-shadow: 0 0 128px rgba(0, 0, 0, 0.5) inset;
 						will-change: background-position;
-						&::before {
-							content: "";
-							position: fixed;
-							inset: 0;
-							background: var(--backgroundImageStatic);
-							background-size: cover;
-							background-position: center;
-							pointer-events: none;
-							filter: blur(12px) opacity(0.1);
-						}
 					}
 
 					> .fade {
@@ -729,12 +714,6 @@ onUnmounted(() => {
 	padding: calc(var(--margin) / 2) 0;
 	background: var(--bg);
 	border-radius: 8px;
-
-	> button {
-		border-radius: 8px;
-		margin-left: 0.4rem;
-		margin-right: 0.4rem;
-	}
 }
 
 .verifiedLink {
