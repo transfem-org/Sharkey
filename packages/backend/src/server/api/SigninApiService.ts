@@ -6,6 +6,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 //import bcrypt from 'bcryptjs';
 import * as argon2 from 'argon2';
+import bcrypt from "bcryptjs";
 import * as OTPAuth from 'otpauth';
 import { IsNull } from 'typeorm';
 import { DI } from '@/di-symbols.js';
@@ -25,7 +26,22 @@ import { RateLimiterService } from './RateLimiterService.js';
 import { SigninService } from './SigninService.js';
 import type { AuthenticationResponseJSON } from '@simplewebauthn/typescript-types';
 import type { FastifyReply, FastifyRequest } from 'fastify';
+async function hashPassword(password: string): Promise<string> {
+	return argon2.hash(password);
+}
+async function comparePassword(
+	password: string,
+	hash: string,
+): Promise<boolean> {
+	if (isOldAlgorithm(hash)) return bcrypt.compare(password, hash);
 
+	return argon2.verify(hash, password);
+}
+
+function isOldAlgorithm(hash: string): boolean {
+	// bcrypt hashes start with $2[ab]$
+	return hash.startsWith("$2");
+}
 @Injectable()
 export class SigninApiService {
 	constructor(
@@ -124,8 +140,11 @@ export class SigninApiService {
 		const profile = await this.userProfilesRepository.findOneByOrFail({ userId: user.id });
 
 		// Compare password
-		const same = await argon2.verify(profile.password!, password);
-
+		const same = await comparePassword(password, profile.password!);
+		if (same && isOldAlgorithm(profile.password!)) {
+			profile.password = await hashPassword(password);
+			await this.userProfilesRepository.save(profile);
+		}
 		const fail = async (status?: number, failure?: { id: string }) => {
 			// Append signin history
 			await this.signinsRepository.insert({
