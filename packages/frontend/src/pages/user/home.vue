@@ -714,6 +714,11 @@ onUnmounted(() => {
 	padding: calc(var(--margin) / 2) 0;
 	background: var(--bg);
 	border-radius: 8px;
+	> button {
+		border-radius: 8px;
+		margin-left: 0.4rem;
+		margin-right: 0.4rem;
+	}
 }
 
 .verifiedLink {
