@@ -517,6 +517,7 @@ function loadConversation() {
 		conversation.value = res.reverse();
 	});
 }
+if (appearNote.reply && appearNote.reply.replyId) loadConversation();
 </script>
 
 <style lang="scss" module>
