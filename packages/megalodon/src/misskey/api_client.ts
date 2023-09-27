@@ -652,7 +652,7 @@ namespace MisskeyAPI {
         throw new Error('accessToken is required')
       }
       const url = this.baseUrl + '/streaming'
-      const streaming = new WebSocket(url.replace('/api/v1/streaming', ''), channel, this.accessToken, listId, this.userAgent, this.proxyConfig)
+      const streaming = new WebSocket(url, channel, this.accessToken, listId, this.userAgent, this.proxyConfig)
       process.nextTick(() => {
         streaming.start()
       })
