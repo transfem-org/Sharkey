@@ -25,7 +25,7 @@ You can add emoji reactions to any post! No longer are you bound by a like butto
 - **Post Editing**\
 In Sharkey you can edit your post, this is not possible in normal Misskey
 - **Mastodon API**\
-Sharkey implements the mastodon api unlike normal Misskey
+Sharkey implements the Mastodon API unlike normal Misskey
 - **UI/UX Improvements**\
 Sharkey makes some UI/UX improvements to make it easier to navigate
 - **Drive**\
