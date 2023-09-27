@@ -732,8 +732,8 @@ onUnmounted(() => {
 
 	> button {
 		border-radius: 8px;
-		max-width: 200px;
-		margin-left: 9px;
+		margin-left: 0.4rem;
+		margin-right: 0.4rem;
 	}
 }
 
