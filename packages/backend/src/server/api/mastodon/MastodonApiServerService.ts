@@ -773,6 +773,7 @@ export class MastodonApiServerService {
 
 		// GET Endpoints
 		NoteEndpoint.getStatus();
+		NoteEndpoint.getStatusSource();
 		NoteEndpoint.getContext();
 		NoteEndpoint.getHistory();
 		NoteEndpoint.getReblogged();

@@ -1295,11 +1295,15 @@ export default class Misskey implements MegalodonInterface {
 		return result;
 	}
 
+  /**
+   * GET /api/notes/show
+   */
   public async getStatusSource(_id: string): Promise<Response<Entity.StatusSource>> {
-    return new Promise((_, reject) => {
-      const err = new NoImplementedError('misskey does not support')
-      reject(err)
-    })
+    return this.client
+      .post<MisskeyAPI.Entity.Note>('/api/notes/show', {
+        noteId: _id
+      })
+      .then(res => ({ ...res, data: MisskeyAPI.Converter.notesource(res.data) }))
   }
 
   /**

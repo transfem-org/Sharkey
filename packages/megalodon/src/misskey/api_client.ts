@@ -305,6 +305,14 @@ namespace MisskeyAPI {
       }
     }
 
+    export const notesource = (n: Entity.Note): MegalodonEntity.StatusSource => {
+      return {
+        id: n.id,
+        text: n.text ?? '',
+        spoiler_text: n.cw ? n.cw : ''
+      }
+    }
+
     const mapEmojis = (e: Array<Entity.Emoji> | { [key: string]: string }): Array<MegalodonEntity.Emoji> => {
       if (Array.isArray(e)) {
         return e.map(e => emoji(e))

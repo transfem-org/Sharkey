@@ -121,6 +121,10 @@ export function convertStatus(status: Entity.Status) {
 	return status;
 }
 
+export function convertStatusSource(status: Entity.StatusSource) {
+	return simpleConvert(status);
+}
+
 export function convertConversation(conversation: Entity.Conversation) {
 	conversation.id = convertId(conversation.id, IdConvertType.MastodonId);
 	conversation.accounts = conversation.accounts.map(convertAccount);
