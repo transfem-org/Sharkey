@@ -6,9 +6,10 @@
 **🌎 **[Sharkey](https://joinsharkey.org/)** is an open source, decentralized social media platform that's free forever! 🚀**
 
 ---
+<a href="https://translate.joinsharkey.org/engage/sharkey/">
+<img src="https://translate.joinsharkey.org/widget/sharkey/github/287x66-black.png" alt="Translation status" />
+</a>
 
- Work In Progress
- 
 ---
 
 </div>
