@@ -12,6 +12,19 @@
 
 -->
 
+## next
+
+### General
+- Enhance: タイムラインからRenoteを除外するオプションを追加
+- Enhance: ユーザーページのノート一覧でRenoteを除外できるように
+
+### Client
+- Enhance: モデレーションログ機能の強化
+- Enhance: Plugin:register_post_form_actionを用いてCWを取得・変更できるように
+
+### Server
+- Enhance: MasterプロセスのPIDを書き出せるように
+
 ## 2023.9.1
 
 ### General
