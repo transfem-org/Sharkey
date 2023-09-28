@@ -12,7 +12,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<Mfm v-if="note.text" :text="note.text" :author="note.user" :i="$i" :emojiUrls="note.emojis"/>
 		<MkA v-if="note.renoteId" :class="$style.rp" :to="`/notes/${note.renoteId}`" v-on:click.stop>RN: ...</MkA>
 	</div>
-	<details v-if="note.files.length > 0">
+	<details v-if="note.files.length > 0" :open="!defaultStore.state.collapseFiles">
 		<summary>({{ i18n.t('withNFiles', { n: note.files.length }) }})</summary>
 		<MkMediaList :mediaList="note.files"/>
 	</details>
@@ -37,6 +37,7 @@ import MkPoll from '@/components/MkPoll.vue';
 import { i18n } from '@/i18n.js';
 import { $i } from '@/account.js';
 import { shouldCollapsed } from '@/scripts/collapsed.js';
+import { defaultStore } from '@/store.js';
 import { useRouter } from '@/router.js';
 
 const props = defineProps<{

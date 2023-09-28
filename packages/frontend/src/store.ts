@@ -65,6 +65,10 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'account',
 		default: true,
 	},
+	collapseFiles: {
+		where: 'account',
+		default: true,
+	},
 	rememberNoteVisibility: {
 		where: 'account',
 		default: false,
@@ -127,7 +131,6 @@ export const defaultStore = markRaw(new Storage('base', {
 			'-',
 			'announcements',
 			'search',
-			'lookup',
 			'-',
 			'favorites',
 			'drive',

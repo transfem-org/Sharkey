@@ -666,4 +666,7 @@ export type ModerationLog = {
 } | {
 	type: 'unmarkSensitiveDriveFile';
 	info: ModerationLogPayloads['unmarkSensitiveDriveFile'];
+} | {
+	type: 'createInvitation';
+	info: ModerationLogPayloads['createInvitation'];
 });

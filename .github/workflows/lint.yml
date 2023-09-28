@@ -8,6 +8,8 @@ on:
     paths:
       - packages/**
   pull_request:
+    branches-ignore:
+      - weblate
 
 jobs:
   pnpm_install:
