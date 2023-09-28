@@ -47,6 +47,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<MkSwitch v-model="showNoteActionsOnlyHover">{{ i18n.ts.showNoteActionsOnlyHover }}</MkSwitch>
 				<MkSwitch v-model="showClipButtonInNoteFooter">{{ i18n.ts.showClipButtonInNoteFooter }}</MkSwitch>
 				<MkSwitch v-model="collapseRenotes">{{ i18n.ts.collapseRenotes }}</MkSwitch>
+				<MkSwitch v-model="collapseFiles">Collapse files</MkSwitch>
 				<MkSwitch v-model="autoloadConversation">Load conversation on replies</MkSwitch>
 				<MkSwitch v-model="advancedMfm">{{ i18n.ts.enableAdvancedMfm }}</MkSwitch>
 				<MkSwitch v-if="advancedMfm" v-model="animatedMfm">{{ i18n.ts.enableAnimatedMfm }}</MkSwitch>
@@ -225,6 +226,7 @@ const showNoteActionsOnlyHover = computed(defaultStore.makeGetterSetter('showNot
 const showClipButtonInNoteFooter = computed(defaultStore.makeGetterSetter('showClipButtonInNoteFooter'));
 const reactionsDisplaySize = computed(defaultStore.makeGetterSetter('reactionsDisplaySize'));
 const collapseRenotes = computed(defaultStore.makeGetterSetter('collapseRenotes'));
+const collapseFiles = computed(defaultStore.makeGetterSetter('collapseFiles'));
 const autoloadConversation = computed(defaultStore.makeGetterSetter('autoloadConversation'));
 const reduceAnimation = computed(defaultStore.makeGetterSetter('animation', v => !v, v => !v));
 const useBlurEffectForModal = computed(defaultStore.makeGetterSetter('useBlurEffectForModal'));
