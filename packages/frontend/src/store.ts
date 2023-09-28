@@ -113,6 +113,10 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'account',
 		default: false,
 	},
+	autoloadConversation: {
+		where: 'account',
+		default: true,
+	},
 
 	menu: {
 		where: 'deviceAccount',

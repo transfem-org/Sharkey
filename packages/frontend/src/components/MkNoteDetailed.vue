@@ -517,7 +517,7 @@ function loadConversation() {
 		conversation.value = res.reverse();
 	});
 }
-if (appearNote.reply && appearNote.reply.replyId) loadConversation();
+if (appearNote.reply && appearNote.reply.replyId && defaultStore.state.autoloadConversation) loadConversation();
 </script>
 
 <style lang="scss" module>
