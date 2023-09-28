@@ -12,6 +12,7 @@ import * as os from '@/os.js';
 import { i18n } from '@/i18n.js';
 import { ui } from '@/config.js';
 import { unisonReload } from '@/scripts/unison-reload.js';
+import { instance } from './instance.js';
 
 export const navbarItemDef = reactive({
 	notifications: {
@@ -104,7 +105,7 @@ export const navbarItemDef = reactive({
 	achievements: {
 		title: i18n.ts.achievements,
 		icon: 'ti ti-medal',
-		show: computed(() => $i != null),
+		show: computed(() => $i != null && instance.enableAchievements),
 		to: '/my/achievements',
 	},
 	ui: {

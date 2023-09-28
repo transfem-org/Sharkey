@@ -344,6 +344,7 @@ export type LiteInstanceMetadata = {
 	enableTwitterIntegration: boolean;
 	enableGithubIntegration: boolean;
 	enableDiscordIntegration: boolean;
+	enableAchievements: boolean;
 	enableServiceWorker: boolean;
 	emojis: CustomEmoji[];
 	defaultDarkTheme: string | null;

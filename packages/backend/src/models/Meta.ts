@@ -449,6 +449,11 @@ export class MiMeta {
 	})
 	public enableIdenticonGeneration: boolean;
 
+	@Column('boolean', {
+		default: true,
+	})
+	public enableAchievements: boolean;
+
 	@Column('jsonb', {
 		default: { },
 	})

@@ -17,6 +17,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</div>
 
 				<div class="_panel" style="padding: 16px;">
+					<MkSwitch v-model="enableAchievements">
+						<template #label>Enable Achievements</template>
+						<template #caption>Turning this off will disable the achievement system</template>
+					</MkSwitch>
+				</div>
+
+				<div class="_panel" style="padding: 16px;">
 					<MkSwitch v-model="enableIdenticonGeneration">
 						<template #label>{{ i18n.ts.enableIdenticonGeneration }}</template>
 						<template #caption>{{ i18n.ts.turnOffToImprovePerformance }}</template>
@@ -53,6 +60,7 @@ import { definePageMetadata } from '@/scripts/page-metadata.js';
 import MkSwitch from '@/components/MkSwitch.vue';
 
 let enableServerMachineStats: boolean = $ref(false);
+let enableAchievements: boolean = $ref(false);
 let enableIdenticonGeneration: boolean = $ref(false);
 let enableChartsForRemoteUser: boolean = $ref(false);
 let enableChartsForFederatedInstances: boolean = $ref(false);
@@ -60,6 +68,7 @@ let enableChartsForFederatedInstances: boolean = $ref(false);
 async function init() {
 	const meta = await os.api('admin/meta');
 	enableServerMachineStats = meta.enableServerMachineStats;
+	enableAchievements = meta.enableAchievements;
 	enableIdenticonGeneration = meta.enableIdenticonGeneration;
 	enableChartsForRemoteUser = meta.enableChartsForRemoteUser;
 	enableChartsForFederatedInstances = meta.enableChartsForFederatedInstances;
@@ -68,6 +77,7 @@ async function init() {
 function save() {
 	os.apiWithDialog('admin/update-meta', {
 		enableServerMachineStats,
+		enableAchievements,
 		enableIdenticonGeneration,
 		enableChartsForRemoteUser,
 		enableChartsForFederatedInstances,
