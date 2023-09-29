@@ -5,8 +5,6 @@ import { getClient } from '../MastodonApiServerService.js';
 import { convertTimelinesArgsId, limitToInt } from './timeline.js';
 import type { Entity } from 'megalodon';
 import type { FastifyInstance } from 'fastify';
-import { MfmService } from '@/core/MfmService.js';
-import * as mfm from 'mfm-js';
 
 function normalizeQuery(data: any) {
 	const str = querystring.stringify(data);
@@ -15,7 +13,6 @@ function normalizeQuery(data: any) {
 
 export class ApiStatusMastodon {
 	private fastify: FastifyInstance;
-	private mfmservice: MfmService;
 
 	constructor(fastify: FastifyInstance) {
 		this.fastify = fastify;
