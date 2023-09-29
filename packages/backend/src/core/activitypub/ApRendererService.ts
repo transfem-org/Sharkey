@@ -459,8 +459,6 @@ export class ApRendererService {
 			this.userProfilesRepository.findOneByOrFail({ userId: user.id }),
 		]);
 
-		if (user.host == null) (user.host as unknown as string) = this.config.host;
-
 		const attachment = profile.fields.map(field => ({
 			type: 'PropertyValue',
 			name: field.name,
@@ -492,6 +490,7 @@ export class ApRendererService {
 			sharedInbox: `${this.config.url}/inbox`,
 			endpoints: { sharedInbox: `${this.config.url}/inbox` },
 			url: `${this.config.url}/@${user.username}`,
+			uri: `${this.config.url}/@${user.username}`,
 			preferredUsername: user.username,
 			name: user.name,
 			summary: profile.description ? this.mfmService.toHtml(mfm.parse(profile.description)) : null,
