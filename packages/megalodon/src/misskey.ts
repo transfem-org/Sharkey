@@ -2118,11 +2118,12 @@ export default class Misskey implements MegalodonInterface {
       following?: boolean
       account_id?: string
       exclude_unreviewed?: boolean
-    }
+    },
+    url?: string
   ): Promise<Response<Entity.Results>> {
     switch (options.type) {
       case 'accounts': {
-        if (q.startsWith("http://") || q.startsWith("https://")) {
+        if (q.startsWith("http://") && !q.includes(url!) || q.startsWith("https://") && !q.includes(url!)) {
 					return this.client
 						.post("/api/ap/show", { uri: q })
 						.then(async (res) => {
@@ -2185,7 +2186,13 @@ export default class Misskey implements MegalodonInterface {
 					});
 				}
         try {
-          const match = q.match(/^@?(?<user>[a-zA-Z0-9_]+)(?:@(?<host>[a-zA-Z0-9-.]+\.[a-zA-Z0-9-]+)|)$/);
+          let newStr = q;
+          if (q.includes(url!)) {
+            const arr = q.split('@');;
+            arr.shift();
+            newStr = arr.join('@');
+          }
+          const match = newStr.match(/^@?(?<user>[a-zA-Z0-9_]+)(?:@(?<host>[a-zA-Z0-9-.]+\.[a-zA-Z0-9-]+)|)$/);
           if (match) {
             const lookupQuery = {
               username: match.groups?.user,

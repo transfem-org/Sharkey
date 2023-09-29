@@ -1239,7 +1239,8 @@ export interface MegalodonInterface {
       following?: boolean
       account_id?: string
       exclude_unreviewed?: boolean
-    }
+    },
+    url?: string
   ): Promise<Response<Entity.Results>>
 
   // ======================================

@@ -62,11 +62,13 @@ export class ApiSearchMastodon {
 	private request: FastifyRequest;
 	private client: MegalodonInterface;
 	private BASE_URL: string;
+	private url?: string;
 
-	constructor(request: FastifyRequest, client: MegalodonInterface, BASE_URL: string) {
+	constructor(request: FastifyRequest, client: MegalodonInterface, BASE_URL: string, url?: string) {
 		this.request = request;
 		this.client = client;
 		this.BASE_URL = BASE_URL;
+		this.url = url;
 	}
 
 	public async SearchV1() {
@@ -85,7 +87,7 @@ export class ApiSearchMastodon {
 		try {
 			const query: any = convertTimelinesArgsId(limitToInt(this.request.query as any));
 			const type = query.type;
-			const acct = !type || type === 'accounts' ? await this.client.search(query.q, { type: 'accounts', ...query }) : null;
+			const acct = !type || type === 'accounts' ? await this.client.search(query.q, { type: 'accounts', ...query }, this.url) : null;
 			const stat = !type || type === 'statuses' ? await this.client.search(query.q, { type: 'statuses', ...query }) : null;
 			const tags = !type || type === 'hashtags' ? await this.client.search(query.q, { type: 'hashtags', ...query }) : null;
 			const data = {
