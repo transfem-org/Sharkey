@@ -2118,8 +2118,7 @@ export default class Misskey implements MegalodonInterface {
       following?: boolean
       account_id?: string
       exclude_unreviewed?: boolean
-    },
-    url?: string
+    }
   ): Promise<Response<Entity.Results>> {
     switch (options.type) {
       case 'accounts': {

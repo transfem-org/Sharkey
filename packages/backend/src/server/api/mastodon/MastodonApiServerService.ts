@@ -256,7 +256,7 @@ export class MastodonApiServerService {
 			const client = getClient(BASE_URL, accessTokens); // we are using this here, because in private mode some info isnt
 			// displayed without being logged in
 			try {
-				const account = new ApiAccountMastodon(_request, client, BASE_URL, this.config.hostname);
+				const account = new ApiAccountMastodon(_request, client, BASE_URL);
 				reply.send(await account.lookup());
 			} catch (e: any) {
 				/* console.error(e); */
@@ -589,7 +589,7 @@ export class MastodonApiServerService {
 			const accessTokens = _request.headers.authorization;
 			const client = getClient(BASE_URL, accessTokens);
 			try {
-				const search = new ApiSearchMastodon(_request, client, BASE_URL, this.config.url);
+				const search = new ApiSearchMastodon(_request, client, BASE_URL);
 				reply.send(await search.SearchV2());
 			} catch (e: any) {
 				/* console.error(e);
