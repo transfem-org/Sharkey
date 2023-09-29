@@ -2192,35 +2192,37 @@ export default class Misskey implements MegalodonInterface {
             arr.shift();
             newStr = arr.join('@'); */
             const rexStr = newStr.match(/(?<=\@)(.*?)(?=\&)/);
-            const lookupQuery = {
-              username: rexStr![0],
-            };
-
-            const result = await this.client.post<MisskeyAPI.Entity.UserDetail>('/api/users/show', lookupQuery).then((res) => ({
-              ...res,
-              data: {
-                accounts: [
-                  MisskeyAPI.Converter.userDetail(
-                    res.data,
-                    this.baseUrl,
-                  ),
-                ],
-                statuses: [],
-                hashtags: [],
-              },
-            }));
-            
-            if (result.status !== 200) {
-							result.status = 200;
-							result.statusText = "OK";
-							result.data = {
-								accounts: [],
-								statuses: [],
-								hashtags: [],
-							};
-						}
-
-						return result;
+            if (rexStr) {
+              const lookupQuery = {
+                username: rexStr[1],
+              };
+  
+              const result = await this.client.post<MisskeyAPI.Entity.UserDetail>('/api/users/show', lookupQuery).then((res) => ({
+                ...res,
+                data: {
+                  accounts: [
+                    MisskeyAPI.Converter.userDetail(
+                      res.data,
+                      this.baseUrl,
+                    ),
+                  ],
+                  statuses: [],
+                  hashtags: [],
+                },
+              }));
+              
+              if (result.status !== 200) {
+                result.status = 200;
+                result.statusText = "OK";
+                result.data = {
+                  accounts: [],
+                  statuses: [],
+                  hashtags: [],
+                };
+              }
+  
+              return result;
+            }
           }
           const match = newStr.match(/^@?(?<user>[a-zA-Z0-9_]+)(?:@(?<host>[a-zA-Z0-9-.]+\.[a-zA-Z0-9-]+)|)$/);
           if (match) {
