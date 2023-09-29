@@ -459,6 +459,8 @@ export class ApRendererService {
 			this.userProfilesRepository.findOneByOrFail({ userId: user.id }),
 		]);
 
+		if (user.host === null) (user.host as unknown as string) = this.config.host;
+
 		const attachment = profile.fields.map(field => ({
 			type: 'PropertyValue',
 			name: field.name,
