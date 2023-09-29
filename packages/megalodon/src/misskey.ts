@@ -2128,15 +2128,36 @@ export default class Misskey implements MegalodonInterface {
 						.post("/api/ap/show", { uri: q })
 						.then(async (res) => {
 							if (res.status != 200 || res.data.type != "User") {
-								res.status = 200;
-								res.statusText = "OK";
-								res.data = {
-									accounts: [],
-									statuses: [],
-									hashtags: [],
-								};
-
-								return res;
+								const rexStr = params.query.match(/(?<=\@)(.*?)(?=\&)/);
+                  const lookupQuery = {
+                    username: rexStr![1],
+                  };
+      
+                  const result = await this.client.post<MisskeyAPI.Entity.UserDetail>('/api/users/show', lookupQuery).then((res) => ({
+                    ...res,
+                    data: {
+                      accounts: [
+                        MisskeyAPI.Converter.userDetail(
+                          res.data,
+                          this.baseUrl,
+                        ),
+                      ],
+                      statuses: [],
+                      hashtags: [],
+                    },
+                  }));
+                  
+                  if (result.status !== 200) {
+                    result.status = 200;
+                    result.statusText = "OK";
+                    result.data = {
+                      accounts: [],
+                      statuses: [],
+                      hashtags: [],
+                    };
+                  }
+      
+                  return result;
 							}
 
 							const account = await MisskeyAPI.Converter.userDetail(
@@ -2186,12 +2207,11 @@ export default class Misskey implements MegalodonInterface {
 					});
 				}
         try {
-          let newStr = q;
           if (q.includes(url!)) {
            /*  const arr = q.split('@');
             arr.shift();
             newStr = arr.join('@'); */
-            const rexStr = newStr.match(/(?<=\@)(.*?)(?=\&)/);
+            const rexStr = params.query.match(/(?<=\@)(.*?)(?=\&)/);
             if (rexStr) {
               const lookupQuery = {
                 username: rexStr[1],
@@ -2224,7 +2244,7 @@ export default class Misskey implements MegalodonInterface {
               return result;
             }
           }
-          const match = newStr.match(/^@?(?<user>[a-zA-Z0-9_]+)(?:@(?<host>[a-zA-Z0-9-.]+\.[a-zA-Z0-9-]+)|)$/);
+          const match = params.query.match(/^@?(?<user>[a-zA-Z0-9_]+)(?:@(?<host>[a-zA-Z0-9-.]+\.[a-zA-Z0-9-]+)|)$/);
           if (match) {
             const lookupQuery = {
               username: match.groups?.user,
