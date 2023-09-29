@@ -339,8 +339,9 @@ export class MfmService {
 			mention: (node) => {
 				const a = doc.createElement('a');
 				const { username, host, acct } = node.props;
+				const splitacct = acct.split("@");
 				const remoteUserInfo = mentionedRemoteUsers.find(remoteUser => remoteUser.username === username && remoteUser.host === host);
-				a.setAttribute('href', remoteUserInfo ? (remoteUserInfo.url ? remoteUserInfo.url : remoteUserInfo.uri) : `${this.config.url}/${acct}`);
+				a.setAttribute('href', remoteUserInfo ? (remoteUserInfo.url ? remoteUserInfo.url : remoteUserInfo.uri) : splitacct[2] !== this.config.host && splitacct[2] !== undefined ? `https://${splitacct[2]}/@${splitacct[1]}` : `${this.config.url}/${acct}`);
 				a.className = 'u-url mention';
 				a.textContent = acct;
 				return a;
