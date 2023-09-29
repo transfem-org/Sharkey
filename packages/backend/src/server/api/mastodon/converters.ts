@@ -45,7 +45,6 @@ export class MastoConverters {
 	
 		return status;
 	}
-
 }
 
 export function convertId(in_id: string, id_convert_type: IdConvertType): string {
