@@ -1,6 +1,12 @@
 name: Publish Docker image
 
 on:
+  push:
+    branches:
+      - stable
+    paths:
+      - packages/**
+      - locales/**
   release:
     types: [published]
   workflow_dispatch:
