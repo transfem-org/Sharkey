@@ -589,7 +589,7 @@ export class MastodonApiServerService {
 			const accessTokens = _request.headers.authorization;
 			const client = getClient(BASE_URL, accessTokens);
 			try {
-				const search = new ApiSearchMastodon(_request, client, BASE_URL);
+				const search = new ApiSearchMastodon(_request, client, BASE_URL, this.config.url);
 				reply.send(await search.SearchV2());
 			} catch (e: any) {
 				/* console.error(e);
