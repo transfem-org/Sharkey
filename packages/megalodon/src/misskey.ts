@@ -2127,37 +2127,17 @@ export default class Misskey implements MegalodonInterface {
 						.post("/api/ap/show", { uri: q })
 						.then(async (res) => {
 							if (res.status != 200 || res.data.type != "User") {
-								const splitacct = q.split("@");
-                const lookupQuery = {
-                  username: splitacct[1],
-                };
+								res.status = 200;
+								res.statusText = "OK";
+								res.data = {
+									accounts: [],
+									statuses: [],
+									hashtags: [],
+								};
 
-                const res2 = await this.client.post<MisskeyAPI.Entity.UserDetail>('/api/users/show', lookupQuery).then((res) => ({
-                  ...res,
-                  data: {
-                    accounts: [
-                      MisskeyAPI.Converter.userDetail(
-                        res.data,
-                        this.baseUrl,
-                      ),
-                    ],
-                    statuses: [],
-                    hashtags: [],
-                  },
-                }));
-                  
-                if (res2.status !== 200) {
-                  res2.status = 200;
-                  res2.statusText = "OK";
-                  res2.data = {
-                    accounts: [],
-                    statuses: [],
-                    hashtags: [],
-                  };
-                }
-                return res2;
+								return res;
 							}
-
+              
 							const account = await MisskeyAPI.Converter.userDetail(
 								res.data.object as MisskeyAPI.Entity.UserDetail,
 								this.baseUrl,

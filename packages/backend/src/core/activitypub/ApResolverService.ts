@@ -136,7 +136,9 @@ export class Resolver {
 					});
 			case 'users':
 				return this.usersRepository.findOneByOrFail({ id: parsed.id })
-					.then(user => this.apRendererService.renderPerson(user as MiLocalUser));
+					.then(user => this.apRendererService.renderPerson(user as MiLocalUser)).catch(() => {
+						return this.usersRepository.findOneByOrFail({ usernameLower: parsed.id.toLowerCase() }).then(user => this.apRendererService.renderPerson(user as MiLocalUser))
+				});
 			case 'questions':
 				// Polls are indexed by the note they are attached to.
 				return Promise.all([
