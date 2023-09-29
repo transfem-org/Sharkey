@@ -744,7 +744,7 @@ export class MastodonApiServerService {
 		//#endregion
 
 		//#region Timelines
-		const TLEndpoint = new ApiTimelineMastodon(fastify);
+		const TLEndpoint = new ApiTimelineMastodon(fastify, this.config);
 
 		// GET Endpoints
 		TLEndpoint.getTL();
@@ -769,7 +769,7 @@ export class MastodonApiServerService {
 		//#endregion
 
 		//#region Status
-		const NoteEndpoint = new ApiStatusMastodon(fastify);
+		const NoteEndpoint = new ApiStatusMastodon(fastify, this.config);
 
 		// GET Endpoints
 		NoteEndpoint.getStatus();

@@ -1,10 +1,51 @@
+import type { Config } from '@/config.js';
+import { MfmService } from '@/core/MfmService.js';
+import { DI } from '@/di-symbols.js';
+import { Inject } from '@nestjs/common';
 import { Entity } from 'megalodon';
+import { parse } from 'mfm-js';
 
 const CHAR_COLLECTION = '0123456789abcdefghijklmnopqrstuvwxyz';
 
 export enum IdConvertType {
     MastodonId,
     SharkeyId,
+}
+
+export class MastoConverters {
+	private MfmService: MfmService;
+
+	constructor(
+		@Inject(DI.config)
+		private config: Config
+	) {
+		this.MfmService = new MfmService(this.config);
+	}
+
+	public async convertStatus(status: Entity.Status) {
+		status.account = convertAccount(status.account);
+		status.id = convertId(status.id, IdConvertType.MastodonId);
+		console.error(status);
+		console.error(status);
+		if (status.in_reply_to_account_id) status.in_reply_to_account_id = convertId(
+			status.in_reply_to_account_id,
+			IdConvertType.MastodonId,
+		);
+		if (status.in_reply_to_id) status.in_reply_to_id = convertId(status.in_reply_to_id, IdConvertType.MastodonId);
+		status.media_attachments = status.media_attachments.map((attachment) =>
+			convertAttachment(attachment),
+		);
+		status.mentions = status.mentions.map((mention) => ({
+			...mention,
+			id: convertId(mention.id, IdConvertType.MastodonId),
+		}));
+		status.content = status.content ? this.MfmService.toHtml(parse(status.content)) as string : status.content;
+		if (status.poll) status.poll = convertPoll(status.poll);
+		if (status.reblog) status.reblog = convertStatus(status.reblog);
+	
+		return status;
+	}
+
 }
 
 export function convertId(in_id: string, id_convert_type: IdConvertType): string {

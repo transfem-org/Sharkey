@@ -1,10 +1,11 @@
 import querystring from 'querystring';
 import { emojiRegexAtStartToEnd } from '@/misc/emoji-regex.js';
-import { convertId, IdConvertType as IdType, convertAccount, convertAttachment, convertPoll, convertStatus, convertStatusSource } from '../converters.js';
+import { convertId, IdConvertType as IdType, convertAccount, convertAttachment, convertPoll, convertStatusSource, MastoConverters } from '../converters.js';
 import { getClient } from '../MastodonApiServerService.js';
 import { convertTimelinesArgsId, limitToInt } from './timeline.js';
 import type { Entity } from 'megalodon';
 import type { FastifyInstance } from 'fastify';
+import type { Config } from '@/config.js';
 
 function normalizeQuery(data: any) {
 	const str = querystring.stringify(data);
@@ -13,9 +14,11 @@ function normalizeQuery(data: any) {
 
 export class ApiStatusMastodon {
 	private fastify: FastifyInstance;
+	private mastoconverter: MastoConverters;
 
-	constructor(fastify: FastifyInstance) {
+	constructor(fastify: FastifyInstance, config: Config) {
 		this.fastify = fastify;
+		this.mastoconverter = new MastoConverters(config);
 	}
 
 	public async getStatus() {
@@ -25,7 +28,7 @@ export class ApiStatusMastodon {
 			const client = getClient(BASE_URL, accessTokens);
 			try {
 				const data = await client.getStatus(convertId(_request.params.id, IdType.SharkeyId));
-				reply.send(convertStatus(data.data));
+				reply.send(await this.mastoconverter.convertStatus(data.data));
 			} catch (e: any) {
 				console.error(e);
 				reply.code(_request.is404 ? 404 : 401).send(e.response.data);
@@ -59,8 +62,8 @@ export class ApiStatusMastodon {
 					convertId(_request.params.id, IdType.SharkeyId),
 					convertTimelinesArgsId(limitToInt(query)),
 				);
-				data.data.ancestors = data.data.ancestors.map((status: Entity.Status) => convertStatus(status));
-				data.data.descendants = data.data.descendants.map((status: Entity.Status) => convertStatus(status));
+				data.data.ancestors = await Promise.all(data.data.ancestors.map(async (status: Entity.Status) => await this.mastoconverter.convertStatus(status)));
+				data.data.descendants = await Promise.all(data.data.descendants.map(async (status: Entity.Status) => await this.mastoconverter.convertStatus(status)));
 				reply.send(data.data);
 			} catch (e: any) {
 				console.error(e);
@@ -219,7 +222,7 @@ export class ApiStatusMastodon {
 				}
 
 				const data = await client.postStatus(text, body);
-				reply.send(convertStatus(data.data as Entity.Status));
+				reply.send(await this.mastoconverter.convertStatus(data.data as Entity.Status));
 			} catch (e: any) {
 				console.error(e);
 				reply.code(401).send(e.response.data);
@@ -240,7 +243,7 @@ export class ApiStatusMastodon {
 					body.media_ids = (body.media_ids as string[]).map((p) => convertId(p, IdType.SharkeyId));
 				}
 				const data = await client.editStatus(convertId(_request.params.id, IdType.SharkeyId), body);
-				reply.send(convertStatus(data.data));
+				reply.send(await this.mastoconverter.convertStatus(data.data));
 			} catch (e: any) {
 				console.error(e);
 				reply.code(_request.is404 ? 404 : 401).send(e.response.data);
@@ -258,7 +261,7 @@ export class ApiStatusMastodon {
 					convertId(_request.params.id, IdType.SharkeyId),
 					'❤',
 				)) as any;
-				reply.send(convertStatus(data.data));
+				reply.send(await this.mastoconverter.convertStatus(data.data));
 			} catch (e: any) {
 				console.error(e);
 				reply.code(401).send(e.response.data);
@@ -276,7 +279,7 @@ export class ApiStatusMastodon {
 					convertId(_request.params.id, IdType.SharkeyId),
 					'❤',
 				);
-				reply.send(convertStatus(data.data));
+				reply.send(await this.mastoconverter.convertStatus(data.data));
 			} catch (e: any) {
 				console.error(e);
 				reply.code(401).send(e.response.data);
@@ -291,7 +294,7 @@ export class ApiStatusMastodon {
 			const client = getClient(BASE_URL, accessTokens);
 			try {
 				const data = await client.reblogStatus(convertId(_request.params.id, IdType.SharkeyId));
-				reply.send(convertStatus(data.data));
+				reply.send(await this.mastoconverter.convertStatus(data.data));
 			} catch (e: any) {
 				console.error(e);
 				reply.code(401).send(e.response.data);
@@ -306,7 +309,7 @@ export class ApiStatusMastodon {
 			const client = getClient(BASE_URL, accessTokens);
 			try {
 				const data = await client.unreblogStatus(convertId(_request.params.id, IdType.SharkeyId));
-				reply.send(convertStatus(data.data));
+				reply.send(await this.mastoconverter.convertStatus(data.data));
 			} catch (e: any) {
 				console.error(e);
 				reply.code(401).send(e.response.data);
@@ -321,7 +324,7 @@ export class ApiStatusMastodon {
 			const client = getClient(BASE_URL, accessTokens);
 			try {
 				const data = await client.bookmarkStatus(convertId(_request.params.id, IdType.SharkeyId));
-				reply.send(convertStatus(data.data));
+				reply.send(await this.mastoconverter.convertStatus(data.data));
 			} catch (e: any) {
 				console.error(e);
 				reply.code(401).send(e.response.data);
@@ -336,7 +339,7 @@ export class ApiStatusMastodon {
 			const client = getClient(BASE_URL, accessTokens);
 			try {
 				const data = await client.unbookmarkStatus(convertId(_request.params.id, IdType.SharkeyId));
-				reply.send(convertStatus(data.data));
+				reply.send(await this.mastoconverter.convertStatus(data.data));
 			} catch (e: any) {
 				console.error(e);
 				reply.code(401).send(e.response.data);
@@ -351,7 +354,7 @@ export class ApiStatusMastodon {
 			const client = getClient(BASE_URL, accessTokens);
 			try {
 				const data = await client.pinStatus(convertId(_request.params.id, IdType.SharkeyId));
-				reply.send(convertStatus(data.data));
+				reply.send(await this.mastoconverter.convertStatus(data.data));
 			} catch (e: any) {
 				console.error(e);
 				reply.code(401).send(e.response.data);
@@ -366,7 +369,7 @@ export class ApiStatusMastodon {
 			const client = getClient(BASE_URL, accessTokens);
 			try {
 				const data = await client.unpinStatus(convertId(_request.params.id, IdType.SharkeyId));
-				reply.send(convertStatus(data.data));
+				reply.send(await this.mastoconverter.convertStatus(data.data));
 			} catch (e: any) {
 				console.error(e);
 				reply.code(401).send(e.response.data);
@@ -381,7 +384,7 @@ export class ApiStatusMastodon {
 			const client = getClient(BASE_URL, accessTokens);
 			try {
 				const data = await client.createEmojiReaction(convertId(_request.params.id, IdType.SharkeyId), _request.params.name);
-				reply.send(convertStatus(data.data));
+				reply.send(await this.mastoconverter.convertStatus(data.data));
 			} catch (e: any) {
 				console.error(e);
 				reply.code(401).send(e.response.data);
@@ -396,7 +399,7 @@ export class ApiStatusMastodon {
 			const client = getClient(BASE_URL, accessTokens);
 			try {
 				const data = await client.deleteEmojiReaction(convertId(_request.params.id, IdType.SharkeyId), _request.params.name);
-				reply.send(convertStatus(data.data));
+				reply.send(await this.mastoconverter.convertStatus(data.data));
 			} catch (e: any) {
 				console.error(e);
 				reply.code(401).send(e.response.data);
