@@ -449,7 +449,7 @@ export class ApRendererService {
 	}
 
 	@bindThis
-	public async renderPerson(user: MiLocalUser, mastodon?: boolean) {
+	public async renderPerson(user: MiLocalUser) {
 		const id = this.userEntityService.genLocalUserUri(user.id);
 		const isSystem = user.username.includes('.');
 
@@ -477,9 +477,7 @@ export class ApRendererService {
 			...hashtagTags,
 		];
 
-		let keypair;
-
-		if (!mastodon) keypair = await this.userKeypairService.getUserKeypair(user.id);
+		const keypair = await this.userKeypairService.getUserKeypair(user.id);
 
 		const person: any = {
 			type: isSystem ? 'Application' : user.isBot ? 'Service' : 'Person',
@@ -492,7 +490,6 @@ export class ApRendererService {
 			sharedInbox: `${this.config.url}/inbox`,
 			endpoints: { sharedInbox: `${this.config.url}/inbox` },
 			url: `${this.config.url}/@${user.username}`,
-			uri: mastodon ? `${this.config.url}/@${user.username}` : null,
 			preferredUsername: user.username,
 			name: user.name,
 			summary: profile.description ? this.mfmService.toHtml(mfm.parse(profile.description)) : null,
@@ -501,7 +498,7 @@ export class ApRendererService {
 			tag,
 			manuallyApprovesFollowers: user.isLocked,
 			discoverable: user.isExplorable,
-			publicKey: !mastodon && keypair ? this.renderKey(user, keypair, '#main-key') : '',
+			publicKey: this.renderKey(user, keypair, '#main-key'),
 			isCat: user.isCat,
 			attachment: attachment.length ? attachment : undefined,
 		};

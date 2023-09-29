@@ -2124,7 +2124,7 @@ export default class Misskey implements MegalodonInterface {
       case 'accounts': {
         if (q.startsWith("http://") || q.startsWith("https://")) {
 					return this.client
-						.post("/api/ap/show", { uri: q, masto: true })
+						.post("/api/ap/show", { uri: q })
 						.then(async (res) => {
 							if (res.status != 200 || res.data.type != "User") {
 								res.status = 200;

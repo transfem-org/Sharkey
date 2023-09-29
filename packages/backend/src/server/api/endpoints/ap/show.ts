@@ -80,7 +80,6 @@ export const paramDef = {
 	type: 'object',
 	properties: {
 		uri: { type: 'string' },
-		masto: { type: 'boolean' },
 	},
 	required: ['uri'],
 } as const;
@@ -98,7 +97,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 		private apNoteService: ApNoteService,
 	) {
 		super(meta, paramDef, async (ps, me) => {
-			const object = await this.fetchAny(ps.uri, me, ps.masto);
+			const object = await this.fetchAny(ps.uri, me);
 			if (object) {
 				return object;
 			} else {
@@ -111,7 +110,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 	 * URIからUserかNoteを解決する
 	 */
 	@bindThis
-	private async fetchAny(uri: string, me: MiLocalUser | null | undefined, masto: boolean | undefined): Promise<SchemaType<typeof meta['res']> | null> {
+	private async fetchAny(uri: string, me: MiLocalUser | null | undefined): Promise<SchemaType<typeof meta['res']> | null> {
 	// ブロックしてたら中断
 		const fetchedMeta = await this.metaService.fetch();
 		if (this.utilityService.isBlockedHost(fetchedMeta.blockedHosts, this.utilityService.extractDbHost(uri))) return null;
@@ -124,7 +123,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 
 		// リモートから一旦オブジェクトフェッチ
 		const resolver = this.apResolverService.createResolver();
-		const object = await resolver.resolve(uri, masto) as any;
+		const object = await resolver.resolve(uri) as any;
 
 		// /@user のような正規id以外で取得できるURIが指定されていた場合、ここで初めて正規URIが確定する
 		// これはDBに存在する可能性があるため再度DB検索

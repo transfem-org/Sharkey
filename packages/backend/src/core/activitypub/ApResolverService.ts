@@ -67,7 +67,7 @@ export class Resolver {
 	}
 
 	@bindThis
-	public async resolve(value: string | IObject, mastodon?: boolean): Promise<IObject> {
+	public async resolve(value: string | IObject): Promise<IObject> {
 		if (typeof value !== 'string') {
 			return value;
 		}
@@ -91,7 +91,7 @@ export class Resolver {
 
 		const host = this.utilityService.extractDbHost(value);
 		if (this.utilityService.isSelfHost(host)) {
-			return await this.resolveLocal(value, mastodon ? mastodon : false);
+			return await this.resolveLocal(value);
 		}
 
 		const meta = await this.metaService.fetch();
@@ -119,14 +119,9 @@ export class Resolver {
 	}
 
 	@bindThis
-	private resolveLocal(url: string, mastodon?: boolean): Promise<IObject> {
+	private resolveLocal(url: string): Promise<IObject> {
 		const parsed = this.apDbResolverService.parseUri(url);
 		if (!parsed.local) throw new Error('resolveLocal: not local');
-
-		if (parsed.type.startsWith('@') && mastodon) {
-			return this.usersRepository.findOneByOrFail({ usernameLower: parsed.type.toLowerCase().replace('@', '') })
-				.then(user => this.apRendererService.renderPerson(user as MiLocalUser, mastodon));
-		}
 
 		switch (parsed.type) {
 			case 'notes':
