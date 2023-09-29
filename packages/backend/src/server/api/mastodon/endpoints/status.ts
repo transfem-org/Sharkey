@@ -28,7 +28,6 @@ export class ApiStatusMastodon {
 			const client = getClient(BASE_URL, accessTokens);
 			try {
 				const data = await client.getStatus(convertId(_request.params.id, IdType.SharkeyId));
-				data.data.content = this.mfmservice.toHtml(mfm.parse(data.data.content)) || data.data.content;
 				reply.send(convertStatus(data.data));
 			} catch (e: any) {
 				console.error(e);
