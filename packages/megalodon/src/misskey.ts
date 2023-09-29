@@ -2191,7 +2191,37 @@ export default class Misskey implements MegalodonInterface {
            /*  const arr = q.split('@');
             arr.shift();
             newStr = arr.join('@'); */
-            newStr = newStr.substr(newStr.indexOf('/', 7) + 1);
+            const rexStr = newStr.match(/(?<=\/)(.*?)(?=\&)/);
+            newStr = rexStr![0].substr(rexStr![0].indexOf('/', 1) + 1);
+            const lookupQuery = {
+              username: newStr,
+            };
+
+            const result = await this.client.post<MisskeyAPI.Entity.UserDetail>('/api/users/show', lookupQuery).then((res) => ({
+              ...res,
+              data: {
+                accounts: [
+                  MisskeyAPI.Converter.userDetail(
+                    res.data,
+                    this.baseUrl,
+                  ),
+                ],
+                statuses: [],
+                hashtags: [],
+              },
+            }));
+            
+            if (result.status !== 200) {
+							result.status = 200;
+							result.statusText = "OK";
+							result.data = {
+								accounts: [],
+								statuses: [],
+								hashtags: [],
+							};
+						}
+
+						return result;
           }
           const match = newStr.match(/^@?(?<user>[a-zA-Z0-9_]+)(?:@(?<host>[a-zA-Z0-9-.]+\.[a-zA-Z0-9-]+)|)$/);
           if (match) {
