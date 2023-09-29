@@ -235,7 +235,7 @@ export class MfmService {
 	}
 
 	@bindThis
-	public toHtml(nodes: mfm.MfmNode[] | null, mentionedRemoteUsers: IMentionedRemoteUsers = []) {
+	public toHtml(nodes: mfm.MfmNode[] | null, mentionedRemoteUsers: IMentionedRemoteUsers = [], mastodon?: boolean) {
 		if (nodes == null) {
 			return null;
 		}
@@ -339,9 +339,15 @@ export class MfmService {
 			mention: (node) => {
 				const a = doc.createElement('a');
 				const { username, host, acct } = node.props;
-				const splitacct = acct.split("@");
+				if (mastodon) {
+					const splitacct = acct.split("@");
+					a.setAttribute('href', splitacct[2] !== this.config.host && splitacct[2] !== undefined ? `https://${splitacct[2]}/@${splitacct[1]}` : `@${splitacct[1]}`);
+					a.className = 'u-url mention';
+					a.textContent = acct;
+					return a;
+				}
 				const remoteUserInfo = mentionedRemoteUsers.find(remoteUser => remoteUser.username === username && remoteUser.host === host);
-				a.setAttribute('href', remoteUserInfo ? (remoteUserInfo.url ? remoteUserInfo.url : remoteUserInfo.uri) : splitacct[2] !== this.config.host && splitacct[2] !== undefined ? `https://${splitacct[2]}/@${splitacct[1]}` : `${this.config.url}/${acct}`);
+				a.setAttribute('href', remoteUserInfo ? (remoteUserInfo.url ? remoteUserInfo.url : remoteUserInfo.uri) : `${this.config.url}/${acct}`);
 				a.className = 'u-url mention';
 				a.textContent = acct;
 				return a;
