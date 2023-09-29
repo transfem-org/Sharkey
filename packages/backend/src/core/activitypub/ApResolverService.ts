@@ -123,6 +123,11 @@ export class Resolver {
 		const parsed = this.apDbResolverService.parseUri(url);
 		if (!parsed.local) throw new Error('resolveLocal: not local');
 
+		if (parsed.type.startsWith('@')) {
+			return this.usersRepository.findOneByOrFail({ usernameLower: parsed.type.toLowerCase().replace('@', '') })
+				.then(user => this.apRendererService.renderPerson(user as MiLocalUser));
+		}
+
 		switch (parsed.type) {
 			case 'notes':
 				return this.notesRepository.findOneByOrFail({ id: parsed.id })
@@ -136,9 +141,7 @@ export class Resolver {
 					});
 			case 'users':
 				return this.usersRepository.findOneByOrFail({ id: parsed.id })
-					.then(user => this.apRendererService.renderPerson(user as MiLocalUser)).catch(() => {
-						return this.usersRepository.findOneByOrFail({ usernameLower: parsed.id.toLowerCase().replace('@', '') }).then(user => this.apRendererService.renderPerson(user as MiLocalUser));
-				});
+					.then(user => this.apRendererService.renderPerson(user as MiLocalUser));
 			case 'questions':
 				// Polls are indexed by the note they are attached to.
 				return Promise.all([
