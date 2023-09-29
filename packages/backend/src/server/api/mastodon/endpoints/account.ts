@@ -24,11 +24,13 @@ export class ApiAccountMastodon {
 	private request: FastifyRequest;
 	private client: MegalodonInterface;
 	private BASE_URL: string;
+	private url?: string;
 
-	constructor(request: FastifyRequest, client: MegalodonInterface, BASE_URL: string) {
+	constructor(request: FastifyRequest, client: MegalodonInterface, BASE_URL: string, url?: string) {
 		this.request = request;
 		this.client = client;
 		this.BASE_URL = BASE_URL;
+		this.url = url;
 	}
 
 	public async verifyCredentials() {
@@ -60,10 +62,10 @@ export class ApiAccountMastodon {
 
 	public async lookup() {
 		try {
-			const data = await this.client.search((this.request.query as any).acct, { type: 'accounts' });
+			const data = await this.client.search((this.request.query as any).acct, { type: 'accounts' }, this.url);
 			return convertAccount(data.data.accounts[0]);
 		} catch (e: any) {
-			/* console.error(e);
+			/* console.error(e)
 			console.error(e.response.data); */
 			return e.response;
 		}
