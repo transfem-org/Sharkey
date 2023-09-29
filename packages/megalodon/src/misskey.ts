@@ -2188,9 +2188,10 @@ export default class Misskey implements MegalodonInterface {
         try {
           let newStr = q;
           if (q.includes(url!)) {
-            const arr = q.split('@');;
+           /*  const arr = q.split('@');
             arr.shift();
-            newStr = arr.join('@');
+            newStr = arr.join('@'); */
+            newStr = newStr.substr(newStr.indexOf('/', 7) + 1);
           }
           const match = newStr.match(/^@?(?<user>[a-zA-Z0-9_]+)(?:@(?<host>[a-zA-Z0-9-.]+\.[a-zA-Z0-9-]+)|)$/);
           if (match) {

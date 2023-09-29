@@ -341,7 +341,7 @@ export class MfmService {
 				const { username, host, acct } = node.props;
 				if (mastodon) {
 					const splitacct = acct.split("@");
-					a.setAttribute('href', splitacct[2] !== this.config.host && splitacct[2] !== undefined ? `https://${splitacct[2]}/@${splitacct[1]}` : `https://${this.config.host}/${acct}@${this.config.host}`);
+					a.setAttribute('href', splitacct[2] !== this.config.host && splitacct[2] !== undefined ? `https://${splitacct[2]}/@${splitacct[1]}` : `https://${this.config.host}/${acct}`);
 					a.className = 'u-url mention';
 					a.textContent = acct;
 					return a;
