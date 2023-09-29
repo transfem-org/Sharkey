@@ -2122,7 +2122,7 @@ export default class Misskey implements MegalodonInterface {
   ): Promise<Response<Entity.Results>> {
     switch (options.type) {
       case 'accounts': {
-        if (q.startsWith("http://") && !(q.includes(this.baseUrl)) || q.startsWith("https://") && !(q.includes(this.baseUrl))) {
+        if (q.startsWith("http://") && !q.includes(this.baseUrl) || q.startsWith("https://") && !q.includes(this.baseUrl)) {
 					return this.client
 						.post("/api/ap/show", { uri: q })
 						.then(async (res) => {
