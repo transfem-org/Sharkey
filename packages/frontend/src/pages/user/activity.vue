@@ -7,7 +7,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <MkSpacer :contentMax="700">
 	<div class="_gaps">
 		<MkFoldableSection class="item">
-			<template #header><i class="ti ti-activity"></i> Heatmap</template>
+			<template #header><i class="ph-pulse ph-bold ph-lg"></i> Heatmap</template>
 			<XHeatmap :user="user" :src="'notes'"/>
 		</MkFoldableSection>
 		<MkFoldableSection class="item">

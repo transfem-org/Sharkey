@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <MkContainer :showHeader="widgetProps.showHeader" data-cy-mkw-rss class="mkw-rss">
-	<template #icon><i class="ti ti-rss"></i></template>
+	<template #icon><i class="ph-rss ph-bold ph-lg"></i></template>
 	<template #header>RSS</template>
 	<template #func="{ buttonStyleClass }"><button class="_button" :class="buttonStyleClass" @click="configure"><i class="ph-gear ph-bold pg-lg"></i></button></template>
 

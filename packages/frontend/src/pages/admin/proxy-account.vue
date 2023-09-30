@@ -64,6 +64,6 @@ const headerTabs = $computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.proxyAccount,
-	icon: 'ti ti-ghost',
+	icon: 'ph-ghost ph-bold ph-lg',
 });
 </script>

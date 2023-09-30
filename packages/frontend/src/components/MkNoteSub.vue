@@ -55,7 +55,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<MkNoteSub v-for="reply in replies" :key="reply.id" :note="reply" :class="$style.reply" :detail="true" :depth="depth + 1"/>
 	</template>
 	<div v-else :class="$style.more">
-		<MkA class="_link" :to="notePage(note)">{{ i18n.ts.continueThread }} <i class="ti ti-chevron-double-right"></i></MkA>
+		<MkA class="_link" :to="notePage(note)">{{ i18n.ts.continueThread }} <i class="ph-caret-double-right ph-bold ph-lg"></i></MkA>
 	</div>
 </div>
 <div v-else :class="$style.muted" @click="muted = false">

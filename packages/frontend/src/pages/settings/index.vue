@@ -107,17 +107,17 @@ const menuDef = computed(() => [{
 		to: '/settings/general',
 		active: currentPage?.route.name === 'general',
 	}, {
-		icon: 'ti ti-palette',
+		icon: 'ph-palette ph-bold ph-lg',
 		text: i18n.ts.theme,
 		to: '/settings/theme',
 		active: currentPage?.route.name === 'theme',
 	}, {
-		icon: 'ti ti-menu-2',
+		icon: 'ph-list ph-bold ph-lg-2',
 		text: i18n.ts.navbar,
 		to: '/settings/navbar',
 		active: currentPage?.route.name === 'navbar',
 	}, {
-		icon: 'ti ti-equal-double',
+		icon: 'ph-equals ph-bold ph-lg',
 		text: i18n.ts.statusbar,
 		to: '/settings/statusbar',
 		active: currentPage?.route.name === 'statusbar',
@@ -127,7 +127,7 @@ const menuDef = computed(() => [{
 		to: '/settings/sounds',
 		active: currentPage?.route.name === 'sounds',
 	}, {
-		icon: 'ti ti-plug',
+		icon: 'ph-plug ph-bold ph-lg',
 		text: i18n.ts.plugins,
 		to: '/settings/plugin',
 		active: currentPage?.route.name === 'plugin',
@@ -150,7 +150,7 @@ const menuDef = computed(() => [{
 		to: '/settings/mute-block',
 		active: currentPage?.route.name === 'mute-block',
 	}, {
-		icon: 'ti ti-message-off',
+		icon: 'ph-bell-slash ph-bold ph-lg',
 		text: i18n.ts.wordMute,
 		to: '/settings/word-mute',
 		active: currentPage?.route.name === 'word-mute',
@@ -160,17 +160,17 @@ const menuDef = computed(() => [{
 		to: '/settings/api',
 		active: currentPage?.route.name === 'api',
 	}, {
-		icon: 'ti ti-webhook',
+		icon: 'ph-webhooks-logo ph-bold ph-lg',
 		text: 'Webhook',
 		to: '/settings/webhook',
 		active: currentPage?.route.name === 'webhook',
 	}, {
-		icon: 'ti ti-package',
+		icon: 'ph-package ph-bold ph-lg',
 		text: i18n.ts.importAndExport,
 		to: '/settings/import-export',
 		active: currentPage?.route.name === 'import-export',
 	}, {
-		icon: 'ti ti-plane',
+		icon: 'ph-airplane ph-bold ph-lg',
 		text: `${i18n.ts.accountMigration}`,
 		to: '/settings/migration',
 		active: currentPage?.route.name === 'migration',
@@ -201,7 +201,7 @@ const menuDef = computed(() => [{
 		},
 	}, {
 		type: 'button',
-		icon: 'ti ti-power',
+		icon: 'ph-power ph-bold ph-lg',
 		text: i18n.ts.logout,
 		action: async () => {
 			const { canceled } = await os.confirm({

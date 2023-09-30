@@ -71,7 +71,7 @@ async function timetravel() {
 }
 
 const headerActions = $computed(() => list ? [{
-	icon: 'ti ti-calendar-time',
+	icon: 'ph-calendar ph-bold ph-lg',
 	text: i18n.ts.jumpToSpecifiedDate,
 	handler: timetravel,
 }, {

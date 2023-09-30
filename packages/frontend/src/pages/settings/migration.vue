@@ -6,7 +6,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <div class="_gaps_m">
 	<MkFolder :defaultOpen="true">
-		<template #icon><i class="ti ti-plane-arrival"></i></template>
+		<template #icon><i class="ph-airplane-landing ph-bold ph-lg"></i></template>
 		<template #label>{{ i18n.ts._accountMigration.moveFrom }}</template>
 		<template #caption>{{ i18n.ts._accountMigration.moveFromSub }}</template>
 
@@ -20,7 +20,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</div>
 			<div class="_gaps">
 				<MkInput v-for="(_, i) in accountAliases" v-model="accountAliases[i]">
-					<template #prefix><i class="ti ti-plane-arrival"></i></template>
+					<template #prefix><i class="ph-airplane-landing ph-bold ph-lg"></i></template>
 					<template #label>{{ i18n.t('_accountMigration.moveFromLabel', { n: i + 1 }) }}</template>
 				</MkInput>
 			</div>
@@ -28,7 +28,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</MkFolder>
 
 	<MkFolder :defaultOpen="!!$i?.movedTo">
-		<template #icon><i class="ti ti-plane-departure"></i></template>
+		<template #icon><i class="ph-airplane-takeoff ph-bold ph-lg"></i></template>
 		<template #label>{{ i18n.ts._accountMigration.moveTo }}</template>
 
 		<div class="_gaps_m">
@@ -39,7 +39,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<FormInfo warn>{{ i18n.ts._accountMigration.moveCannotBeUndone }}</FormInfo>
 
 				<MkInput v-model="moveToAccount">
-					<template #prefix><i class="ti ti-plane-departure"></i></template>
+					<template #prefix><i class="ph-airplane-takeoff ph-bold ph-lg"></i></template>
 					<template #label>{{ i18n.ts._accountMigration.moveToLabel }}</template>
 				</MkInput>
 				<MkButton inline danger :disabled="!moveToAccount" @click="move">
@@ -120,7 +120,7 @@ init();
 
 definePageMetadata({
 	title: i18n.ts.accountMigration,
-	icon: 'ti ti-plane',
+	icon: 'ph-airplane ph-bold ph-lg',
 });
 </script>
 

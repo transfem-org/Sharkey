@@ -99,7 +99,7 @@ const headerTabs = $computed(() => [{
 }, {
 	key: 'past',
 	title: i18n.ts.pastAnnouncements,
-	icon: 'ph-dot-outline ph-bold pg-lg',
+	icon: 'ph-circle ph-bold pg-lg',
 }]);
 
 definePageMetadata({

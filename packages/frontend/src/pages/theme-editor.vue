@@ -229,7 +229,7 @@ const headerTabs = $computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.themeEditor,
-	icon: 'ti ti-palette',
+	icon: 'ph-palette ph-bold ph-lg',
 });
 </script>
 

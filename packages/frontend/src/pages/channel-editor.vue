@@ -46,7 +46,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					>
 						<template #item="{element,index}">
 							<div :class="$style.pinnedNote">
-								<button class="_button" :class="$style.pinnedNoteHandle"><i class="ti ti-menu"></i></button>
+								<button class="_button" :class="$style.pinnedNoteHandle"><i class="ph-list ph-bold ph-lg"></i></button>
 								{{ element.id }}
 								<button class="_button" :class="$style.pinnedNoteRemove" @click="removePinnedNote(index)"><i class="ph-x ph-bold ph-lg"></i></button>
 							</div>

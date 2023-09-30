@@ -163,7 +163,7 @@ const headerTabs = $computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.branding,
-	icon: 'ti ti-paint',
+	icon: 'ph-paint-roller ph-bold ph-lg',
 });
 </script>
 

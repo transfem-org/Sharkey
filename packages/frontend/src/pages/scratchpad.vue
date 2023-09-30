@@ -8,7 +8,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<div :class="$style.root">
 		<div :class="$style.editor" class="_panel">
 			<PrismEditor v-model="code" class="_monospace" :class="$style.code" :highlight="highlighter" :lineNumbers="false"/>
-			<MkButton style="position: absolute; top: 8px; right: 8px;" primary @click="run()"><i class="ti ti-player-play"></i></MkButton>
+			<MkButton style="position: absolute; top: 8px; right: 8px;" primary @click="run()"><i class="ph-play ph-bold pg-lg"></i></MkButton>
 		</div>
 
 		<MkContainer v-if="root && components.length > 1" :key="uiKey" :foldable="true">
@@ -170,7 +170,7 @@ const headerTabs = $computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.scratchpad,
-	icon: 'ti ti-terminal-2',
+	icon: 'ph-terminal-window ph-bold ph-lg-2',
 });
 </script>
 

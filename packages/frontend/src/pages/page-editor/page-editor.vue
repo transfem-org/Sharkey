@@ -279,7 +279,7 @@ const headerTabs = $computed(() => [{
 }, {
 	key: 'contents',
 	title: i18n.ts._pages.contents,
-	icon: 'ti ti-note',
+	icon: 'ph-note ph-bold ph-lg',
 }]);
 
 definePageMetadata(computed(() => {

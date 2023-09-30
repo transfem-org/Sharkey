@@ -23,7 +23,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<div :class="$style.item">
 							<div :class="$style.itemHeader">
 								<div :class="$style.itemNumber" v-text="String(index + 1)"/>
-								<span :class="$style.itemHandle"><i class="ti ti-menu"/></span>
+								<span :class="$style.itemHandle"><i class="ph-list ph-bold ph-lg"/></span>
 								<button class="_button" :class="$style.itemRemove" @click="remove(index)"><i class="ph-x ph-bold ph-lg"></i></button>
 							</div>
 							<MkInput v-model="serverRules[index]"/>

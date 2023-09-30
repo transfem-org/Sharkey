@@ -12,15 +12,15 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<div v-if="origin === 'local'">
 		<template v-if="tag == null">
 			<MkFoldableSection class="_margin" persistKey="explore-pinned-users">
-				<template #header><i class="ti ti-bookmark ti-fw" style="margin-right: 0.5em;"></i>{{ i18n.ts.pinnedUsers }}</template>
+				<template #header><i class="ph-bookmark ph-bold ph-lg ti-fw" style="margin-right: 0.5em;"></i>{{ i18n.ts.pinnedUsers }}</template>
 				<MkUserList :pagination="pinnedUsers"/>
 			</MkFoldableSection>
 			<MkFoldableSection class="_margin" persistKey="explore-popular-users">
-				<template #header><i class="ti ti-chart-line ti-fw" style="margin-right: 0.5em;"></i>{{ i18n.ts.popularUsers }}</template>
+				<template #header><i class="ph-chart-line ph-bold pg-lg ti-fw" style="margin-right: 0.5em;"></i>{{ i18n.ts.popularUsers }}</template>
 				<MkUserList :pagination="popularUsers"/>
 			</MkFoldableSection>
 			<MkFoldableSection class="_margin" persistKey="explore-recently-updated-users">
-				<template #header><i class="ti ti-message ti-fw" style="margin-right: 0.5em;"></i>{{ i18n.ts.recentlyUpdatedUsers }}</template>
+				<template #header><i class="ph-chat-text ph-bold ph-lg ti-fw" style="margin-right: 0.5em;"></i>{{ i18n.ts.recentlyUpdatedUsers }}</template>
 				<MkUserList :pagination="recentlyUpdatedUsers"/>
 			</MkFoldableSection>
 			<MkFoldableSection class="_margin" persistKey="explore-recently-registered-users">
@@ -46,11 +46,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 		<template v-if="tag == null">
 			<MkFoldableSection class="_margin">
-				<template #header><i class="ti ti-chart-line ti-fw" style="margin-right: 0.5em;"></i>{{ i18n.ts.popularUsers }}</template>
+				<template #header><i class="ph-chart-line ph-bold pg-lg ti-fw" style="margin-right: 0.5em;"></i>{{ i18n.ts.popularUsers }}</template>
 				<MkUserList :pagination="popularUsersF"/>
 			</MkFoldableSection>
 			<MkFoldableSection class="_margin">
-				<template #header><i class="ti ti-message ti-fw" style="margin-right: 0.5em;"></i>{{ i18n.ts.recentlyUpdatedUsers }}</template>
+				<template #header><i class="ph-chat-text ph-bold ph-lg ti-fw" style="margin-right: 0.5em;"></i>{{ i18n.ts.recentlyUpdatedUsers }}</template>
 				<MkUserList :pagination="recentlyUpdatedUsersF"/>
 			</MkFoldableSection>
 			<MkFoldableSection class="_margin">

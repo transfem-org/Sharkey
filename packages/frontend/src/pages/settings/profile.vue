@@ -24,17 +24,17 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 	<MkInput v-model="profile.location" manualSave>
 		<template #label>{{ i18n.ts.location }}</template>
-		<template #prefix><i class="ti ti-map-pin"></i></template>
+		<template #prefix><i class="ph-map-pin ph-bold ph-lg"></i></template>
 	</MkInput>
 
 	<MkInput v-model="profile.birthday" type="date" manualSave>
 		<template #label>{{ i18n.ts.birthday }}</template>
-		<template #prefix><i class="ti ti-cake"></i></template>
+		<template #prefix><i class="ph-cake ph-bold ph-lg"></i></template>
 	</MkInput>
 
 	<MkInput v-model="profile.listenbrainz" manualSave>
 		<template #label>ListenBrainz</template>
-		<template #prefix><i class="ti ti-headphones"></i></template>
+		<template #prefix><i class="ph-headphones ph-bold ph-lg"></i></template>
 	</MkInput>
 
 	<MkSelect v-model="profile.lang">
@@ -51,7 +51,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<div :class="$style.metadataMargin">
 					<MkButton :disabled="fields.length >= 16" inline style="margin-right: 8px;" @click="addField"><i class="ph-plus ph-bold ph-lg"></i> {{ i18n.ts.add }}</MkButton>
 					<MkButton v-if="!fieldEditMode" :disabled="fields.length <= 1" inline danger style="margin-right: 8px;" @click="fieldEditMode = !fieldEditMode"><i class="ph-trash ph-bold ph-lg"></i> {{ i18n.ts.delete }}</MkButton>
-					<MkButton v-else inline style="margin-right: 8px;" @click="fieldEditMode = !fieldEditMode"><i class="ti ti-arrows-sort"></i> {{ i18n.ts.rearrange }}</MkButton>
+					<MkButton v-else inline style="margin-right: 8px;" @click="fieldEditMode = !fieldEditMode"><i class="ph-arrows-down-up ph-bold ph-lg"></i> {{ i18n.ts.rearrange }}</MkButton>
 					<MkButton inline primary @click="saveFields"><i class="ph-check ph-bold ph-lg"></i> {{ i18n.ts.save }}</MkButton>
 				</div>
 
@@ -66,7 +66,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				>
 					<template #item="{element, index}">
 						<div :class="$style.fieldDragItem">
-							<button v-if="!fieldEditMode" class="_button" :class="$style.dragItemHandle" tabindex="-1"><i class="ti ti-menu"></i></button>
+							<button v-if="!fieldEditMode" class="_button" :class="$style.dragItemHandle" tabindex="-1"><i class="ph-list ph-bold ph-lg"></i></button>
 							<button v-if="fieldEditMode" :disabled="fields.length <= 1" class="_button" :class="$style.dragItemRemove" @click="deleteField(index)"><i class="ph-x ph-bold ph-lg"></i></button>
 							<div :class="$style.dragItemForm">
 								<FormSplit :minWidth="200">

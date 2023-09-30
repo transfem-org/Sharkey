@@ -136,12 +136,12 @@ const menuDef = $computed(() => [{
 		to: '/admin/announcements',
 		active: currentPage?.route.name === 'announcements',
 	}, {
-		icon: 'ti ti-ad',
+		icon: 'ph-flag ph-bold ph-lg',
 		text: i18n.ts.ads,
 		to: '/admin/ads',
 		active: currentPage?.route.name === 'ads',
 	}, {
-		icon: 'ti ti-exclamation-circle',
+		icon: 'ph-warning-circle ph-bold ph-lg',
 		text: i18n.ts.abuseReports,
 		to: '/admin/abuses',
 		active: currentPage?.route.name === 'abuses',
@@ -159,7 +159,7 @@ const menuDef = $computed(() => [{
 		to: '/admin/settings',
 		active: currentPage?.route.name === 'settings',
 	}, {
-		icon: 'ti ti-paint',
+		icon: 'ph-paint-roller ph-bold ph-lg',
 		text: i18n.ts.branding,
 		to: '/admin/branding',
 		active: currentPage?.route.name === 'branding',
@@ -194,7 +194,7 @@ const menuDef = $computed(() => [{
 		to: '/admin/instance-block',
 		active: currentPage?.route.name === 'instance-block',
 	}, {
-		icon: 'ti ti-ghost',
+		icon: 'ph-ghost ph-bold ph-lg',
 		text: i18n.ts.proxyAccount,
 		to: '/admin/proxy-account',
 		active: currentPage?.route.name === 'proxy-account',

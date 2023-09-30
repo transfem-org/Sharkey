@@ -94,7 +94,7 @@ export async function getNoteClipMenu(props: {
 
 export function getAbuseNoteMenu(note: misskey.entities.Note, text: string): MenuItem {
 	return {
-		icon: 'ti ti-exclamation-circle',
+		icon: 'ph-warning-circle ph-bold ph-lg',
 		text,
 		action: (): void => {
 			const u = note.url ?? note.uri ?? `${url}/notes/${note.id}`;
@@ -267,7 +267,7 @@ export function getNoteMenu(props: {
 		menu = [
 			...(
 				props.currentClip?.userId === $i.id ? [{
-					icon: 'ti ti-backspace',
+					icon: 'ph-backspace ph-bold ph-lg',
 					text: i18n.ts.unclip,
 					danger: true,
 					action: unclip,
@@ -294,7 +294,7 @@ export function getNoteMenu(props: {
 				action: share,
 			},
 			instance.translatorAvailable ? {
-				icon: 'ti ti-language-hiragana',
+				icon: 'ph-translate ph-bold ph-lg',
 				text: i18n.ts.translate,
 				action: translate,
 			} : undefined,
@@ -315,11 +315,11 @@ export function getNoteMenu(props: {
 				children: () => getNoteClipMenu(props),
 			},
 			statePromise.then(state => state.isMutedThread ? {
-				icon: 'ti ti-message-off',
+				icon: 'ph-bell-slash ph-bold ph-lg',
 				text: i18n.ts.unmuteThread,
 				action: () => toggleThreadMute(false),
 			} : {
-				icon: 'ti ti-message-off',
+				icon: 'ph-bell-slash ph-bold ph-lg',
 				text: i18n.ts.muteThread,
 				action: () => toggleThreadMute(true),
 			}),
@@ -403,7 +403,7 @@ export function getNoteMenu(props: {
 
 	if (noteActions.length > 0) {
 		menu = menu.concat([null, ...noteActions.map(action => ({
-			icon: 'ti ti-plug',
+			icon: 'ph-plug ph-bold ph-lg',
 			text: action.title,
 			action: () => {
 				action.handler(appearNote);

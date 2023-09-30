@@ -78,7 +78,7 @@ watch(() => props.antennaId, async () => {
 }, { immediate: true });
 
 const headerActions = $computed(() => antenna ? [{
-	icon: 'ti ti-calendar-time',
+	icon: 'ph-calendar ph-bold ph-lg',
 	text: i18n.ts.jumpToSpecifiedDate,
 	handler: timetravel,
 }, {

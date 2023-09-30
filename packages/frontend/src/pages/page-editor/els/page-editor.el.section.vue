@@ -6,7 +6,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <!-- eslint-disable vue/no-mutating-props -->
 <XContainer :draggable="true" @remove="() => $emit('remove')">
-	<template #header><i class="ti ti-note"></i> {{ props.modelValue.title }}</template>
+	<template #header><i class="ph-note ph-bold ph-lg"></i> {{ props.modelValue.title }}</template>
 	<template #func>
 		<button class="_button" @click="rename()">
 			<i class="ph-pencil ph-bold ph-lg"></i>

@@ -47,7 +47,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</div>
 			</div>
 			<div class="item _panel online">
-				<div class="icon"><i class="ti ti-access-point"></i></div>
+				<div class="icon"><i class="ph-broadcast ph-bold ph-lg"></i></div>
 				<div class="body">
 					<div class="value">
 						<MkNumber :value="onlineUsersCount" style="margin-right: 0.5em;"/>

@@ -6,7 +6,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <!-- eslint-disable vue/no-mutating-props -->
 <XContainer :draggable="true" @remove="() => $emit('remove')">
-	<template #header><i class="ti ti-align-left"></i> {{ i18n.ts._pages.blocks.text }}</template>
+	<template #header><i class="ph-text-align-left ph-bold ph-lg"></i> {{ i18n.ts._pages.blocks.text }}</template>
 
 	<section>
 		<textarea v-model="text" :class="$style.textarea"></textarea>

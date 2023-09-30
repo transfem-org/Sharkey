@@ -100,7 +100,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 						</div>
 
 						<MkFolder>
-							<template #icon><i class="ti ti-license"></i></template>
+							<template #icon><i class="ph-scroll ph-bold ph-lg"></i></template>
 							<template #label>{{ i18n.ts._role.policies }}</template>
 							<div class="_gaps">
 								<div v-for="policy in Object.keys(info.policies)" :key="policy">
@@ -468,7 +468,7 @@ const headerTabs = $computed(() => [{
 }, {
 	key: 'chart',
 	title: i18n.ts.charts,
-	icon: 'ti ti-chart-line',
+	icon: 'ph-chart-line ph-bold pg-lg',
 }, {
 	key: 'raw',
 	title: 'Raw',
