@@ -297,7 +297,7 @@ export async function openAccountMenu(opts: {
 			}],
 		}, {
 			type: 'link' as const,
-			icon: 'ph-usersta ph-bold ph-lg',
+			icon: 'ph-users ph-bold ph-lg',
 			text: i18n.ts.manageAccounts,
 			to: '/settings/accounts',
 		}, {
