@@ -93,7 +93,8 @@ export class MastoConverters {
 			...mention,
 			id: convertId(mention.id, IdConvertType.MastodonId),
 		}));
-		status.content = status.content ? this.MfmService.toHtml(parse(status.content), JSON.parse(note.mentionedRemoteUsers)) ?? escapeMFM(status.content) : status.content;
+		const convertedMFM = this.MfmService.toHtml(parse(status.content), JSON.parse(note.mentionedRemoteUsers));
+		status.content = status.content ? convertedMFM?.replace(/&amp;/g , "&").replace(/&#39;/g , "\'")! : status.content;
 		if (status.poll) status.poll = convertPoll(status.poll);
 		if (status.reblog) status.reblog = convertStatus(status.reblog);
 	
