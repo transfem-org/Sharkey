@@ -66,7 +66,7 @@ const buttonsLeft = $computed(() => {
 
 	if (history.length > 1) {
 		buttons.push({
-			icon: 'ti ti-arrow-left',
+			icon: 'ph-arrow-left ph-bold pg-lg',
 			onClick: back,
 		});
 	}
@@ -79,7 +79,7 @@ const buttonsRight = $computed(() => {
 		title: i18n.ts.reload,
 		onClick: reload,
 	}, {
-		icon: 'ti ti-player-eject',
+		icon: 'ph-eject ph-bold pg-lg',
 		title: i18n.ts.showInPage,
 		onClick: expand,
 	}];
@@ -101,11 +101,11 @@ provide('shouldHeaderThin', true);
 provide('forceSpacerMin', true);
 
 const contextmenu = $computed(() => ([{
-	icon: 'ti ti-player-eject',
+	icon: 'ph-eject ph-bold pg-lg',
 	text: i18n.ts.showInPage,
 	action: expand,
 }, {
-	icon: 'ti ti-window-maximize',
+	icon: 'ph-frame-corners ph-bold ph-lg',
 	text: i18n.ts.popout,
 	action: popout,
 }, {

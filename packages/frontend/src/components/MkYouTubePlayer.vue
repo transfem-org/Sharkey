@@ -6,7 +6,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <MkWindow :initialWidth="640" :initialHeight="402" :canResize="true" :closeButton="true">
 	<template #header>
-		<i class="icon ti ti-brand-youtube" style="margin-right: 0.5em;"></i>
+		<i class="icon ph-youtube-logo ph-bold ph-lg" style="margin-right: 0.5em;"></i>
 		<span>{{ title ?? 'YouTube' }}</span>
 	</template>
 

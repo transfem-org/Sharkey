@@ -20,9 +20,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<MkRadios v-model="overridedDeviceKind">
 		<template #label>{{ i18n.ts.overridedDeviceKind }}</template>
 		<option :value="null">{{ i18n.ts.auto }}</option>
-		<option value="smartphone"><i class="ti ti-device-mobile"/> {{ i18n.ts.smartphone }}</option>
-		<option value="tablet"><i class="ti ti-device-tablet"/> {{ i18n.ts.tablet }}</option>
-		<option value="desktop"><i class="ti ti-device-desktop"/> {{ i18n.ts.desktop }}</option>
+		<option value="smartphone"><i class="ph-device-mobile ph-bold ph-lg"/> {{ i18n.ts.smartphone }}</option>
+		<option value="tablet"><i class="ph-device-tablet ph-bold ph-lg"/> {{ i18n.ts.tablet }}</option>
+		<option value="desktop"><i class="ph-desktop ph-bold ph-lg"/> {{ i18n.ts.desktop }}</option>
 	</MkRadios>
 
 	<FormSection>
@@ -91,16 +91,16 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<div class="_gaps_m">
 			<MkRadios v-model="notificationPosition">
 				<template #label>{{ i18n.ts.position }}</template>
-				<option value="leftTop"><i class="ti ti-align-box-left-top"></i> {{ i18n.ts.leftTop }}</option>
-				<option value="rightTop"><i class="ti ti-align-box-right-top"></i> {{ i18n.ts.rightTop }}</option>
-				<option value="leftBottom"><i class="ti ti-align-box-left-bottom"></i> {{ i18n.ts.leftBottom }}</option>
-				<option value="rightBottom"><i class="ti ti-align-box-right-bottom"></i> {{ i18n.ts.rightBottom }}</option>
+				<option value="leftTop"><i class="ph-arrow-up-left ph-bold ph-lg"></i> {{ i18n.ts.leftTop }}</option>
+				<option value="rightTop"><i class="ph-arrow-up-right ph-bold ph-lg"></i> {{ i18n.ts.rightTop }}</option>
+				<option value="leftBottom"><i class="ph-arrow-down-left ph-bold ph-lg"></i> {{ i18n.ts.leftBottom }}</option>
+				<option value="rightBottom"><i class="ph-arrow-down-right ph-bold ph-lg"></i> {{ i18n.ts.rightBottom }}</option>
 			</MkRadios>
 
 			<MkRadios v-model="notificationStackAxis">
 				<template #label>{{ i18n.ts.stackAxis }}</template>
-				<option value="vertical"><i class="ti ti-carousel-vertical"></i> {{ i18n.ts.vertical }}</option>
-				<option value="horizontal"><i class="ti ti-carousel-horizontal"></i> {{ i18n.ts.horizontal }}</option>
+				<option value="vertical"><i class="ph-split-vertical ph-bold ph-lg"></i> {{ i18n.ts.vertical }}</option>
+				<option value="horizontal"><i class="ph-split-horizontal ph-bold ph-lg"></i> {{ i18n.ts.horizontal }}</option>
 			</MkRadios>
 
 			<MkButton @click="testNotification">{{ i18n.ts._notification.checkNotificationBehavior }}</MkButton>

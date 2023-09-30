@@ -78,6 +78,6 @@ const headerTabs = $computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts._theme.manage,
-	icon: 'ti ti-tool',
+	icon: 'ph-wrench ph-bold ph-lg',
 });
 </script>

@@ -134,7 +134,7 @@ const headerTabs = $computed(() => [{
 }, {
 	key: 'featured',
 	title: i18n.ts._channel.featured,
-	icon: 'ti ti-comet',
+	icon: 'ph-shooting-star ph-bold ph-lg',
 }, {
 	key: 'favorites',
 	title: i18n.ts.favorites,

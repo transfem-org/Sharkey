@@ -40,7 +40,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<MkButton :class="$style.footerItem" primary rounded gradate @click="tutorial = -1">{{ i18n.ts.done }} <i class="ph-check ph-bold ph-lg"></i></MkButton>
 		</template>
 		<template v-else>
-			<MkButton :class="$style.footerItem" primary rounded gradate @click="tutorial++">{{ i18n.ts.next }} <i class="ti ti-arrow-right"></i></MkButton>
+			<MkButton :class="$style.footerItem" primary rounded gradate @click="tutorial++">{{ i18n.ts.next }} <i class="ph-arrow-right ph-bold pg-lg"></i></MkButton>
 		</template>
 	</div>
 </div>

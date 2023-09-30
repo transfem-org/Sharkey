@@ -13,7 +13,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<i class="ph-trash ph-bold ph-lg"></i>
 			</button>
 			<button v-if="draggable" class="drag-handle _button">
-				<i class="ti ti-menu-2"></i>
+				<i class="ph-list ph-bold ph-lg-2"></i>
 			</button>
 			<button class="_button" @click="toggleContent(!showBody)">
 				<template v-if="showBody"><i class="ph-caret-up ph-bold ph-lg"></i></template>

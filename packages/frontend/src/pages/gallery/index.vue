@@ -18,7 +18,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					</MkPagination>
 				</MkFoldableSection>
 				<MkFoldableSection class="_margin">
-					<template #header><i class="ti ti-comet"></i>{{ i18n.ts.popularPosts }}</template>
+					<template #header><i class="ph-shooting-star ph-bold ph-lg"></i>{{ i18n.ts.popularPosts }}</template>
 					<MkPagination v-slot="{items}" :pagination="popularPostsPagination" :disableAutoLoad="true">
 						<div :class="$style.items">
 							<MkGalleryPostPreview v-for="post in items" :key="post.id" :post="post" class="post"/>

@@ -83,7 +83,7 @@ const headerTabs = $computed(() => user ? [{
 }, {
 	key: 'activity',
 	title: i18n.ts.activity,
-	icon: 'ti ti-chart-line',
+	icon: 'ph-chart-line ph-bold pg-lg',
 }, ...(user.host == null ? [{
 	key: 'achievements',
 	title: i18n.ts.achievements,
@@ -103,11 +103,11 @@ const headerTabs = $computed(() => user ? [{
 }, {
 	key: 'pages',
 	title: i18n.ts.pages,
-	icon: 'ti ti-news',
+	icon: 'ph-newspaper ph-bold ph-lg',
 }, {
 	key: 'flashs',
 	title: 'Play',
-	icon: 'ti ti-player-play',
+	icon: 'ph-play ph-bold pg-lg',
 }, {
 	key: 'gallery',
 	title: i18n.ts.gallery,

@@ -2,7 +2,7 @@
 	<MkContainer :foldable="true">
 		<template #header
 			><i
-				class="ti ti-headphones"
+				class="ph-headphones ph-bold ph-lg"
 				style="margin-right: 0.5em"
 			></i
 			>Music</template
@@ -19,7 +19,7 @@
 				</a>
 				<a :href="listenbrainz.listenbrainzurl">
 					<div class="playicon">
-						<i class="ti ti-player-play-filled"></i>
+						<i class="ph-play ph-bold pg-lg-filled"></i>
 					</div>
 				</a>
 			</div>

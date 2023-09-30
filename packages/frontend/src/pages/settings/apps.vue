@@ -77,7 +77,7 @@ const headerTabs = $computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.installedApps,
-	icon: 'ti ti-plug',
+	icon: 'ph-plug ph-bold ph-lg',
 });
 </script>
 

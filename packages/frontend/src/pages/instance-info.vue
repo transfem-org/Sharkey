@@ -216,7 +216,7 @@ const headerTabs = $computed(() => [{
 }, {
 	key: 'chart',
 	title: i18n.ts.charts,
-	icon: 'ti ti-chart-line',
+	icon: 'ph-chart-line ph-bold pg-lg',
 }, {
 	key: 'users',
 	title: i18n.ts.users,
@@ -229,7 +229,7 @@ const headerTabs = $computed(() => [{
 
 definePageMetadata({
 	title: props.host,
-	icon: 'ti ti-server',
+	icon: 'ph-hard-drives ph-bold ph-lg',
 });
 </script>
 

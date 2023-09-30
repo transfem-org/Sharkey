@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <MkContainer :showHeader="widgetProps.showHeader" :naked="widgetProps.transparent" :class="$style.root" :data-transparent="widgetProps.transparent ? true : null" data-cy-mkw-photos class="mkw-photos">
-	<template #icon><i class="ti ti-camera"></i></template>
+	<template #icon><i class="ph-camera ph-bold ph-lg"></i></template>
 	<template #header>{{ i18n.ts._widgets.photos }}</template>
 
 	<div class="">

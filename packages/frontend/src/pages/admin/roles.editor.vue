@@ -73,7 +73,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</MkSwitch>
 
 	<FormSlot>
-		<template #label><i class="ti ti-license"></i> {{ i18n.ts._role.policies }}</template>
+		<template #label><i class="ph-scroll ph-bold ph-lg"></i> {{ i18n.ts._role.policies }}</template>
 		<div class="_gaps_s">
 			<MkInput v-model="q" type="search">
 				<template #prefix><i class="ph-magnifying-glass ph-bold ph-lg"></i></template>
@@ -546,8 +546,8 @@ let rolePermission = $computed({
 let q = $ref('');
 
 function getPriorityIcon(option) {
-	if (option.priority === 2) return 'ti ti-arrows-up';
-	if (option.priority === 1) return 'ti ti-arrow-narrow-up';
+	if (option.priority === 2) return 'ph-arrow-up ph-bold ph-lg';
+	if (option.priority === 1) return 'ph-arrow-up ph-bold ph-lg';
 	return 'ph-dot-outline ph-bold pg-lg';
 }
 

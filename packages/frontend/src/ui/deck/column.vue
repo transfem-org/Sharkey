@@ -131,40 +131,40 @@ function getMenu() {
 	}, {
 		type: 'parent',
 		text: i18n.ts.move + '...',
-		icon: 'ti ti-arrows-move',
+		icon: 'ph-arrows-out-cardinal ph-bold ph-lg',
 		children: [{
-			icon: 'ti ti-arrow-left',
+			icon: 'ph-arrow-left ph-bold pg-lg',
 			text: i18n.ts._deck.swapLeft,
 			action: () => {
 				swapLeftColumn(props.column.id);
 			},
 		}, {
-			icon: 'ti ti-arrow-right',
+			icon: 'ph-arrow-right ph-bold pg-lg',
 			text: i18n.ts._deck.swapRight,
 			action: () => {
 				swapRightColumn(props.column.id);
 			},
 		}, props.isStacked ? {
-			icon: 'ti ti-arrow-up',
+			icon: 'ph-arrow-up ph-bold ph-lg',
 			text: i18n.ts._deck.swapUp,
 			action: () => {
 				swapUpColumn(props.column.id);
 			},
 		} : undefined, props.isStacked ? {
-			icon: 'ti ti-arrow-down',
+			icon: 'ph-arrow-down ph-bold ph-lg',
 			text: i18n.ts._deck.swapDown,
 			action: () => {
 				swapDownColumn(props.column.id);
 			},
 		} : undefined],
 	}, {
-		icon: 'ti ti-stack-2',
+		icon: 'ph-stack ph-bold ph-lg',
 		text: i18n.ts._deck.stackLeft,
 		action: () => {
 			stackLeftColumn(props.column.id);
 		},
 	}, props.isStacked ? {
-		icon: 'ti ti-window-maximize',
+		icon: 'ph-frame-corners ph-bold ph-lg',
 		text: i18n.ts._deck.popRight,
 		action: () => {
 			popRightColumn(props.column.id);

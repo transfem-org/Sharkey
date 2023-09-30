@@ -22,7 +22,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<option value="not">{{ i18n.ts._role._condition.not }}</option>
 		</MkSelect>
 		<button v-if="draggable" class="drag-handle _button" :class="$style.dragHandle">
-			<i class="ti ti-menu-2"></i>
+			<i class="ph-list ph-bold ph-lg-2"></i>
 		</button>
 		<button v-if="draggable" class="_button" :class="$style.remove" @click="removeSelf">
 			<i class="ph-x ph-bold ph-lg"></i>

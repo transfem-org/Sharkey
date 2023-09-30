@@ -47,7 +47,7 @@ const init = async () => {
 function menu(account, ev) {
 	os.popupMenu([{
 		text: i18n.ts.switch,
-		icon: 'ti ti-switch-horizontal',
+		icon: 'ph-arrows-left-right ph-bold ph-lg',
 		action: () => switchAccount(account),
 	}, {
 		text: i18n.ts.logout,

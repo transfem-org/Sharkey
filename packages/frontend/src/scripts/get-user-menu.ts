@@ -149,7 +149,7 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: Router 
 			router.push(`/admin/user/${user.id}`);
 		},
 	}] : []), {
-		icon: 'ti ti-rss',
+		icon: 'ph-rss ph-bold ph-lg',
 		text: i18n.ts.copyRSS,
 		action: () => {
 			copyToClipboard(`${user.host ?? host}/@${user.username}.atom`);
@@ -311,7 +311,7 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: Router 
 		}
 
 		menu = menu.concat([null, {
-			icon: 'ti ti-exclamation-circle',
+			icon: 'ph-warning-circle ph-bold ph-lg',
 			text: i18n.ts.reportAbuse,
 			action: reportAbuse,
 		}]);
@@ -339,7 +339,7 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: Router 
 
 	if (userActions.length > 0) {
 		menu = menu.concat([null, ...userActions.map(action => ({
-			icon: 'ti ti-plug',
+			icon: 'ph-plug ph-bold ph-lg',
 			text: action.title,
 			action: () => {
 				action.handler(user);
