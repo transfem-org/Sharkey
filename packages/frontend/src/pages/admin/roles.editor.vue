@@ -548,7 +548,7 @@ let q = $ref('');
 function getPriorityIcon(option) {
 	if (option.priority === 2) return 'ph-arrow-up ph-bold ph-lg';
 	if (option.priority === 1) return 'ph-arrow-up ph-bold ph-lg';
-	return 'ph-dot-outline ph-bold pg-lg';
+	return 'ph-circle ph-bold pg-lg';
 }
 
 function matchQuery(keywords: string[]): boolean {
