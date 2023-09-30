@@ -2229,6 +2229,38 @@ export default class Misskey implements MegalodonInterface {
         }))
       }
       case 'statuses': {
+        if (q.startsWith("http://") || q.startsWith("https://")) {
+					return this.client
+						.post("/api/ap/show", { uri: q })
+						.then(async (res) => {
+							if (res.status != 200 || res.data.type != "Note") {
+								res.status = 200;
+								res.statusText = "OK";
+								res.data = {
+									accounts: [],
+									statuses: [],
+									hashtags: [],
+								};
+
+								return res;
+							}
+
+							const post = await MisskeyAPI.Converter.note(
+								res.data.object as MisskeyAPI.Entity.Note,
+								this.baseUrl
+							);
+
+							return {
+								...res,
+								data: {
+									accounts: [],
+									statuses:
+										options?.max_id && options.max_id >= post.id ? [] : [post],
+									hashtags: [],
+								},
+							};
+						});
+				}
         let params = {
           query: q
         }
