@@ -66,7 +66,6 @@ export class MastoConverters {
 
 	public async getUser(id: string): Promise<MiUser> {
 		return this.GetterService.getUser(id).then(p => {
-			//p.id = convertId(p.id, IdConvertType.SharkeyId);
 			return p;
 		})
 	}
@@ -83,6 +82,7 @@ export class MastoConverters {
 		status.media_attachments = status.media_attachments.map((attachment) =>
 			convertAttachment(attachment),
 		);
+		// This will eventually be improved with a rewrite of this file
 		const mentions = Promise.all(note.mentions.map(p =>
 			this.getUser(p)
 				.then(u => this.encode(u, JSON.parse(note.mentionedRemoteUsers)))
