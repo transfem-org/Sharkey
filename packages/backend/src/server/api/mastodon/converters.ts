@@ -4,6 +4,11 @@ import { DI } from '@/di-symbols.js';
 import { Inject } from '@nestjs/common';
 import { Entity } from 'megalodon';
 import { parse } from 'mfm-js';
+import { GetterService } from '../GetterService.js';
+import type { IMentionedRemoteUsers } from '@/models/Note.js';
+import type { MiUser } from '@/models/User.js';
+import type { NotesRepository, UsersRepository } from '@/models/_.js';
+import { UserEntityService } from '@/core/entities/UserEntityService.js';
 
 const CHAR_COLLECTION = '0123456789abcdefghijklmnopqrstuvwxyz';
 
@@ -12,21 +17,64 @@ export enum IdConvertType {
     SharkeyId,
 }
 
+export const escapeMFM = (text: string): string => text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;")
+    .replace(/`/g, "&#x60;")
+    .replace(/\r?\n/g, "<br>");
+
 export class MastoConverters {
 	private MfmService: MfmService;
+	private GetterService: GetterService;
 
 	constructor(
 		@Inject(DI.config)
-		private config: Config
+		private config: Config,
+
+		@Inject(DI.usersRepository)
+		private usersRepository: UsersRepository,
+
+		@Inject(DI.notesRepository)
+		private notesRepository: NotesRepository,
+		
+		private userEntityService: UserEntityService
 	) {
 		this.MfmService = new MfmService(this.config);
+		this.GetterService = new GetterService(this.usersRepository, this.notesRepository, this.userEntityService);
+	}
+
+	private encode(u: MiUser, m: IMentionedRemoteUsers): MastodonEntity.Mention {
+		let acct = u.username;
+		let acctUrl = `https://${u.host || this.config.host}/@${u.username}`;
+		let url: string | null = null;
+		if (u.host) {
+			const info = m.find(r => r.username === u.username && r.host === u.host);
+			acct = `${u.username}@${u.host}`;
+			acctUrl = `https://${u.host}/@${u.username}`;
+			if (info) url = info.url ?? info.uri;
+		}
+		return {
+			id: u.id,
+			username: u.username,
+			acct: acct,
+			url: url ?? acctUrl,
+		};
+	}
+
+	public async getUser(id: string): Promise<MiUser> {
+		return this.GetterService.getUser(id).then(p => {
+			//p.id = convertId(p.id, IdConvertType.SharkeyId);
+			return p;
+		})
 	}
 
 	public async convertStatus(status: Entity.Status) {
 		status.account = convertAccount(status.account);
+		const note = await this.GetterService.getNote(status.id);
 		status.id = convertId(status.id, IdConvertType.MastodonId);
-		console.error(status);
-		console.error(status);
 		if (status.in_reply_to_account_id) status.in_reply_to_account_id = convertId(
 			status.in_reply_to_account_id,
 			IdConvertType.MastodonId,
@@ -35,11 +83,17 @@ export class MastoConverters {
 		status.media_attachments = status.media_attachments.map((attachment) =>
 			convertAttachment(attachment),
 		);
+		const mentions = Promise.all(note.mentions.map(p =>
+			this.getUser(p)
+				.then(u => this.encode(u, JSON.parse(note.mentionedRemoteUsers)))
+				.catch(() => null)))
+			.then(p => p.filter(m => m)) as Promise<MastodonEntity.Mention[]>;
+		status.mentions = await mentions;
 		status.mentions = status.mentions.map((mention) => ({
 			...mention,
 			id: convertId(mention.id, IdConvertType.MastodonId),
 		}));
-		status.content = status.content ? this.MfmService.toHtml(parse(status.content), undefined, true) as string : status.content;
+		status.content = status.content ? this.MfmService.toHtml(parse(status.content), JSON.parse(note.mentionedRemoteUsers)) ?? escapeMFM(status.content) : status.content;
 		if (status.poll) status.poll = convertPoll(status.poll);
 		if (status.reblog) status.reblog = convertStatus(status.reblog);
 	

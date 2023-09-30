@@ -3,7 +3,7 @@ import megalodon, { Entity, MegalodonInterface } from 'megalodon';
 import querystring from 'querystring';
 import { IsNull } from 'typeorm';
 import multer from 'fastify-multer';
-import type { UsersRepository } from '@/models/_.js';
+import type { NotesRepository, UsersRepository } from '@/models/_.js';
 import { DI } from '@/di-symbols.js';
 import { bindThis } from '@/decorators.js';
 import type { Config } from '@/config.js';
@@ -12,6 +12,7 @@ import { convertId, IdConvertType as IdType, convertAccount, convertAnnouncement
 import { getInstance } from './endpoints/meta.js';
 import { ApiAuthMastodon, ApiAccountMastodon, ApiFilterMastodon, ApiNotifyMastodon, ApiSearchMastodon, ApiTimelineMastodon, ApiStatusMastodon } from './endpoints.js';
 import type { FastifyInstance, FastifyPluginOptions } from 'fastify';
+import { UserEntityService } from '@/core/entities/UserEntityService.js';
 
 export function getClient(BASE_URL: string, authorization: string | undefined): MegalodonInterface {
 	const accessTokenArr = authorization?.split(' ') ?? [null];
@@ -26,9 +27,12 @@ export class MastodonApiServerService {
 	constructor(
         @Inject(DI.usersRepository)
         private usersRepository: UsersRepository,
+		@Inject(DI.notesRepository)
+        private notesRepository: NotesRepository,
         @Inject(DI.config)
         private config: Config,
         private metaService: MetaService,
+		private userEntityService: UserEntityService,
 	) { }
 
 	@bindThis
@@ -744,7 +748,7 @@ export class MastodonApiServerService {
 		//#endregion
 
 		//#region Timelines
-		const TLEndpoint = new ApiTimelineMastodon(fastify, this.config);
+		const TLEndpoint = new ApiTimelineMastodon(fastify, this.config, this.usersRepository, this.notesRepository, this.userEntityService);
 
 		// GET Endpoints
 		TLEndpoint.getTL();
@@ -769,7 +773,7 @@ export class MastodonApiServerService {
 		//#endregion
 
 		//#region Status
-		const NoteEndpoint = new ApiStatusMastodon(fastify, this.config);
+		const NoteEndpoint = new ApiStatusMastodon(fastify, this.config, this.usersRepository, this.notesRepository, this.userEntityService);
 
 		// GET Endpoints
 		NoteEndpoint.getStatus();

@@ -4,6 +4,8 @@ import { getClient } from '../MastodonApiServerService.js';
 import type { Entity } from 'megalodon';
 import type { FastifyInstance } from 'fastify';
 import type { Config } from '@/config.js';
+import { NotesRepository, UsersRepository } from '@/models/_.js';
+import { UserEntityService } from '@/core/entities/UserEntityService.js';
 
 export function limitToInt(q: ParsedUrlQuery) {
 	const object: any = q;
@@ -41,9 +43,9 @@ export class ApiTimelineMastodon {
 	private fastify: FastifyInstance;
 	private mastoconverter: MastoConverters;
 
-	constructor(fastify: FastifyInstance, config: Config) {
+	constructor(fastify: FastifyInstance, config: Config, usersRepository: UsersRepository, notesRepository: NotesRepository, userEntityService: UserEntityService) {
 		this.fastify = fastify;
-		this.mastoconverter = new MastoConverters(config);
+		this.mastoconverter = new MastoConverters(config, usersRepository, notesRepository, userEntityService);
 	}
 
 	public async getTL() {
