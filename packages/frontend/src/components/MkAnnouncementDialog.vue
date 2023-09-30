@@ -8,10 +8,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<div ref="rootEl" :class="$style.root">
 		<div :class="$style.header">
 			<span :class="$style.icon">
-				<i v-if="announcement.icon === 'info'" class="ti ti-info-circle"></i>
-				<i v-else-if="announcement.icon === 'warning'" class="ti ti-alert-triangle" style="color: var(--warn);"></i>
-				<i v-else-if="announcement.icon === 'error'" class="ti ti-circle-x" style="color: var(--error);"></i>
-				<i v-else-if="announcement.icon === 'success'" class="ti ti-check" style="color: var(--success);"></i>
+				<i v-if="announcement.icon === 'info'" class="ph-info ph-bold ph-lg"></i>
+				<i v-else-if="announcement.icon === 'warning'" class="ph-warning-circle ph-bold ph-lg" style="color: var(--warn);"></i>
+				<i v-else-if="announcement.icon === 'error'" class="ph-seal-warning ph-bold ph-lg" style="color: var(--error);"></i>
+				<i v-else-if="announcement.icon === 'success'" class="ph-check-circle ph-bold ph-lg" style="color: var(--success);"></i>
 			</span>
 			<span :class="$style.title">{{ announcement.title }}</span>
 		</div>

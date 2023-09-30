@@ -43,15 +43,15 @@ const headerActions = $computed(() => []);
 const headerTabs = $computed(() => [{
 	key: 'note',
 	title: i18n.ts.notes,
-	icon: 'ti ti-pencil',
+	icon: 'ph-pencil ph-bold ph-lg',
 }, {
 	key: 'user',
 	title: i18n.ts.users,
-	icon: 'ti ti-users',
+	icon: 'ph-users ph-bold pg-lg',
 }]);
 
 definePageMetadata(computed(() => ({
 	title: i18n.ts.search,
-	icon: 'ti ti-search',
+	icon: 'ph-magnifying-glass ph-bold ph-lg',
 })));
 </script>

@@ -16,61 +16,61 @@ export function openInstanceMenu(ev: MouseEvent) {
 	}, {
 		type: 'link',
 		text: i18n.ts.instanceInfo,
-		icon: 'ti ti-info-circle',
+		icon: 'ph-info ph-bold ph-lg',
 		to: '/about',
 	}, {
 		type: 'link',
 		text: i18n.ts.customEmojis,
-		icon: 'ti ti-icons',
+		icon: 'ph-smiley ph-bold pg-lg',
 		to: '/about#emojis',
 	}, {
 		type: 'link',
 		text: i18n.ts.federation,
-		icon: 'ti ti-whirl',
+		icon: 'ph-globe-hemisphere-west ph-bold ph-lg',
 		to: '/about#federation',
 	}, {
 		type: 'link',
 		text: i18n.ts.charts,
-		icon: 'ti ti-chart-line',
+		icon: 'ph-chart-line ph-bold pg-lg',
 		to: '/about#charts',
 	}, null, {
 		type: 'link',
 		text: i18n.ts.ads,
-		icon: 'ti ti-ad',
+		icon: 'ph-flag ph-bold ph-lg',
 		to: '/ads',
 	}, ($i && ($i.isAdmin || $i.policies.canInvite) && instance.disableRegistration) ? {
 		type: 'link',
 		to: '/invite',
 		text: i18n.ts.invite,
-		icon: 'ti ti-user-plus',
+		icon: 'ph-user-plus ph-bold ph-lg',
 	} : undefined, {
 		type: 'parent',
 		text: i18n.ts.tools,
-		icon: 'ti ti-tool',
+		icon: 'ph-wrench ph-bold ph-lg',
 		children: [{
 			type: 'link',
 			to: '/scratchpad',
 			text: i18n.ts.scratchpad,
-			icon: 'ti ti-terminal-2',
+			icon: 'ph-terminal-window ph-bold ph-lg-2',
 		}, {
 			type: 'link',
 			to: '/api-console',
 			text: 'API Console',
-			icon: 'ti ti-terminal-2',
+			icon: 'ph-terminal-window ph-bold ph-lg-2',
 		}, {
 			type: 'link',
 			to: '/clicker',
 			text: '🍪👈',
-			icon: 'ti ti-cookie',
+			icon: 'ph-cookie ph-bold pg-lg',
 		}, ($i && ($i.isAdmin || $i.policies.canManageCustomEmojis)) ? {
 			type: 'link',
 			to: '/custom-emojis-manager',
 			text: i18n.ts.manageCustomEmojis,
-			icon: 'ti ti-icons',
+			icon: 'ph-smiley ph-bold pg-lg',
 		} : undefined],
 	}, null, {
 		text: i18n.ts.help,
-		icon: 'ti ti-help-circle',
+		icon: 'ph-question ph-bold ph-lg',
 		action: () => {
 			window.open('https://misskey-hub.net/help.html', '_blank');
 		},

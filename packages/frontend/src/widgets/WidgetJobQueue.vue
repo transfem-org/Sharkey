@@ -6,7 +6,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <div data-cy-mkw-jobQueue class="mkw-jobQueue _monospace" :class="{ _panel: !widgetProps.transparent }">
 	<div class="inbox">
-		<div class="label">Inbox queue<i v-if="current.inbox.waiting > 0" class="ti ti-alert-triangle icon"></i></div>
+		<div class="label">Inbox queue<i v-if="current.inbox.waiting > 0" class="ph-warning ph-bold ph-lg icon"></i></div>
 		<div class="values">
 			<div>
 				<div>Process</div>
@@ -27,7 +27,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</div>
 	</div>
 	<div class="deliver">
-		<div class="label">Deliver queue<i v-if="current.deliver.waiting > 0" class="ti ti-alert-triangle icon"></i></div>
+		<div class="label">Deliver queue<i v-if="current.deliver.waiting > 0" class="ph-warning ph-bold ph-lg icon"></i></div>
 		<div class="values">
 			<div>
 				<div>Process</div>

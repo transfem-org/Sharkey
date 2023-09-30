@@ -6,7 +6,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <!-- eslint-disable vue/no-mutating-props -->
 <XContainer :draggable="true" @remove="() => $emit('remove')">
-	<template #header><i class="ti ti-note"></i> {{ i18n.ts._pages.blocks.note }}</template>
+	<template #header><i class="ph-note ph-bold ph-lg"></i> {{ i18n.ts._pages.blocks.note }}</template>
 
 	<section style="padding: 0 16px 0 16px;">
 		<MkInput v-model="id">

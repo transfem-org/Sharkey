@@ -44,7 +44,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<div>{{ number(user.followersCount) }}</div>
 				</div>
 			</div>
-			<button class="_button" :class="$style.menu" @click="showMenu"><i class="ti ti-dots"></i></button>
+			<button class="_button" :class="$style.menu" @click="showMenu"><i class="ph-dots-three ph-bold ph-lg"></i></button>
 			<MkFollowButton v-if="$i && user.id != $i.id" :class="$style.follow" :user="user" mini/>
 		</div>
 		<div v-else>
@@ -145,7 +145,7 @@ onMounted(() => {
 	color: #fff;
 	background: rgba(0, 0, 0, 0.7);
 	font-size: 0.7em;
-	border-radius: 6px;
+	border-radius: 5px;
 }
 
 .avatarBack {
@@ -226,7 +226,7 @@ onMounted(() => {
 	right: 44px;
 	padding: 6px;
 	background: var(--panel);
-	border-radius: 999px;
+	border-radius: 4px;
 }
 
 .follow {

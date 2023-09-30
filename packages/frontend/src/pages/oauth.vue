@@ -53,7 +53,7 @@ function onLogin(res): void {
 
 definePageMetadata({
 	title: 'OAuth',
-	icon: 'ti ti-apps',
+	icon: 'ph-squares-four ph-bold pg-lg',
 });
 </script>
 

@@ -55,7 +55,7 @@ function toggle(): void {
 	background-color: var(--panel);
 	background-clip: padding-box !important;
 	border: solid 1px var(--panel);
-	border-radius: 6px;
+	border-radius: 5px;
 	font-size: 90%;
 	transition: all 0.2s;
 	user-select: none;

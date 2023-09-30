@@ -16,7 +16,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<template #suffix>@{{ host }}</template>
 			</MkInput>
 			<MkInput v-if="!user || user && !user.usePasswordLessLogin" v-model="password" :placeholder="i18n.ts.password" type="password" autocomplete="current-password webauthn" :withPasswordToggle="true" required data-cy-signin-password>
-				<template #prefix><i class="ti ti-lock"></i></template>
+				<template #prefix><i class="ph-lock ph-bold ph-lg"></i></template>
 				<template #caption><button class="_textButton" type="button" @click="resetPassword">{{ i18n.ts.forgotPassword }}</button></template>
 			</MkInput>
 			<MkButton type="submit" large primary rounded :disabled="signing" style="margin: 0 auto;">{{ signing ? i18n.ts.loggingIn : i18n.ts.login }}</MkButton>
@@ -35,11 +35,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<p style="margin-bottom:0;">{{ i18n.ts['2fa'] }}</p>
 				<MkInput v-if="user && user.usePasswordLessLogin" v-model="password" type="password" autocomplete="current-password" :withPasswordToggle="true" required>
 					<template #label>{{ i18n.ts.password }}</template>
-					<template #prefix><i class="ti ti-lock"></i></template>
+					<template #prefix><i class="ph-lock ph-bold ph-lg"></i></template>
 				</MkInput>
 				<MkInput v-model="token" type="text" pattern="^([0-9]{6}|[A-Z0-9]{32})$" autocomplete="one-time-code" :spellcheck="false" required>
 					<template #label>{{ i18n.ts.token }}</template>
-					<template #prefix><i class="ti ti-123"></i></template>
+					<template #prefix><i class="ph-keyhole ph-bold pg-lg"></i></template>
 				</MkInput>
 				<MkButton type="submit" :disabled="signing" large primary rounded style="margin: 0 auto;">{{ signing ? i18n.ts.loggingIn : i18n.ts.login }}</MkButton>
 			</div>

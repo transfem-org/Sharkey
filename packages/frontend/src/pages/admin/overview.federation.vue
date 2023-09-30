@@ -21,7 +21,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</div>
 		<div v-if="!fetching" class="items">
 			<div class="item _panel sub">
-				<div class="icon"><i class="ti ti-world-download"></i></div>
+				<div class="icon"><i class="ph-globe-hemisphere-west ph-bold ph-lg-download"></i></div>
 				<div class="body">
 					<div class="value">
 						{{ number(federationSubActive) }}
@@ -31,7 +31,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</div>
 			</div>
 			<div class="item _panel pub">
-				<div class="icon"><i class="ti ti-world-upload"></i></div>
+				<div class="icon"><i class="ph-globe-hemisphere-west ph-bold ph-lg-upload"></i></div>
 				<div class="body">
 					<div class="value">
 						{{ number(federationPubActive) }}
@@ -146,7 +146,7 @@ onMounted(async () => {
 					margin-right: 12px;
 					background: var(--accentedBg);
 					color: var(--accent);
-					border-radius: 10px;
+					border-radius: 5px;
 				}
 
 				&.sub {

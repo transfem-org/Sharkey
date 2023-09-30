@@ -21,15 +21,15 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 		<div class="_gaps">
 			<MkInput ref="passwordInput" v-model="password" :placeholder="i18n.ts.password" type="password" autocomplete="current-password webauthn" :withPasswordToggle="true">
-				<template #prefix><i class="ti ti-password"></i></template>
+				<template #prefix><i class="ph-password ph-bold ph-lg"></i></template>
 			</MkInput>
 
 			<MkInput v-if="$i.twoFactorEnabled" v-model="token" type="text" pattern="^([0-9]{6}|[A-Z0-9]{32})$" autocomplete="one-time-code" :spellcheck="false">
 				<template #label>{{ i18n.ts.token }} ({{ i18n.ts['2fa'] }})</template>
-				<template #prefix><i class="ti ti-123"></i></template>
+				<template #prefix><i class="ph-keyhole ph-bold pg-lg"></i></template>
 			</MkInput>
 
-			<MkButton :disabled="(password ?? '') == '' || ($i.twoFactorEnabled && (token ?? '') == '')" primary rounded style="margin: 0 auto;" @click="done"><i class="ti ti-lock-open"></i> {{ i18n.ts.continue }}</MkButton>
+			<MkButton :disabled="(password ?? '') == '' || ($i.twoFactorEnabled && (token ?? '') == '')" primary rounded style="margin: 0 auto;" @click="done"><i class="ph-lock ph-bold ph-lg-open"></i> {{ i18n.ts.continue }}</MkButton>
 		</div>
 	</MkSpacer>
 </MkModalWindow>

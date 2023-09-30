@@ -13,7 +13,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<template #caption>{{ i18n.ts.blockedInstancesDescription }}</template>
 			</MkTextarea>
 
-			<MkButton primary @click="save"><i class="ti ti-device-floppy"></i> {{ i18n.ts.save }}</MkButton>
+			<MkButton primary @click="save"><i class="ph-floppy-disk ph-bold pg-lg"></i> {{ i18n.ts.save }}</MkButton>
 		</FormSuspense>
 	</MkSpacer>
 </MkStickyContainer>
@@ -51,6 +51,6 @@ const headerTabs = $computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.instanceBlocking,
-	icon: 'ti ti-ban',
+	icon: 'ph-prohibit ph-bold ph-lg',
 });
 </script>

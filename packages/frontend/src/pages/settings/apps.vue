@@ -34,7 +34,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 							</ul>
 						</details>
 						<div>
-							<MkButton inline danger @click="revoke(token)"><i class="ti ti-trash"></i></MkButton>
+							<MkButton inline danger @click="revoke(token)"><i class="ph-trash ph-bold ph-lg"></i></MkButton>
 						</div>
 					</div>
 				</div>
@@ -77,7 +77,7 @@ const headerTabs = $computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.installedApps,
-	icon: 'ti ti-plug',
+	icon: 'ph-plug ph-bold ph-lg',
 });
 </script>
 
@@ -93,7 +93,7 @@ definePageMetadata({
 	margin: 0 12px 0 0;
 	width: 50px;
 	height: 50px;
-	border-radius: 8px;
+	border-radius: 5px;
 }
 
 .appBody {

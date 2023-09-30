@@ -33,7 +33,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<MkA :class="$style.userItemBody" :to="`${userPage(user)}`">
 							<MkUserCardMini :user="user"/>
 						</MkA>
-						<button class="_button" :class="$style.remove" @click="removeUser(user, $event)"><i class="ti ti-x"></i></button>
+						<button class="_button" :class="$style.remove" @click="removeUser(user, $event)"><i class="ph-x ph-bold ph-lg"></i></button>
 					</div>
 					<MkButton v-if="!fetching && queueUserIds.length !== 0" v-appear="enableInfiniteScroll ? fetchMoreUsers : null" :class="$style.more" :style="{ cursor: 'pointer' }" primary rounded @click="fetchMoreUsers">
 						{{ i18n.ts.loadMore }}
@@ -122,7 +122,7 @@ function addUser() {
 async function removeUser(user, ev) {
 	os.popupMenu([{
 		text: i18n.ts.remove,
-		icon: 'ti ti-x',
+		icon: 'ph-x ph-bold ph-lg',
 		danger: true,
 		action: async () => {
 			if (!list) return;
@@ -173,7 +173,7 @@ const headerTabs = $computed(() => []);
 
 definePageMetadata(computed(() => list ? {
 	title: list.name,
-	icon: 'ti ti-list',
+	icon: 'ph-list ph-bold pg-lg',
 } : null));
 </script>
 

@@ -66,7 +66,7 @@ const buttonsLeft = $computed(() => {
 
 	if (history.length > 1) {
 		buttons.push({
-			icon: 'ti ti-arrow-left',
+			icon: 'ph-arrow-left ph-bold pg-lg',
 			onClick: back,
 		});
 	}
@@ -75,11 +75,11 @@ const buttonsLeft = $computed(() => {
 });
 const buttonsRight = $computed(() => {
 	const buttons = [{
-		icon: 'ti ti-reload',
+		icon: 'ph-arrow-clockwise ph-bold ph-lg',
 		title: i18n.ts.reload,
 		onClick: reload,
 	}, {
-		icon: 'ti ti-player-eject',
+		icon: 'ph-eject ph-bold pg-lg',
 		title: i18n.ts.showInPage,
 		onClick: expand,
 	}];
@@ -101,22 +101,22 @@ provide('shouldHeaderThin', true);
 provide('forceSpacerMin', true);
 
 const contextmenu = $computed(() => ([{
-	icon: 'ti ti-player-eject',
+	icon: 'ph-eject ph-bold pg-lg',
 	text: i18n.ts.showInPage,
 	action: expand,
 }, {
-	icon: 'ti ti-window-maximize',
+	icon: 'ph-frame-corners ph-bold ph-lg',
 	text: i18n.ts.popout,
 	action: popout,
 }, {
-	icon: 'ti ti-external-link',
+	icon: 'ph-arrow-square-out ph-bold ph-lg',
 	text: i18n.ts.openInNewTab,
 	action: () => {
 		window.open(url + router.getCurrentPath(), '_blank');
 		windowEl.close();
 	},
 }, {
-	icon: 'ti ti-link',
+	icon: 'ph-link ph-bold ph-lg',
 	text: i18n.ts.copyLink,
 	action: () => {
 		copyToClipboard(url + router.getCurrentPath());

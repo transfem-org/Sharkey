@@ -9,7 +9,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<div v-show="loaded" :class="$style.root">
 		<img :src="serverErrorImageUrl" class="_ghost" :class="$style.img"/>
 		<div class="_gaps">
-			<div><b><i class="ti ti-alert-triangle"></i> {{ i18n.ts.pageLoadError }}</b></div>
+			<div><b><i class="ph-warning ph-bold ph-lg"></i> {{ i18n.ts.pageLoadError }}</b></div>
 			<div v-if="meta && (version === meta.version)">{{ i18n.ts.pageLoadErrorDescription }}</div>
 			<div v-else-if="serverIsDead">{{ i18n.ts.serverIsDead }}</div>
 			<template v-else>
@@ -68,7 +68,7 @@ const headerTabs = $computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.error,
-	icon: 'ti ti-alert-triangle',
+	icon: 'ph-warning ph-bold ph-lg',
 });
 </script>
 
@@ -82,6 +82,6 @@ definePageMetadata({
 	vertical-align: bottom;
 	height: 128px;
 	margin-bottom: 24px;
-	border-radius: 16px;
+	border-radius: 4px;
 }
 </style>

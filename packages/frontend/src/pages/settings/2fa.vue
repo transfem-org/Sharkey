@@ -16,10 +16,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</MkInfo>
 
 		<MkFolder :defaultOpen="true">
-			<template #icon><i class="ti ti-shield-lock"></i></template>
+			<template #icon><i class="ph-shield ph-bold ph-lg-lock"></i></template>
 			<template #label>{{ i18n.ts.totp }}</template>
 			<template #caption>{{ i18n.ts.totpDescription }}</template>
-			<template #suffix><i v-if="$i.twoFactorEnabled" class="ti ti-check" style="color: var(--success)"></i></template>
+			<template #suffix><i v-if="$i.twoFactorEnabled" class="ph-check ph-bold ph-lg" style="color: var(--success)"></i></template>
 
 			<div v-if="$i.twoFactorEnabled" class="_gaps_s">
 				<div v-text="i18n.ts._2fa.alreadyRegistered"/>
@@ -34,7 +34,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</MkFolder>
 
 		<MkFolder>
-			<template #icon><i class="ti ti-key"></i></template>
+			<template #icon><i class="ph-key ph-bold ph-lg"></i></template>
 			<template #label>{{ i18n.ts.securityKeyAndPasskey }}</template>
 			<div class="_gaps_s">
 				<MkInfo>
@@ -55,8 +55,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<template #label>{{ key.name }}</template>
 						<template #suffix><I18n :src="i18n.ts.lastUsedAt"><template #t><MkTime :time="key.lastUsed"/></template></I18n></template>
 						<div class="_buttons">
-							<MkButton @click="renameKey(key)"><i class="ti ti-forms"></i> {{ i18n.ts.rename }}</MkButton>
-							<MkButton danger @click="unregisterKey(key)"><i class="ti ti-trash"></i> {{ i18n.ts.unregister }}</MkButton>
+							<MkButton @click="renameKey(key)"><i class="ph-textbox ph-bold ph-lg"></i> {{ i18n.ts.rename }}</MkButton>
+							<MkButton danger @click="unregisterKey(key)"><i class="ph-trash ph-bold ph-lg"></i> {{ i18n.ts.unregister }}</MkButton>
 						</div>
 					</MkFolder>
 				</template>

@@ -9,7 +9,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 	<div class="query">
 		<MkInput v-model="q" class="" :placeholder="i18n.ts.search">
-			<template #prefix><i class="ti ti-search"></i></template>
+			<template #prefix><i class="ph-magnifying-glass ph-bold ph-lg"></i></template>
 		</MkInput>
 
 		<!-- たくさんあると邪魔

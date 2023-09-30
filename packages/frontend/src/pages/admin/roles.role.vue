@@ -10,20 +10,20 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<MkSpacer :contentMax="700">
 			<div class="_gaps">
 				<div class="_buttons">
-					<MkButton primary rounded @click="edit"><i class="ti ti-pencil"></i> {{ i18n.ts.edit }}</MkButton>
-					<MkButton danger rounded @click="del"><i class="ti ti-trash"></i> {{ i18n.ts.delete }}</MkButton>
+					<MkButton primary rounded @click="edit"><i class="ph-pencil ph-bold ph-lg"></i> {{ i18n.ts.edit }}</MkButton>
+					<MkButton danger rounded @click="del"><i class="ph-trash ph-bold ph-lg"></i> {{ i18n.ts.delete }}</MkButton>
 				</div>
 				<MkFolder>
-					<template #icon><i class="ti ti-info-circle"></i></template>
+					<template #icon><i class="ph-info ph-bold ph-lg"></i></template>
 					<template #label>{{ i18n.ts.info }}</template>
 					<XEditor :modelValue="role" readonly/>
 				</MkFolder>
 				<MkFolder v-if="role.target === 'manual'" defaultOpen>
-					<template #icon><i class="ti ti-users"></i></template>
+					<template #icon><i class="ph-users ph-bold pg-lg"></i></template>
 					<template #label>{{ i18n.ts.users }}</template>
 					<template #suffix>{{ role.usersCount }}</template>
 					<div class="_gaps">
-						<MkButton primary rounded @click="assign"><i class="ti ti-plus"></i> {{ i18n.ts.assign }}</MkButton>
+						<MkButton primary rounded @click="assign"><i class="ph-plus ph-bold ph-lg"></i> {{ i18n.ts.assign }}</MkButton>
 
 						<MkPagination :pagination="usersPagination">
 							<template #empty>
@@ -40,8 +40,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 											<MkA :class="$style.userItemMainBody" :to="`/admin/user/${item.user.id}`">
 												<MkUserCardMini :user="item.user"/>
 											</MkA>
-											<button class="_button" :class="$style.userToggle" @click="toggleItem(item)"><i :class="$style.chevron" class="ti ti-chevron-down"></i></button>
-											<button class="_button" :class="$style.unassign" @click="unassign(item.user, $event)"><i class="ti ti-x"></i></button>
+											<button class="_button" :class="$style.userToggle" @click="toggleItem(item)"><i :class="$style.chevron" class="ph-caret-down ph-bold ph-lg"></i></button>
+											<button class="_button" :class="$style.unassign" @click="unassign(item.user, $event)"><i class="ph-x ph-bold ph-lg"></i></button>
 										</div>
 										<div v-if="expandedItems.includes(item.id)" :class="$style.userItemSub">
 											<div>Assigned: <MkTime :time="item.createdAt" mode="detail"/></div>
@@ -150,7 +150,7 @@ async function assign() {
 async function unassign(user, ev) {
 	os.popupMenu([{
 		text: i18n.ts.unassign,
-		icon: 'ti ti-x',
+		icon: 'ph-x ph-bold ph-lg',
 		danger: true,
 		action: async () => {
 			await os.apiWithDialog('admin/roles/unassign', { roleId: role.id, userId: user.id });
@@ -173,7 +173,7 @@ const headerTabs = $computed(() => []);
 
 definePageMetadata(computed(() => ({
 	title: i18n.ts.role + ': ' + role.name,
-	icon: 'ti ti-badge',
+	icon: 'ph-seal-check ph-bold pg-lg',
 })));
 </script>
 

@@ -8,7 +8,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<div @click="noteclick(note.id)">
 		<span v-if="note.isHidden" style="opacity: 0.5">({{ i18n.ts.private }})</span>
 		<span v-if="note.deletedAt" style="opacity: 0.5">({{ i18n.ts.deleted }})</span>
-		<MkA v-if="note.replyId" :class="$style.reply" :to="`/notes/${note.replyId}`" v-on:click.stop><i class="ti ti-arrow-back-up"></i></MkA>
+		<MkA v-if="note.replyId" :class="$style.reply" :to="`/notes/${note.replyId}`" v-on:click.stop><i class="ph-arrow-bend-left-up ph-bold pg-lg"></i></MkA>
 		<Mfm v-if="note.text" :text="note.text" :author="note.user" :i="$i" :emojiUrls="note.emojis"/>
 		<MkA v-if="note.renoteId" :class="$style.rp" :to="`/notes/${note.renoteId}`" v-on:click.stop>RN: ...</MkA>
 	</div>
@@ -78,7 +78,7 @@ const collapsed = $ref(isLong);
 				background: var(--panel);
 				padding: 6px 10px;
 				font-size: 0.8em;
-				border-radius: 999px;
+				border-radius: 4px;
 				box-shadow: 0 2px 6px rgb(0 0 0 / 20%);
 			}
 
@@ -114,7 +114,7 @@ const collapsed = $ref(isLong);
 	background: var(--popup);
 	padding: 6px 10px;
 	font-size: 0.8em;
-	border-radius: 999px;
+	border-radius: 4px;
 	box-shadow: 0 2px 6px rgb(0 0 0 / 20%);
 }
 </style>

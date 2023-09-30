@@ -13,8 +13,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<div :class="$style.headerSub">
 			<slot name="func" :buttonStyleClass="$style.headerButton"></slot>
 			<button v-if="foldable" :class="$style.headerButton" class="_button" @click="() => showBody = !showBody">
-				<template v-if="showBody"><i class="ti ti-chevron-up"></i></template>
-				<template v-else><i class="ti ti-chevron-down"></i></template>
+				<template v-if="showBody"><i class="ph-caret-up ph-bold ph-lg"></i></template>
+				<template v-else><i class="ph-caret-down ph-bold ph-lg"></i></template>
 			</button>
 		</div>
 	</header>
@@ -223,7 +223,7 @@ onUnmounted(() => {
 				background: var(--panel);
 				padding: 6px 10px;
 				font-size: 0.8em;
-				border-radius: 999px;
+				border-radius: 4px;
 				box-shadow: 0 2px 6px rgb(0 0 0 / 20%);
 			}
 

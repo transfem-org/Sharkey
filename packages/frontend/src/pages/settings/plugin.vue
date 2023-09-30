@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <div class="_gaps_m">
-	<FormLink to="/settings/plugin/install"><template #icon><i class="ti ti-download"></i></template>{{ i18n.ts._plugin.install }}</FormLink>
+	<FormLink to="/settings/plugin/install"><template #icon><i class="ph-download ph-bold ph-lg"></i></template>{{ i18n.ts._plugin.install }}</FormLink>
 
 	<FormSection>
 		<template #label>{{ i18n.ts.manage }}</template>
@@ -37,17 +37,17 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</div>
 
 				<div class="_buttons">
-					<MkButton v-if="plugin.config" inline @click="config(plugin)"><i class="ti ti-settings"></i> {{ i18n.ts.settings }}</MkButton>
-					<MkButton inline danger @click="uninstall(plugin)"><i class="ti ti-trash"></i> {{ i18n.ts.uninstall }}</MkButton>
+					<MkButton v-if="plugin.config" inline @click="config(plugin)"><i class="ph-gear ph-bold pg-lg"></i> {{ i18n.ts.settings }}</MkButton>
+					<MkButton inline danger @click="uninstall(plugin)"><i class="ph-trash ph-bold ph-lg"></i> {{ i18n.ts.uninstall }}</MkButton>
 				</div>
 
 				<MkFolder>
-					<template #icon><i class="ti ti-code"></i></template>
+					<template #icon><i class="ph-code ph-bold pg-lg"></i></template>
 					<template #label>{{ i18n.ts._plugin.viewSource }}</template>
 
 					<div class="_gaps_s">
 						<div class="_buttons">
-							<MkButton inline @click="copy(plugin)"><i class="ti ti-copy"></i> {{ i18n.ts.copy }}</MkButton>
+							<MkButton inline @click="copy(plugin)"><i class="ph-copy ph-bold ph-lg"></i> {{ i18n.ts.copy }}</MkButton>
 						</div>
 
 						<MkCode :code="plugin.src ?? ''"/>
@@ -125,6 +125,6 @@ const headerTabs = $computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.plugins,
-	icon: 'ti ti-plug',
+	icon: 'ph-plug ph-bold ph-lg',
 });
 </script>

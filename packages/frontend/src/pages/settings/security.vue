@@ -19,8 +19,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<div>
 					<div v-for="item in items" :key="item.id" v-panel class="timnmucd">
 						<header>
-							<i v-if="item.success" class="ti ti-check icon succ"></i>
-							<i v-else class="ti ti-circle-x icon fail"></i>
+							<i v-if="item.success" class="ph-check ph-bold ph-lg icon succ"></i>
+							<i v-else class="ph-x-circle ph-bold ph-lg icon fail"></i>
 							<code class="ip _monospace">{{ item.ip }}</code>
 							<MkTime :time="item.createdAt" class="time"/>
 						</header>
@@ -32,7 +32,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 	<FormSection>
 		<FormSlot>
-			<MkButton danger @click="regenerateToken"><i class="ti ti-refresh"></i> {{ i18n.ts.regenerateLoginToken }}</MkButton>
+			<MkButton danger @click="regenerateToken"><i class="ph-arrows-counter-clockwise ph-bold pg-lg"></i> {{ i18n.ts.regenerateLoginToken }}</MkButton>
 			<template #caption>{{ i18n.ts.regenerateLoginTokenDescription }}</template>
 		</FormSlot>
 	</FormSection>
@@ -103,7 +103,7 @@ const headerTabs = $computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.security,
-	icon: 'ti ti-lock',
+	icon: 'ph-lock ph-bold ph-lg',
 });
 </script>
 

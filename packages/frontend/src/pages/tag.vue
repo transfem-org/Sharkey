@@ -12,7 +12,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<template v-if="$i" #footer>
 		<div :class="$style.footer">
 			<MkSpacer :contentMax="800" :marginMin="16" :marginMax="16">
-				<MkButton rounded primary :class="$style.button" @click="post()"><i class="ti ti-pencil"></i>{{ i18n.ts.postToHashtag }}</MkButton>
+				<MkButton rounded primary :class="$style.button" @click="post()"><i class="ph-pencil ph-bold ph-lg"></i>{{ i18n.ts.postToHashtag }}</MkButton>
 			</MkSpacer>
 		</div>
 	</template>
@@ -57,7 +57,7 @@ const headerTabs = $computed(() => []);
 
 definePageMetadata(computed(() => ({
 	title: props.tag,
-	icon: 'ti ti-hash',
+	icon: 'ph-hash ph-bold ph-lg',
 })));
 </script>
 

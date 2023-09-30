@@ -10,7 +10,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<FormSuspense :p="init">
 			<div class="_gaps_m">
 				<MkFolder>
-					<template #icon><i class="ti ti-shield"></i></template>
+					<template #icon><i class="ph-shield ph-bold ph-lg"></i></template>
 					<template #label>{{ i18n.ts.botProtection }}</template>
 					<template v-if="enableHcaptcha" #suffix>hCaptcha</template>
 					<template v-else-if="enableRecaptcha" #suffix>reCAPTCHA</template>
@@ -21,7 +21,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</MkFolder>
 
 				<MkFolder>
-					<template #icon><i class="ti ti-eye-off"></i></template>
+					<template #icon><i class="ph-eye-slash ph-bold ph-lg"></i></template>
 					<template #label>{{ i18n.ts.sensitiveMediaDetection }}</template>
 					<template v-if="sensitiveMediaDetection === 'all'" #suffix>{{ i18n.ts.all }}</template>
 					<template v-else-if="sensitiveMediaDetection === 'local'" #suffix>{{ i18n.ts.localOnly }}</template>
@@ -59,7 +59,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 						</MkSwitch>
 						-->
 
-						<MkButton primary @click="save"><i class="ti ti-device-floppy"></i> {{ i18n.ts.save }}</MkButton>
+						<MkButton primary @click="save"><i class="ph-floppy-disk ph-bold pg-lg"></i> {{ i18n.ts.save }}</MkButton>
 					</div>
 				</MkFolder>
 
@@ -93,11 +93,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 					<div class="_gaps_m">
 						<MkInput v-model="summalyProxy">
-							<template #prefix><i class="ti ti-link"></i></template>
+							<template #prefix><i class="ph-link ph-bold ph-lg"></i></template>
 							<template #label>Summaly Proxy URL</template>
 						</MkInput>
 
-						<MkButton primary @click="save"><i class="ti ti-device-floppy"></i> {{ i18n.ts.save }}</MkButton>
+						<MkButton primary @click="save"><i class="ph-floppy-disk ph-bold pg-lg"></i> {{ i18n.ts.save }}</MkButton>
 					</div>
 				</MkFolder>
 			</div>
@@ -178,6 +178,6 @@ const headerTabs = $computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.security,
-	icon: 'ti ti-lock',
+	icon: 'ph-lock ph-bold ph-lg',
 });
 </script>

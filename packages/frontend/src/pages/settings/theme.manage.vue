@@ -25,7 +25,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<template #label>{{ i18n.ts._theme.code }}</template>
 			<template #caption><button class="_textButton" @click="copyThemeCode()">{{ i18n.ts.copy }}</button></template>
 		</MkTextarea>
-		<MkButton v-if="!builtinThemes.some(t => t.id == selectedTheme.id)" danger @click="uninstall()"><i class="ti ti-trash"></i> {{ i18n.ts.uninstall }}</MkButton>
+		<MkButton v-if="!builtinThemes.some(t => t.id == selectedTheme.id)" danger @click="uninstall()"><i class="ph-trash ph-bold ph-lg"></i> {{ i18n.ts.uninstall }}</MkButton>
 	</template>
 </div>
 </template>
@@ -78,6 +78,6 @@ const headerTabs = $computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts._theme.manage,
-	icon: 'ti ti-tool',
+	icon: 'ph-wrench ph-bold ph-lg',
 });
 </script>

@@ -40,12 +40,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 					<FormSplit :minWidth="280">
 						<MkInput v-model="objectStorageAccessKey">
-							<template #prefix><i class="ti ti-key"></i></template>
+							<template #prefix><i class="ph-key ph-bold ph-lg"></i></template>
 							<template #label>Access key</template>
 						</MkInput>
 
 						<MkInput v-model="objectStorageSecretKey" type="password">
-							<template #prefix><i class="ti ti-key"></i></template>
+							<template #prefix><i class="ph-key ph-bold ph-lg"></i></template>
 							<template #label>Secret key</template>
 						</MkInput>
 					</FormSplit>
@@ -75,7 +75,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<template #footer>
 		<div :class="$style.footer">
 			<MkSpacer :contentMax="700" :marginMin="16" :marginMax="16">
-				<MkButton primary rounded @click="save"><i class="ti ti-check"></i> {{ i18n.ts.save }}</MkButton>
+				<MkButton primary rounded @click="save"><i class="ph-check ph-bold ph-lg"></i> {{ i18n.ts.save }}</MkButton>
 			</MkSpacer>
 		</div>
 	</template>
@@ -150,7 +150,7 @@ const headerTabs = $computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.objectStorage,
-	icon: 'ti ti-cloud',
+	icon: 'ph-cloud ph-bold ph-lg',
 });
 </script>
 

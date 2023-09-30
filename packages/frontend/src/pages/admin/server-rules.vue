@@ -23,16 +23,16 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<div :class="$style.item">
 							<div :class="$style.itemHeader">
 								<div :class="$style.itemNumber" v-text="String(index + 1)"/>
-								<span :class="$style.itemHandle"><i class="ti ti-menu"/></span>
-								<button class="_button" :class="$style.itemRemove" @click="remove(index)"><i class="ti ti-x"></i></button>
+								<span :class="$style.itemHandle"><i class="ph-list ph-bold ph-lg"/></span>
+								<button class="_button" :class="$style.itemRemove" @click="remove(index)"><i class="ph-x ph-bold ph-lg"></i></button>
 							</div>
 							<MkInput v-model="serverRules[index]"/>
 						</div>
 					</template>
 				</Sortable>
 				<div :class="$style.commands">
-					<MkButton rounded @click="serverRules.push('')"><i class="ti ti-plus"></i> {{ i18n.ts.add }}</MkButton>
-					<MkButton primary rounded @click="save"><i class="ti ti-check"></i> {{ i18n.ts.save }}</MkButton>
+					<MkButton rounded @click="serverRules.push('')"><i class="ph-plus ph-bold ph-lg"></i> {{ i18n.ts.add }}</MkButton>
+					<MkButton primary rounded @click="save"><i class="ph-check ph-bold ph-lg"></i> {{ i18n.ts.save }}</MkButton>
 				</div>
 			</div>
 		</MkSpacer>
@@ -69,7 +69,7 @@ const headerTabs = $computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.serverRules,
-	icon: 'ti ti-checkbox',
+	icon: 'ph-check ph-bold ph-lgbox',
 });
 </script>
 
@@ -104,7 +104,7 @@ definePageMetadata({
 	height: 28px;
 	align-items: center;
 	justify-content: center;
-	border-radius: 999px;
+	border-radius: 4px;
 	margin-right: 8px;
 }
 
@@ -119,7 +119,7 @@ definePageMetadata({
 	height: 40px;
 	color: var(--error);
 	margin-left: auto;
-	border-radius: 6px;
+	border-radius: 5px;
 
 	&:hover {
 		background: var(--X5);

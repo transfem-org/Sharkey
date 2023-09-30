@@ -7,7 +7,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <!-- このコンポーネントの要素のclassは親から利用されるのでむやみに弄らないこと -->
 <section>
 	<header class="_acrylic" @click="shown = !shown">
-		<i class="toggle ti-fw" :class="shown ? 'ti ti-chevron-down' : 'ti ti-chevron-up'"></i> <slot></slot> ({{ emojis.length }})
+		<i class="toggle ti-fw" :class="shown ? 'ph-caret-down ph-bold ph-lg' : 'ph-caret-up ph-bold ph-lg'"></i> <slot></slot> ({{ emojis.length }})
 	</header>
 	<div v-if="shown" class="body">
 		<button

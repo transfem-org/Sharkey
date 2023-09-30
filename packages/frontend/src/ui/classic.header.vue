@@ -11,7 +11,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<img :src="instance.iconUrl ?? instance.faviconUrl ?? '/favicon.ico'" class="_ghost"/>
 			</button>
 			<MkA v-click-anime v-tooltip="i18n.ts.timeline" class="item index" activeClass="active" to="/" exact>
-				<i class="ti ti-home ti-fw"></i>
+				<i class="ph-house ph-bold ph-lg ti-fw"></i>
 			</MkA>
 			<template v-for="item in menu">
 				<div v-if="item === '-'" class="divider"></div>
@@ -22,23 +22,23 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</template>
 			<div class="divider"></div>
 			<MkA v-if="$i.isAdmin || $i.isModerator" v-click-anime v-tooltip="i18n.ts.controlPanel" class="item" activeClass="active" to="/admin" :behavior="settingsWindowed ? 'window' : null">
-				<i class="ti ti-dashboard ti-fw"></i>
+				<i class="ph-gauge ph-bold pg-lg ti-fw"></i>
 			</MkA>
 			<button v-click-anime class="item _button" @click="more">
-				<i class="ti ti-dots ti-fw"></i>
+				<i class="ph-dots-three ph-bold ph-lg ti-fw"></i>
 				<span v-if="otherNavItemIndicated" class="indicator"><i class="_indicatorCircle"></i></span>
 			</button>
 		</div>
 		<div class="right">
 			<MkA v-click-anime v-tooltip="i18n.ts.settings" class="item" activeClass="active" to="/settings" :behavior="settingsWindowed ? 'window' : null">
-				<i class="ti ti-settings ti-fw"></i>
+				<i class="ph-gear ph-bold pg-lg ti-fw"></i>
 			</MkA>
 			<button v-click-anime class="item _button account" @click="openAccountMenu">
 				<MkAvatar :user="$i" class="avatar"/><MkAcct class="acct" :user="$i"/>
 			</button>
 			<div class="post" @click="os.post()">
 				<MkButton class="button" gradate full rounded>
-					<i class="ti ti-pencil ti-fw"></i>
+					<i class="ph-pencil ph-bold ph-lg ti-fw"></i>
 				</MkButton>
 			</div>
 		</div>

@@ -95,7 +95,7 @@ const headerTabs = $computed(() => []);
 
 definePageMetadata({
 	title: 'MiAuth',
-	icon: 'ti ti-apps',
+	icon: 'ph-squares-four ph-bold pg-lg',
 });
 </script>
 

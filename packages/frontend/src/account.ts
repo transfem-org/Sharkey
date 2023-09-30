@@ -286,7 +286,7 @@ export async function openAccountMenu(opts: {
 			avatar: $i,
 		}, null, ...(opts.includeCurrentAccount ? [createItem($i)] : []), ...accountItemPromises, {
 			type: 'parent' as const,
-			icon: 'ti ti-plus',
+			icon: 'ph-plus ph-bold ph-lg',
 			text: i18n.ts.addAccount,
 			children: [{
 				text: i18n.ts.existingAccount,
@@ -297,12 +297,12 @@ export async function openAccountMenu(opts: {
 			}],
 		}, {
 			type: 'link' as const,
-			icon: 'ti ti-users',
+			icon: 'ph-users ph-bold ph-lg',
 			text: i18n.ts.manageAccounts,
 			to: '/settings/accounts',
 		}, {
 			type: 'button' as const,
-			icon: 'ti ti-power',
+			icon: 'ph-power ph-bold ph-lg',
 			text: i18n.ts.logout,
 			action: () => { signout(); },
 		}]], ev.currentTarget ?? ev.target, {

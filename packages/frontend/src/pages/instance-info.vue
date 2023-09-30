@@ -36,7 +36,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<div class="_gaps_s">
 					<MkSwitch v-model="suspended" :disabled="!instance" @update:modelValue="toggleSuspend">{{ i18n.ts.stopActivityDelivery }}</MkSwitch>
 					<MkSwitch v-model="isBlocked" :disabled="!meta || !instance" @update:modelValue="toggleBlock">{{ i18n.ts.blockThisInstance }}</MkSwitch>
-					<MkButton @click="refreshMetadata"><i class="ti ti-refresh"></i> Refresh metadata</MkButton>
+					<MkButton @click="refreshMetadata"><i class="ph-arrows-counter-clockwise ph-bold pg-lg"></i> Refresh metadata</MkButton>
 				</div>
 			</FormSection>
 
@@ -203,7 +203,7 @@ fetch();
 
 const headerActions = $computed(() => [{
 	text: `https://${props.host}`,
-	icon: 'ti ti-external-link',
+	icon: 'ph-arrow-square-out ph-bold ph-lg',
 	handler: () => {
 		window.open(`https://${props.host}`, '_blank');
 	},
@@ -212,24 +212,24 @@ const headerActions = $computed(() => [{
 const headerTabs = $computed(() => [{
 	key: 'overview',
 	title: i18n.ts.overview,
-	icon: 'ti ti-info-circle',
+	icon: 'ph-info ph-bold ph-lg',
 }, {
 	key: 'chart',
 	title: i18n.ts.charts,
-	icon: 'ti ti-chart-line',
+	icon: 'ph-chart-line ph-bold pg-lg',
 }, {
 	key: 'users',
 	title: i18n.ts.users,
-	icon: 'ti ti-users',
+	icon: 'ph-users ph-bold pg-lg',
 }, {
 	key: 'raw',
 	title: 'Raw',
-	icon: 'ti ti-code',
+	icon: 'ph-code ph-bold pg-lg',
 }]);
 
 definePageMetadata({
 	title: props.host,
-	icon: 'ti ti-server',
+	icon: 'ph-hard-drives ph-bold ph-lg',
 });
 </script>
 
@@ -242,7 +242,7 @@ definePageMetadata({
 		display: block;
 		margin: 0 16px 0 0;
 		height: 64px;
-		border-radius: 8px;
+		border-radius: 5px;
 	}
 
 	> .name {

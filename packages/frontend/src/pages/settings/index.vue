@@ -42,7 +42,7 @@ import { fetchCustomEmojis } from '@/custom-emojis.js';
 
 const indexInfo = {
 	title: i18n.ts.settings,
-	icon: 'ti ti-settings',
+	icon: 'ph-gear ph-bold pg-lg',
 	hideHeader: true,
 };
 const INFO = ref(indexInfo);
@@ -64,37 +64,37 @@ const ro = new ResizeObserver((entries, observer) => {
 const menuDef = computed(() => [{
 	title: i18n.ts.basicSettings,
 	items: [{
-		icon: 'ti ti-user',
+		icon: 'ph-user ph-bold ph-lg',
 		text: i18n.ts.profile,
 		to: '/settings/profile',
 		active: currentPage?.route.name === 'profile',
 	}, {
-		icon: 'ti ti-lock-open',
+		icon: 'ph-lock ph-bold ph-lg-open',
 		text: i18n.ts.privacy,
 		to: '/settings/privacy',
 		active: currentPage?.route.name === 'privacy',
 	}, {
-		icon: 'ti ti-mood-happy',
+		icon: 'ph-smiley ph-bold ph-lg',
 		text: i18n.ts.reaction,
 		to: '/settings/reaction',
 		active: currentPage?.route.name === 'reaction',
 	}, {
-		icon: 'ti ti-cloud',
+		icon: 'ph-cloud ph-bold ph-lg',
 		text: i18n.ts.drive,
 		to: '/settings/drive',
 		active: currentPage?.route.name === 'drive',
 	}, {
-		icon: 'ti ti-bell',
+		icon: 'ph-bell ph-bold pg-lg',
 		text: i18n.ts.notifications,
 		to: '/settings/notifications',
 		active: currentPage?.route.name === 'notifications',
 	}, {
-		icon: 'ti ti-mail',
+		icon: 'ph-envelope ph-bold ph-lg',
 		text: i18n.ts.email,
 		to: '/settings/email',
 		active: currentPage?.route.name === 'email',
 	}, {
-		icon: 'ti ti-lock',
+		icon: 'ph-lock ph-bold ph-lg',
 		text: i18n.ts.security,
 		to: '/settings/security',
 		active: currentPage?.route.name === 'security',
@@ -102,32 +102,32 @@ const menuDef = computed(() => [{
 }, {
 	title: i18n.ts.clientSettings,
 	items: [{
-		icon: 'ti ti-adjustments',
+		icon: 'ph-faders ph-bold ph-lg',
 		text: i18n.ts.general,
 		to: '/settings/general',
 		active: currentPage?.route.name === 'general',
 	}, {
-		icon: 'ti ti-palette',
+		icon: 'ph-palette ph-bold ph-lg',
 		text: i18n.ts.theme,
 		to: '/settings/theme',
 		active: currentPage?.route.name === 'theme',
 	}, {
-		icon: 'ti ti-menu-2',
+		icon: 'ph-list ph-bold ph-lg-2',
 		text: i18n.ts.navbar,
 		to: '/settings/navbar',
 		active: currentPage?.route.name === 'navbar',
 	}, {
-		icon: 'ti ti-equal-double',
+		icon: 'ph-equals ph-bold ph-lg',
 		text: i18n.ts.statusbar,
 		to: '/settings/statusbar',
 		active: currentPage?.route.name === 'statusbar',
 	}, {
-		icon: 'ti ti-music',
+		icon: 'ph-music-notes ph-bold pg-lg',
 		text: i18n.ts.sounds,
 		to: '/settings/sounds',
 		active: currentPage?.route.name === 'sounds',
 	}, {
-		icon: 'ti ti-plug',
+		icon: 'ph-plug ph-bold ph-lg',
 		text: i18n.ts.plugins,
 		to: '/settings/plugin',
 		active: currentPage?.route.name === 'plugin',
@@ -135,60 +135,60 @@ const menuDef = computed(() => [{
 }, {
 	title: i18n.ts.otherSettings,
 	items: [{
-		icon: 'ti ti-badges',
+		icon: 'ph-seal-check ph-bold pg-lg',
 		text: i18n.ts.roles,
 		to: '/settings/roles',
 		active: currentPage?.route.name === 'roles',
 	}, {
-		icon: 'ti ti-planet-off',
+		icon: 'ph-prohibit ph-bold pg-lg',
 		text: i18n.ts.instanceMute,
 		to: '/settings/instance-mute',
 		active: currentPage?.route.name === 'instance-mute',
 	}, {
-		icon: 'ti ti-ban',
+		icon: 'ph-prohibit ph-bold ph-lg',
 		text: i18n.ts.muteAndBlock,
 		to: '/settings/mute-block',
 		active: currentPage?.route.name === 'mute-block',
 	}, {
-		icon: 'ti ti-message-off',
+		icon: 'ph-bell-slash ph-bold ph-lg',
 		text: i18n.ts.wordMute,
 		to: '/settings/word-mute',
 		active: currentPage?.route.name === 'word-mute',
 	}, {
-		icon: 'ti ti-api',
+		icon: 'ph-webhooks-logo ph-bold pg-lg',
 		text: 'API',
 		to: '/settings/api',
 		active: currentPage?.route.name === 'api',
 	}, {
-		icon: 'ti ti-webhook',
+		icon: 'ph-webhooks-logo ph-bold ph-lg',
 		text: 'Webhook',
 		to: '/settings/webhook',
 		active: currentPage?.route.name === 'webhook',
 	}, {
-		icon: 'ti ti-package',
+		icon: 'ph-package ph-bold ph-lg',
 		text: i18n.ts.importAndExport,
 		to: '/settings/import-export',
 		active: currentPage?.route.name === 'import-export',
 	}, {
-		icon: 'ti ti-plane',
+		icon: 'ph-airplane ph-bold ph-lg',
 		text: `${i18n.ts.accountMigration}`,
 		to: '/settings/migration',
 		active: currentPage?.route.name === 'migration',
 	}, {
-		icon: 'ti ti-dots',
+		icon: 'ph-dots-three ph-bold ph-lg',
 		text: i18n.ts.other,
 		to: '/settings/other',
 		active: currentPage?.route.name === 'other',
 	}],
 }, {
 	items: [{
-		icon: 'ti ti-device-floppy',
+		icon: 'ph-floppy-disk ph-bold pg-lg',
 		text: i18n.ts.preferencesBackups,
 		to: '/settings/preferences-backups',
 		active: currentPage?.route.name === 'preferences-backups',
 	}, {
 		type: 'button',
-		icon: 'ti ti-trash',
+		icon: 'ph-trash ph-bold ph-lg',
 		text: i18n.ts.clearCache,
 		action: async () => {
 			os.waiting();
@@ -201,7 +201,7 @@ const menuDef = computed(() => [{
 		},
 	}, {
 		type: 'button',
-		icon: 'ti ti-power',
+		icon: 'ph-power ph-bold ph-lg',
 		text: i18n.ts.logout,
 		action: async () => {
 			const { canceled } = await os.confirm({

@@ -15,7 +15,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					</div>
 
 					<div class="_margin">
-						<MkButton v-if="!showNext" :class="$style.loadNext" @click="showNext = true"><i class="ti ti-chevron-up"></i></MkButton>
+						<MkButton v-if="!showNext" :class="$style.loadNext" @click="showNext = true"><i class="ph-caret-up ph-bold ph-lg"></i></MkButton>
 						<div class="_margin _gaps_s">
 							<MkRemoteCaution v-if="note.user.host != null" :href="note.url ?? note.uri"/>
 							<MkNoteDetailed :key="note.id" v-model:note="note" :class="$style.note"/>
@@ -28,7 +28,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 								</MkA>
 							</div>
 						</div>
-						<MkButton v-if="!showPrev" :class="$style.loadPrev" @click="showPrev = true"><i class="ti ti-chevron-down"></i></MkButton>
+						<MkButton v-if="!showPrev" :class="$style.loadPrev" @click="showPrev = true"><i class="ph-caret-down ph-bold ph-lg"></i></MkButton>
 					</div>
 
 					<div v-if="showPrev" class="_margin">
@@ -141,7 +141,7 @@ definePageMetadata(computed(() => note ? {
 .loadPrev {
 	min-width: 0;
 	margin: 0 auto;
-	border-radius: 999px;
+	border-radius: 4px;
 }
 
 .loadNext {

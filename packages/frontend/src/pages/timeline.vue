@@ -134,18 +134,18 @@ function focus(): void {
 }
 
 const headerActions = $computed(() => [{
-	icon: 'ti ti-dots',
+	icon: 'ph-dots-three ph-bold ph-lg',
 	text: i18n.ts.options,
 	handler: (ev) => {
 		os.popupMenu([{
 			type: 'switch',
 			text: i18n.ts.showRenotes,
-			icon: 'ti ti-repeat',
+			icon: 'ph-repeat ph-bold ph-lg',
 			ref: $$(withRenotes),
 		}, {
 			type: 'switch',
 			text: i18n.ts.withReplies,
-			icon: 'ti ti-arrow-back-up',
+			icon: 'ph-arrow-u-up-left ph-bold pg-lg',
 			ref: $$(withReplies),
 		}], ev.currentTarget ?? ev.target);
 	},
@@ -154,40 +154,40 @@ const headerActions = $computed(() => [{
 const headerTabs = $computed(() => [...(defaultStore.reactiveState.pinnedUserLists.value.map(l => ({
 	key: 'list:' + l.id,
 	title: l.name,
-	icon: 'ti ti-star',
+	icon: 'ph-star ph-bold pg-lg',
 	iconOnly: true,
 }))), {
 	key: 'home',
 	title: i18n.ts._timelines.home,
-	icon: 'ti ti-home',
+	icon: 'ph-house ph-bold ph-lg',
 	iconOnly: true,
 }, ...(isLocalTimelineAvailable ? [{
 	key: 'local',
 	title: i18n.ts._timelines.local,
-	icon: 'ti ti-planet',
+	icon: 'ph-planet ph-bold pg-lg',
 	iconOnly: true,
 }, {
 	key: 'social',
 	title: i18n.ts._timelines.social,
-	icon: 'ti ti-rocket',
+	icon: 'ph-rocket-launch ph-bold pg-lg',
 	iconOnly: true,
 }] : []), ...(isGlobalTimelineAvailable ? [{
 	key: 'global',
 	title: i18n.ts._timelines.global,
-	icon: 'ti ti-whirl',
+	icon: 'ph-globe-hemisphere-west ph-bold ph-lg',
 	iconOnly: true,
 }] : []), {
-	icon: 'ti ti-list',
+	icon: 'ph-list ph-bold pg-lg',
 	title: i18n.ts.lists,
 	iconOnly: true,
 	onClick: chooseList,
 }, {
-	icon: 'ti ti-antenna',
+	icon: 'ph-flying-saucer ph-bold pg-lg',
 	title: i18n.ts.antennas,
 	iconOnly: true,
 	onClick: chooseAntenna,
 }, {
-	icon: 'ti ti-device-tv',
+	icon: 'ph-television ph-bold ph-lg',
 	title: i18n.ts.channel,
 	iconOnly: true,
 	onClick: chooseChannel,
@@ -197,20 +197,20 @@ const headerTabsWhenNotLogin = $computed(() => [
 	...(isLocalTimelineAvailable ? [{
 		key: 'local',
 		title: i18n.ts._timelines.local,
-		icon: 'ti ti-planet',
+		icon: 'ph-planet ph-bold pg-lg',
 		iconOnly: true,
 	}] : []),
 	...(isGlobalTimelineAvailable ? [{
 		key: 'global',
 		title: i18n.ts._timelines.global,
-		icon: 'ti ti-whirl',
+		icon: 'ph-globe-hemisphere-west ph-bold ph-lg',
 		iconOnly: true,
 	}] : []),
 ] as Tab[]);
 
 definePageMetadata(computed(() => ({
 	title: i18n.ts.timeline,
-	icon: src === 'local' ? 'ti ti-planet' : src === 'social' ? 'ti ti-rocket' : src === 'global' ? 'ti ti-whirl' : 'ti ti-home',
+	icon: src === 'local' ? 'ph-planet ph-bold pg-lg' : src === 'social' ? 'ph-rocket-launch ph-bold pg-lg' : src === 'global' ? 'ph-globe-hemisphere-west ph-bold ph-lg' : 'ph-house ph-bold ph-lg',
 })));
 </script>
 

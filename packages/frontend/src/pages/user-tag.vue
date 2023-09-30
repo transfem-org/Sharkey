@@ -37,7 +37,7 @@ const tagUsers = $computed(() => ({
 
 definePageMetadata(computed(() => ({
 	title: props.tag,
-	icon: 'ti ti-user-search',
+	icon: 'ph-user-circle ph-bold ph-lg',
 })));
 </script>
 

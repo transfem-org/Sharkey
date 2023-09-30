@@ -6,14 +6,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <div class="zmdxowus">
 	<p v-if="choices.length < 2" class="caution">
-		<i class="ti ti-alert-triangle"></i>{{ i18n.ts._poll.noOnlyOneChoice }}
+		<i class="ph-warning ph-bold ph-lg"></i>{{ i18n.ts._poll.noOnlyOneChoice }}
 	</p>
 	<ul>
 		<li v-for="(choice, i) in choices" :key="i">
 			<MkInput class="input" small :modelValue="choice" :placeholder="i18n.t('_poll.choiceN', { n: i + 1 })" @update:modelValue="onInput(i, $event)">
 			</MkInput>
 			<button class="_button" @click="remove(i)">
-				<i class="ti ti-x"></i>
+				<i class="ph-x ph-bold ph-lg"></i>
 			</button>
 		</li>
 	</ul>

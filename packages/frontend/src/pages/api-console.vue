@@ -20,7 +20,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</MkSwitch>
 				<MkButton primary :disabled="sending" @click="send">
 					<template v-if="sending"><MkEllipsis/></template>
-					<template v-else><i class="ti ti-send"></i> Send</template>
+					<template v-else><i class="ph-paper-plane-tilt ph-bold ph-lg"></i> Send</template>
 				</MkButton>
 			</div>
 			<div v-if="res">
@@ -89,6 +89,6 @@ const headerTabs = $computed(() => []);
 
 definePageMetadata({
 	title: 'API console',
-	icon: 'ti ti-terminal-2',
+	icon: 'ph-terminal-window ph-bold ph-lg-2',
 });
 </script>

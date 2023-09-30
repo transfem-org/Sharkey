@@ -6,10 +6,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <!-- eslint-disable vue/no-mutating-props -->
 <XContainer :draggable="true" @remove="() => $emit('remove')">
-	<template #header><i class="ti ti-photo"></i> {{ i18n.ts._pages.blocks.image }}</template>
+	<template #header><i class="ph-image-square ph-bold ph-lg"></i> {{ i18n.ts._pages.blocks.image }}</template>
 	<template #func>
 		<button @click="choose()">
-			<i class="ti ti-folder"></i>
+			<i class="ph-folder ph-bold ph-lg"></i>
 		</button>
 	</template>
 

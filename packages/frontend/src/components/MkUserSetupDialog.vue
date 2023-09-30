@@ -12,10 +12,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 	@close="close(true)"
 	@closed="emit('closed')"
 >
-	<template v-if="page === 1" #header><i class="ti ti-user-edit"></i> {{ i18n.ts._initialAccountSetting.profileSetting }}</template>
-	<template v-else-if="page === 2" #header><i class="ti ti-lock"></i> {{ i18n.ts._initialAccountSetting.privacySetting }}</template>
-	<template v-else-if="page === 3" #header><i class="ti ti-user-plus"></i> {{ i18n.ts.follow }}</template>
-	<template v-else-if="page === 4" #header><i class="ti ti-bell-plus"></i> {{ i18n.ts.pushNotification }}</template>
+	<template v-if="page === 1" #header><i class="ph-user-list ph-bold ph-lg"></i> {{ i18n.ts._initialAccountSetting.profileSetting }}</template>
+	<template v-else-if="page === 2" #header><i class="ph-lock ph-bold ph-lg"></i> {{ i18n.ts._initialAccountSetting.privacySetting }}</template>
+	<template v-else-if="page === 3" #header><i class="ph-user-plus ph-bold ph-lg"></i> {{ i18n.ts.follow }}</template>
+	<template v-else-if="page === 4" #header><i class="ph-bell-ringing ph-bold pg-lg"></i> {{ i18n.ts.pushNotification }}</template>
 	<template v-else-if="page === 5" #header>{{ i18n.ts.done }}</template>
 	<template v-else #header>{{ i18n.ts.initialAccountSetting }}</template>
 
@@ -35,10 +35,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<MkAnimBg style="position: absolute; top: 0;" :scale="1.5"/>
 					<MkSpacer :marginMin="20" :marginMax="28">
 						<div class="_gaps" style="text-align: center;">
-							<i class="ti ti-confetti" style="display: block; margin: auto; font-size: 3em; color: var(--accent);"></i>
+							<i class="ph-confetti ph-bold ph-lg" style="display: block; margin: auto; font-size: 3em; color: var(--accent);"></i>
 							<div style="font-size: 120%;">{{ i18n.ts._initialAccountSetting.accountCreated }}</div>
 							<div>{{ i18n.ts._initialAccountSetting.letsStartAccountSetup }}</div>
-							<MkButton primary rounded gradate style="margin: 16px auto 0 auto;" data-cy-user-setup-continue @click="page++">{{ i18n.ts._initialAccountSetting.profileSetting }} <i class="ti ti-arrow-right"></i></MkButton>
+							<MkButton primary rounded gradate style="margin: 16px auto 0 auto;" data-cy-user-setup-continue @click="page++">{{ i18n.ts._initialAccountSetting.profileSetting }} <i class="ph-arrow-right ph-bold pg-lg"></i></MkButton>
 							<MkButton style="margin: 0 auto;" transparent rounded @click="later(true)">{{ i18n.ts.later }}</MkButton>
 						</div>
 					</MkSpacer>
@@ -49,8 +49,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<MkSpacer :marginMin="20" :marginMax="28">
 						<XProfile/>
 						<div class="_buttonsCenter" style="margin-top: 16px;">
-							<MkButton rounded data-cy-user-setup-back @click="page--"><i class="ti ti-arrow-left"></i> {{ i18n.ts.goBack }}</MkButton>
-							<MkButton primary rounded gradate data-cy-user-setup-continue @click="page++">{{ i18n.ts.continue }} <i class="ti ti-arrow-right"></i></MkButton>
+							<MkButton rounded data-cy-user-setup-back @click="page--"><i class="ph-arrow-left ph-bold pg-lg"></i> {{ i18n.ts.goBack }}</MkButton>
+							<MkButton primary rounded gradate data-cy-user-setup-continue @click="page++">{{ i18n.ts.continue }} <i class="ph-arrow-right ph-bold pg-lg"></i></MkButton>
 						</div>
 					</MkSpacer>
 				</div>
@@ -60,8 +60,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<MkSpacer :marginMin="20" :marginMax="28">
 						<XPrivacy/>
 						<div class="_buttonsCenter" style="margin-top: 16px;">
-							<MkButton rounded data-cy-user-setup-back @click="page--"><i class="ti ti-arrow-left"></i> {{ i18n.ts.goBack }}</MkButton>
-							<MkButton primary rounded gradate data-cy-user-setup-continue @click="page++">{{ i18n.ts.continue }} <i class="ti ti-arrow-right"></i></MkButton>
+							<MkButton rounded data-cy-user-setup-back @click="page--"><i class="ph-arrow-left ph-bold pg-lg"></i> {{ i18n.ts.goBack }}</MkButton>
+							<MkButton primary rounded gradate data-cy-user-setup-continue @click="page++">{{ i18n.ts.continue }} <i class="ph-arrow-right ph-bold pg-lg"></i></MkButton>
 						</div>
 					</MkSpacer>
 				</div>
@@ -73,8 +73,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 					</MkSpacer>
 					<div :class="$style.pageFooter">
 						<div class="_buttonsCenter">
-							<MkButton rounded data-cy-user-setup-back @click="page--"><i class="ti ti-arrow-left"></i> {{ i18n.ts.goBack }}</MkButton>
-							<MkButton primary rounded gradate style="" data-cy-user-setup-continue @click="page++">{{ i18n.ts.continue }} <i class="ti ti-arrow-right"></i></MkButton>
+							<MkButton rounded data-cy-user-setup-back @click="page--"><i class="ph-arrow-left ph-bold pg-lg"></i> {{ i18n.ts.goBack }}</MkButton>
+							<MkButton primary rounded gradate style="" data-cy-user-setup-continue @click="page++">{{ i18n.ts.continue }} <i class="ph-arrow-right ph-bold pg-lg"></i></MkButton>
 						</div>
 					</div>
 				</div>
@@ -83,13 +83,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<div :class="$style.centerPage">
 					<MkSpacer :marginMin="20" :marginMax="28">
 						<div class="_gaps" style="text-align: center;">
-							<i class="ti ti-bell-ringing-2" style="display: block; margin: auto; font-size: 3em; color: var(--accent);"></i>
+							<i class="ph-bell-ringing ph-bold pg-lg" style="display: block; margin: auto; font-size: 3em; color: var(--accent);"></i>
 							<div style="font-size: 120%;">{{ i18n.ts.pushNotification }}</div>
 							<div style="padding: 0 16px;">{{ i18n.t('_initialAccountSetting.pushNotificationDescription', { name: instance.name ?? host }) }}</div>
 							<MkPushNotificationAllowButton primary showOnlyToRegister style="margin: 0 auto;"/>
 							<div class="_buttonsCenter" style="margin-top: 16px;">
-								<MkButton rounded data-cy-user-setup-back @click="page--"><i class="ti ti-arrow-left"></i> {{ i18n.ts.goBack }}</MkButton>
-								<MkButton primary rounded gradate data-cy-user-setup-continue @click="page++">{{ i18n.ts.continue }} <i class="ti ti-arrow-right"></i></MkButton>
+								<MkButton rounded data-cy-user-setup-back @click="page--"><i class="ph-arrow-left ph-bold pg-lg"></i> {{ i18n.ts.goBack }}</MkButton>
+								<MkButton primary rounded gradate data-cy-user-setup-continue @click="page++">{{ i18n.ts.continue }} <i class="ph-arrow-right ph-bold pg-lg"></i></MkButton>
 							</div>
 						</div>
 					</MkSpacer>
@@ -100,7 +100,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<MkAnimBg style="position: absolute; top: 0;" :scale="1.5"/>
 					<MkSpacer :marginMin="20" :marginMax="28">
 						<div class="_gaps" style="text-align: center;">
-							<i class="ti ti-check" style="display: block; margin: auto; font-size: 3em; color: var(--accent);"></i>
+							<i class="ph-check ph-bold ph-lg" style="display: block; margin: auto; font-size: 3em; color: var(--accent);"></i>
 							<div style="font-size: 120%;">{{ i18n.ts._initialAccountSetting.initialAccountSettingCompleted }}</div>
 							<I18n :src="i18n.ts._initialAccountSetting.ifYouNeedLearnMore" tag="div" style="padding: 0 16px;">
 								<template #name>{{ instance.name ?? host }}</template>
@@ -110,7 +110,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 							</I18n>
 							<div>{{ i18n.t('_initialAccountSetting.haveFun', { name: instance.name ?? host }) }}</div>
 							<div class="_buttonsCenter" style="margin-top: 16px;">
-								<MkButton rounded data-cy-user-setup-back @click="page--"><i class="ti ti-arrow-left"></i> {{ i18n.ts.goBack }}</MkButton>
+								<MkButton rounded data-cy-user-setup-back @click="page--"><i class="ph-arrow-left ph-bold pg-lg"></i> {{ i18n.ts.goBack }}</MkButton>
 								<MkButton primary rounded gradate data-cy-user-setup-continue @click="close(false)">{{ i18n.ts.close }}</MkButton>
 							</div>
 						</div>

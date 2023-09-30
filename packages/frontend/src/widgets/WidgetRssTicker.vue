@@ -5,9 +5,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <MkContainer :naked="widgetProps.transparent" :showHeader="widgetProps.showHeader" class="mkw-rss-ticker">
-	<template #icon><i class="ti ti-rss"></i></template>
+	<template #icon><i class="ph-rss ph-bold ph-lg"></i></template>
 	<template #header>RSS</template>
-	<template #func="{ buttonStyleClass }"><button class="_button" :class="buttonStyleClass" @click="configure"><i class="ti ti-settings"></i></button></template>
+	<template #func="{ buttonStyleClass }"><button class="_button" :class="buttonStyleClass" @click="configure"><i class="ph-gear ph-bold pg-lg"></i></button></template>
 
 	<div :class="$style.feed">
 		<div v-if="fetching" :class="$style.loading">

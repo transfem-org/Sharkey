@@ -119,7 +119,7 @@ function onContextMenu(ev: MouseEvent, file): void {
 
 definePageMetadata({
 	title: i18n.ts.drivecleaner,
-	icon: 'ti ti-trash',
+	icon: 'ph-trash ph-bold ph-lg',
 });
 </script>
 
@@ -152,7 +152,7 @@ definePageMetadata({
 	height: 12px;
 	background: rgba(0, 0, 0, 0.1);
 	overflow: clip;
-	border-radius: 999px;
+	border-radius: 4px;
 }
 
 .meterValue {

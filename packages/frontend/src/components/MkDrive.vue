@@ -16,7 +16,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				@removeFolder="removeFolder"
 			/>
 			<template v-for="f in hierarchyFolders">
-				<span :class="[$style.navPathItem, $style.navSeparator]"><i class="ti ti-chevron-right"></i></span>
+				<span :class="[$style.navPathItem, $style.navSeparator]"><i class="ph-caret-right ph-bold ph-lg"></i></span>
 				<XNavFolder
 					:folder="f"
 					:parentFolder="folder"
@@ -27,10 +27,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 					@removeFolder="removeFolder"
 				/>
 			</template>
-			<span v-if="folder != null" :class="[$style.navPathItem, $style.navSeparator]"><i class="ti ti-chevron-right"></i></span>
+			<span v-if="folder != null" :class="[$style.navPathItem, $style.navSeparator]"><i class="ph-caret-right ph-bold ph-lg"></i></span>
 			<span v-if="folder != null" :class="[$style.navPathItem, $style.navCurrent]">{{ folder.name }}</span>
 		</div>
-		<button class="_button" :class="$style.navMenu" @click="showMenu"><i class="ti ti-dots"></i></button>
+		<button class="_button" :class="$style.navMenu" @click="showMenu"><i class="ph-dots-three ph-bold ph-lg"></i></button>
 	</nav>
 	<div
 		ref="main"
@@ -620,26 +620,26 @@ function getMenu() {
 		type: 'label',
 	}, {
 		text: i18n.ts.upload,
-		icon: 'ti ti-upload',
+		icon: 'ph-upload ph-bold ph-lg',
 		action: () => { selectLocalFile(); },
 	}, {
 		text: i18n.ts.fromUrl,
-		icon: 'ti ti-link',
+		icon: 'ph-link ph-bold ph-lg',
 		action: () => { urlUpload(); },
 	}, null, {
 		text: folder.value ? folder.value.name : i18n.ts.drive,
 		type: 'label',
 	}, folder.value ? {
 		text: i18n.ts.renameFolder,
-		icon: 'ti ti-forms',
+		icon: 'ph-textbox ph-bold ph-lg',
 		action: () => { renameFolder(folder.value); },
 	} : undefined, folder.value ? {
 		text: i18n.ts.deleteFolder,
-		icon: 'ti ti-trash',
+		icon: 'ph-trash ph-bold ph-lg',
 		action: () => { deleteFolder(folder.value as Misskey.entities.DriveFolder); },
 	} : undefined, {
 		text: i18n.ts.createFolder,
-		icon: 'ti ti-folder-plus',
+		icon: 'ph-folder ph-bold ph-lg-plus',
 		action: () => { createFolder(); },
 	}];
 }
