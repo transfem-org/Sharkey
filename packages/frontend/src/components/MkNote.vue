@@ -110,7 +110,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</button>
 				<button v-if="appearNote.myReaction == null" ref="reactButton" :class="$style.footerButton" class="_button" @mousedown="react()">
 					<i v-if="appearNote.reactionAcceptance === 'likeOnly'" class="ph-heart ph-bold ph-lg"></i>
-					<i v-else class="ph-plus ph-bold ph-lg"></i>
+					<i v-else class="ph-smiley ph-bold ph-lg"></i>
 				</button>
 				<button v-if="appearNote.myReaction != null" ref="reactButton" :class="$style.footerButton" class="_button" @click="undoReact(appearNote)">
 					<i class="ph-minus ph-bold ph-lg"></i>
