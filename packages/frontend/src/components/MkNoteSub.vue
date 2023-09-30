@@ -4,7 +4,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<div v-if="!muted" :class="[$style.root, { [$style.children]: depth > 1 }]">
+<div ref="el" v-if="!muted" :class="[$style.root, { [$style.children]: depth > 1 }]">
 	<div :class="$style.main">
 		<div v-if="note.channel" :class="$style.colorBar" :style="{ background: note.channel.color }"></div>
 		<MkAvatar :class="$style.avatar" :user="note.user" link preview/>
@@ -37,6 +37,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</button>
 				<button v-else class="_button" :class="$style.noteFooterButton" disabled>
 					<i class="ph-prohibit ph-bold ph-lg"></i>
+				</button>
+				<button v-if="note.myReaction == null && note.reactionAcceptance !== 'likeOnly'" ref="likeButton" :class="$style.noteFooterButton" class="_button" @mousedown="like()">
+					<i class="ph-heart ph-bold ph-lg"></i>
 				</button>
 				<button v-if="note.myReaction == null" ref="reactButton" :class="$style.noteFooterButton" class="_button" @mousedown="react()">
 					<i v-if="note.reactionAcceptance === 'likeOnly'" class="ph-heart ph-bold ph-lg"></i>
@@ -90,6 +93,8 @@ import { reactionPicker } from '@/scripts/reaction-picker.js';
 import { claimAchievement } from '@/scripts/achievements.js';
 import type { MenuItem } from '@/types/menu.js';
 import { getNoteMenu } from '@/scripts/get-note-menu.js';
+import { useNoteCapture } from '@/scripts/use-note-capture.js';
+
 const canRenote = computed(() => ['public', 'home'].includes(props.note.visibility) || props.note.userId === $i.id);
 
 const props = withDefaults(defineProps<{
@@ -102,10 +107,7 @@ const props = withDefaults(defineProps<{
 	depth: 1,
 });
 
-function focus() {
-	el.value.focus();
-}
-
+const el = shallowRef<HTMLElement>();
 const muted = ref(checkWordMute(props.note, $i, defaultStore.state.mutedWords));
 const translation = ref(null);
 const translating = ref(false);
@@ -113,6 +115,26 @@ const isDeleted = ref(false);
 const reactButton = shallowRef<HTMLElement>();
 const renoteButton = shallowRef<HTMLElement>();
 const menuButton = shallowRef<HTMLElement>();
+const likeButton = shallowRef<HTMLElement>();
+
+let appearNote = $computed(() => isRenote ? props.note.renote as Misskey.entities.Note : props.note);
+
+const isRenote = (
+	props.note.renote != null &&
+	props.note.text == null &&
+	props.note.fileIds.length === 0 &&
+	props.note.poll == null
+);
+
+useNoteCapture({
+	rootEl: el,
+	note: $$(appearNote),
+	isDeletedRef: isDeleted,
+});
+
+function focus() {
+	el.value.focus();
+}
 
 function reply(viaKeyboard = false): void {
 	pleaseLogin();
@@ -154,6 +176,22 @@ function react(viaKeyboard = false): void {
 		}, () => {
 			focus();
 		});
+	}
+}
+
+function like(): void {
+	pleaseLogin();
+	showMovedDialog();
+	os.api('notes/reactions/create', {
+		noteId: props.note.id,
+		reaction: '❤️',
+	});
+	const el = reactButton.value as HTMLElement | null | undefined;
+	if (el) {
+		const rect = el.getBoundingClientRect();
+		const x = rect.left + (el.offsetWidth / 2);
+		const y = rect.top + (el.offsetHeight / 2);
+		os.popup(MkRippleEffect, { x, y }, {}, 'end');
 	}
 }
 
