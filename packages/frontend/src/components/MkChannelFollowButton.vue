@@ -73,7 +73,7 @@ async function onClick() {
 	padding: 0;
 	height: 31px;
 	font-size: 16px;
-	border-radius: 32px;
+	border-radius: 5px;
 	background: #fff;
 
 	&.full {
@@ -95,7 +95,7 @@ async function onClick() {
 			bottom: -5px;
 			left: -5px;
 			border: 2px solid var(--focus);
-			border-radius: 32px;
+			border-radius: 5px;
 		}
 	}
 
