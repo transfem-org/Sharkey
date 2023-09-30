@@ -34,14 +34,14 @@ function menu(ev) {
 		text: ':' + props.emoji.name + ':',
 	}, {
 		text: i18n.ts.copy,
-		icon: 'ti ti-copy',
+		icon: 'ph-copy ph-bold ph-lg',
 		action: () => {
 			copyToClipboard(`:${props.emoji.name}:`);
 			os.success();
 		},
 	}, {
 		text: i18n.ts.info,
-		icon: 'ti ti-info-circle',
+		icon: 'ph-info ph-bold ph-lg',
 		action: () => {
 			os.apiGet('emoji', { name: props.emoji.name }).then(res => {
 				os.alert({

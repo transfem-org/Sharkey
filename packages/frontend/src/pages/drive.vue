@@ -23,7 +23,7 @@ const headerTabs = $computed(() => []);
 
 definePageMetadata(computed(() => ({
 	title: folder ? folder.name : i18n.ts.drive,
-	icon: 'ti ti-cloud',
+	icon: 'ph-cloud ph-bold ph-lg',
 	hideHeader: true,
 })));
 </script>

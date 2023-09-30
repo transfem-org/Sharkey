@@ -63,7 +63,7 @@ import { M as MkContainer } from './MkContainer-!~{03M}~.js';
 import { b as defineComponent, a as ref, e as onMounted, z as resolveComponent, g as openBlock, h as createBlock, i as withCtx, K as createTextVNode, E as toDisplayString, u as unref, l as createBaseVNode, q as normalizeClass, B as createCommentVNode, k as createElementBlock, F as Fragment, C as renderList, A as createVNode } from './vue-!~{002}~.js';
 import './photoswipe-!~{003}~.js';
 
-const _hoisted_1 = /* @__PURE__ */ createBaseVNode("i", { class: "ti ti-photo" }, null, -1);
+const _hoisted_1 = /* @__PURE__ */ createBaseVNode("i", { class: "ph-image-square ph-bold ph-lg" }, null, -1);
 const _sfc_main = /* @__PURE__ */ defineComponent({
   __name: "index.photos",
   props: {
@@ -179,7 +179,7 @@ import {M as MkContainer} from './MkContainer-!~{03M}~.js';
 import {b as defineComponent, a as ref, e as onMounted, z as resolveComponent, g as openBlock, h as createBlock, i as withCtx, K as createTextVNode, E as toDisplayString, u as unref, l as createBaseVNode, q as normalizeClass, B as createCommentVNode, k as createElementBlock, F as Fragment, C as renderList, A as createVNode} from './vue-!~{002}~.js';
 import './photoswipe-!~{003}~.js';
 const _hoisted_1 = createBaseVNode("i", {
-  class: "ti ti-photo"
+  class: "ph-image-square ph-bold ph-lg"
 }, null, -1);
 const _sfc_main = defineComponent({
   __name: "index.photos",
@@ -348,7 +348,7 @@ const _sfc_main = defineComponent({
             class: $style["date-1"]
           }, [
             h("i", {
-              class: \`ti ti-chevron-up \${$style["date-1-icon"]}\`
+              class: \`ph-caret-up ph-bold ph-lg \${$style["date-1-icon"]}\`
             }),
             getDateText(item.createdAt)
           ]),
@@ -357,7 +357,7 @@ const _sfc_main = defineComponent({
           }, [
             getDateText(props.items[i + 1].createdAt),
             h("i", {
-              class: \`ti ti-chevron-down \${$style["date-2-icon"]}\`
+              class: \`ph-caret-down ph-bold ph-lg \${$style["date-2-icon"]}\`
             })
           ])
         ]));
@@ -514,11 +514,11 @@ const _sfc_main = defineComponent({
         }, [h("span", {
           class: $style["date-1"]
         }, [h("i", {
-          class: \`ti ti-chevron-up \${$style["date-1-icon"]}\`
+          class: \`ph-caret-up ph-bold ph-lg \${$style["date-1-icon"]}\`
         }), getDateText(item.createdAt)]), h("span", {
           class: $style["date-2"]
         }, [getDateText(props.items[i + 1].createdAt), h("i", {
-          class: \`ti ti-chevron-down \${$style["date-2-icon"]}\`
+          class: \`ph-caret-down ph-bold ph-lg \${$style["date-2-icon"]}\`
         })])]));
         return [el, separator];
       } else {

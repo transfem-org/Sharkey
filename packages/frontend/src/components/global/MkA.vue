@@ -45,7 +45,7 @@ function onContextmenu(ev) {
 		type: 'label',
 		text: props.to,
 	}, {
-		icon: 'ti ti-app-window',
+		icon: 'ph-app-window ph-bold ph-lg',
 		text: i18n.ts.openInWindow,
 		action: () => {
 			os.pageWindow(props.to);
@@ -57,13 +57,13 @@ function onContextmenu(ev) {
 			router.push(props.to, 'forcePage');
 		},
 	}, null, {
-		icon: 'ti ti-external-link',
+		icon: 'ph-arrow-square-out ph-bold ph-lg',
 		text: i18n.ts.openInNewTab,
 		action: () => {
 			window.open(props.to, '_blank');
 		},
 	}, {
-		icon: 'ti ti-link',
+		icon: 'ph-link ph-bold ph-lg',
 		text: i18n.ts.copyLink,
 		action: () => {
 			copyToClipboard(`${url}${props.to}`);

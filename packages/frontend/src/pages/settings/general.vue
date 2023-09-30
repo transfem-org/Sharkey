@@ -33,7 +33,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<template #label>{{ i18n.ts.pinnedList }}</template>
 				<!-- 複数ピン止め管理できるようにしたいけどめんどいので一旦ひとつのみ -->
 				<MkButton v-if="defaultStore.reactiveState.pinnedUserLists.value.length === 0" @click="setPinnedList()">{{ i18n.ts.add }}</MkButton>
-				<MkButton v-else danger @click="removePinnedList()"><i class="ti ti-trash"></i> {{ i18n.ts.remove }}</MkButton>
+				<MkButton v-else danger @click="removePinnedList()"><i class="ph-trash ph-bold ph-lg"></i> {{ i18n.ts.remove }}</MkButton>
 			</MkFolder>
 		</div>
 	</FormSection>
@@ -172,12 +172,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<MkFolder>
 				<template #label>{{ i18n.ts.additionalEmojiDictionary }}</template>
 				<div v-for="lang in emojiIndexLangs" class="_buttons">
-					<MkButton @click="downloadEmojiIndex(lang)"><i class="ti ti-download"></i> {{ lang }}{{ defaultStore.reactiveState.additionalUnicodeEmojiIndexes.value[lang] ? ` (${ i18n.ts.installed })` : '' }}</MkButton>
-					<MkButton v-if="defaultStore.reactiveState.additionalUnicodeEmojiIndexes.value[lang]" danger @click="removeEmojiIndex(lang)"><i class="ti ti-trash"></i> {{ i18n.ts.remove }}</MkButton>
+					<MkButton @click="downloadEmojiIndex(lang)"><i class="ph-download ph-bold ph-lg"></i> {{ lang }}{{ defaultStore.reactiveState.additionalUnicodeEmojiIndexes.value[lang] ? ` (${ i18n.ts.installed })` : '' }}</MkButton>
+					<MkButton v-if="defaultStore.reactiveState.additionalUnicodeEmojiIndexes.value[lang]" danger @click="removeEmojiIndex(lang)"><i class="ph-trash ph-bold ph-lg"></i> {{ i18n.ts.remove }}</MkButton>
 				</div>
 			</MkFolder>
 			<FormLink to="/settings/deck">{{ i18n.ts.deck }}</FormLink>
-			<FormLink to="/settings/custom-css"><template #icon><i class="ti ti-code"></i></template>{{ i18n.ts.customCss }}</FormLink>
+			<FormLink to="/settings/custom-css"><template #icon><i class="ph-code ph-bold pg-lg"></i></template>{{ i18n.ts.customCss }}</FormLink>
 		</div>
 	</FormSection>
 </div>
@@ -370,6 +370,6 @@ const headerTabs = $computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.general,
-	icon: 'ti ti-adjustments',
+	icon: 'ph-faders ph-bold ph-lg',
 });
 </script>

@@ -5,8 +5,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <div :class="[$style.root, { [$style.warn]: warn }]">
-	<i v-if="warn" class="ti ti-alert-triangle" :class="$style.i"></i>
-	<i v-else class="ti ti-info-circle" :class="$style.i"></i>
+	<i v-if="warn" class="ph-warning ph-bold ph-lg" :class="$style.i"></i>
+	<i v-else class="ph-info ph-bold ph-lg" :class="$style.i"></i>
 	<slot></slot>
 </div>
 </template>

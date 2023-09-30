@@ -11,7 +11,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<div class="_gaps">
 				<div>
 					<MkInput v-model="host" :debounce="true" class="">
-						<template #prefix><i class="ti ti-search"></i></template>
+						<template #prefix><i class="ph-magnifying-glass ph-bold ph-lg"></i></template>
 						<template #label>{{ i18n.ts.host }}</template>
 					</MkInput>
 					<FormSplit style="margin-top: var(--margin);">
@@ -101,7 +101,7 @@ const headerTabs = $computed(() => []);
 
 definePageMetadata(computed(() => ({
 	title: i18n.ts.federation,
-	icon: 'ti ti-whirl',
+	icon: 'ph-globe-hemisphere-west ph-bold ph-lg',
 })));
 </script>
 

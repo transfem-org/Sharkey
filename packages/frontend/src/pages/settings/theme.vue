@@ -59,8 +59,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<FormSection>
 		<div class="_formLinksGrid">
 			<FormLink to="/settings/theme/manage"><template #icon><i class="ti ti-tool"></i></template>{{ i18n.ts._theme.manage }}<template #suffix>{{ themesCount }}</template></FormLink>
-			<FormLink to="https://assets.misskey.io/theme/list" external><template #icon><i class="ti ti-world"></i></template>{{ i18n.ts._theme.explore }}</FormLink>
-			<FormLink to="/settings/theme/install"><template #icon><i class="ti ti-download"></i></template>{{ i18n.ts._theme.install }}</FormLink>
+			<FormLink to="https://assets.misskey.io/theme/list" external><template #icon><i class="ph-globe-hemisphere-west ph-bold ph-lg"></i></template>{{ i18n.ts._theme.explore }}</FormLink>
+			<FormLink to="/settings/theme/install"><template #icon><i class="ph-download ph-bold ph-lg"></i></template>{{ i18n.ts._theme.install }}</FormLink>
 			<FormLink to="/theme-editor"><template #icon><i class="ti ti-paint"></i></template>{{ i18n.ts._theme.make }}</FormLink>
 		</div>
 	</FormSection>

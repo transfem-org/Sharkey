@@ -26,14 +26,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</svg>
 		<div :class="$style.color"></div>
 		<button v-if="isStacked && !isMainColumn" :class="$style.toggleActive" class="_button" @click="toggleActive">
-			<template v-if="active"><i class="ti ti-chevron-up"></i></template>
-			<template v-else><i class="ti ti-chevron-down"></i></template>
+			<template v-if="active"><i class="ph-caret-up ph-bold ph-lg"></i></template>
+			<template v-else><i class="ph-caret-down ph-bold ph-lg"></i></template>
 		</button>
 		<span :class="$style.title"><slot name="header"></slot></span>
 		<svg viewBox="0 0 16 16" version="1.1" :class="$style.grabber">
 			<path fill="currentColor" d="M10 13a1 1 0 1 1 0-2 1 1 0 0 1 0 2Zm0-4a1 1 0 1 1 0-2 1 1 0 0 1 0 2Zm-4 4a1 1 0 1 1 0-2 1 1 0 0 1 0 2Zm5-9a1 1 0 1 1-2 0 1 1 0 0 1 2 0ZM7 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0ZM6 5a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path>
 		</svg>
-		<button v-tooltip="i18n.ts.settings" :class="$style.menu" class="_button" @click.stop="showSettingsMenu"><i class="ti ti-dots"></i></button>
+		<button v-tooltip="i18n.ts.settings" :class="$style.menu" class="_button" @click.stop="showSettingsMenu"><i class="ph-dots-three ph-bold ph-lg"></i></button>
 	</header>
 	<div v-if="active" ref="body" :class="$style.body">
 		<slot></slot>
@@ -104,7 +104,7 @@ function toggleActive() {
 
 function getMenu() {
 	let items = [{
-		icon: 'ti ti-settings',
+		icon: 'ph-gear ph-bold pg-lg',
 		text: i18n.ts._deck.configureColumn,
 		action: async () => {
 			const { canceled, result } = await os.form(props.column.name, {
@@ -170,7 +170,7 @@ function getMenu() {
 			popRightColumn(props.column.id);
 		},
 	} : undefined, null, {
-		icon: 'ti ti-trash',
+		icon: 'ph-trash ph-bold ph-lg',
 		text: i18n.ts.remove,
 		danger: true,
 		action: () => {

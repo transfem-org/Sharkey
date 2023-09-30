@@ -23,16 +23,16 @@ SPDX-License-Identifier: AGPL-3.0-only
 					>
 						<button class="_button" :class="$style.itemHandle"><i class="ti ti-menu"></i></button>
 						<i class="ti-fw" :class="[$style.itemIcon, navbarItemDef[element.type]?.icon]"></i><span :class="$style.itemText">{{ navbarItemDef[element.type]?.title ?? i18n.ts.divider }}</span>
-						<button class="_button" :class="$style.itemRemove" @click="removeItem(index)"><i class="ti ti-x"></i></button>
+						<button class="_button" :class="$style.itemRemove" @click="removeItem(index)"><i class="ph-x ph-bold ph-lg"></i></button>
 					</div>
 				</template>
 			</Sortable>
 		</MkContainer>
 	</FormSlot>
 	<div class="_buttons">
-		<MkButton @click="addItem"><i class="ti ti-plus"></i> {{ i18n.ts.addItem }}</MkButton>
-		<MkButton danger @click="reset"><i class="ti ti-reload"></i> {{ i18n.ts.default }}</MkButton>
-		<MkButton primary class="save" @click="save"><i class="ti ti-device-floppy"></i> {{ i18n.ts.save }}</MkButton>
+		<MkButton @click="addItem"><i class="ph-plus ph-bold ph-lg"></i> {{ i18n.ts.addItem }}</MkButton>
+		<MkButton danger @click="reset"><i class="ph-arrow-clockwise ph-bold ph-lg"></i> {{ i18n.ts.default }}</MkButton>
+		<MkButton primary class="save" @click="save"><i class="ph-floppy-disk ph-bold pg-lg"></i> {{ i18n.ts.save }}</MkButton>
 	</div>
 
 	<MkRadios v-model="menuDisplay">
@@ -121,7 +121,7 @@ const headerTabs = $computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.navbar,
-	icon: 'ti ti-list',
+	icon: 'ph-list ph-bold pg-lg',
 });
 </script>
 

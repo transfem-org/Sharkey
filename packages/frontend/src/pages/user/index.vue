@@ -75,11 +75,11 @@ const headerActions = $computed(() => []);
 const headerTabs = $computed(() => user ? [{
 	key: 'home',
 	title: i18n.ts.overview,
-	icon: 'ti ti-home',
+	icon: 'ph-house ph-bold ph-lg',
 }, {
 	key: 'notes',
 	title: i18n.ts.notes,
-	icon: 'ti ti-pencil',
+	icon: 'ph-pencil ph-bold ph-lg',
 }, {
 	key: 'activity',
 	title: i18n.ts.activity,
@@ -87,19 +87,19 @@ const headerTabs = $computed(() => user ? [{
 }, ...(user.host == null ? [{
 	key: 'achievements',
 	title: i18n.ts.achievements,
-	icon: 'ti ti-medal',
+	icon: 'ph-trophy ph-bold ph-lg',
 }] : []), ...($i && ($i.id === user.id)) || user.publicReactions ? [{
 	key: 'reactions',
 	title: i18n.ts.reaction,
-	icon: 'ti ti-mood-happy',
+	icon: 'ph-smiley ph-bold ph-lg',
 }] : [], {
 	key: 'clips',
 	title: i18n.ts.clips,
-	icon: 'ti ti-paperclip',
+	icon: 'ph-paperclip ph-bold ph-lg',
 }, {
 	key: 'lists',
 	title: i18n.ts.lists,
-	icon: 'ti ti-list',
+	icon: 'ph-list ph-bold pg-lg',
 }, {
 	key: 'pages',
 	title: i18n.ts.pages,
@@ -111,11 +111,11 @@ const headerTabs = $computed(() => user ? [{
 }, {
 	key: 'gallery',
 	title: i18n.ts.gallery,
-	icon: 'ti ti-icons',
+	icon: 'ph-images-square ph-bold pg-lg',
 }] : []);
 
 definePageMetadata(computed(() => user ? {
-	icon: 'ti ti-user',
+	icon: 'ph-user ph-bold ph-lg',
 	title: user.name ? `${user.name} (@${user.username})` : `@${user.username}`,
 	subtitle: `@${getAcct(user)}`,
 	userName: user,

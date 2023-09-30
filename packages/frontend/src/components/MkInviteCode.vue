@@ -50,8 +50,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</div>
 		</div>
 		<div :class="$style.buttons">
-			<MkButton v-if="!invite.used && !isExpired" primary rounded @click="copyInviteCode()"><i class="ti ti-copy"></i> {{ i18n.ts.copy }}</MkButton>
-			<MkButton v-if="!invite.used || moderator" danger rounded @click="deleteCode()"><i class="ti ti-trash"></i> {{ i18n.ts.delete }}</MkButton>
+			<MkButton v-if="!invite.used && !isExpired" primary rounded @click="copyInviteCode()"><i class="ph-copy ph-bold ph-lg"></i> {{ i18n.ts.copy }}</MkButton>
+			<MkButton v-if="!invite.used || moderator" danger rounded @click="deleteCode()"><i class="ph-trash ph-bold ph-lg"></i> {{ i18n.ts.delete }}</MkButton>
 		</div>
 	</div>
 </MkFolder>

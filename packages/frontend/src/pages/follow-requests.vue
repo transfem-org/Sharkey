@@ -24,8 +24,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 								<p class="acct">@{{ acct(req.follower) }}</p>
 							</div>
 							<div class="commands">
-								<MkButton class="command" rounded primary @click="accept(req.follower)"><i class="ti ti-check"/> {{ i18n.ts.accept }}</MkButton>
-								<MkButton class="command" rounded danger @click="reject(req.follower)"><i class="ti ti-x"/> {{ i18n.ts.reject }}</MkButton>
+								<MkButton class="command" rounded primary @click="accept(req.follower)"><i class="ph-check ph-bold ph-lg"/> {{ i18n.ts.accept }}</MkButton>
+								<MkButton class="command" rounded danger @click="reject(req.follower)"><i class="ph-x ph-bold ph-lg"/> {{ i18n.ts.reject }}</MkButton>
 							</div>
 						</div>
 					</div>
@@ -71,7 +71,7 @@ const headerTabs = $computed(() => []);
 
 definePageMetadata(computed(() => ({
 	title: i18n.ts.followRequests,
-	icon: 'ti ti-user-plus',
+	icon: 'ph-user-plus ph-bold ph-lg',
 })));
 </script>
 

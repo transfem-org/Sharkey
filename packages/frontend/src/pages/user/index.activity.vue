@@ -9,7 +9,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<template #header>{{ i18n.ts.activity }}</template>
 	<template #func="{ buttonStyleClass }">
 		<button class="_button" :class="buttonStyleClass" @click="showMenu">
-			<i class="ti ti-dots"></i>
+			<i class="ph-dots-three ph-bold ph-lg"></i>
 		</button>
 	</template>
 

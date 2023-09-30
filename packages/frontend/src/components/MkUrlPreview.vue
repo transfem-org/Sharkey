@@ -22,7 +22,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</div>
 	<div :class="$style.action">
 		<MkButton :small="true" inline @click="playerEnabled = false">
-			<i class="ti ti-x"></i> {{ i18n.ts.disablePlayer }}
+			<i class="ph-x ph-bold ph-lg"></i> {{ i18n.ts.disablePlayer }}
 		</MkButton>
 	</div>
 </template>
@@ -39,7 +39,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</div>
 	<div :class="$style.action">
 		<MkButton :small="true" inline @click="tweetExpanded = false">
-			<i class="ti ti-x"></i> {{ i18n.ts.close }}
+			<i class="ph-x ph-bold ph-lg"></i> {{ i18n.ts.close }}
 		</MkButton>
 	</div>
 </template>

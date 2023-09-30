@@ -29,7 +29,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</MkKeyValue>
 		</div>
 	</div>
-	<MkButton primary inline :disabled="!changed" @click="save()"><i class="ti ti-device-floppy"></i> {{ i18n.ts.save }}</MkButton>
+	<MkButton primary inline :disabled="!changed" @click="save()"><i class="ph-floppy-disk ph-bold pg-lg"></i> {{ i18n.ts.save }}</MkButton>
 </div>
 </template>
 

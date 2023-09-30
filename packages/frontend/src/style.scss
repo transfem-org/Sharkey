@@ -15,7 +15,7 @@
  */
 
 :root {
-	--radius: 12px;
+	--radius: 5px;
 	--marginFull: 16px;
 	--marginHalf: 10px;
 
@@ -140,7 +140,7 @@ hr {
 	background: var(--divider);
 }
 
-.ti {
+.ph-bold {
 	width: 1.28em;
 	vertical-align: -12%;
 	line-height: 1em;
@@ -150,7 +150,7 @@ hr {
 	}
 }
 
-.ti-fw {
+.ph-lg {
 	display: inline-block;
 	text-align: center;
 }

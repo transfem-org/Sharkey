@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <div class="_gaps_m">
-	<FormLink @click="configure"><template #icon><i class="ti ti-settings"></i></template>{{ i18n.ts.notificationSetting }}</FormLink>
+	<FormLink @click="configure"><template #icon><i class="ph-gear ph-bold pg-lg"></i></template>{{ i18n.ts.notificationSetting }}</FormLink>
 	<FormSection>
 		<div class="_gaps_m">
 			<FormLink @click="readAllNotifications">{{ i18n.ts.markAsReadAllNotifications }}</FormLink>
@@ -98,6 +98,6 @@ const headerTabs = $computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.notifications,
-	icon: 'ti ti-bell',
+	icon: 'ph-bell ph-bold pg-lg',
 });
 </script>

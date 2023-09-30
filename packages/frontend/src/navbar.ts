@@ -17,100 +17,100 @@ import { instance } from './instance.js';
 export const navbarItemDef = reactive({
 	notifications: {
 		title: i18n.ts.notifications,
-		icon: 'ti ti-bell',
+		icon: 'ph-bell ph-bold ph-lg',
 		show: computed(() => $i != null),
 		indicated: computed(() => $i != null && $i.hasUnreadNotification),
 		to: '/my/notifications',
 	},
 	drive: {
 		title: i18n.ts.drive,
-		icon: 'ti ti-cloud',
+		icon: 'ph-cloud ph-bold ph-lg',
 		show: computed(() => $i != null),
 		to: '/my/drive',
 	},
 	followRequests: {
 		title: i18n.ts.followRequests,
-		icon: 'ti ti-user-plus',
+		icon: 'ph-user-plus ph-bold ph-lg',
 		show: computed(() => $i != null && $i.isLocked),
 		indicated: computed(() => $i != null && $i.hasPendingReceivedFollowRequest),
 		to: '/my/follow-requests',
 	},
 	explore: {
 		title: i18n.ts.explore,
-		icon: 'ti ti-hash',
+		icon: 'ph-hash ph-bold ph-lg',
 		to: '/explore',
 	},
 	announcements: {
 		title: i18n.ts.announcements,
-		icon: 'ti ti-speakerphone',
+		icon: 'ph-megaphone ph-bold ph-lg',
 		indicated: computed(() => $i != null && $i.hasUnreadAnnouncement),
 		to: '/announcements',
 	},
 	search: {
 		title: i18n.ts.search,
-		icon: 'ti ti-search',
+		icon: 'ph-magnifying-glass ph-bold ph-lg',
 		to: '/search',
 	},
 	lookup: {
 		title: i18n.ts.lookup,
-		icon: 'ti ti-world-search',
+		icon: 'ph-binoculars ph-bold ph-lg',
 		action: (ev) => {
 			lookup();
 		},
 	},
 	lists: {
 		title: i18n.ts.lists,
-		icon: 'ti ti-list',
+		icon: 'ph-list ph-bold ph-lg',
 		show: computed(() => $i != null),
 		to: '/my/lists',
 	},
 	antennas: {
 		title: i18n.ts.antennas,
-		icon: 'ti ti-antenna',
+		icon: 'ph-flying-saucer ph-bold ph-lg',
 		show: computed(() => $i != null),
 		to: '/my/antennas',
 	},
 	favorites: {
 		title: i18n.ts.favorites,
-		icon: 'ti ti-star',
+		icon: 'ph-bookmark ph-bold ph-lg',
 		show: computed(() => $i != null),
 		to: '/my/favorites',
 	},
 	pages: {
 		title: i18n.ts.pages,
-		icon: 'ti ti-news',
+		icon: 'ph-newspaper ph-bold ph-lg',
 		to: '/pages',
 	},
 	play: {
 		title: 'Play',
-		icon: 'ti ti-player-play',
+		icon: 'ph-play ph-bold ph-lg',
 		to: '/play',
 	},
 	gallery: {
 		title: i18n.ts.gallery,
-		icon: 'ti ti-icons',
+		icon: 'ph-images ph-bold ph-lg',
 		to: '/gallery',
 	},
 	clips: {
 		title: i18n.ts.clip,
-		icon: 'ti ti-paperclip',
+		icon: 'ph-paperclip ph-bold ph-lg',
 		show: computed(() => $i != null),
 		to: '/my/clips',
 	},
 	channels: {
 		title: i18n.ts.channel,
-		icon: 'ti ti-device-tv',
+		icon: 'ph-television ph-bold ph-lg',
 		to: '/channels',
 	},
 	achievements: {
 		title: i18n.ts.achievements,
-		icon: 'ti ti-medal',
+		icon: 'ph-trophy ph-bold ph-lg',
 		show: computed(() => $i != null && instance.enableAchievements),
 		to: '/my/achievements',
 	},
 	ui: {
 		title: i18n.ts.switchUi,
-		icon: 'ti ti-devices',
+		icon: 'ph-devices ph-bold ph-lg',
 		action: (ev) => {
 			os.popupMenu([{
 				text: i18n.ts.default,
@@ -138,21 +138,21 @@ export const navbarItemDef = reactive({
 	},
 	about: {
 		title: i18n.ts.about,
-		icon: 'ti ti-info-circle',
+		icon: 'ph-info ph-bold ph-lg',
 		action: (ev) => {
 			openInstanceMenu(ev);
 		},
 	},
 	reload: {
 		title: i18n.ts.reload,
-		icon: 'ti ti-refresh',
+		icon: 'ph-arrows-clockwise ph-bold ph-lg',
 		action: (ev) => {
 			location.reload();
 		},
 	},
 	profile: {
 		title: i18n.ts.profile,
-		icon: 'ti ti-user',
+		icon: 'ph-user ph-bold ph-lg',
 		show: computed(() => $i != null),
 		to: `/@${$i?.username}`,
 	},

@@ -18,17 +18,17 @@ SPDX-License-Identifier: AGPL-3.0-only
 				[$style.type_info]: type === 'info',
 			}]"
 		>
-			<i v-if="type === 'success'" :class="$style.iconInner" class="ti ti-check"></i>
-			<i v-else-if="type === 'error'" :class="$style.iconInner" class="ti ti-circle-x"></i>
-			<i v-else-if="type === 'warning'" :class="$style.iconInner" class="ti ti-alert-triangle"></i>
-			<i v-else-if="type === 'info'" :class="$style.iconInner" class="ti ti-info-circle"></i>
-			<i v-else-if="type === 'question'" :class="$style.iconInner" class="ti ti-help-circle"></i>
+			<i v-if="type === 'success'" :class="$style.iconInner" class="ph-check ph-bold ph-lg"></i>
+			<i v-else-if="type === 'error'" :class="$style.iconInner" class="ph-x-circle ph-bold ph-lg"></i>
+			<i v-else-if="type === 'warning'" :class="$style.iconInner" class="ph-warning ph-bold ph-lg"></i>
+			<i v-else-if="type === 'info'" :class="$style.iconInner" class="ph-info ph-bold ph-lg"></i>
+			<i v-else-if="type === 'question'" :class="$style.iconInner" class="ph-question ph-bold ph-lg"></i>
 			<MkLoading v-else-if="type === 'waiting'" :class="$style.iconInner" :em="true"/>
 		</div>
 		<header v-if="title" :class="$style.title"><Mfm :text="title"/></header>
 		<div v-if="text" :class="$style.text"><Mfm :text="text"/></div>
 		<MkInput v-if="input" v-model="inputValue" autofocus :type="input.type || 'text'" :placeholder="input.placeholder || undefined" :autocomplete="input.autocomplete" @keydown="onInputKeydown">
-			<template v-if="input.type === 'password'" #prefix><i class="ti ti-lock"></i></template>
+			<template v-if="input.type === 'password'" #prefix><i class="ph-lock ph-bold ph-lg"></i></template>
 			<template #caption>
 				<span v-if="okButtonDisabled && disabledReason === 'charactersExceeded'" v-text="i18n.t('_dialog.charactersExceeded', { current: (inputValue as string).length, max: input.maxLength ?? 'NaN' })"/>
 				<span v-else-if="okButtonDisabled && disabledReason === 'charactersBelow'" v-text="i18n.t('_dialog.charactersBelow', { current: (inputValue as string).length, min: input.minLength ?? 'NaN' })"/>

@@ -15,8 +15,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 				{{ i18n.ts._accountMigration.moveFromDescription }}
 			</FormInfo>
 			<div>
-				<MkButton :disabled="accountAliases.length >= 10" inline style="margin-right: 8px;" @click="add"><i class="ti ti-plus"></i> {{ i18n.ts.add }}</MkButton>
-				<MkButton inline primary @click="save"><i class="ti ti-check"></i> {{ i18n.ts.save }}</MkButton>
+				<MkButton :disabled="accountAliases.length >= 10" inline style="margin-right: 8px;" @click="add"><i class="ph-plus ph-bold ph-lg"></i> {{ i18n.ts.add }}</MkButton>
+				<MkButton inline primary @click="save"><i class="ph-check ph-bold ph-lg"></i> {{ i18n.ts.save }}</MkButton>
 			</div>
 			<div class="_gaps">
 				<MkInput v-for="(_, i) in accountAliases" v-model="accountAliases[i]">
@@ -43,7 +43,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<template #label>{{ i18n.ts._accountMigration.moveToLabel }}</template>
 				</MkInput>
 				<MkButton inline danger :disabled="!moveToAccount" @click="move">
-					<i class="ti ti-check"></i> {{ i18n.ts._accountMigration.startMigration }}
+					<i class="ph-check ph-bold ph-lg"></i> {{ i18n.ts._accountMigration.startMigration }}
 				</MkButton>
 			</template>
 			<template v-else-if="$i">

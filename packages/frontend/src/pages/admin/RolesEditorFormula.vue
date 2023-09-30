@@ -25,7 +25,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<i class="ti ti-menu-2"></i>
 		</button>
 		<button v-if="draggable" class="_button" :class="$style.remove" @click="removeSelf">
-			<i class="ti ti-x"></i>
+			<i class="ph-x ph-bold ph-lg"></i>
 		</button>
 	</div>
 
@@ -38,7 +38,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</div>
 			</template>
 		</Sortable>
-		<MkButton rounded style="margin: 0 auto;" @click="addValue"><i class="ti ti-plus"></i> {{ i18n.ts.add }}</MkButton>
+		<MkButton rounded style="margin: 0 auto;" @click="addValue"><i class="ph-plus ph-bold ph-lg"></i> {{ i18n.ts.add }}</MkButton>
 	</div>
 
 	<div v-else-if="type === 'not'" :class="$style.item">

@@ -63,7 +63,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<div style="display: flex; flex-direction: column; gap: 1em;">
 							<MkKeyValue v-if="user.host" oneline>
 								<template #key>{{ i18n.ts.instanceInfo }}</template>
-								<template #value><MkA :to="`/instance-info/${user.host}`" class="_link">{{ user.host }} <i class="ti ti-chevron-right"></i></MkA></template>
+								<template #value><MkA :to="`/instance-info/${user.host}`" class="_link">{{ user.host }} <i class="ph-caret-right ph-bold ph-lg"></i></MkA></template>
 							</MkKeyValue>
 							<MkKeyValue v-else oneline>
 								<template #key>{{ i18n.ts.instanceInfo }}</template>
@@ -79,7 +79,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 							</MkKeyValue>
 						</div>
 
-						<MkButton v-if="user.host != null" @click="updateRemoteUser"><i class="ti ti-refresh"></i> {{ i18n.ts.updateRemoteUser }}</MkButton>
+						<MkButton v-if="user.host != null" @click="updateRemoteUser"><i class="ph-arrows-counter-clockwise ph-bold pg-lg"></i> {{ i18n.ts.updateRemoteUser }}</MkButton>
 
 						<MkFolder>
 							<template #label>Raw</template>
@@ -96,7 +96,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<MkSwitch v-model="suspended" @update:modelValue="toggleSuspend">{{ i18n.ts.suspend }}</MkSwitch>
 
 						<div>
-							<MkButton v-if="user.host == null" inline style="margin-right: 8px;" @click="resetPassword"><i class="ti ti-key"></i> {{ i18n.ts.resetPassword }}</MkButton>
+							<MkButton v-if="user.host == null" inline style="margin-right: 8px;" @click="resetPassword"><i class="ph-key ph-bold ph-lg"></i> {{ i18n.ts.resetPassword }}</MkButton>
 						</div>
 
 						<MkFolder>
@@ -110,7 +110,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 						</MkFolder>
 
 						<MkFolder>
-							<template #icon><i class="ti ti-password"></i></template>
+							<template #icon><i class="ph-password ph-bold ph-lg"></i></template>
 							<template #label>IP</template>
 							<MkInfo v-if="!iAmAdmin" warn>{{ i18n.ts.requireAdminForView }}</MkInfo>
 							<MkInfo v-else>The date is the IP address was first acknowledged.</MkInfo>
@@ -128,14 +128,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</div>
 
 			<div v-else-if="tab === 'roles'" class="_gaps">
-				<MkButton v-if="user.host == null" primary rounded @click="assignRole"><i class="ti ti-plus"></i> {{ i18n.ts.assign }}</MkButton>
+				<MkButton v-if="user.host == null" primary rounded @click="assignRole"><i class="ph-plus ph-bold ph-lg"></i> {{ i18n.ts.assign }}</MkButton>
 
 				<div v-for="role in info.roles" :key="role.id" :class="$style.roleItem">
 					<div :class="$style.roleItemMain">
 						<MkRolePreview :class="$style.role" :role="role" :forModeration="true"/>
-						<button class="_button" :class="$style.roleToggle" @click="toggleRoleItem(role)"><i class="ti ti-chevron-down"></i></button>
-						<button v-if="role.target === 'manual'" class="_button" :class="$style.roleUnassign" @click="unassignRole(role, $event)"><i class="ti ti-x"></i></button>
-						<button v-else class="_button" :class="$style.roleUnassign" disabled><i class="ti ti-ban"></i></button>
+						<button class="_button" :class="$style.roleToggle" @click="toggleRoleItem(role)"><i class="ph-caret-down ph-bold ph-lg"></i></button>
+						<button v-if="role.target === 'manual'" class="_button" :class="$style.roleUnassign" @click="unassignRole(role, $event)"><i class="ph-x ph-bold ph-lg"></i></button>
+						<button v-else class="_button" :class="$style.roleUnassign" disabled><i class="ph-prohibit ph-bold ph-lg"></i></button>
 					</div>
 					<div v-if="expandedRoles.includes(role.id)" :class="$style.roleItemSub">
 						<div>Assigned: <MkTime :time="info.roleAssigns.find(a => a.roleId === role.id).createdAt" mode="detail"/></div>
@@ -146,17 +146,17 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</div>
 
 			<div v-else-if="tab === 'announcements'" class="_gaps">
-				<MkButton primary rounded @click="createAnnouncement"><i class="ti ti-plus"></i> {{ i18n.ts.new }}</MkButton>
+				<MkButton primary rounded @click="createAnnouncement"><i class="ph-plus ph-bold ph-lg"></i> {{ i18n.ts.new }}</MkButton>
 
 				<MkPagination :pagination="announcementsPagination">
 					<template #default="{ items }">
 						<div class="_gaps_s">
 							<div v-for="announcement in items" :key="announcement.id" v-panel :class="$style.announcementItem" @click="editAnnouncement(announcement)">
 								<span style="margin-right: 0.5em;">
-									<i v-if="announcement.icon === 'info'" class="ti ti-info-circle"></i>
-									<i v-else-if="announcement.icon === 'warning'" class="ti ti-alert-triangle" style="color: var(--warn);"></i>
-									<i v-else-if="announcement.icon === 'error'" class="ti ti-circle-x" style="color: var(--error);"></i>
-									<i v-else-if="announcement.icon === 'success'" class="ti ti-check" style="color: var(--success);"></i>
+									<i v-if="announcement.icon === 'info'" class="ph-info ph-bold ph-lg"></i>
+									<i v-else-if="announcement.icon === 'warning'" class="ph-warning ph-bold ph-lg" style="color: var(--warn);"></i>
+									<i v-else-if="announcement.icon === 'error'" class="ph-x-circle ph-bold ph-lg" style="color: var(--error);"></i>
+									<i v-else-if="announcement.icon === 'success'" class="ph-check ph-bold ph-lg" style="color: var(--success);"></i>
 								</span>
 								<span>{{ announcement.title }}</span>
 								<span v-if="announcement.reads > 0" style="margin-left: auto; opacity: 0.7;">{{ i18n.ts.messageRead }}</span>
@@ -403,7 +403,7 @@ async function assignRole() {
 async function unassignRole(role, ev) {
 	os.popupMenu([{
 		text: i18n.ts.unassign,
-		icon: 'ti ti-x',
+		icon: 'ph-x ph-bold ph-lg',
 		danger: true,
 		action: async () => {
 			await os.apiWithDialog('admin/roles/unassign', { roleId: role.id, userId: user.id });
@@ -452,19 +452,19 @@ const headerActions = $computed(() => []);
 const headerTabs = $computed(() => [{
 	key: 'overview',
 	title: i18n.ts.overview,
-	icon: 'ti ti-info-circle',
+	icon: 'ph-info ph-bold ph-lg',
 }, {
 	key: 'roles',
 	title: i18n.ts.roles,
-	icon: 'ti ti-badges',
+	icon: 'ph-seal-check ph-bold pg-lg',
 }, {
 	key: 'announcements',
 	title: i18n.ts.announcements,
-	icon: 'ti ti-speakerphone',
+	icon: 'ph-megaphone ph-bold ph-lg',
 }, {
 	key: 'drive',
 	title: i18n.ts.drive,
-	icon: 'ti ti-cloud',
+	icon: 'ph-cloud ph-bold ph-lg',
 }, {
 	key: 'chart',
 	title: i18n.ts.charts,
@@ -472,12 +472,12 @@ const headerTabs = $computed(() => [{
 }, {
 	key: 'raw',
 	title: 'Raw',
-	icon: 'ti ti-code',
+	icon: 'ph-code ph-bold pg-lg',
 }]);
 
 definePageMetadata(computed(() => ({
 	title: user ? acct(user) : i18n.ts.userInfo,
-	icon: 'ti ti-user-exclamation',
+	icon: 'ph-warning-circle ph-bold ph-lg',
 })));
 </script>
 

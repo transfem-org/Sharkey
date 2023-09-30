@@ -54,7 +54,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</section>
 
 			<section>
-				<header class="_acrylic"><i class="ti ti-clock ti-fw"></i> {{ i18n.ts.recentUsed }}</header>
+				<header class="_acrylic"><i class="ph-clock ph-bold ph-lg ti-fw"></i> {{ i18n.ts.recentUsed }}</header>
 				<div class="body">
 					<button
 						v-for="emoji in recentlyUsedEmojis"
@@ -88,10 +88,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</div>
 	</div>
 	<div class="tabs">
-		<button class="_button tab" :class="{ active: tab === 'index' }" @click="tab = 'index'"><i class="ti ti-asterisk ti-fw"></i></button>
-		<button class="_button tab" :class="{ active: tab === 'custom' }" @click="tab = 'custom'"><i class="ti ti-mood-happy ti-fw"></i></button>
-		<button class="_button tab" :class="{ active: tab === 'unicode' }" @click="tab = 'unicode'"><i class="ti ti-leaf ti-fw"></i></button>
-		<button class="_button tab" :class="{ active: tab === 'tags' }" @click="tab = 'tags'"><i class="ti ti-hash ti-fw"></i></button>
+		<button class="_button tab" :class="{ active: tab === 'index' }" @click="tab = 'index'"><i class="ph-asterisk ph-bold ph-lg ti-fw"></i></button>
+		<button class="_button tab" :class="{ active: tab === 'custom' }" @click="tab = 'custom'"><i class="ph-smiley ph-bold ph-lg ti-fw"></i></button>
+		<button class="_button tab" :class="{ active: tab === 'unicode' }" @click="tab = 'unicode'"><i class="ph-leaf ph-bold ph-lg ti-fw"></i></button>
+		<button class="_button tab" :class="{ active: tab === 'tags' }" @click="tab = 'tags'"><i class="ph-hash ph-bold ph-lg ti-fw"></i></button>
 	</div>
 </div>
 </template>

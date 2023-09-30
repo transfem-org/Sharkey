@@ -54,8 +54,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<div :class="$style.footer">
 			<MkSpacer :contentMax="700" :marginMin="16" :marginMax="16">
 				<div class="_buttons">
-					<MkButton primary rounded @click="save"><i class="ti ti-check"></i> {{ i18n.ts.save }}</MkButton>
-					<MkButton rounded @click="testEmail"><i class="ti ti-send"></i> {{ i18n.ts.testEmail }}</MkButton>
+					<MkButton primary rounded @click="save"><i class="ph-check ph-bold ph-lg"></i> {{ i18n.ts.save }}</MkButton>
+					<MkButton rounded @click="testEmail"><i class="ph-paper-plane-tilt ph-bold ph-lg"></i> {{ i18n.ts.testEmail }}</MkButton>
 				</div>
 			</MkSpacer>
 		</div>
@@ -131,7 +131,7 @@ const headerTabs = $computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.emailServer,
-	icon: 'ti ti-mail',
+	icon: 'ph-envelope ph-bold ph-lg',
 });
 </script>
 

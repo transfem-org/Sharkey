@@ -19,8 +19,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</div>
 				<div :class="$style.headerRight">
 					<span :class="$style.headerRightText"><slot name="suffix"></slot></span>
-					<i v-if="opened" class="ti ti-chevron-up icon"></i>
-					<i v-else class="ti ti-chevron-down icon"></i>
+					<i v-if="opened" class="ph-caret-up ph-bold ph-lg icon"></i>
+					<i v-else class="ph-caret-down ph-bold ph-lg icon"></i>
 				</div>
 			</div>
 		</template>

@@ -14,7 +14,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</div>
 		<div :class="$style.middle">
 			<MkA v-tooltip.noDelay.right="i18n.ts.timeline" :class="$style.item" :activeClass="$style.active" to="/" exact>
-				<i :class="$style.itemIcon" class="ti ti-home ti-fw"></i><span :class="$style.itemText">{{ i18n.ts.timeline }}</span>
+				<i :class="$style.itemIcon" class="ph-house ph-bold ph-lg ti-fw"></i><span :class="$style.itemText">{{ i18n.ts.timeline }}</span>
 			</MkA>
 			<template v-for="item in menu">
 				<div v-if="item === '-'" :class="$style.divider"></div>
@@ -34,19 +34,19 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</template>
 			<div :class="$style.divider"></div>
 			<MkA v-if="$i.isAdmin || $i.isModerator" v-tooltip.noDelay.right="i18n.ts.controlPanel" :class="$style.item" :activeClass="$style.active" to="/admin">
-				<i :class="$style.itemIcon" class="ti ti-dashboard ti-fw"></i><span :class="$style.itemText">{{ i18n.ts.controlPanel }}</span>
+				<i :class="$style.itemIcon" class="ph-gauge ph-bold pg-lg ti-fw"></i><span :class="$style.itemText">{{ i18n.ts.controlPanel }}</span>
 			</MkA>
 			<button class="_button" :class="$style.item" @click="more">
 				<i :class="$style.itemIcon" class="ti ti-grid-dots ti-fw"></i><span :class="$style.itemText">{{ i18n.ts.more }}</span>
 				<span v-if="otherMenuItemIndicated" :class="$style.itemIndicator"><i class="_indicatorCircle"></i></span>
 			</button>
 			<MkA v-tooltip.noDelay.right="i18n.ts.settings" :class="$style.item" :activeClass="$style.active" to="/settings">
-				<i :class="$style.itemIcon" class="ti ti-settings ti-fw"></i><span :class="$style.itemText">{{ i18n.ts.settings }}</span>
+				<i :class="$style.itemIcon" class="ph-gear ph-bold pg-lg ti-fw"></i><span :class="$style.itemText">{{ i18n.ts.settings }}</span>
 			</MkA>
 		</div>
 		<div :class="$style.bottom">
 			<button v-tooltip.noDelay.right="i18n.ts.note" class="_button" :class="[$style.post]" data-cy-open-post-form @click="os.post">
-				<i class="ti ti-pencil ti-fw" :class="$style.postIcon"></i><span :class="$style.postText">{{ i18n.ts.note }}</span>
+				<i class="ph-pencil ph-bold ph-lg ti-fw" :class="$style.postIcon"></i><span :class="$style.postText">{{ i18n.ts.note }}</span>
 			</button>
 			<button v-tooltip.noDelay.right="`${i18n.ts.account}: @${$i.username}`" class="_button" :class="[$style.account]" @click="openAccountMenu">
 				<MkAvatar :user="$i" :class="$style.avatar"/><MkAcct class="_nowrap" :class="$style.acct" :user="$i"/>

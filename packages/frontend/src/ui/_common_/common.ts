@@ -16,17 +16,17 @@ export function openInstanceMenu(ev: MouseEvent) {
 	}, {
 		type: 'link',
 		text: i18n.ts.instanceInfo,
-		icon: 'ti ti-info-circle',
+		icon: 'ph-info ph-bold ph-lg',
 		to: '/about',
 	}, {
 		type: 'link',
 		text: i18n.ts.customEmojis,
-		icon: 'ti ti-icons',
+		icon: 'ph-smiley ph-bold pg-lg',
 		to: '/about#emojis',
 	}, {
 		type: 'link',
 		text: i18n.ts.federation,
-		icon: 'ti ti-whirl',
+		icon: 'ph-globe-hemisphere-west ph-bold ph-lg',
 		to: '/about#federation',
 	}, {
 		type: 'link',
@@ -42,7 +42,7 @@ export function openInstanceMenu(ev: MouseEvent) {
 		type: 'link',
 		to: '/invite',
 		text: i18n.ts.invite,
-		icon: 'ti ti-user-plus',
+		icon: 'ph-user-plus ph-bold ph-lg',
 	} : undefined, {
 		type: 'parent',
 		text: i18n.ts.tools,
@@ -61,16 +61,16 @@ export function openInstanceMenu(ev: MouseEvent) {
 			type: 'link',
 			to: '/clicker',
 			text: '🍪👈',
-			icon: 'ti ti-cookie',
+			icon: 'ph-cookie ph-bold pg-lg',
 		}, ($i && ($i.isAdmin || $i.policies.canManageCustomEmojis)) ? {
 			type: 'link',
 			to: '/custom-emojis-manager',
 			text: i18n.ts.manageCustomEmojis,
-			icon: 'ti ti-icons',
+			icon: 'ph-smiley ph-bold pg-lg',
 		} : undefined],
 	}, null, {
 		text: i18n.ts.help,
-		icon: 'ti ti-help-circle',
+		icon: 'ph-question ph-bold ph-lg',
 		action: () => {
 			window.open('https://misskey-hub.net/help.html', '_blank');
 		},

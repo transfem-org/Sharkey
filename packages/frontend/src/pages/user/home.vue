@@ -8,8 +8,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<div ref="rootEl" class="ftskorzw" :class="{ wide: !narrow }" style="container-type: inline-size;">
 		<div class="main _gaps">
 			<!-- TODO -->
-			<!-- <div class="punished" v-if="user.isSuspended"><i class="ti ti-alert-triangle" style="margin-right: 8px;"></i> {{ i18n.ts.userSuspended }}</div> -->
-			<!-- <div class="punished" v-if="user.isSilenced"><i class="ti ti-alert-triangle" style="margin-right: 8px;"></i> {{ i18n.ts.userSilenced }}</div> -->
+			<!-- <div class="punished" v-if="user.isSuspended"><i class="ph-warning ph-bold ph-lg" style="margin-right: 8px;"></i> {{ i18n.ts.userSuspended }}</div> -->
+			<!-- <div class="punished" v-if="user.isSilenced"><i class="ph-warning ph-bold ph-lg" style="margin-right: 8px;"></i> {{ i18n.ts.userSilenced }}</div> -->
 
 			<div class="profile _gaps">
 				<MkAccountMoved v-if="user.movedTo" :movedTo="user.movedTo"/>
@@ -23,17 +23,17 @@ SPDX-License-Identifier: AGPL-3.0-only
 							<MkUserName class="name" :user="user" :nowrap="true"/>
 							<div class="bottom">
 								<span class="username"><MkAcct :user="user" :detail="true"/></span>
-								<span v-if="user.isAdmin" :title="i18n.ts.isAdmin" style="color: var(--badge);"><i class="ti ti-shield"></i></span>
-								<span v-if="user.isLocked" :title="i18n.ts.isLocked"><i class="ti ti-lock"></i></span>
+								<span v-if="user.isAdmin" :title="i18n.ts.isAdmin" style="color: var(--badge);"><i class="ph-shield ph-bold ph-lg"></i></span>
+								<span v-if="user.isLocked" :title="i18n.ts.isLocked"><i class="ph-lock ph-bold ph-lg"></i></span>
 								<span v-if="user.isBot" :title="i18n.ts.isBot"><i class="ti ti-robot"></i></span>
 								<button v-if="!isEditingMemo && !memoDraft" class="_button add-note-button" @click="showMemoTextarea">
-									<i class="ti ti-edit"/> {{ i18n.ts.addMemo }}
+									<i class="ph-pencil-line ph-bold pg-lg"/> {{ i18n.ts.addMemo }}
 								</button>
 							</div>
 						</div>
 						<span v-if="$i && $i.id != user.id && user.isFollowed" class="followed">{{ i18n.ts.followsYou }}</span>
 						<div v-if="$i" class="actions">
-							<button class="menu _button" @click="menu"><i class="ti ti-dots"></i></button>
+							<button class="menu _button" @click="menu"><i class="ph-dots-three ph-bold ph-lg"></i></button>
 							<MkFollowButton v-if="$i.id != user.id" :user="user" :inline="true" :transparent="false" :full="true" class="koudoku"/>
 						</div>
 					</div>
@@ -42,8 +42,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<MkUserName :user="user" :nowrap="false" class="name"/>
 						<div class="bottom">
 							<span class="username"><MkAcct :user="user" :detail="true"/></span>
-							<span v-if="user.isAdmin" :title="i18n.ts.isAdmin" style="color: var(--badge);"><i class="ti ti-shield"></i></span>
-							<span v-if="user.isLocked" :title="i18n.ts.isLocked"><i class="ti ti-lock"></i></span>
+							<span v-if="user.isAdmin" :title="i18n.ts.isAdmin" style="color: var(--badge);"><i class="ph-shield ph-bold ph-lg"></i></span>
+							<span v-if="user.isLocked" :title="i18n.ts.isLocked"><i class="ph-lock ph-bold ph-lg"></i></span>
 							<span v-if="user.isBot" :title="i18n.ts.isBot"><i class="ti ti-robot"></i></span>
 						</div>
 					</div>

@@ -16,7 +16,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					</button>
 				</template>
 				<template #footer>
-					<button class="_button" :class="$style.reactionsAdd" @click="chooseEmoji"><i class="ti ti-plus"></i></button>
+					<button class="_button" :class="$style.reactionsAdd" @click="chooseEmoji"><i class="ph-plus ph-bold ph-lg"></i></button>
 				</template>
 			</Sortable>
 		</div>
@@ -52,8 +52,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 	<FormSection>
 		<div class="_buttons">
-			<MkButton inline @click="preview"><i class="ti ti-eye"></i> {{ i18n.ts.preview }}</MkButton>
-			<MkButton inline danger @click="setDefault"><i class="ti ti-reload"></i> {{ i18n.ts.default }}</MkButton>
+			<MkButton inline @click="preview"><i class="ph-eye ph-bold ph-lg"></i> {{ i18n.ts.preview }}</MkButton>
+			<MkButton inline danger @click="setDefault"><i class="ph-arrow-clockwise ph-bold ph-lg"></i> {{ i18n.ts.default }}</MkButton>
 		</div>
 	</FormSection>
 </div>
@@ -132,9 +132,9 @@ const headerTabs = $computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.reaction,
-	icon: 'ti ti-mood-happy',
+	icon: 'ph-smiley ph-bold ph-lg',
 	action: {
-		icon: 'ti ti-eye',
+		icon: 'ph-eye ph-bold ph-lg',
 		handler: preview,
 	},
 });

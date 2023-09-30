@@ -34,7 +34,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 							</ul>
 						</details>
 						<div>
-							<MkButton inline danger @click="revoke(token)"><i class="ti ti-trash"></i></MkButton>
+							<MkButton inline danger @click="revoke(token)"><i class="ph-trash ph-bold ph-lg"></i></MkButton>
 						</div>
 					</div>
 				</div>

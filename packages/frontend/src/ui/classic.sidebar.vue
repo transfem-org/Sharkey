@@ -10,12 +10,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</button>
 	<div class="post" data-cy-open-post-form @click="os.post">
 		<MkButton class="button" gradate full rounded>
-			<i class="ti ti-pencil ti-fw"></i><span v-if="!iconOnly" class="text">{{ i18n.ts.note }}</span>
+			<i class="ph-pencil ph-bold ph-lg ti-fw"></i><span v-if="!iconOnly" class="text">{{ i18n.ts.note }}</span>
 		</MkButton>
 	</div>
 	<div class="divider"></div>
 	<MkA v-click-anime class="item index" activeClass="active" to="/" exact>
-		<i class="ti ti-home ti-fw"></i><span class="text">{{ i18n.ts.timeline }}</span>
+		<i class="ph-house ph-bold ph-lg ti-fw"></i><span class="text">{{ i18n.ts.timeline }}</span>
 	</MkA>
 	<template v-for="item in menu">
 		<div v-if="item === '-'" class="divider"></div>
@@ -26,14 +26,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</template>
 	<div class="divider"></div>
 	<MkA v-if="$i.isAdmin || $i.isModerator" v-click-anime class="item" activeClass="active" to="/admin" :behavior="settingsWindowed ? 'window' : null">
-		<i class="ti ti-dashboard ti-fw"></i><span class="text">{{ i18n.ts.controlPanel }}</span>
+		<i class="ph-gauge ph-bold pg-lg ti-fw"></i><span class="text">{{ i18n.ts.controlPanel }}</span>
 	</MkA>
 	<button v-click-anime class="item _button" @click="more">
-		<i class="ti ti-dots ti-fw"></i><span class="text">{{ i18n.ts.more }}</span>
+		<i class="ph-dots-three ph-bold ph-lg ti-fw"></i><span class="text">{{ i18n.ts.more }}</span>
 		<span v-if="otherNavItemIndicated" class="indicator"><i class="_indicatorCircle"></i></span>
 	</button>
 	<MkA v-click-anime class="item" activeClass="active" to="/settings" :behavior="settingsWindowed ? 'window' : null">
-		<i class="ti ti-settings ti-fw"></i><span class="text">{{ i18n.ts.settings }}</span>
+		<i class="ph-gear ph-bold pg-lg ti-fw"></i><span class="text">{{ i18n.ts.settings }}</span>
 	</MkA>
 	<div class="divider"></div>
 	<div class="about">

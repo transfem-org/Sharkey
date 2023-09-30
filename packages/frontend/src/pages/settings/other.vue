@@ -18,7 +18,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<FormSection first>
 		<div class="_gaps_s">
 			<MkFolder>
-				<template #icon><i class="ti ti-info-circle"></i></template>
+				<template #icon><i class="ph-info ph-bold ph-lg"></i></template>
 				<template #label>{{ i18n.ts.accountInfo }}</template>
 
 				<div class="_gaps_m">
@@ -35,7 +35,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</MkFolder>
 
 			<MkFolder>
-				<template #icon><i class="ti ti-alert-triangle"></i></template>
+				<template #icon><i class="ph-warning ph-bold ph-lg"></i></template>
 				<template #label>{{ i18n.ts.closeAccount }}</template>
 
 				<div class="_gaps_m">
@@ -58,7 +58,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</MkFolder>
 
 			<MkFolder>
-				<template #icon><i class="ti ti-code"></i></template>
+				<template #icon><i class="ph-code ph-bold pg-lg"></i></template>
 				<template #label>{{ i18n.ts.developer }}</template>
 
 				<div class="_gaps_m">
@@ -71,7 +71,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</FormSection>
 
 	<FormSection>
-		<FormLink to="/registry"><template #icon><i class="ti ti-adjustments"></i></template>{{ i18n.ts.registry }}</FormLink>
+		<FormLink to="/registry"><template #icon><i class="ph-faders ph-bold ph-lg"></i></template>{{ i18n.ts.registry }}</FormLink>
 	</FormSection>
 </div>
 </template>
@@ -150,6 +150,6 @@ const headerTabs = $computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.other,
-	icon: 'ti ti-dots',
+	icon: 'ph-dots-three ph-bold ph-lg',
 });
 </script>

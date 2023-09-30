@@ -35,7 +35,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<FormLink @click="chooseUploadFolder()">
 				{{ i18n.ts.uploadFolder }}
 				<template #suffix>{{ uploadFolder ? uploadFolder.name : '-' }}</template>
-				<template #suffixIcon><i class="ti ti-folder"></i></template>
+				<template #suffixIcon><i class="ph-folder ph-bold ph-lg"></i></template>
 			</FormLink>
 			<FormLink to="/settings/drive/cleaner">
 				{{ i18n.ts.drivecleaner }}
@@ -140,7 +140,7 @@ const headerTabs = $computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.drive,
-	icon: 'ti ti-cloud',
+	icon: 'ph-cloud ph-bold ph-lg',
 });
 </script>
 

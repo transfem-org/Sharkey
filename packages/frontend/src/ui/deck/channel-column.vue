@@ -6,12 +6,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <XColumn :menu="menu" :column="column" :isStacked="isStacked">
 	<template #header>
-		<i class="ti ti-device-tv"></i><span style="margin-left: 8px;">{{ column.name }}</span>
+		<i class="ph-television ph-bold ph-lg"></i><span style="margin-left: 8px;">{{ column.name }}</span>
 	</template>
 
 	<template v-if="column.channelId">
 		<div style="padding: 8px; text-align: center;">
-			<MkButton primary gradate rounded inline @click="post"><i class="ti ti-pencil"></i></MkButton>
+			<MkButton primary gradate rounded inline @click="post"><i class="ph-pencil ph-bold ph-lg"></i></MkButton>
 		</div>
 		<MkTimeline ref="timeline" src="channel" :channel="column.channelId"/>
 	</template>
@@ -70,7 +70,7 @@ async function post() {
 }
 
 const menu = [{
-	icon: 'ti ti-pencil',
+	icon: 'ph-pencil ph-bold ph-lg',
 	text: i18n.ts.selectChannel,
 	action: setChannel,
 }];

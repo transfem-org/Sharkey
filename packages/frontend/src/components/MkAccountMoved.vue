@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <div v-if="user" :class="$style.root">
-	<i class="ti ti-plane-departure" style="margin-right: 8px;"></i>
+	<i class="ph-plane-takeoff ph-bold ph-lg" style="margin-right: 8px;"></i>
 	{{ i18n.ts.accountMoved }}
 	<MkMention :class="$style.link" :username="user.username" :host="user.host ?? localHost"/>
 </div>

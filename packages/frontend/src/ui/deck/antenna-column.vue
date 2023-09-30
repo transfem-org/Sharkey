@@ -6,7 +6,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <XColumn :menu="menu" :column="column" :isStacked="isStacked">
 	<template #header>
-		<i class="ti ti-antenna"></i><span style="margin-left: 8px;">{{ column.name }}</span>
+		<i class="ph-flying-saucer ph-bold pg-lg"></i><span style="margin-left: 8px;">{{ column.name }}</span>
 	</template>
 
 	<MkTimeline v-if="column.antennaId" ref="timeline" src="antenna" :antenna="column.antennaId"/>
@@ -55,12 +55,12 @@ function editAntenna() {
 
 const menu = [
 	{
-		icon: 'ti ti-pencil',
+		icon: 'ph-pencil ph-bold ph-lg',
 		text: i18n.ts.selectAntenna,
 		action: setAntenna,
 	},
 	{
-		icon: 'ti ti-settings',
+		icon: 'ph-gear ph-bold pg-lg',
 		text: i18n.ts.editAntenna,
 		action: editAntenna,
 	},

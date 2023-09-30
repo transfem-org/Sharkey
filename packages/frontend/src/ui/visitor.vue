@@ -15,10 +15,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<div class="main">
 		<div v-if="!root" class="header">
 			<div v-if="narrow === false" class="wide">
-				<MkA to="/" class="link" activeClass="active"><i class="ti ti-home icon"></i> {{ i18n.ts.home }}</MkA>
+				<MkA to="/" class="link" activeClass="active"><i class="ph-house ph-bold ph-lg icon"></i> {{ i18n.ts.home }}</MkA>
 				<MkA v-if="isTimelineAvailable" to="/timeline" class="link" activeClass="active"><i class="ti ti-message icon"></i> {{ i18n.ts.timeline }}</MkA>
-				<MkA to="/explore" class="link" activeClass="active"><i class="ti ti-hash icon"></i> {{ i18n.ts.explore }}</MkA>
-				<MkA to="/channels" class="link" activeClass="active"><i class="ti ti-device-tv icon"></i> {{ i18n.ts.channel }}</MkA>
+				<MkA to="/explore" class="link" activeClass="active"><i class="ph-hash ph-bold ph-lg icon"></i> {{ i18n.ts.explore }}</MkA>
+				<MkA to="/channels" class="link" activeClass="active"><i class="ph-television ph-bold ph-lg icon"></i> {{ i18n.ts.channel }}</MkA>
 			</div>
 			<div v-else-if="narrow === true" class="narrow">
 				<button class="menu _button" @click="showMenu = true">
@@ -47,15 +47,15 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 	<Transition :name="'tray'">
 		<div v-if="showMenu" class="menu">
-			<MkA to="/" class="link" activeClass="active"><i class="ti ti-home icon"></i>{{ i18n.ts.home }}</MkA>
+			<MkA to="/" class="link" activeClass="active"><i class="ph-house ph-bold ph-lg icon"></i>{{ i18n.ts.home }}</MkA>
 			<MkA v-if="isTimelineAvailable" to="/timeline" class="link" activeClass="active"><i class="ti ti-message icon"></i>{{ i18n.ts.timeline }}</MkA>
-			<MkA to="/explore" class="link" activeClass="active"><i class="ti ti-hash icon"></i>{{ i18n.ts.explore }}</MkA>
-			<MkA to="/announcements" class="link" activeClass="active"><i class="ti ti-speakerphone icon"></i>{{ i18n.ts.announcements }}</MkA>
-			<MkA to="/channels" class="link" activeClass="active"><i class="ti ti-device-tv icon"></i>{{ i18n.ts.channel }}</MkA>
+			<MkA to="/explore" class="link" activeClass="active"><i class="ph-hash ph-bold ph-lg icon"></i>{{ i18n.ts.explore }}</MkA>
+			<MkA to="/announcements" class="link" activeClass="active"><i class="ph-megaphone ph-bold ph-lg icon"></i>{{ i18n.ts.announcements }}</MkA>
+			<MkA to="/channels" class="link" activeClass="active"><i class="ph-television ph-bold ph-lg icon"></i>{{ i18n.ts.channel }}</MkA>
 			<div class="divider"></div>
 			<MkA to="/pages" class="link" activeClass="active"><i class="ti ti-news icon"></i>{{ i18n.ts.pages }}</MkA>
 			<MkA to="/play" class="link" activeClass="active"><i class="ti ti-player-play icon"></i>Play</MkA>
-			<MkA to="/gallery" class="link" activeClass="active"><i class="ti ti-icons icon"></i>{{ i18n.ts.gallery }}</MkA>
+			<MkA to="/gallery" class="link" activeClass="active"><i class="ph-images-square ph-bold pg-lgs icon"></i>{{ i18n.ts.gallery }}</MkA>
 			<div class="action">
 				<button class="_buttonPrimary" @click="signup()">{{ i18n.ts.signup }}</button>
 				<button class="_button" @click="signin()">{{ i18n.ts.login }}</button>

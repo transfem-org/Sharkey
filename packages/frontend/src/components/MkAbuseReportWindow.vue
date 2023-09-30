@@ -6,7 +6,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <MkWindow ref="uiWindow" :initialWidth="400" :initialHeight="500" :canResize="true" @closed="emit('closed')">
 	<template #header>
-		<i class="ti ti-exclamation-circle" style="margin-right: 0.5em;"></i>
+		<i class="ph-warning-circle ph-bold ph-lg" style="margin-right: 0.5em;"></i>
 		<I18n :src="i18n.ts.reportAbuseOf" tag="span">
 			<template #name>
 				<b><MkAcct :user="user"/></b>

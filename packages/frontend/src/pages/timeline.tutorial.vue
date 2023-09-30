@@ -6,14 +6,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <div :class="$style.container">
 	<div :class="$style.title">
-		<div :class="$style.titleText"><i class="ti ti-info-circle"></i> {{ i18n.ts._timelineTutorial.title }}</div>
+		<div :class="$style.titleText"><i class="ph-info ph-bold ph-lg"></i> {{ i18n.ts._timelineTutorial.title }}</div>
 		<div :class="$style.step">
 			<button class="_button" :class="$style.stepArrow" :disabled="tutorial === 0" @click="tutorial--">
-				<i class="ti ti-chevron-left"></i>
+				<i class="ph-caret-left ph-bold ph-lg"></i>
 			</button>
 			<span :class="$style.stepNumber">{{ tutorial + 1 }} / {{ tutorialsNumber }}</span>
 			<button class="_button" :class="$style.stepArrow" :disabled="tutorial === tutorialsNumber - 1" @click="tutorial++">
-				<i class="ti ti-chevron-right"></i>
+				<i class="ph-caret-right ph-bold ph-lg"></i>
 			</button>
 		</div>
 	</div>
@@ -37,7 +37,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 	<div :class="$style.footer">
 		<template v-if="tutorial === tutorialsNumber - 1">
-			<MkButton :class="$style.footerItem" primary rounded gradate @click="tutorial = -1">{{ i18n.ts.done }} <i class="ti ti-check"></i></MkButton>
+			<MkButton :class="$style.footerItem" primary rounded gradate @click="tutorial = -1">{{ i18n.ts.done }} <i class="ph-check ph-bold ph-lg"></i></MkButton>
 		</template>
 		<template v-else>
 			<MkButton :class="$style.footerItem" primary rounded gradate @click="tutorial++">{{ i18n.ts.next }} <i class="ti ti-arrow-right"></i></MkButton>

@@ -11,14 +11,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<MkInfo v-if="$i && $i.hasUnreadAnnouncement && tab === 'current'" warn>{{ i18n.ts.youHaveUnreadAnnouncements }}</MkInfo>
 			<MkPagination ref="paginationEl" :key="tab" v-slot="{items}" :pagination="tab === 'current' ? paginationCurrent : paginationPast" class="_gaps">
 				<section v-for="announcement in items" :key="announcement.id" class="_panel" :class="$style.announcement">
-					<div v-if="announcement.forYou" :class="$style.forYou"><i class="ti ti-pin"></i> {{ i18n.ts.forYou }}</div>
+					<div v-if="announcement.forYou" :class="$style.forYou"><i class="ph-push-pin ph-bold ph-lg"></i> {{ i18n.ts.forYou }}</div>
 					<div :class="$style.header">
 						<span v-if="$i && !announcement.isRead" style="margin-right: 0.5em;">🆕</span>
 						<span style="margin-right: 0.5em;">
-							<i v-if="announcement.icon === 'info'" class="ti ti-info-circle"></i>
-							<i v-else-if="announcement.icon === 'warning'" class="ti ti-alert-triangle" style="color: var(--warn);"></i>
-							<i v-else-if="announcement.icon === 'error'" class="ti ti-circle-x" style="color: var(--error);"></i>
-							<i v-else-if="announcement.icon === 'success'" class="ti ti-check" style="color: var(--success);"></i>
+							<i v-if="announcement.icon === 'info'" class="ph-info ph-bold ph-lg"></i>
+							<i v-else-if="announcement.icon === 'warning'" class="ph-warning ph-bold ph-lg" style="color: var(--warn);"></i>
+							<i v-else-if="announcement.icon === 'error'" class="ph-x-circle ph-bold ph-lg" style="color: var(--error);"></i>
+							<i v-else-if="announcement.icon === 'success'" class="ph-check ph-bold ph-lg" style="color: var(--success);"></i>
 						</span>
 						<span>{{ announcement.title }}</span>
 					</div>
@@ -30,7 +30,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 						</div>
 					</div>
 					<div v-if="tab !== 'past' && $i && !announcement.isRead" :class="$style.footer">
-						<MkButton primary @click="read(announcement)"><i class="ti ti-check"></i> {{ i18n.ts.gotIt }}</MkButton>
+						<MkButton primary @click="read(announcement)"><i class="ph-check ph-bold ph-lg"></i> {{ i18n.ts.gotIt }}</MkButton>
 					</div>
 				</section>
 			</MkPagination>
@@ -95,16 +95,16 @@ const headerActions = $computed(() => []);
 const headerTabs = $computed(() => [{
 	key: 'current',
 	title: i18n.ts.currentAnnouncements,
-	icon: 'ti ti-flare',
+	icon: 'ph-fire ph-bold pg-lg',
 }, {
 	key: 'past',
 	title: i18n.ts.pastAnnouncements,
-	icon: 'ti ti-point',
+	icon: 'ph-dot-outline ph-bold pg-lg',
 }]);
 
 definePageMetadata({
 	title: i18n.ts.announcements,
-	icon: 'ti ti-speakerphone',
+	icon: 'ph-megaphone ph-bold ph-lg',
 });
 </script>
 

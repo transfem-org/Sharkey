@@ -75,7 +75,7 @@ const headerActions = $computed(() => list ? [{
 	text: i18n.ts.jumpToSpecifiedDate,
 	handler: timetravel,
 }, {
-	icon: 'ti ti-settings',
+	icon: 'ph-gear ph-bold pg-lg',
 	text: i18n.ts.settings,
 	handler: settings,
 }] : []);
@@ -84,7 +84,7 @@ const headerTabs = $computed(() => []);
 
 definePageMetadata(computed(() => list ? {
 	title: list.name,
-	icon: 'ti ti-list',
+	icon: 'ph-list ph-bold pg-lg',
 } : null));
 </script>
 

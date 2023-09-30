@@ -144,11 +144,11 @@ const headerTabs = $computed(() => [{
 }, {
 	key: 'emojis',
 	title: i18n.ts.customEmojis,
-	icon: 'ti ti-icons',
+	icon: 'ph-smiley ph-bold pg-lg',
 }, {
 	key: 'federation',
 	title: i18n.ts.federation,
-	icon: 'ti ti-whirl',
+	icon: 'ph-globe-hemisphere-west ph-bold ph-lg',
 }, {
 	key: 'charts',
 	title: i18n.ts.charts,
@@ -157,7 +157,7 @@ const headerTabs = $computed(() => [{
 
 definePageMetadata(computed(() => ({
 	title: i18n.ts.instanceInfo,
-	icon: 'ti ti-info-circle',
+	icon: 'ph-info ph-bold ph-lg',
 })));
 </script>
 

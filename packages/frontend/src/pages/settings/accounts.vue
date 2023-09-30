@@ -8,8 +8,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<FormSuspense :p="init">
 		<div class="_gaps">
 			<div class="_buttons">
-				<MkButton primary @click="addAccount"><i class="ti ti-plus"></i> {{ i18n.ts.addAccount }}</MkButton>
-				<MkButton @click="init"><i class="ti ti-refresh"></i> {{ i18n.ts.reloadAccountsList }}</MkButton>
+				<MkButton primary @click="addAccount"><i class="ph-plus ph-bold ph-lg"></i> {{ i18n.ts.addAccount }}</MkButton>
+				<MkButton @click="init"><i class="ph-arrows-counter-clockwise ph-bold pg-lg"></i> {{ i18n.ts.reloadAccountsList }}</MkButton>
 			</div>
 
 			<MkUserCardMini v-for="user in accounts" :key="user.id" :user="user" :class="$style.user" @click.prevent="menu(user, $event)"/>
@@ -51,7 +51,7 @@ function menu(account, ev) {
 		action: () => switchAccount(account),
 	}, {
 		text: i18n.ts.logout,
-		icon: 'ti ti-trash',
+		icon: 'ph-trash ph-bold ph-lg',
 		danger: true,
 		action: () => removeAccount(account),
 	}], ev.currentTarget ?? ev.target);
@@ -107,7 +107,7 @@ const headerTabs = $computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.accounts,
-	icon: 'ti ti-users',
+	icon: 'ph-users ph-bold pg-lg',
 });
 </script>
 
