@@ -3,7 +3,7 @@ import megalodon, { Entity, MegalodonInterface } from 'megalodon';
 import querystring from 'querystring';
 import { IsNull } from 'typeorm';
 import multer from 'fastify-multer';
-import type { UsersRepository } from '@/models/_.js';
+import type { NotesRepository, UserProfilesRepository, UsersRepository } from '@/models/_.js';
 import { DI } from '@/di-symbols.js';
 import { bindThis } from '@/decorators.js';
 import type { Config } from '@/config.js';
@@ -12,6 +12,7 @@ import { convertId, IdConvertType as IdType, convertAccount, convertAnnouncement
 import { getInstance } from './endpoints/meta.js';
 import { ApiAuthMastodon, ApiAccountMastodon, ApiFilterMastodon, ApiNotifyMastodon, ApiSearchMastodon, ApiTimelineMastodon, ApiStatusMastodon } from './endpoints.js';
 import type { FastifyInstance, FastifyPluginOptions } from 'fastify';
+import { UserEntityService } from '@/core/entities/UserEntityService.js';
 
 export function getClient(BASE_URL: string, authorization: string | undefined): MegalodonInterface {
 	const accessTokenArr = authorization?.split(' ') ?? [null];
@@ -26,9 +27,14 @@ export class MastodonApiServerService {
 	constructor(
         @Inject(DI.usersRepository)
         private usersRepository: UsersRepository,
+		@Inject(DI.notesRepository)
+        private notesRepository: NotesRepository,
+		@Inject(DI.userProfilesRepository)
+		private userProfilesRepository: UserProfilesRepository,
         @Inject(DI.config)
         private config: Config,
         private metaService: MetaService,
+		private userEntityService: UserEntityService,
 	) { }
 
 	@bindThis
@@ -256,8 +262,10 @@ export class MastodonApiServerService {
 			const client = getClient(BASE_URL, accessTokens); // we are using this here, because in private mode some info isnt
 			// displayed without being logged in
 			try {
-				const account = new ApiAccountMastodon(_request, client, BASE_URL);
-				reply.send(await account.lookup());
+				const data = await client.search((_request.query as any).acct, { type: 'accounts' });
+				const profile = await this.userProfilesRepository.findOneBy({userId: data.data.accounts[0].id});
+				data.data.accounts[0].fields = profile?.fields.map(f => ({...f, verified_at: null})) || [];
+				reply.send(convertAccount(data.data.accounts[0]));
 			} catch (e: any) {
 				/* console.error(e); */
 				reply.code(401).send(e.response.data);
@@ -294,6 +302,8 @@ export class MastodonApiServerService {
 			try {
 				const sharkId = convertId(_request.params.id, IdType.SharkeyId);
 				const data = await client.getAccount(sharkId);
+				const profile = await this.userProfilesRepository.findOneBy({userId: sharkId});
+				data.data.fields = profile?.fields.map(f => ({...f, verified_at: null})) || [];
 				reply.send(convertAccount(data.data));
 			} catch (e: any) {
 				/* console.error(e);
@@ -744,7 +754,7 @@ export class MastodonApiServerService {
 		//#endregion
 
 		//#region Timelines
-		const TLEndpoint = new ApiTimelineMastodon(fastify);
+		const TLEndpoint = new ApiTimelineMastodon(fastify, this.config, this.usersRepository, this.notesRepository, this.userEntityService);
 
 		// GET Endpoints
 		TLEndpoint.getTL();
@@ -769,7 +779,7 @@ export class MastodonApiServerService {
 		//#endregion
 
 		//#region Status
-		const NoteEndpoint = new ApiStatusMastodon(fastify);
+		const NoteEndpoint = new ApiStatusMastodon(fastify, this.config, this.usersRepository, this.notesRepository, this.userEntityService);
 
 		// GET Endpoints
 		NoteEndpoint.getStatus();

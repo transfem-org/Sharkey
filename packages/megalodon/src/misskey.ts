@@ -2122,6 +2122,40 @@ export default class Misskey implements MegalodonInterface {
   ): Promise<Response<Entity.Results>> {
     switch (options.type) {
       case 'accounts': {
+        if (q.startsWith("http://") || q.startsWith("https://")) {
+					return this.client
+						.post("/api/ap/show", { uri: q })
+						.then(async (res) => {
+							if (res.status != 200 || res.data.type != "User") {
+								res.status = 200;
+								res.statusText = "OK";
+								res.data = {
+									accounts: [],
+									statuses: [],
+									hashtags: [],
+								};
+
+								return res;
+							}
+
+							const account = await MisskeyAPI.Converter.userDetail(
+								res.data.object as MisskeyAPI.Entity.UserDetail,
+								this.baseUrl,
+							);
+
+							return {
+								...res,
+								data: {
+									accounts:
+										options?.max_id && options?.max_id >= account.id
+											? []
+											: [account],
+									statuses: [],
+									hashtags: [],
+								},
+							};
+						});
+				}
         let params = {
           query: q
         }
@@ -2151,7 +2185,7 @@ export default class Misskey implements MegalodonInterface {
 					});
 				}
         try {
-          const match = q.match(/^@?(?<user>[a-zA-Z0-9_]+)(?:@(?<host>[a-zA-Z0-9-.]+\.[a-zA-Z0-9-]+)|)$/);
+          const match = params.query.match(/^@?(?<user>[a-zA-Z0-9_]+)(?:@(?<host>[a-zA-Z0-9-.]+\.[a-zA-Z0-9-]+)|)$/);
           if (match) {
             const lookupQuery = {
               username: match.groups?.user,
@@ -2195,6 +2229,38 @@ export default class Misskey implements MegalodonInterface {
         }))
       }
       case 'statuses': {
+        if (q.startsWith("http://") || q.startsWith("https://")) {
+					return this.client
+						.post("/api/ap/show", { uri: q })
+						.then(async (res) => {
+							if (res.status != 200 || res.data.type != "Note") {
+								res.status = 200;
+								res.statusText = "OK";
+								res.data = {
+									accounts: [],
+									statuses: [],
+									hashtags: [],
+								};
+
+								return res;
+							}
+
+							const post = await MisskeyAPI.Converter.note(
+								res.data.object as MisskeyAPI.Entity.Note,
+								this.baseUrl
+							);
+
+							return {
+								...res,
+								data: {
+									accounts: [],
+									statuses:
+										options?.max_id && options.max_id >= post.id ? [] : [post],
+									hashtags: [],
+								},
+							};
+						});
+				}
         let params = {
           query: q
         }
