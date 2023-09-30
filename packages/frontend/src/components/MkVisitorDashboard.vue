@@ -114,7 +114,7 @@ function showMenu(ev) {
 }
 
 function exploreOtherServers() {
-	window.open('https://join.misskey.page/instances', '_blank');
+	window.open('https://joinsharkey.org/#findaninstance', '_blank');
 }
 </script>
 
@@ -151,7 +151,7 @@ function exploreOtherServers() {
 	right: 16px;
 	width: 32px;
 	height: 32px;
-	border-radius: 8px;
+	border-radius: 5px;
 	font-size: 18px;
 }
 

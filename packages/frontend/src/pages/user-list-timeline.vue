@@ -105,7 +105,7 @@ definePageMetadata(computed(() => list ? {
 	display: block;
 	margin: var(--margin) auto 0 auto;
 	padding: 8px 16px;
-	border-radius: 32px;
+	border-radius: 5px;
 }
 
 .tl {

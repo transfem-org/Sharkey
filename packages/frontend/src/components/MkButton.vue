@@ -154,7 +154,7 @@ function onMousedown(evt: MouseEvent): void {
 	}
 
 	&.rounded {
-		border-radius: 999px;
+		border-radius: 4px;
 	}
 
 	&.primary {
@@ -264,7 +264,7 @@ function onMousedown(evt: MouseEvent): void {
 	left: 0;
 	width: 100%;
 	height: 100%;
-	border-radius: 6px;
+	border-radius: 5px;
 	overflow: clip;
 	pointer-events: none;
 }

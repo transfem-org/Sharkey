@@ -288,7 +288,7 @@ onBeforeUnmount(() => {
 		margin: auto;
 		width: calc(100% - 16px);
 		height: 100%;
-		border-radius: 6px;
+		border-radius: 5px;
 	}
 
 	&:not(:disabled):hover {

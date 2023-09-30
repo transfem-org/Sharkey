@@ -206,7 +206,7 @@ definePageMetadata({
 				display: block;
 				width: 80px;
 				margin: 0 auto;
-				border-radius: 16px;
+				border-radius: 4px;
 				position: relative;
 				z-index: 1;
 			}
@@ -256,7 +256,7 @@ definePageMetadata({
 	align-items: center;
 	padding: 12px;
 	background: var(--buttonBg);
-	border-radius: 6px;
+	border-radius: 5px;
 
 	&:hover {
 		text-decoration: none;
@@ -289,7 +289,7 @@ definePageMetadata({
 	align-items: center;
 	padding: 12px;
 	background: var(--buttonBg);
-	border-radius: 6px;
+	border-radius: 5px;
 }
 
 .patronIcon {

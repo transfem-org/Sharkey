@@ -119,7 +119,7 @@ useTooltip(buttonEl, async (showing) => {
 	margin: 2px;
 	padding: 0 6px;
 	font-size: 1.5em;
-	border-radius: 6px;
+	border-radius: 5px;
 
 	&.canToggle {
 		background: var(--buttonBg);
@@ -147,7 +147,7 @@ useTooltip(buttonEl, async (showing) => {
 	&.large {
 		height: 52px;
 		font-size: 2em;
-		border-radius: 8px;
+		border-radius: 5px;
 
 		> .count {
 			font-size: 0.6em;

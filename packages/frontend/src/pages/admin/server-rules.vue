@@ -104,7 +104,7 @@ definePageMetadata({
 	height: 28px;
 	align-items: center;
 	justify-content: center;
-	border-radius: 999px;
+	border-radius: 4px;
 	margin-right: 8px;
 }
 
@@ -119,7 +119,7 @@ definePageMetadata({
 	height: 40px;
 	color: var(--error);
 	margin-left: auto;
-	border-radius: 6px;
+	border-radius: 5px;
 
 	&:hover {
 		background: var(--X5);

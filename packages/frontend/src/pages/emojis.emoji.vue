@@ -61,7 +61,7 @@ function menu(ev) {
 	padding: 12px;
 	text-align: left;
 	background: var(--panel);
-	border-radius: 8px;
+	border-radius: 5px;
 
 	&:hover {
 		border-color: var(--accent);
