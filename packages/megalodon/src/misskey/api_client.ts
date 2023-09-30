@@ -128,7 +128,7 @@ namespace MisskeyAPI {
         following_count: u.followingCount,
         statuses_count: u.notesCount,
         note: u.description ? u.description.replace(/\n|\\n/g, "<br>") : '',
-        url: acctUrl,
+        url: u.uri ?? acctUrl,
         avatar: u.avatarUrl,
         avatar_static: u.avatarUrl,
         header: u.bannerUrl,
