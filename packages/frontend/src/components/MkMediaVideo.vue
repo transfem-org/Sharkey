@@ -68,7 +68,7 @@ const hide = ref((defaultStore.state.nsfw === 'force' || defaultStore.state.enab
 .hide {
 	display: block;
 	position: absolute;
-	border-radius: 6px;
+	border-radius: 5px;
 	background-color: black;
 	color: var(--accentLighten);
 	font-size: 14px;
@@ -118,7 +118,7 @@ const hide = ref((defaultStore.state.nsfw === 'force' || defaultStore.state.enab
 .indicator {
 	/* Hardcode to black because either --bg or --fg makes it hard to read in dark/light mode */
 	background-color: black;
-	border-radius: 6px;
+	border-radius: 5px;
 	color: var(--accentLighten);
 	display: inline-block;
 	font-weight: bold;

@@ -46,7 +46,7 @@ function getInstanceIcon(instance): string {
 	align-items: center;
 	padding: 16px;
 	background: var(--panel);
-	border-radius: 8px;
+	border-radius: 5px;
 
 	> :global(.icon) {
 		display: block;

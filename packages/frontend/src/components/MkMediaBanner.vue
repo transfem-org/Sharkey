@@ -82,7 +82,7 @@ onMounted(() => {
 }
 
 .audio {
-	border-radius: 8px;
+	border-radius: 5px;
 	overflow: clip;
 }
 </style>

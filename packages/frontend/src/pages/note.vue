@@ -141,7 +141,7 @@ definePageMetadata(computed(() => note ? {
 .loadPrev {
 	min-width: 0;
 	margin: 0 auto;
-	border-radius: 999px;
+	border-radius: 4px;
 }
 
 .loadNext {

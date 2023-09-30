@@ -552,7 +552,7 @@ function readPromo() {
 			padding: 0 4px;
 			margin-bottom: 0 !important;
 			background: var(--popup);
-			border-radius: 8px;
+			border-radius: 5px;
 			box-shadow: 0px 4px 32px var(--shadow);
 		}
 
@@ -684,7 +684,7 @@ function readPromo() {
 	left: 8px;
 	width: 5px;
 	height: calc(100% - 16px);
-	border-radius: 999px;
+	border-radius: 4px;
 	pointer-events: none;
 }
 
@@ -724,7 +724,7 @@ function readPromo() {
 	background: var(--popup);
 	padding: 6px 10px;
 	font-size: 0.8em;
-	border-radius: 999px;
+	border-radius: 4px;
 	box-shadow: 0 2px 6px rgb(0 0 0 / 20%);
 }
 
@@ -754,7 +754,7 @@ function readPromo() {
 	background: var(--panel);
 	padding: 6px 10px;
 	font-size: 0.8em;
-	border-radius: 999px;
+	border-radius: 4px;
 	box-shadow: 0 2px 6px rgb(0 0 0 / 20%);
 }
 
@@ -789,7 +789,7 @@ function readPromo() {
 .quoteNote {
 	padding: 16px;
 	border: dashed 1px var(--renote);
-	border-radius: 8px;
+	border-radius: 5px;
 	overflow: clip;
 }
 

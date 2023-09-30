@@ -74,7 +74,7 @@ function close() {
 	overflow: auto;
 	overscroll-behavior: contain;
 	text-align: left;
-	border-radius: 16px;
+	border-radius: 4px;
 
 	&.asDrawer {
 		width: 100%;
@@ -97,7 +97,7 @@ function close() {
 			justify-content: center;
 			vertical-align: bottom;
 			height: 100px;
-			border-radius: 10px;
+			border-radius: 5px;
 
 			&:hover {
 				color: var(--accent);

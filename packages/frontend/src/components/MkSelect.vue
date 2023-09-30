@@ -241,7 +241,7 @@ function show(ev: MouseEvent) {
 	color: var(--fg);
 	background: var(--panel);
 	border: solid 1px var(--panel);
-	border-radius: 6px;
+	border-radius: 5px;
 	outline: none;
 	box-shadow: none;
 	box-sizing: border-box;

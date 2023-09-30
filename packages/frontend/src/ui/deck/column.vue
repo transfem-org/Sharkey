@@ -255,7 +255,7 @@ function onDrop(ev) {
 	height: 100%;
 	overflow: clip;
 	contain: strict;
-	border-radius: 10px;
+	border-radius: 5px;
 
 	&.draghover {
 		&:after {
@@ -356,7 +356,7 @@ function onDrop(ev) {
 	width: 3px;
 	height: calc(100% - 24px);
 	background: var(--accent);
-	border-radius: 999px;
+	border-radius: 4px;
 }
 
 .tabShape {

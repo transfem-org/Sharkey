@@ -172,7 +172,7 @@ definePageMetadata({
 
 <style lang="scss" scoped>
 .rfqxtzch {
-	border-radius: 6px;
+	border-radius: 5px;
 
 	> .toggle {
 		position: relative;

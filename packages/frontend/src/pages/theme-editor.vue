@@ -244,7 +244,7 @@ definePageMetadata({
 				position: relative;
 				width: 64px;
 				height: 64px;
-				border-radius: 8px;
+				border-radius: 5px;
 
 				> .preview {
 					position: absolute;
@@ -271,10 +271,10 @@ definePageMetadata({
 				}
 
 				&.rounded {
-					border-radius: 999px;
+					border-radius: 4px;
 
 					> .preview {
-						border-radius: 999px;
+						border-radius: 4px;
 					}
 				}
 
