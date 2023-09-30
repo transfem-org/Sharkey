@@ -262,8 +262,10 @@ export class MastodonApiServerService {
 			const client = getClient(BASE_URL, accessTokens); // we are using this here, because in private mode some info isnt
 			// displayed without being logged in
 			try {
-				const account = new ApiAccountMastodon(_request, client, BASE_URL);
-				reply.send(await account.lookup());
+				const data = await client.search((_request.query as any).acct, { type: 'accounts' });
+				const profile = await this.userProfilesRepository.findOneBy({userId: data.data.accounts[0].id});
+				data.data.accounts[0].fields = profile?.fields.map(f => ({...f, verified_at: null})) || [];
+				reply.send(convertAccount(data.data.accounts[0]));
 			} catch (e: any) {
 				/* console.error(e); */
 				reply.code(401).send(e.response.data);
@@ -302,7 +304,6 @@ export class MastodonApiServerService {
 				const data = await client.getAccount(sharkId);
 				const profile = await this.userProfilesRepository.findOneBy({userId: sharkId});
 				data.data.fields = profile?.fields.map(f => ({...f, verified_at: null})) || [];
-				console.error(data.data.fields, profile?.fields);
 				reply.send(convertAccount(data.data));
 			} catch (e: any) {
 				/* console.error(e);
