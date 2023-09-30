@@ -94,7 +94,7 @@ export class MastoConverters {
 			id: convertId(mention.id, IdConvertType.MastodonId),
 		}));
 		const convertedMFM = this.MfmService.toHtml(parse(status.content), JSON.parse(note.mentionedRemoteUsers));
-		status.content = status.content ? convertedMFM?.replace(/&amp;/g , "&").replace(/&#39;/g , "\'")! : status.content;
+		status.content = status.content ? convertedMFM?.replace(/&amp;/g , "&").replaceAll(`<span>&</span><a href="${this.config.url}/tags/39;" rel="tag">#39;</a>` , "<span>\'</span>")! : status.content;
 		if (status.poll) status.poll = convertPoll(status.poll);
 		if (status.reblog) status.reblog = convertStatus(status.reblog);
 	

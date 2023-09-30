@@ -3,7 +3,7 @@ import megalodon, { Entity, MegalodonInterface } from 'megalodon';
 import querystring from 'querystring';
 import { IsNull } from 'typeorm';
 import multer from 'fastify-multer';
-import type { NotesRepository, UsersRepository } from '@/models/_.js';
+import type { NotesRepository, UserProfilesRepository, UsersRepository } from '@/models/_.js';
 import { DI } from '@/di-symbols.js';
 import { bindThis } from '@/decorators.js';
 import type { Config } from '@/config.js';
@@ -29,6 +29,8 @@ export class MastodonApiServerService {
         private usersRepository: UsersRepository,
 		@Inject(DI.notesRepository)
         private notesRepository: NotesRepository,
+		@Inject(DI.userProfilesRepository)
+		private userProfilesRepository: UserProfilesRepository,
         @Inject(DI.config)
         private config: Config,
         private metaService: MetaService,
@@ -298,6 +300,9 @@ export class MastodonApiServerService {
 			try {
 				const sharkId = convertId(_request.params.id, IdType.SharkeyId);
 				const data = await client.getAccount(sharkId);
+				const profile = await this.userProfilesRepository.findOneBy({userId: sharkId});
+				data.data.fields = profile?.fields.map(f => ({...f, verified_at: null})) || [];
+				console.error(data.data.fields, profile?.fields);
 				reply.send(convertAccount(data.data));
 			} catch (e: any) {
 				/* console.error(e);
