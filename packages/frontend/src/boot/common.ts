@@ -27,7 +27,7 @@ import { fetchCustomEmojis } from '@/custom-emojis.js';
 import { mainRouter } from '@/router.js';
 
 export async function common(createVue: () => App<Element>) {
-	console.info(`Misskey v${version}`);
+	console.info(`Sharkey v${version}`);
 
 	if (_DEV_) {
 		console.warn('Development mode!!!');
