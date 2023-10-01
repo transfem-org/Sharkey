@@ -141,7 +141,7 @@ defineProps<{
 						height: 60px;
 						aspect-ratio: 1;
 						background: var(--panel);
-						border-radius: 100%;
+						border-radius: 5px;
 					}
 
 					> .text {
