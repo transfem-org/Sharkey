@@ -245,7 +245,7 @@ const pagination = {
 	limit: 10,
 	params: computed(() => ({
 		userId: props.user.id,
-		includeReplies: noteview === 'replies' || noteview === 'files',
+		withReplies: noteview === 'replies' || noteview === 'files',
 		withFiles: noteview === 'files',
 	})),
 };
