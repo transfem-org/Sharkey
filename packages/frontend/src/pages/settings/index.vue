@@ -140,7 +140,7 @@ const menuDef = computed(() => [{
 		to: '/settings/roles',
 		active: currentPage?.route.name === 'roles',
 	}, {
-		icon: 'ph-prohibit ph-bold pg-lg',
+		icon: 'ph-speaker-none ph-bold pg-lg',
 		text: i18n.ts.instanceMute,
 		to: '/settings/instance-mute',
 		active: currentPage?.route.name === 'instance-mute',
@@ -150,12 +150,12 @@ const menuDef = computed(() => [{
 		to: '/settings/mute-block',
 		active: currentPage?.route.name === 'mute-block',
 	}, {
-		icon: 'ph-bell-slash ph-bold ph-lg',
+		icon: 'ph-speaker-x ph-bold ph-lg',
 		text: i18n.ts.wordMute,
 		to: '/settings/word-mute',
 		active: currentPage?.route.name === 'word-mute',
 	}, {
-		icon: 'ph-webhooks-logo ph-bold pg-lg',
+		icon: 'ph-key ph-bold pg-lg',
 		text: 'API',
 		to: '/settings/api',
 		active: currentPage?.route.name === 'api',
