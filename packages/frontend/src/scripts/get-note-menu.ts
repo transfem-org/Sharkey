@@ -117,6 +117,17 @@ export function getCopyNoteLinkMenu(note: misskey.entities.Note, text: string): 
 	};
 }
 
+export function getCopyNoteOriginLinkMenu(note: misskey.entities.Note, text: string): MenuItem {
+	return {
+		icon: 'ph-link ph-bold ph-lg',
+		text,
+		action: (): void => {
+			copyToClipboard(note.url ?? note.uri);
+			os.success();
+		},
+	};
+}
+
 export function getNoteMenu(props: {
 	note: Misskey.entities.Note;
 	menuButton: Ref<HTMLElement>;
@@ -281,7 +292,10 @@ export function getNoteMenu(props: {
 				text: i18n.ts.copyContent,
 				action: copyContent,
 			}, getCopyNoteLinkMenu(appearNote, i18n.ts.copyLink)
-			, (appearNote.url || appearNote.uri) ? {
+			, (appearNote.url || appearNote.uri) ? 
+				getCopyNoteOriginLinkMenu(appearNote, 'Copy link (Origin)')
+			: undefined,
+			(appearNote.url || appearNote.uri) ? {
 				icon: 'ph-arrow-square-out ph-bold ph-lg',
 				text: i18n.ts.showOnRemote,
 				action: () => {
@@ -391,7 +405,10 @@ export function getNoteMenu(props: {
 			text: i18n.ts.copyContent,
 			action: copyContent,
 		}, getCopyNoteLinkMenu(appearNote, i18n.ts.copyLink)
-		, (appearNote.url || appearNote.uri) ? {
+		, (appearNote.url || appearNote.uri) ? 
+			getCopyNoteOriginLinkMenu(appearNote, 'Copy link (Origin)')
+		: undefined,
+		(appearNote.url || appearNote.uri) ? {
 			icon: 'ph-arrow-square-out ph-bold ph-lg',
 			text: i18n.ts.showOnRemote,
 			action: () => {
