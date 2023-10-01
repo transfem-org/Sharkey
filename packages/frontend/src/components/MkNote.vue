@@ -373,7 +373,7 @@ function like(): void {
 	pleaseLogin();
 	showMovedDialog();
 	os.api('notes/reactions/create', {
-		noteId: apperNote.id,
+		noteId: appearNote.id,
 		reaction: '❤️',
 	});
 	const el = likeButton.value as HTMLElement | null | undefined;
