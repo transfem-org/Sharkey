@@ -67,7 +67,7 @@ export class MastoConverters {
 	public async getUser(id: string): Promise<MiUser> {
 		return this.GetterService.getUser(id).then(p => {
 			return p;
-		})
+		});
 	}
 
 	public async convertStatus(status: Entity.Status) {
@@ -94,7 +94,7 @@ export class MastoConverters {
 			id: convertId(mention.id, IdConvertType.MastodonId),
 		}));
 		const convertedMFM = this.MfmService.toHtml(parse(status.content), JSON.parse(note.mentionedRemoteUsers));
-		status.content = status.content ? convertedMFM?.replace(/&amp;/g , "&").replaceAll(`<span>&</span><a href="${this.config.url}/tags/39;" rel="tag">#39;</a>` , "<span>\'</span>")! : status.content;
+		status.content = status.content ? convertedMFM?.replace(/&amp;/g, "&").replaceAll(`<span>&</span><a href="${this.config.url}/tags/39;" rel="tag">#39;</a>`, "<span>\'</span>") as string : status.content;
 		if (status.poll) status.poll = convertPoll(status.poll);
 		if (status.reblog) status.reblog = convertStatus(status.reblog);
 	

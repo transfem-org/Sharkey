@@ -263,8 +263,8 @@ export class MastodonApiServerService {
 			// displayed without being logged in
 			try {
 				const data = await client.search((_request.query as any).acct, { type: 'accounts' });
-				const profile = await this.userProfilesRepository.findOneBy({userId: data.data.accounts[0].id});
-				data.data.accounts[0].fields = profile?.fields.map(f => ({...f, verified_at: null})) || [];
+				const profile = await this.userProfilesRepository.findOneBy({ userId: data.data.accounts[0].id });
+				data.data.accounts[0].fields = profile?.fields.map(f => ({ ...f, verified_at: null })) || [];
 				reply.send(convertAccount(data.data.accounts[0]));
 			} catch (e: any) {
 				/* console.error(e); */
@@ -302,8 +302,8 @@ export class MastodonApiServerService {
 			try {
 				const sharkId = convertId(_request.params.id, IdType.SharkeyId);
 				const data = await client.getAccount(sharkId);
-				const profile = await this.userProfilesRepository.findOneBy({userId: sharkId});
-				data.data.fields = profile?.fields.map(f => ({...f, verified_at: null})) || [];
+				const profile = await this.userProfilesRepository.findOneBy({ userId: sharkId });
+				data.data.fields = profile?.fields.map(f => ({ ...f, verified_at: null })) || [];
 				reply.send(convertAccount(data.data));
 			} catch (e: any) {
 				/* console.error(e);
