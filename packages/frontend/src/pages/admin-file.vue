@@ -41,7 +41,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</div>
 
 			<div>
-				<MkButton danger @click="del"><i class="ti ti-trash"></i> {{ i18n.ts.delete }}</MkButton>
+				<MkButton danger @click="del"><i class="ph-trash ph-bold ph-lg"></i> {{ i18n.ts.delete }}</MkButton>
 			</div>
 		</div>
 		<div v-else-if="tab === 'ip' && info" class="_gaps_m">
@@ -118,7 +118,7 @@ async function toggleIsSensitive(v) {
 
 const headerActions = $computed(() => [{
 	text: i18n.ts.openInNewTab,
-	icon: 'ti ti-external-link',
+	icon: 'ph-arrow-square-out ph-bold ph-lg',
 	handler: () => {
 		window.open(file.url, '_blank');
 	},
@@ -127,20 +127,20 @@ const headerActions = $computed(() => [{
 const headerTabs = $computed(() => [{
 	key: 'overview',
 	title: i18n.ts.overview,
-	icon: 'ti ti-info-circle',
+	icon: 'ph-info ph-bold ph-lg',
 }, iAmModerator ? {
 	key: 'ip',
 	title: 'IP',
-	icon: 'ti ti-password',
+	icon: 'ph-password ph-bold ph-lg',
 } : null, {
 	key: 'raw',
 	title: 'Raw data',
-	icon: 'ti ti-code',
+	icon: 'ph-code ph-bold pg-lg',
 }]);
 
 definePageMetadata(computed(() => ({
 	title: file ? i18n.ts.file + ': ' + file.name : i18n.ts.file,
-	icon: 'ti ti-file',
+	icon: 'ph-file ph-bold ph-lg',
 })));
 </script>
 

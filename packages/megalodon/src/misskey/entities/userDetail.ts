@@ -16,6 +16,7 @@ namespace MisskeyEntity {
     emojis: Array<Emoji> | { [key: string]: string }
     createdAt: string
     bannerUrl: string
+    uri: string
     bannerColor: string
     isLocked: boolean
     isSilenced: boolean

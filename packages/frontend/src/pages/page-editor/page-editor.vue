@@ -8,10 +8,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<template #header><MkPageHeader v-model:tab="tab" :actions="headerActions" :tabs="headerTabs"/></template>
 	<MkSpacer :contentMax="700">
 		<div class="jqqmcavi">
-			<MkButton v-if="pageId" class="button" inline link :to="`/@${ author.username }/pages/${ currentName }`"><i class="ti ti-external-link"></i> {{ i18n.ts._pages.viewPage }}</MkButton>
-			<MkButton v-if="!readonly" inline primary class="button" @click="save"><i class="ti ti-device-floppy"></i> {{ i18n.ts.save }}</MkButton>
-			<MkButton v-if="pageId" inline class="button" @click="duplicate"><i class="ti ti-copy"></i> {{ i18n.ts.duplicate }}</MkButton>
-			<MkButton v-if="pageId && !readonly" inline class="button" danger @click="del"><i class="ti ti-trash"></i> {{ i18n.ts.delete }}</MkButton>
+			<MkButton v-if="pageId" class="button" inline link :to="`/@${ author.username }/pages/${ currentName }`"><i class="ph-arrow-square-out ph-bold ph-lg"></i> {{ i18n.ts._pages.viewPage }}</MkButton>
+			<MkButton v-if="!readonly" inline primary class="button" @click="save"><i class="ph-floppy-disk ph-bold pg-lg"></i> {{ i18n.ts.save }}</MkButton>
+			<MkButton v-if="pageId" inline class="button" @click="duplicate"><i class="ph-copy ph-bold ph-lg"></i> {{ i18n.ts.duplicate }}</MkButton>
+			<MkButton v-if="pageId && !readonly" inline class="button" danger @click="del"><i class="ph-trash ph-bold ph-lg"></i> {{ i18n.ts.delete }}</MkButton>
 		</div>
 
 		<div v-if="tab === 'settings'">
@@ -40,10 +40,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<MkSwitch v-model="hideTitleWhenPinned">{{ i18n.ts._pages.hideTitleWhenPinned }}</MkSwitch>
 
 				<div class="eyeCatch">
-					<MkButton v-if="eyeCatchingImageId == null && !readonly" @click="setEyeCatchingImage"><i class="ti ti-plus"></i> {{ i18n.ts._pages.eyeCatchingImageSet }}</MkButton>
+					<MkButton v-if="eyeCatchingImageId == null && !readonly" @click="setEyeCatchingImage"><i class="ph-plus ph-bold ph-lg"></i> {{ i18n.ts._pages.eyeCatchingImageSet }}</MkButton>
 					<div v-else-if="eyeCatchingImage">
 						<img :src="eyeCatchingImage.url" :alt="eyeCatchingImage.name" style="max-width: 100%;"/>
-						<MkButton v-if="!readonly" @click="removeEyeCatchingImage()"><i class="ti ti-trash"></i> {{ i18n.ts._pages.eyeCatchingImageRemove }}</MkButton>
+						<MkButton v-if="!readonly" @click="removeEyeCatchingImage()"><i class="ph-trash ph-bold ph-lg"></i> {{ i18n.ts._pages.eyeCatchingImageRemove }}</MkButton>
 					</div>
 				</div>
 			</div>
@@ -53,7 +53,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<div :class="$style.contents">
 				<XBlocks v-model="content" class="content"/>
 
-				<MkButton v-if="!readonly" rounded class="add" @click="add()"><i class="ti ti-plus"></i></MkButton>
+				<MkButton v-if="!readonly" rounded class="add" @click="add()"><i class="ph-plus ph-bold ph-lg"></i></MkButton>
 			</div>
 		</div>
 	</MkSpacer>
@@ -275,11 +275,11 @@ const headerActions = $computed(() => []);
 const headerTabs = $computed(() => [{
 	key: 'settings',
 	title: i18n.ts._pages.pageSetting,
-	icon: 'ti ti-settings',
+	icon: 'ph-gear ph-bold pg-lg',
 }, {
 	key: 'contents',
 	title: i18n.ts._pages.contents,
-	icon: 'ti ti-note',
+	icon: 'ph-note ph-bold ph-lg',
 }]);
 
 definePageMetadata(computed(() => {
@@ -292,7 +292,7 @@ definePageMetadata(computed(() => {
 	}
 	return {
 		title: title,
-		icon: 'ti ti-pencil',
+		icon: 'ph-pencil ph-bold ph-lg',
 	};
 }));
 </script>

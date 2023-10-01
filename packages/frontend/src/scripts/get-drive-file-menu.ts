@@ -78,50 +78,50 @@ export function getDriveFileMenu(file: Misskey.entities.DriveFile, folder?: Miss
 	let menu;
 	menu = [{
 		text: i18n.ts.rename,
-		icon: 'ti ti-forms',
+		icon: 'ph-textbox ph-bold ph-lg',
 		action: () => rename(file),
 	}, {
 		text: file.isSensitive ? i18n.ts.unmarkAsSensitive : i18n.ts.markAsSensitive,
-		icon: file.isSensitive ? 'ti ti-eye' : 'ti ti-eye-exclamation',
+		icon: file.isSensitive ? 'ph-eye ph-bold ph-lg' : 'ph-eye-closed ph-bold ph-lg',
 		action: () => toggleSensitive(file),
 	}, {
 		text: i18n.ts.describeFile,
-		icon: 'ti ti-text-caption',
+		icon: 'ph-text-indent ph-bold ph-lg',
 		action: () => describe(file),
 	}, ...isImage ? [{
 		text: i18n.ts.cropImage,
-		icon: 'ti ti-crop',
+		icon: 'ph-crop ph-bold ph-lg',
 		action: () => os.cropImage(file, {
 			aspectRatio: NaN,
 			uploadFolder: folder ? folder.id : folder,
 		}),
 	}] : [], null, {
 		text: i18n.ts.createNoteFromTheFile,
-		icon: 'ti ti-pencil',
+		icon: 'ph-pencil ph-bold ph-lg',
 		action: () => os.post({
 			initialFiles: [file],
 		}),
 	}, {
 		text: i18n.ts.copyUrl,
-		icon: 'ti ti-link',
+		icon: 'ph-link ph-bold ph-lg',
 		action: () => copyUrl(file),
 	}, {
 		type: 'a',
 		href: file.url,
 		target: '_blank',
 		text: i18n.ts.download,
-		icon: 'ti ti-download',
+		icon: 'ph-download ph-bold ph-lg',
 		download: file.name,
 	}, null, {
 		text: i18n.ts.delete,
-		icon: 'ti ti-trash',
+		icon: 'ph-trash ph-bold ph-lg',
 		danger: true,
 		action: () => deleteFile(file),
 	}];
 
 	if (defaultStore.state.devMode) {
 		menu = menu.concat([null, {
-			icon: 'ti ti-id',
+			icon: 'ph-identification-card ph-bold ph-lg',
 			text: i18n.ts.copyFileId,
 			action: () => {
 				copyToClipboard(file.id);

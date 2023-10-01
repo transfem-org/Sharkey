@@ -7,19 +7,19 @@ SPDX-License-Identifier: AGPL-3.0-only
 <MkSpacer :contentMax="700">
 	<div class="_gaps">
 		<MkFoldableSection class="item">
-			<template #header><i class="ti ti-activity"></i> Heatmap</template>
+			<template #header><i class="ph-pulse ph-bold ph-lg"></i> Heatmap</template>
 			<XHeatmap :user="user" :src="'notes'"/>
 		</MkFoldableSection>
 		<MkFoldableSection class="item">
-			<template #header><i class="ti ti-pencil"></i> Notes</template>
+			<template #header><i class="ph-pencil ph-bold ph-lg"></i> Notes</template>
 			<XNotes :user="user"/>
 		</MkFoldableSection>
 		<MkFoldableSection class="item">
-			<template #header><i class="ti ti-users"></i> Following</template>
+			<template #header><i class="ph-users ph-bold pg-lg"></i> Following</template>
 			<XFollowing :user="user"/>
 		</MkFoldableSection>
 		<MkFoldableSection class="item">
-			<template #header><i class="ti ti-eye"></i> PV</template>
+			<template #header><i class="ph-eye ph-bold ph-lg"></i> PV</template>
 			<XPv :user="user"/>
 		</MkFoldableSection>
 	</div>

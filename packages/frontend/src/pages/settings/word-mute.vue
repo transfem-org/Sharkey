@@ -29,7 +29,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</MkKeyValue>
 		</div>
 	</div>
-	<MkButton primary inline :disabled="!changed" @click="save()"><i class="ti ti-device-floppy"></i> {{ i18n.ts.save }}</MkButton>
+	<MkButton primary inline :disabled="!changed" @click="save()"><i class="ph-floppy-disk ph-bold pg-lg"></i> {{ i18n.ts.save }}</MkButton>
 </div>
 </template>
 
@@ -128,6 +128,6 @@ const headerTabs = $computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.wordMute,
-	icon: 'ti ti-message-off',
+	icon: 'ph-bell-slash ph-bold ph-lg',
 });
 </script>

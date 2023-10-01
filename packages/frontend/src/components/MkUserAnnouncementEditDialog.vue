@@ -24,10 +24,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</MkTextarea>
 				<MkRadios v-model="icon">
 					<template #label>{{ i18n.ts.icon }}</template>
-					<option value="info"><i class="ti ti-info-circle"></i></option>
-					<option value="warning"><i class="ti ti-alert-triangle" style="color: var(--warn);"></i></option>
-					<option value="error"><i class="ti ti-circle-x" style="color: var(--error);"></i></option>
-					<option value="success"><i class="ti ti-check" style="color: var(--success);"></i></option>
+					<option value="info"><i class="ph-info ph-bold ph-lg"></i></option>
+					<option value="warning"><i class="ph-warning ph-bold ph-lg" style="color: var(--warn);"></i></option>
+					<option value="error"><i class="ph-x-circle ph-bold ph-lg" style="color: var(--error);"></i></option>
+					<option value="success"><i class="ph-check ph-bold ph-lg" style="color: var(--success);"></i></option>
 				</MkRadios>
 				<MkRadios v-model="display">
 					<template #label>{{ i18n.ts.display }}</template>
@@ -39,11 +39,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 					{{ i18n.ts._announcement.needConfirmationToRead }}
 					<template #caption>{{ i18n.ts._announcement.needConfirmationToReadDescription }}</template>
 				</MkSwitch>
-				<MkButton v-if="announcement" danger @click="del()"><i class="ti ti-trash"></i> {{ i18n.ts.delete }}</MkButton>
+				<MkButton v-if="announcement" danger @click="del()"><i class="ph-trash ph-bold ph-lg"></i> {{ i18n.ts.delete }}</MkButton>
 			</div>
 		</MkSpacer>
 		<div :class="$style.footer">
-			<MkButton primary rounded style="margin: 0 auto;" @click="done"><i class="ti ti-check"></i> {{ props.announcement ? i18n.ts.update : i18n.ts.create }}</MkButton>
+			<MkButton primary rounded style="margin: 0 auto;" @click="done"><i class="ph-check ph-bold ph-lg"></i> {{ props.announcement ? i18n.ts.update : i18n.ts.create }}</MkButton>
 		</div>
 	</div>
 </MkModalWindow>

@@ -12,26 +12,26 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<div v-if="origin === 'local'">
 		<template v-if="tag == null">
 			<MkFoldableSection class="_margin" persistKey="explore-pinned-users">
-				<template #header><i class="ti ti-bookmark ti-fw" style="margin-right: 0.5em;"></i>{{ i18n.ts.pinnedUsers }}</template>
+				<template #header><i class="ph-bookmark ph-bold ph-lg ti-fw" style="margin-right: 0.5em;"></i>{{ i18n.ts.pinnedUsers }}</template>
 				<MkUserList :pagination="pinnedUsers"/>
 			</MkFoldableSection>
 			<MkFoldableSection class="_margin" persistKey="explore-popular-users">
-				<template #header><i class="ti ti-chart-line ti-fw" style="margin-right: 0.5em;"></i>{{ i18n.ts.popularUsers }}</template>
+				<template #header><i class="ph-chart-line ph-bold pg-lg ti-fw" style="margin-right: 0.5em;"></i>{{ i18n.ts.popularUsers }}</template>
 				<MkUserList :pagination="popularUsers"/>
 			</MkFoldableSection>
 			<MkFoldableSection class="_margin" persistKey="explore-recently-updated-users">
-				<template #header><i class="ti ti-message ti-fw" style="margin-right: 0.5em;"></i>{{ i18n.ts.recentlyUpdatedUsers }}</template>
+				<template #header><i class="ph-chat-text ph-bold ph-lg ti-fw" style="margin-right: 0.5em;"></i>{{ i18n.ts.recentlyUpdatedUsers }}</template>
 				<MkUserList :pagination="recentlyUpdatedUsers"/>
 			</MkFoldableSection>
 			<MkFoldableSection class="_margin" persistKey="explore-recently-registered-users">
-				<template #header><i class="ti ti-plus ti-fw" style="margin-right: 0.5em;"></i>{{ i18n.ts.recentlyRegisteredUsers }}</template>
+				<template #header><i class="ph-plus ph-bold ph-lg ti-fw" style="margin-right: 0.5em;"></i>{{ i18n.ts.recentlyRegisteredUsers }}</template>
 				<MkUserList :pagination="recentlyRegisteredUsers"/>
 			</MkFoldableSection>
 		</template>
 	</div>
 	<div v-else>
 		<MkFoldableSection ref="tagsEl" :foldable="true" :expanded="false" class="_margin">
-			<template #header><i class="ti ti-hash ti-fw" style="margin-right: 0.5em;"></i>{{ i18n.ts.popularTags }}</template>
+			<template #header><i class="ph-hash ph-bold ph-lg ti-fw" style="margin-right: 0.5em;"></i>{{ i18n.ts.popularTags }}</template>
 
 			<div>
 				<MkA v-for="tag in tagsLocal" :key="'local:' + tag.tag" :to="`/user-tags/${tag.tag}`" style="margin-right: 16px; font-weight: bold;">{{ tag.tag }}</MkA>
@@ -40,21 +40,21 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</MkFoldableSection>
 
 		<MkFoldableSection v-if="tag != null" :key="`${tag}`" class="_margin">
-			<template #header><i class="ti ti-hash ti-fw" style="margin-right: 0.5em;"></i>{{ tag }}</template>
+			<template #header><i class="ph-hash ph-bold ph-lg ti-fw" style="margin-right: 0.5em;"></i>{{ tag }}</template>
 			<MkUserList :pagination="tagUsers"/>
 		</MkFoldableSection>
 
 		<template v-if="tag == null">
 			<MkFoldableSection class="_margin">
-				<template #header><i class="ti ti-chart-line ti-fw" style="margin-right: 0.5em;"></i>{{ i18n.ts.popularUsers }}</template>
+				<template #header><i class="ph-chart-line ph-bold pg-lg ti-fw" style="margin-right: 0.5em;"></i>{{ i18n.ts.popularUsers }}</template>
 				<MkUserList :pagination="popularUsersF"/>
 			</MkFoldableSection>
 			<MkFoldableSection class="_margin">
-				<template #header><i class="ti ti-message ti-fw" style="margin-right: 0.5em;"></i>{{ i18n.ts.recentlyUpdatedUsers }}</template>
+				<template #header><i class="ph-chat-text ph-bold ph-lg ti-fw" style="margin-right: 0.5em;"></i>{{ i18n.ts.recentlyUpdatedUsers }}</template>
 				<MkUserList :pagination="recentlyUpdatedUsersF"/>
 			</MkFoldableSection>
 			<MkFoldableSection class="_margin">
-				<template #header><i class="ti ti-rocket ti-fw" style="margin-right: 0.5em;"></i>{{ i18n.ts.recentlyDiscoveredUsers }}</template>
+				<template #header><i class="ph-rocket-launch ph-bold pg-lg ti-fw" style="margin-right: 0.5em;"></i>{{ i18n.ts.recentlyDiscoveredUsers }}</template>
 				<MkUserList :pagination="recentlyRegisteredUsersF"/>
 			</MkFoldableSection>
 		</template>

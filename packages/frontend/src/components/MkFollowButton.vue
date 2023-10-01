@@ -12,20 +12,20 @@ SPDX-License-Identifier: AGPL-3.0-only
 >
 	<template v-if="!wait">
 		<template v-if="hasPendingFollowRequestFromYou && user.isLocked">
-			<span v-if="full" :class="$style.text">{{ i18n.ts.followRequestPending }}</span><i class="ti ti-hourglass-empty"></i>
+			<span v-if="full" :class="$style.text">{{ i18n.ts.followRequestPending }}</span><i class="ph-hourglass ph-bold ph-lg"></i>
 		</template>
 		<template v-else-if="hasPendingFollowRequestFromYou && !user.isLocked">
 			<!-- つまりリモートフォローの場合。 -->
 			<span v-if="full" :class="$style.text">{{ i18n.ts.processing }}</span><MkLoading :em="true" :colored="false"/>
 		</template>
 		<template v-else-if="isFollowing">
-			<span v-if="full" :class="$style.text">{{ i18n.ts.unfollow }}</span><i class="ti ti-minus"></i>
+			<span v-if="full" :class="$style.text">{{ i18n.ts.unfollow }}</span><i class="ph-minus ph-bold ph-lg"></i>
 		</template>
 		<template v-else-if="!isFollowing && user.isLocked">
-			<span v-if="full" :class="$style.text">{{ i18n.ts.followRequest }}</span><i class="ti ti-plus"></i>
+			<span v-if="full" :class="$style.text">{{ i18n.ts.followRequest }}</span><i class="ph-plus ph-bold ph-lg"></i>
 		</template>
 		<template v-else-if="!isFollowing && !user.isLocked">
-			<span v-if="full" :class="$style.text">{{ i18n.ts.follow }}</span><i class="ti ti-plus"></i>
+			<span v-if="full" :class="$style.text">{{ i18n.ts.follow }}</span><i class="ph-plus ph-bold ph-lg"></i>
 		</template>
 	</template>
 	<template v-else>
@@ -141,7 +141,7 @@ onBeforeUnmount(() => {
 	padding: 0;
 	height: 31px;
 	font-size: 16px;
-	border-radius: 32px;
+	border-radius: 5px;
 	background: #fff;
 
 	&.full {
@@ -169,7 +169,7 @@ onBeforeUnmount(() => {
 			bottom: -5px;
 			left: -5px;
 			border: 2px solid var(--focus);
-			border-radius: 32px;
+			border-radius: 5px;
 		}
 	}
 

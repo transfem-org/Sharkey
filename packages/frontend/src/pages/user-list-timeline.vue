@@ -71,11 +71,11 @@ async function timetravel() {
 }
 
 const headerActions = $computed(() => list ? [{
-	icon: 'ti ti-calendar-time',
+	icon: 'ph-calendar ph-bold ph-lg',
 	text: i18n.ts.jumpToSpecifiedDate,
 	handler: timetravel,
 }, {
-	icon: 'ti ti-settings',
+	icon: 'ph-gear ph-bold pg-lg',
 	text: i18n.ts.settings,
 	handler: settings,
 }] : []);
@@ -84,7 +84,7 @@ const headerTabs = $computed(() => []);
 
 definePageMetadata(computed(() => list ? {
 	title: list.name,
-	icon: 'ti ti-list',
+	icon: 'ph-list ph-bold pg-lg',
 } : null));
 </script>
 
@@ -105,7 +105,7 @@ definePageMetadata(computed(() => list ? {
 	display: block;
 	margin: var(--margin) auto 0 auto;
 	padding: 8px 16px;
-	border-radius: 32px;
+	border-radius: 5px;
 }
 
 .tl {

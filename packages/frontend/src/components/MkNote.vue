@@ -13,13 +13,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 	:tabindex="!isDeleted ? '-1' : undefined"
 >
 	<MkNoteSub v-if="appearNote.reply && !renoteCollapsed" :note="appearNote.reply" :class="$style.replyTo"/>
-	<div v-if="pinned" :class="$style.tip"><i class="ti ti-pin"></i> {{ i18n.ts.pinnedNote }}</div>
-	<!--<div v-if="appearNote._prId_" class="tip"><i class="ti ti-speakerphone"></i> {{ i18n.ts.promotion }}<button class="_textButton hide" @click="readPromo()">{{ i18n.ts.hideThisNote }} <i class="ti ti-x"></i></button></div>-->
-	<!--<div v-if="appearNote._featuredId_" class="tip"><i class="ti ti-bolt"></i> {{ i18n.ts.featured }}</div>-->
+	<div v-if="pinned" :class="$style.tip"><i class="ph-push-pin ph-bold ph-lg"></i> {{ i18n.ts.pinnedNote }}</div>
+	<!--<div v-if="appearNote._prId_" class="tip"><i class="ph-megaphone ph-bold ph-lg"></i> {{ i18n.ts.promotion }}<button class="_textButton hide" @click="readPromo()">{{ i18n.ts.hideThisNote }} <i class="ph-x ph-bold ph-lg"></i></button></div>-->
+	<!--<div v-if="appearNote._featuredId_" class="tip"><i class="ph-lightning ph-bold pg-lg"></i> {{ i18n.ts.featured }}</div>-->
 	<div v-if="isRenote" :class="$style.renote">
 		<div v-if="note.channel" :class="$style.colorBar" :style="{ background: note.channel.color }"></div>
 		<MkAvatar :class="$style.renoteAvatar" :user="note.user" link preview/>
-		<i class="ti ti-repeat" style="margin-right: 4px;"></i>
+		<i class="ph-repeat ph-bold ph-lg" style="margin-right: 4px;"></i>
 		<I18n :src="i18n.ts.renotedBy" tag="span" :class="$style.renoteText">
 			<template #user>
 				<MkA v-user-preview="note.userId" :class="$style.renoteUserName" :to="userPage(note.user)">
@@ -29,17 +29,17 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</I18n>
 		<div :class="$style.renoteInfo">
 			<button ref="renoteTime" :class="$style.renoteTime" class="_button" @click="showRenoteMenu()">
-				<i class="ti ti-dots" :class="$style.renoteMenu"></i>
+				<i class="ph-dots-three ph-bold ph-lg" :class="$style.renoteMenu"></i>
 				<MkTime :time="note.createdAt"/>
 			</button>
 			<span v-if="note.visibility !== 'public'" style="margin-left: 0.5em;" :title="i18n.ts._visibility[note.visibility]">
-				<i v-if="note.visibility === 'home'" class="ti ti-home"></i>
-				<i v-else-if="note.visibility === 'followers'" class="ti ti-lock"></i>
-				<i v-else-if="note.visibility === 'specified'" ref="specified" class="ti ti-mail"></i>
+				<i v-if="note.visibility === 'home'" class="ph-house ph-bold ph-lg"></i>
+				<i v-else-if="note.visibility === 'followers'" class="ph-lock ph-bold ph-lg"></i>
+				<i v-else-if="note.visibility === 'specified'" ref="specified" class="ph-envelope ph-bold ph-lg"></i>
 			</span>
-			<span v-if="note.localOnly" style="margin-left: 0.5em;" :title="i18n.ts._visibility['disableFederation']"><i class="ti ti-rocket-off"></i></span>
-			<span v-if="note.channel" style="margin-left: 0.5em;" :title="note.channel.name"><i class="ti ti-device-tv"></i></span>
-			<span v-if="note.updatedAt" style="margin-left: 0.5em;" title="Edited"><i class="ti ti-pencil"></i></span>
+			<span v-if="note.localOnly" style="margin-left: 0.5em;" :title="i18n.ts._visibility['disableFederation']"><i class="ph-rocket ph-bold pg-lg"></i></span>
+			<span v-if="note.channel" style="margin-left: 0.5em;" :title="note.channel.name"><i class="ph-television ph-bold ph-lg"></i></span>
+			<span v-if="note.updatedAt" style="margin-left: 0.5em;" title="Edited"><i class="ph-pencil ph-bold ph-lg"></i></span>
 		</div>
 	</div>
 	<div v-if="renoteCollapsed" :class="$style.collapsedRenoteTarget">
@@ -60,7 +60,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<div v-show="appearNote.cw == null || showContent" :class="[{ [$style.contentCollapsed]: collapsed }]" >
 					<div :class="$style.text">
 						<span v-if="appearNote.isHidden" style="opacity: 0.5">({{ i18n.ts.private }})</span>
-						<MkA v-if="appearNote.replyId" :class="$style.replyIcon" :to="`/notes/${appearNote.replyId}`"><i class="ti ti-arrow-back-up"></i></MkA>
+						<MkA v-if="appearNote.replyId" :class="$style.replyIcon" :to="`/notes/${appearNote.replyId}`"><i class="ph-arrow-bend-left-up ph-bold pg-lg"></i></MkA>
 						<Mfm v-if="appearNote.text" :text="appearNote.text" :author="appearNote.user" :i="$i" :emojiUrls="appearNote.emojis"/>
 						<div v-if="translating || translation" :class="$style.translation">
 							<MkLoading v-if="translating" mini/>
@@ -83,7 +83,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<span :class="$style.showLessLabel">{{ i18n.ts.showLess }}</span>
 					</button>
 				</div>
-				<MkA v-if="appearNote.channel && !inChannel" :class="$style.channel" :to="`/channels/${appearNote.channel.id}`"><i class="ti ti-device-tv"></i> {{ appearNote.channel.name }}</MkA>
+				<MkA v-if="appearNote.channel && !inChannel" :class="$style.channel" :to="`/channels/${appearNote.channel.id}`"><i class="ph-television ph-bold ph-lg"></i> {{ appearNote.channel.name }}</MkA>
 			</div>
 			<MkReactionsViewer :note="appearNote" :maxNumber="16" v-on:click.stop>
 				<template #more>
@@ -92,7 +92,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</MkReactionsViewer>
 			<footer :class="$style.footer">
 				<button :class="$style.footerButton" class="_button" v-on:click.stop @click="reply()">
-					<i class="ti ti-arrow-back-up"></i>
+					<i class="ph-arrow-u-up-left ph-bold pg-lg"></i>
 					<p v-if="appearNote.repliesCount > 0" :class="$style.footerButtonCount">{{ appearNote.repliesCount }}</p>
 				</button>
 				<button
@@ -102,24 +102,27 @@ SPDX-License-Identifier: AGPL-3.0-only
 					class="_button"
 					@mousedown="renote()"
 				>
-					<i class="ti ti-repeat"></i>
+					<i class="ph-repeat ph-bold ph-lg"></i>
 					<p v-if="appearNote.renoteCount > 0" :class="$style.footerButtonCount">{{ appearNote.renoteCount }}</p>
 				</button>
 				<button v-else :class="$style.footerButton" class="_button" disabled>
-					<i class="ti ti-ban"></i>
+					<i class="ph-prohibit ph-bold ph-lg"></i>
+				</button>
+				<button v-if="appearNote.myReaction == null && appearNote.reactionAcceptance !== 'likeOnly'" ref="likeButton" :class="$style.footerButton" class="_button" v-on:click.stop @click="like()">
+					<i class="ph-heart ph-bold ph-lg"></i>
 				</button>
 				<button v-if="appearNote.myReaction == null" ref="reactButton" :class="$style.footerButton" class="_button" @mousedown="react()">
-					<i v-if="appearNote.reactionAcceptance === 'likeOnly'" class="ti ti-heart"></i>
-					<i v-else class="ti ti-plus"></i>
+					<i v-if="appearNote.reactionAcceptance === 'likeOnly'" class="ph-heart ph-bold ph-lg"></i>
+					<i v-else class="ph-smiley ph-bold ph-lg"></i>
 				</button>
-				<button v-if="appearNote.myReaction != null" ref="reactButton" :class="$style.footerButton" class="_button" @click="undoReact(appearNote)">
-					<i class="ti ti-minus"></i>
+				<button v-if="appearNote.myReaction != null" ref="reactButton" :class="$style.footerButton" class="_button" v-on:click.stop @click="undoReact(appearNote)">
+					<i class="ph-minus ph-bold ph-lg"></i>
 				</button>
 				<button v-if="defaultStore.state.showClipButtonInNoteFooter" ref="clipButton" :class="$style.footerButton" class="_button" @mousedown="clip()">
-					<i class="ti ti-paperclip"></i>
+					<i class="ph-paperclip ph-bold ph-lg"></i>
 				</button>
 				<button ref="menuButton" :class="$style.footerButton" class="_button" @mousedown="menu()">
-					<i class="ti ti-dots"></i>
+					<i class="ph-dots-three ph-bold ph-lg"></i>
 				</button>
 			</footer>
 		</div>
@@ -212,6 +215,7 @@ const renoteButton = shallowRef<HTMLElement>();
 const renoteTime = shallowRef<HTMLElement>();
 const reactButton = shallowRef<HTMLElement>();
 const clipButton = shallowRef<HTMLElement>();
+const likeButton = shallowRef<HTMLElement>();
 let appearNote = $computed(() => isRenote ? note.renote as Misskey.entities.Note : note);
 const isMyRenote = $i && ($i.id === note.userId);
 const showContent = ref(false);
@@ -281,7 +285,7 @@ function renote(viaKeyboard = false) {
 	if (appearNote.channel) {
 		items = items.concat([{
 			text: i18n.ts.inChannelRenote,
-			icon: 'ti ti-repeat',
+			icon: 'ph-repeat ph-bold ph-lg',
 			action: () => {
 				const el = renoteButton.value as HTMLElement | null | undefined;
 				if (el) {
@@ -300,7 +304,7 @@ function renote(viaKeyboard = false) {
 			},
 		}, {
 			text: i18n.ts.inChannelQuote,
-			icon: 'ti ti-quote',
+			icon: 'ph-quotes ph-bold ph-lg',
 			action: () => {
 				os.post({
 					renote: appearNote,
@@ -312,7 +316,7 @@ function renote(viaKeyboard = false) {
 
 	items = items.concat([{
 		text: i18n.ts.renote,
-		icon: 'ti ti-repeat',
+		icon: 'ph-repeat ph-bold ph-lg',
 		action: () => {
 			const el = renoteButton.value as HTMLElement | null | undefined;
 			if (el) {
@@ -341,7 +345,7 @@ function renote(viaKeyboard = false) {
 		},
 	}, {
 		text: i18n.ts.quote,
-		icon: 'ti ti-quote',
+		icon: 'ph-quotes ph-bold ph-lg',
 		action: () => {
 			os.post({
 				renote: appearNote,
@@ -363,6 +367,22 @@ function reply(viaKeyboard = false): void {
 	}, () => {
 		focus();
 	});
+}
+
+function like(): void {
+	pleaseLogin();
+	showMovedDialog();
+	os.api('notes/reactions/create', {
+		noteId: props.note.id,
+		reaction: '❤️',
+	});
+	const el = likeButton.value as HTMLElement | null | undefined;
+	if (el) {
+		const rect = el.getBoundingClientRect();
+		const x = rect.left + (el.offsetWidth / 2);
+		const y = rect.top + (el.offsetHeight / 2);
+		os.popup(MkRippleEffect, { x, y }, {}, 'end');
+	}
 }
 
 function react(viaKeyboard = false): void {
@@ -440,7 +460,7 @@ function showRenoteMenu(viaKeyboard = false): void {
 	function getUnrenote(): MenuItem {
 		return {
 			text: i18n.ts.unrenote,
-			icon: 'ti ti-trash',
+			icon: 'ph-trash ph-bold ph-lg',
 			danger: true,
 			action: () => {
 				os.api('notes/delete', {
@@ -552,7 +572,7 @@ function readPromo() {
 			padding: 0 4px;
 			margin-bottom: 0 !important;
 			background: var(--popup);
-			border-radius: 8px;
+			border-radius: 5px;
 			box-shadow: 0px 4px 32px var(--shadow);
 		}
 
@@ -684,7 +704,7 @@ function readPromo() {
 	left: 8px;
 	width: 5px;
 	height: calc(100% - 16px);
-	border-radius: 999px;
+	border-radius: 4px;
 	pointer-events: none;
 }
 
@@ -724,7 +744,7 @@ function readPromo() {
 	background: var(--popup);
 	padding: 6px 10px;
 	font-size: 0.8em;
-	border-radius: 999px;
+	border-radius: 4px;
 	box-shadow: 0 2px 6px rgb(0 0 0 / 20%);
 }
 
@@ -754,7 +774,7 @@ function readPromo() {
 	background: var(--panel);
 	padding: 6px 10px;
 	font-size: 0.8em;
-	border-radius: 999px;
+	border-radius: 4px;
 	box-shadow: 0 2px 6px rgb(0 0 0 / 20%);
 }
 
@@ -789,7 +809,7 @@ function readPromo() {
 .quoteNote {
 	padding: 16px;
 	border: dashed 1px var(--renote);
-	border-radius: 8px;
+	border-radius: 5px;
 	overflow: clip;
 }
 

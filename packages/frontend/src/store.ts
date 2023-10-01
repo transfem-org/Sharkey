@@ -63,11 +63,11 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	collapseRenotes: {
 		where: 'account',
-		default: true,
+		default: false,
 	},
 	collapseFiles: {
 		where: 'account',
-		default: true,
+		default: false,
 	},
 	rememberNoteVisibility: {
 		where: 'account',
@@ -203,7 +203,7 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	animatedMfm: {
 		where: 'device',
-		default: false,
+		default: true,
 	},
 	advancedMfm: {
 		where: 'device',
@@ -307,7 +307,7 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	squareAvatars: {
 		where: 'device',
-		default: false,
+		default: true,
 	},
 	postFormWithHashtags: {
 		where: 'device',

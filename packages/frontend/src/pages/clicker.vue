@@ -18,7 +18,7 @@ import { definePageMetadata } from '@/scripts/page-metadata.js';
 
 definePageMetadata({
 	title: '🍪👈',
-	icon: 'ti ti-cookie',
+	icon: 'ph-cookie ph-bold pg-lg',
 });
 </script>
 

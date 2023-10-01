@@ -46,6 +46,6 @@ const headerTabs = $computed(() => []);
 
 definePageMetadata({
 	title: 'API',
-	icon: 'ti ti-api',
+	icon: 'ph-webhooks-logo ph-bold pg-lg',
 });
 </script>

@@ -11,7 +11,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<div class="ogwlenmc">
 				<div v-if="tab === 'local'" class="local">
 					<MkInput v-model="query" :debounce="true" type="search">
-						<template #prefix><i class="ti ti-search"></i></template>
+						<template #prefix><i class="ph-magnifying-glass ph-bold ph-lg"></i></template>
 						<template #label>{{ i18n.ts.search }}</template>
 					</MkInput>
 					<MkSwitch v-model="selectMode" style="margin: 8px 0;">
@@ -45,7 +45,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<div v-else-if="tab === 'remote'" class="remote">
 					<FormSplit>
 						<MkInput v-model="queryRemote" :debounce="true" type="search">
-							<template #prefix><i class="ti ti-search"></i></template>
+							<template #prefix><i class="ph-magnifying-glass ph-bold ph-lg"></i></template>
 							<template #label>{{ i18n.ts.search }}</template>
 						</MkInput>
 						<MkInput v-model="host" :debounce="true">
@@ -168,12 +168,12 @@ const remoteMenu = (emoji, ev: MouseEvent) => {
 	},
 	{
 		text: i18n.ts.import,
-		icon: 'ti ti-plus',
+		icon: 'ph-plus ph-bold ph-lg',
 		action: () => { im(emoji); },
 	},
 	{
 		text: i18n.ts.delete,
-		icon: "ti ti-trash",
+		icon: "ph-trash ph-bold ph-lg",
 		action: () => {
 			os.apiWithDialog("admin/emoji/delete", {
 				id: emoji.id,
@@ -184,7 +184,7 @@ const remoteMenu = (emoji, ev: MouseEvent) => {
 
 const menu = (ev: MouseEvent) => {
 	os.popupMenu([{
-		icon: 'ti ti-download',
+		icon: 'ph-download ph-bold ph-lg',
 		text: i18n.ts.export,
 		action: async () => {
 			os.api('export-custom-emojis', {
@@ -202,7 +202,7 @@ const menu = (ev: MouseEvent) => {
 				});
 		},
 	}, {
-		icon: 'ti ti-upload',
+		icon: 'ph-upload ph-bold ph-lg',
 		text: i18n.ts.import,
 		action: async () => {
 			const file = await selectFile(ev.currentTarget ?? ev.target);
@@ -298,11 +298,11 @@ const delBulk = async () => {
 
 const headerActions = $computed(() => [{
 	asFullButton: true,
-	icon: 'ti ti-plus',
+	icon: 'ph-plus ph-bold ph-lg',
 	text: i18n.ts.addEmoji,
 	handler: add,
 }, {
-	icon: 'ti ti-dots',
+	icon: 'ph-dots-three ph-bold ph-lg',
 	handler: menu,
 }]);
 
@@ -316,7 +316,7 @@ const headerTabs = $computed(() => [{
 
 definePageMetadata(computed(() => ({
 	title: i18n.ts.customEmojis,
-	icon: 'ti ti-icons',
+	icon: 'ph-smiley ph-bold pg-lg',
 })));
 </script>
 

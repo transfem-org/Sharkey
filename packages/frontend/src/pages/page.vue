@@ -29,12 +29,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 					</div>
 					<div class="actions">
 						<div class="like">
-							<MkButton v-if="page.isLiked" v-tooltip="i18n.ts._pages.unlike" class="button" asLike primary @click="unlike()"><i class="ti ti-heart-off"></i><span v-if="page.likedCount > 0" class="count">{{ page.likedCount }}</span></MkButton>
-							<MkButton v-else v-tooltip="i18n.ts._pages.like" class="button" asLike @click="like()"><i class="ti ti-heart"></i><span v-if="page.likedCount > 0" class="count">{{ page.likedCount }}</span></MkButton>
+							<MkButton v-if="page.isLiked" v-tooltip="i18n.ts._pages.unlike" class="button" asLike primary @click="unlike()"><i class="ph-heart-break ph-bold ph-lg"></i><span v-if="page.likedCount > 0" class="count">{{ page.likedCount }}</span></MkButton>
+							<MkButton v-else v-tooltip="i18n.ts._pages.like" class="button" asLike @click="like()"><i class="ph-heart ph-bold ph-lg"></i><span v-if="page.likedCount > 0" class="count">{{ page.likedCount }}</span></MkButton>
 						</div>
 						<div class="other">
-							<button v-tooltip="i18n.ts.shareWithNote" v-click-anime class="_button" @click="shareWithNote"><i class="ti ti-repeat ti-fw"></i></button>
-							<button v-tooltip="i18n.ts.share" v-click-anime class="_button" @click="share"><i class="ti ti-share ti-fw"></i></button>
+							<button v-tooltip="i18n.ts.shareWithNote" v-click-anime class="_button" @click="shareWithNote"><i class="ph-repeat ph-bold ph-lg ti-fw"></i></button>
+							<button v-tooltip="i18n.ts.share" v-click-anime class="_button" @click="share"><i class="ph-share-network ph-bold pg-lg ti-fw"></i></button>
 						</div>
 					</div>
 					<div class="user">
@@ -55,12 +55,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 					</div>
 				</div>
 				<div class="footer">
-					<div><i class="ti ti-clock"></i> {{ i18n.ts.createdAt }}: <MkTime :time="page.createdAt" mode="detail"/></div>
-					<div v-if="page.createdAt != page.updatedAt"><i class="ti ti-clock"></i> {{ i18n.ts.updatedAt }}: <MkTime :time="page.updatedAt" mode="detail"/></div>
+					<div><i class="ph-clock ph-bold ph-lg"></i> {{ i18n.ts.createdAt }}: <MkTime :time="page.createdAt" mode="detail"/></div>
+					<div v-if="page.createdAt != page.updatedAt"><i class="ph-clock ph-bold ph-lg"></i> {{ i18n.ts.updatedAt }}: <MkTime :time="page.updatedAt" mode="detail"/></div>
 				</div>
 				<MkAd :prefer="['horizontal', 'horizontal-big']"/>
 				<MkContainer :max-height="300" :foldable="true" class="other">
-					<template #icon><i class="ti ti-clock"></i></template>
+					<template #icon><i class="ph-clock ph-bold ph-lg"></i></template>
 					<template #header>{{ i18n.ts.recentPosts }}</template>
 					<MkPagination v-slot="{items}" :pagination="otherPostsPagination" :class="$style.relatedPagesRoot" class="_gaps">
 						<MkPagePreview v-for="page in items" :key="page.id" :page="page" :class="$style.relatedPagesItem"/>

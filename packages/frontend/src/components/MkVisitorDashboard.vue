@@ -7,7 +7,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <div v-if="meta" :class="$style.root">
 	<div :class="[$style.main, $style.panel]">
 		<img :src="instance.iconUrl || instance.faviconUrl || '/favicon.ico'" alt="" :class="$style.mainIcon"/>
-		<button class="_button _acrylic" :class="$style.mainMenu" @click="showMenu"><i class="ti ti-dots"></i></button>
+		<button class="_button _acrylic" :class="$style.mainMenu" @click="showMenu"><i class="ph-dots-three ph-bold ph-lg"></i></button>
 		<div :class="$style.mainFg">
 			<h1 :class="$style.mainTitle">
 				<!-- 背景色によってはロゴが見えなくなるのでとりあえず無効に -->
@@ -94,19 +94,19 @@ function signup() {
 function showMenu(ev) {
 	os.popupMenu([{
 		text: i18n.ts.instanceInfo,
-		icon: 'ti ti-info-circle',
+		icon: 'ph-info ph-bold ph-lg',
 		action: () => {
 			os.pageWindow('/about');
 		},
 	}, {
 		text: i18n.ts.aboutMisskey,
-		icon: 'ti ti-info-circle',
+		icon: 'ph-info ph-bold ph-lg',
 		action: () => {
 			os.pageWindow('/about-sharkey');
 		},
 	}, null, {
 		text: i18n.ts.help,
-		icon: 'ti ti-help-circle',
+		icon: 'ph-question ph-bold ph-lg',
 		action: () => {
 			window.open('https://misskey-hub.net/help.md', '_blank');
 		},
@@ -114,7 +114,7 @@ function showMenu(ev) {
 }
 
 function exploreOtherServers() {
-	window.open('https://join.misskey.page/instances', '_blank');
+	window.open('https://joinsharkey.org/#findaninstance', '_blank');
 }
 </script>
 
@@ -151,7 +151,7 @@ function exploreOtherServers() {
 	right: 16px;
 	width: 32px;
 	height: 32px;
-	border-radius: 8px;
+	border-radius: 5px;
 	font-size: 18px;
 }
 

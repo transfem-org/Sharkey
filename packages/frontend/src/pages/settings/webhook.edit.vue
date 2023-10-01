@@ -14,7 +14,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</MkInput>
 
 	<MkInput v-model="secret">
-		<template #prefix><i class="ti ti-lock"></i></template>
+		<template #prefix><i class="ph-lock ph-bold ph-lg"></i></template>
 		<template #label>{{ i18n.ts._webhookSettings.secret }}</template>
 	</MkInput>
 
@@ -35,8 +35,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<MkSwitch v-model="active">{{ i18n.ts._webhookSettings.active }}</MkSwitch>
 
 	<div class="_buttons">
-		<MkButton primary inline @click="save"><i class="ti ti-check"></i> {{ i18n.ts.save }}</MkButton>
-		<MkButton danger inline @click="del"><i class="ti ti-trash"></i> {{ i18n.ts.delete }}</MkButton>
+		<MkButton primary inline @click="save"><i class="ph-check ph-bold ph-lg"></i> {{ i18n.ts.save }}</MkButton>
+		<MkButton danger inline @click="del"><i class="ph-trash ph-bold ph-lg"></i> {{ i18n.ts.delete }}</MkButton>
 	</div>
 </div>
 </template>
@@ -114,6 +114,6 @@ const headerTabs = $computed(() => []);
 
 definePageMetadata({
 	title: 'Edit webhook',
-	icon: 'ti ti-webhook',
+	icon: 'ph-webhooks-logo ph-bold ph-lg',
 });
 </script>

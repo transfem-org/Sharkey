@@ -47,7 +47,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</MkFolder>
 
 			<MkFolder :defaultOpen="false">
-				<template #icon><i class="ti ti-code"></i></template>
+				<template #icon><i class="ph-code ph-bold pg-lg"></i></template>
 				<template #label>{{ i18n.ts.editCode }}</template>
 
 				<div class="_gaps_m">
@@ -215,12 +215,12 @@ watch($$(theme), apply, { deep: true });
 
 const headerActions = $computed(() => [{
 	asFullButton: true,
-	icon: 'ti ti-eye',
+	icon: 'ph-eye ph-bold ph-lg',
 	text: i18n.ts.preview,
 	handler: showPreview,
 }, {
 	asFullButton: true,
-	icon: 'ti ti-check',
+	icon: 'ph-check ph-bold ph-lg',
 	text: i18n.ts.saveAs,
 	handler: saveAs,
 }]);
@@ -229,7 +229,7 @@ const headerTabs = $computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.themeEditor,
-	icon: 'ti ti-palette',
+	icon: 'ph-palette ph-bold ph-lg',
 });
 </script>
 
@@ -244,7 +244,7 @@ definePageMetadata({
 				position: relative;
 				width: 64px;
 				height: 64px;
-				border-radius: 8px;
+				border-radius: 5px;
 
 				> .preview {
 					position: absolute;
@@ -271,10 +271,10 @@ definePageMetadata({
 				}
 
 				&.rounded {
-					border-radius: 999px;
+					border-radius: 4px;
 
 					> .preview {
-						border-radius: 999px;
+						border-radius: 4px;
 					}
 				}
 

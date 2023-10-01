@@ -30,12 +30,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<FormSection>
 					<div class="_formLinks">
 						<FormLink to="https://github.com/transfem-org/Sharkey" external>
-							<template #icon><i class="ti ti-code"></i></template>
+							<template #icon><i class="ph-code ph-bold pg-lg"></i></template>
 							{{ i18n.ts._aboutMisskey.source }}
 							<template #suffix>GitHub</template>
 						</FormLink>
 						<FormLink to="https://ko-fi.com/transfem" external>
-							<template #icon><i class="ti ti-pig-money"></i></template>
+							<template #icon><i class="ph-piggy-bank ph-bold pg-lg"></i></template>
 							{{ i18n.ts._aboutMisskey.donate }}
 							<template #suffix>Ko-Fi</template>
 						</FormLink>
@@ -206,7 +206,7 @@ definePageMetadata({
 				display: block;
 				width: 80px;
 				margin: 0 auto;
-				border-radius: 16px;
+				border-radius: 4px;
 				position: relative;
 				z-index: 1;
 			}
@@ -256,7 +256,7 @@ definePageMetadata({
 	align-items: center;
 	padding: 12px;
 	background: var(--buttonBg);
-	border-radius: 6px;
+	border-radius: 5px;
 
 	&:hover {
 		text-decoration: none;
@@ -289,7 +289,7 @@ definePageMetadata({
 	align-items: center;
 	padding: 12px;
 	background: var(--buttonBg);
-	border-radius: 6px;
+	border-radius: 5px;
 }
 
 .patronIcon {

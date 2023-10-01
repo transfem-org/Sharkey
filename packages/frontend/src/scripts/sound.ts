@@ -17,7 +17,7 @@ export const soundConfigStore = markRaw(new Storage('sound', {
 	},
 	sound_note: {
 		where: 'account',
-		default: { type: 'syuilo/n-aec', volume: 1 },
+		default: { type: 'syuilo/n-aec', volume: 0 },
 	},
 	sound_noteMy: {
 		where: 'account',

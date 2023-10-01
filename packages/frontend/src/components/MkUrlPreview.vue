@@ -22,7 +22,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</div>
 	<div :class="$style.action">
 		<MkButton :small="true" inline @click="playerEnabled = false">
-			<i class="ti ti-x"></i> {{ i18n.ts.disablePlayer }}
+			<i class="ph-x ph-bold ph-lg"></i> {{ i18n.ts.disablePlayer }}
 		</MkButton>
 	</div>
 </template>
@@ -39,7 +39,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</div>
 	<div :class="$style.action">
 		<MkButton :small="true" inline @click="tweetExpanded = false">
-			<i class="ti ti-x"></i> {{ i18n.ts.close }}
+			<i class="ph-x ph-bold ph-lg"></i> {{ i18n.ts.close }}
 		</MkButton>
 	</div>
 </template>
@@ -67,15 +67,15 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<template v-if="showActions">
 		<div v-if="tweetId" :class="$style.action">
 			<MkButton :small="true" inline @click="tweetExpanded = true">
-				<i class="ti ti-brand-x"></i> {{ i18n.ts.expandTweet }}
+				<i class="ph-twitter-logo ph-bold ph-lg"></i> {{ i18n.ts.expandTweet }}
 			</MkButton>
 		</div>
 		<div v-if="!playerEnabled && player.url" :class="$style.action">
 			<MkButton :small="true" inline @click="playerEnabled = true">
-				<i class="ti ti-player-play"></i> {{ i18n.ts.enablePlayer }}
+				<i class="ph-play ph-bold pg-lg"></i> {{ i18n.ts.enablePlayer }}
 			</MkButton>
 			<MkButton v-if="!isMobile" :small="true" inline @click="openPlayer()">
-				<i class="ti ti-picture-in-picture"></i> {{ i18n.ts.openInWindow }}
+				<i class="ph-picture-in-picture ph-bold ph-lg"></i> {{ i18n.ts.openInWindow }}
 			</MkButton>
 		</div>
 	</template>
@@ -231,7 +231,7 @@ onUnmounted(() => {
 	display: block;
 	font-size: 14px;
 	box-shadow: 0 0 0 1px var(--divider);
-	border-radius: 8px;
+	border-radius: 5px;
 	overflow: clip;
 
 	&:hover {

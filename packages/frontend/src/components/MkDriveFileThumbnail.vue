@@ -6,16 +6,16 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <div ref="thumbnail" :class="$style.root">
 	<ImgWithBlurhash v-if="isThumbnailAvailable" :hash="file.blurhash" :src="file.thumbnailUrl" :alt="file.name" :title="file.name" :cover="fit !== 'contain'"/>
-	<i v-else-if="is === 'image'" class="ti ti-photo" :class="$style.icon"></i>
-	<i v-else-if="is === 'video'" class="ti ti-video" :class="$style.icon"></i>
-	<i v-else-if="is === 'audio' || is === 'midi'" class="ti ti-file-music" :class="$style.icon"></i>
-	<i v-else-if="is === 'csv'" class="ti ti-file-text" :class="$style.icon"></i>
-	<i v-else-if="is === 'pdf'" class="ti ti-file-text" :class="$style.icon"></i>
-	<i v-else-if="is === 'textfile'" class="ti ti-file-text" :class="$style.icon"></i>
-	<i v-else-if="is === 'archive'" class="ti ti-file-zip" :class="$style.icon"></i>
-	<i v-else class="ti ti-file" :class="$style.icon"></i>
+	<i v-else-if="is === 'image'" class="ph-image-square ph-bold ph-lg" :class="$style.icon"></i>
+	<i v-else-if="is === 'video'" class="ph-video ph-bold ph-lg" :class="$style.icon"></i>
+	<i v-else-if="is === 'audio' || is === 'midi'" class="ph-file-audio ph-bold ph-lg" :class="$style.icon"></i>
+	<i v-else-if="is === 'csv'" class="ph-file-text ph-bold ph-lg" :class="$style.icon"></i>
+	<i v-else-if="is === 'pdf'" class="ph-file-text ph-bold ph-lg" :class="$style.icon"></i>
+	<i v-else-if="is === 'textfile'" class="ph-file-text ph-bold ph-lg" :class="$style.icon"></i>
+	<i v-else-if="is === 'archive'" class="ph-file-zip ph-bold ph-lg" :class="$style.icon"></i>
+	<i v-else class="ph-file ph-bold ph-lg" :class="$style.icon"></i>
 
-	<i v-if="isThumbnailAvailable && is === 'video'" class="ti ti-video" :class="$style.iconSub"></i>
+	<i v-if="isThumbnailAvailable && is === 'video'" class="ph-video ph-bold ph-lg" :class="$style.iconSub"></i>
 </div>
 </template>
 
@@ -63,7 +63,7 @@ const isThumbnailAvailable = computed(() => {
 	position: relative;
 	display: flex;
 	background: var(--panel);
-	border-radius: 8px;
+	border-radius: 5px;
 	overflow: clip;
 }
 

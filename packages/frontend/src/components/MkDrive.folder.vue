@@ -20,8 +20,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 	@dragend="onDragend"
 >
 	<p :class="$style.name">
-		<template v-if="hover"><i :class="$style.icon" class="ti ti-folder ti-fw"></i></template>
-		<template v-if="!hover"><i :class="$style.icon" class="ti ti-folder ti-fw"></i></template>
+		<template v-if="hover"><i :class="$style.icon" class="ph-folder ph-bold ph-lg ti-fw"></i></template>
+		<template v-if="!hover"><i :class="$style.icon" class="ph-folder ph-bold ph-lg ti-fw"></i></template>
 		{{ folder.name }}
 	</p>
 	<p v-if="defaultStore.state.uploadFolder == folder.id" :class="$style.upload">
@@ -253,7 +253,7 @@ function onContextmenu(ev: MouseEvent) {
 	let menu;
 	menu = [{
 		text: i18n.ts.openInWindow,
-		icon: 'ti ti-app-window',
+		icon: 'ph-app-window ph-bold ph-lg',
 		action: () => {
 			os.popup(defineAsyncComponent(() => import('@/components/MkDriveWindow.vue')), {
 				initialFolder: props.folder,
@@ -262,17 +262,17 @@ function onContextmenu(ev: MouseEvent) {
 		},
 	}, null, {
 		text: i18n.ts.rename,
-		icon: 'ti ti-forms',
+		icon: 'ph-textbox ph-bold ph-lg',
 		action: rename,
 	}, null, {
 		text: i18n.ts.delete,
-		icon: 'ti ti-trash',
+		icon: 'ph-trash ph-bold ph-lg',
 		danger: true,
 		action: deleteFolder,
 	}];
 	if (defaultStore.state.devMode) {
 		menu = menu.concat([null, {
-			icon: 'ti ti-id',
+			icon: 'ph-identification-card ph-bold ph-lg',
 			text: i18n.ts.copyFolderId,
 			action: () => {
 				copyToClipboard(props.folder.id);

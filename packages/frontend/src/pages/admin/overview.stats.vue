@@ -9,7 +9,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<MkLoading v-if="fetching"/>
 		<div v-else :class="$style.root">
 			<div class="item _panel users">
-				<div class="icon"><i class="ti ti-users"></i></div>
+				<div class="icon"><i class="ph-users ph-bold pg-lg"></i></div>
 				<div class="body">
 					<div class="value">
 						<MkNumber :value="stats.originalUsersCount" style="margin-right: 0.5em;"/>
@@ -19,7 +19,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</div>
 			</div>
 			<div class="item _panel notes">
-				<div class="icon"><i class="ti ti-pencil"></i></div>
+				<div class="icon"><i class="ph-pencil ph-bold ph-lg"></i></div>
 				<div class="body">
 					<div class="value">
 						<MkNumber :value="stats.originalNotesCount" style="margin-right: 0.5em;"/>
@@ -29,7 +29,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</div>
 			</div>
 			<div class="item _panel instances">
-				<div class="icon"><i class="ti ti-planet"></i></div>
+				<div class="icon"><i class="ph-planet ph-bold pg-lg"></i></div>
 				<div class="body">
 					<div class="value">
 						<MkNumber :value="stats.instances" style="margin-right: 0.5em;"/>
@@ -38,7 +38,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</div>
 			</div>
 			<div class="item _panel emojis">
-				<div class="icon"><i class="ti ti-icons"></i></div>
+				<div class="icon"><i class="ph-smiley ph-bold pg-lg"></i></div>
 				<div class="body">
 					<div class="value">
 						<MkNumber :value="customEmojis.length" style="margin-right: 0.5em;"/>
@@ -47,7 +47,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</div>
 			</div>
 			<div class="item _panel online">
-				<div class="icon"><i class="ti ti-access-point"></i></div>
+				<div class="icon"><i class="ph-broadcast ph-bold ph-lg"></i></div>
 				<div class="body">
 					<div class="value">
 						<MkNumber :value="onlineUsersCount" style="margin-right: 0.5em;"/>
@@ -115,7 +115,7 @@ onMounted(async () => {
 				margin-right: 12px;
 				background: var(--accentedBg);
 				color: var(--accent);
-				border-radius: 10px;
+				border-radius: 5px;
 			}
 
 			&.users {

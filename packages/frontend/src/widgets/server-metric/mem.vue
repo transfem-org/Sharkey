@@ -7,7 +7,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <div class="zlxnikvl">
 	<XPie class="pie" :value="usage"/>
 	<div>
-		<p><i class="ti ti-section"></i>RAM</p>
+		<p><i class="ph-selection-all ph-bold ph-lg"></i>RAM</p>
 		<p>Total: {{ bytes(total, 1) }}</p>
 		<p>Used: {{ bytes(used, 1) }}</p>
 		<p>Free: {{ bytes(free, 1) }}</p>

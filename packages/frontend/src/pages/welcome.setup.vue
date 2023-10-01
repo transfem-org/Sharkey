@@ -21,7 +21,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</MkInput>
 				<MkInput v-model="password" type="password" data-cy-admin-password>
 					<template #label>{{ i18n.ts.password }}</template>
-					<template #prefix><i class="ti ti-lock"></i></template>
+					<template #prefix><i class="ph-lock ph-bold ph-lg"></i></template>
 				</MkInput>
 				<div>
 					<MkButton gradate large rounded type="submit" :disabled="submitting" data-cy-admin-ok style="margin: 0 auto;">

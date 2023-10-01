@@ -25,15 +25,15 @@ SPDX-License-Identifier: AGPL-3.0-only
 				[$style.t_achievementEarned]: notification.type === 'achievementEarned',
 			}]"
 		>
-			<i v-if="notification.type === 'follow'" class="ti ti-plus"></i>
-			<i v-else-if="notification.type === 'receiveFollowRequest'" class="ti ti-clock"></i>
-			<i v-else-if="notification.type === 'followRequestAccepted'" class="ti ti-check"></i>
-			<i v-else-if="notification.type === 'renote'" class="ti ti-repeat"></i>
-			<i v-else-if="notification.type === 'reply'" class="ti ti-arrow-back-up"></i>
-			<i v-else-if="notification.type === 'mention'" class="ti ti-at"></i>
-			<i v-else-if="notification.type === 'quote'" class="ti ti-quote"></i>
-			<i v-else-if="notification.type === 'pollEnded'" class="ti ti-chart-arrows"></i>
-			<i v-else-if="notification.type === 'achievementEarned'" class="ti ti-medal"></i>
+			<i v-if="notification.type === 'follow'" class="ph-plus ph-bold ph-lg"></i>
+			<i v-else-if="notification.type === 'receiveFollowRequest'" class="ph-clock ph-bold ph-lg"></i>
+			<i v-else-if="notification.type === 'followRequestAccepted'" class="ph-check ph-bold ph-lg"></i>
+			<i v-else-if="notification.type === 'renote'" class="ph-repeat ph-bold ph-lg"></i>
+			<i v-else-if="notification.type === 'reply'" class="ph-arrow-u-up-left ph-bold pg-lg"></i>
+			<i v-else-if="notification.type === 'mention'" class="ph-at ph-bold ph-lg"></i>
+			<i v-else-if="notification.type === 'quote'" class="ph-quotes ph-bold ph-lg"></i>
+			<i v-else-if="notification.type === 'pollEnded'" class="ph-chart-bar-horizontal ph-bold pg-lg"></i>
+			<i v-else-if="notification.type === 'achievementEarned'" class="ph-trophy ph-bold ph-lg"></i>
 			<!-- notification.reaction が null になることはまずないが、ここでoptional chaining使うと一部ブラウザで刺さるので念の為 -->
 			<MkReactionIcon
 				v-else-if="notification.type === 'reaction'"
@@ -57,14 +57,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</header>
 		<div>
 			<MkA v-if="notification.type === 'reaction'" :class="$style.text" :to="notePage(notification.note)" :title="getNoteSummary(notification.note)">
-				<i class="ti ti-quote" :class="$style.quote"></i>
+				<i class="ph-quotes ph-bold ph-lg" :class="$style.quote"></i>
 				<Mfm :text="getNoteSummary(notification.note)" :plain="true" :nowrap="true" :author="notification.note.user"/>
-				<i class="ti ti-quote" :class="$style.quote"></i>
+				<i class="ph-quotes ph-bold ph-lg" :class="$style.quote"></i>
 			</MkA>
 			<MkA v-else-if="notification.type === 'renote'" :class="$style.text" :to="notePage(notification.note)" :title="getNoteSummary(notification.note.renote)">
-				<i class="ti ti-quote" :class="$style.quote"></i>
+				<i class="ph-quotes ph-bold ph-lg" :class="$style.quote"></i>
 				<Mfm :text="getNoteSummary(notification.note.renote)" :plain="true" :nowrap="true" :author="notification.note.renote.user"/>
-				<i class="ti ti-quote" :class="$style.quote"></i>
+				<i class="ph-quotes ph-bold ph-lg" :class="$style.quote"></i>
 			</MkA>
 			<MkA v-else-if="notification.type === 'reply'" :class="$style.text" :to="notePage(notification.note)" :title="getNoteSummary(notification.note)">
 				<Mfm :text="getNoteSummary(notification.note)" :plain="true" :nowrap="true" :author="notification.note.user"/>
@@ -79,9 +79,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<Mfm :text="getNoteSummary(notification.note)" :plain="true" :nowrap="true" :author="notification.note.user"/>
 			</MkA>
 			<MkA v-else-if="notification.type === 'pollEnded'" :class="$style.text" :to="notePage(notification.note)" :title="getNoteSummary(notification.note)">
-				<i class="ti ti-quote" :class="$style.quote"></i>
+				<i class="ph-quotes ph-bold ph-lg" :class="$style.quote"></i>
 				<Mfm :text="getNoteSummary(notification.note)" :plain="true" :nowrap="true" :author="notification.note.user"/>
-				<i class="ti ti-quote" :class="$style.quote"></i>
+				<i class="ph-quotes ph-bold ph-lg" :class="$style.quote"></i>
 			</MkA>
 			<MkA v-else-if="notification.type === 'achievementEarned'" :class="$style.text" to="/my/achievements">
 				{{ i18n.ts._achievements._types['_' + notification.achievement].title }}
@@ -94,8 +94,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<template v-else-if="notification.type === 'receiveFollowRequest'">
 				<span :class="$style.text" style="opacity: 0.6;">{{ i18n.ts.receiveFollowRequest }}</span>
 				<div v-if="full && !followRequestDone" :class="$style.followRequestCommands">
-					<MkButton :class="$style.followRequestCommandButton" rounded primary @click="acceptFollowRequest()"><i class="ti ti-check"/> {{ i18n.ts.accept }}</MkButton>
-					<MkButton :class="$style.followRequestCommandButton" rounded danger @click="rejectFollowRequest()"><i class="ti ti-x"/> {{ i18n.ts.reject }}</MkButton>
+					<MkButton :class="$style.followRequestCommandButton" rounded primary @click="acceptFollowRequest()"><i class="ph-check ph-bold ph-lg"/> {{ i18n.ts.accept }}</MkButton>
+					<MkButton :class="$style.followRequestCommandButton" rounded danger @click="rejectFollowRequest()"><i class="ph-x ph-bold ph-lg"/> {{ i18n.ts.reject }}</MkButton>
 				</div>
 			</template>
 			<span v-else-if="notification.type === 'test'" :class="$style.text">{{ i18n.ts._notification.notificationWillBeDisplayedLikeThis }}</span>
@@ -181,7 +181,7 @@ useTooltip(reactionRef, (showing) => {
 	display: block;
 	width: 100%;
 	height: 100%;
-	border-radius: 6px;
+	border-radius: 5px;
 }
 
 .subIcon {

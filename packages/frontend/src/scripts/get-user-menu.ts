@@ -137,46 +137,46 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: Router 
 	}
 
 	let menu = [{
-		icon: 'ti ti-at',
+		icon: 'ph-at ph-bold ph-lg',
 		text: i18n.ts.copyUsername,
 		action: () => {
 			copyToClipboard(`@${user.username}@${user.host ?? host}`);
 		},
 	}, ...(iAmModerator ? [{
-		icon: 'ti ti-user-exclamation',
+		icon: 'ph-warning-circle ph-bold ph-lg',
 		text: i18n.ts.moderation,
 		action: () => {
 			router.push(`/admin/user/${user.id}`);
 		},
 	}] : []), {
-		icon: 'ti ti-rss',
+		icon: 'ph-rss ph-bold ph-lg',
 		text: i18n.ts.copyRSS,
 		action: () => {
 			copyToClipboard(`${user.host ?? host}/@${user.username}.atom`);
 		},
 	}, {
-		icon: 'ti ti-share',
+		icon: 'ph-share-network ph-bold pg-lg',
 		text: i18n.ts.copyProfileUrl,
 		action: () => {
 			const canonical = user.host === null ? `@${user.username}` : `@${user.username}@${toUnicode(user.host)}`;
 			copyToClipboard(`${url}/${canonical}`);
 		},
 	}, {
-		icon: 'ti ti-mail',
+		icon: 'ph-envelope ph-bold ph-lg',
 		text: i18n.ts.sendMessage,
 		action: () => {
 			const canonical = user.host === null ? `@${user.username}` : `@${user.username}@${user.host}`;
 			os.post({ specified: user, initialText: `${canonical} ` });
 		},
 	}, null, {
-		icon: 'ti ti-pencil',
+		icon: 'ph-pencil ph-bold ph-lg',
 		text: i18n.ts.editMemo,
 		action: () => {
 			editMemo();
 		},
 	}, {
 		type: 'parent',
-		icon: 'ti ti-list',
+		icon: 'ph-list ph-bold pg-lg',
 		text: i18n.ts.addToList,
 		children: async () => {
 			const lists = await userListsCache.fetch();
@@ -209,7 +209,7 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: Router 
 		},
 	}, {
 		type: 'parent',
-		icon: 'ti ti-antenna',
+		icon: 'ph-flying-saucer ph-bold pg-lg',
 		text: i18n.ts.addToAntenna,
 		children: async () => {
 			const antennas = await antennasCache.fetch();
@@ -240,7 +240,7 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: Router 
 		if (iAmModerator) {
 			menu = menu.concat([{
 				type: 'parent',
-				icon: 'ti ti-badges',
+				icon: 'ph-seal-check ph-bold pg-lg',
 				text: i18n.ts.roles,
 				children: async () => {
 					const roles = await rolesCache.fetch();
@@ -282,36 +282,36 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: Router 
 		// フォローしたとしても user.isFollowing はリアルタイム更新されないので不便なため
 		//if (user.isFollowing) {
 		menu = menu.concat([{
-			icon: user.notify === 'none' ? 'ti ti-bell' : 'ti ti-bell-off',
+			icon: user.notify === 'none' ? 'ph-bell ph-bold pg-lg' : 'ph-bell ph-bold pg-lg-off',
 			text: user.notify === 'none' ? i18n.ts.notifyNotes : i18n.ts.unnotifyNotes,
 			action: toggleNotify,
 		}]);
 		//}
 
 		menu = menu.concat([null, {
-			icon: user.isMuted ? 'ti ti-eye' : 'ti ti-eye-off',
+			icon: user.isMuted ? 'ph-eye ph-bold ph-lg' : 'ph-eye-slash ph-bold ph-lg',
 			text: user.isMuted ? i18n.ts.unmute : i18n.ts.mute,
 			action: toggleMute,
 		}, {
-			icon: user.isRenoteMuted ? 'ti ti-repeat' : 'ti ti-repeat-off',
+			icon: user.isRenoteMuted ? 'ph-repeat ph-bold ph-lg' : 'ph-repeat ph-bold ph-lg-off',
 			text: user.isRenoteMuted ? i18n.ts.renoteUnmute : i18n.ts.renoteMute,
 			action: toggleRenoteMute,
 		}, {
-			icon: 'ti ti-ban',
+			icon: 'ph-prohibit ph-bold ph-lg',
 			text: user.isBlocking ? i18n.ts.unblock : i18n.ts.block,
 			action: toggleBlock,
 		}]);
 
 		if (user.isFollowed) {
 			menu = menu.concat([{
-				icon: 'ti ti-link-off',
+				icon: 'ph-link ph-bold ph-lg-off',
 				text: i18n.ts.breakFollow,
 				action: invalidateFollow,
 			}]);
 		}
 
 		menu = menu.concat([null, {
-			icon: 'ti ti-exclamation-circle',
+			icon: 'ph-warning-circle ph-bold ph-lg',
 			text: i18n.ts.reportAbuse,
 			action: reportAbuse,
 		}]);
@@ -319,7 +319,7 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: Router 
 
 	if (defaultStore.state.devMode) {
 		menu = menu.concat([null, {
-			icon: 'ti ti-id',
+			icon: 'ph-identification-card ph-bold ph-lg',
 			text: i18n.ts.copyUserId,
 			action: () => {
 				copyToClipboard(user.id);
@@ -329,7 +329,7 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: Router 
 
 	if ($i && meId === user.id) {
 		menu = menu.concat([null, {
-			icon: 'ti ti-pencil',
+			icon: 'ph-pencil ph-bold ph-lg',
 			text: i18n.ts.editProfile,
 			action: () => {
 				router.push('/settings/profile');
@@ -339,7 +339,7 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: Router 
 
 	if (userActions.length > 0) {
 		menu = menu.concat([null, ...userActions.map(action => ({
-			icon: 'ti ti-plug',
+			icon: 'ph-plug ph-bold ph-lg',
 			text: action.title,
 			action: () => {
 				action.handler(user);

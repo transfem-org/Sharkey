@@ -92,15 +92,15 @@ function select(src: any, label: string | null, multiple: boolean): Promise<Miss
 			ref: keepOriginal,
 		}, {
 			text: i18n.ts.upload,
-			icon: 'ti ti-upload',
+			icon: 'ph-upload ph-bold ph-lg',
 			action: () => chooseFileFromPc(multiple, keepOriginal.value).then(files => res(files)),
 		}, {
 			text: i18n.ts.fromDrive,
-			icon: 'ti ti-cloud',
+			icon: 'ph-cloud ph-bold ph-lg',
 			action: () => chooseFileFromDrive(multiple).then(files => res(files)),
 		}, {
 			text: i18n.ts.fromUrl,
-			icon: 'ti ti-link',
+			icon: 'ph-link ph-bold ph-lg',
 			action: () => chooseFileFromUrl().then(file => res([file])),
 		}], src);
 	});

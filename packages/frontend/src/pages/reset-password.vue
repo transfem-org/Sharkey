@@ -9,7 +9,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<MkSpacer v-if="token" :contentMax="700" :marginMin="16" :marginMax="32">
 		<div class="_gaps_m">
 			<MkInput v-model="password" type="password">
-				<template #prefix><i class="ti ti-lock"></i></template>
+				<template #prefix><i class="ph-lock ph-bold ph-lg"></i></template>
 				<template #label>{{ i18n.ts.newPassword }}</template>
 			</MkInput>
 
@@ -55,6 +55,6 @@ const headerTabs = $computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.resetPassword,
-	icon: 'ti ti-lock',
+	icon: 'ph-lock ph-bold ph-lg',
 });
 </script>

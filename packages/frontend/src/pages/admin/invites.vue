@@ -9,7 +9,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<MkSpacer :contentMax="800">
 		<div class="_gaps_m">
 			<MkFolder :expanded="false">
-				<template #icon><i class="ti ti-plus"></i></template>
+				<template #icon><i class="ph-plus ph-bold ph-lg"></i></template>
 				<template #label>{{ i18n.ts.createInviteCode }}</template>
 
 				<div class="_gaps_m">
@@ -114,7 +114,7 @@ const headerTabs = $computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.invite,
-	icon: 'ti ti-user-plus',
+	icon: 'ph-user-plus ph-bold ph-lg',
 });
 </script>
 

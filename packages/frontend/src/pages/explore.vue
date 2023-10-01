@@ -47,20 +47,20 @@ const headerActions = $computed(() => []);
 
 const headerTabs = $computed(() => [{
 	key: 'featured',
-	icon: 'ti ti-bolt',
+	icon: 'ph-lightning ph-bold pg-lg',
 	title: i18n.ts.featured,
 }, {
 	key: 'users',
-	icon: 'ti ti-users',
+	icon: 'ph-users ph-bold pg-lg',
 	title: i18n.ts.users,
 }, {
 	key: 'roles',
-	icon: 'ti ti-badges',
+	icon: 'ph-seal-check ph-bold pg-lg',
 	title: i18n.ts.roles,
 }]);
 
 definePageMetadata(computed(() => ({
 	title: i18n.ts.explore,
-	icon: 'ti ti-hash',
+	icon: 'ph-hash ph-bold ph-lg',
 })));
 </script>

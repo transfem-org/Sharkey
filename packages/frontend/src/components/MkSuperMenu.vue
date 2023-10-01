@@ -59,7 +59,7 @@ defineProps<{
 				width: 100%;
 				box-sizing: border-box;
 				padding: 9px 16px 9px 8px;
-				border-radius: 9px;
+				border-radius: 5px;
 				font-size: 0.9em;
 
 				&:hover {

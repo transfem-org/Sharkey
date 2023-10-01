@@ -6,7 +6,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <div :class="$style.root">
 	<input v-model="query" :class="$style.input" type="search" :placeholder="q">
-	<button :class="$style.button" @click="search"><i class="ti ti-search"></i> {{ i18n.ts.searchByGoogle }}</button>
+	<button :class="$style.button" @click="search"><i class="ph-magnifying-glass ph-bold ph-lg"></i> {{ i18n.ts.searchByGoogle }}</button>
 </div>
 </template>
 

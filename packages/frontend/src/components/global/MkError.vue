@@ -7,7 +7,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <Transition :name="defaultStore.state.animation ? '_transition_zoom' : ''" appear>
 	<div :class="$style.root">
 		<img :class="$style.img" :src="serverErrorImageUrl" class="_ghost"/>
-		<p :class="$style.text"><i class="ti ti-alert-triangle"></i> {{ i18n.ts.somethingHappened }}</p>
+		<p :class="$style.text"><i class="ph-warning ph-bold ph-lg"></i> {{ i18n.ts.somethingHappened }}</p>
 		<MkButton :class="$style.button" @click="() => emit('retry')">{{ i18n.ts.retry }}</MkButton>
 	</div>
 </Transition>
@@ -44,6 +44,6 @@ const emit = defineEmits<{
   width: 128px;
 	height: 128px;
 	margin-bottom: 16px;
-	border-radius: 16px;
+	border-radius: 4px;
 }
 </style>

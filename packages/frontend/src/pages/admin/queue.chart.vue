@@ -30,7 +30,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</div>
 	</div>
 	<MkFolder :defaultOpen="true" :max-height="250">
-		<template #icon><i class="ti ti-alert-triangle"></i></template>
+		<template #icon><i class="ph-warning ph-bold ph-lg"></i></template>
 		<template #label>Errored instances</template>
 		<template #suffix>({{ number(jobs.reduce((a, b) => a + b[1], 0)) }} jobs)</template>
 

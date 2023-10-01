@@ -6,7 +6,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <div>
 	<div :class="$style.banner">
-		<i class="ti ti-checklist"></i>
+		<i class="ph-check ph-bold ph-lglist"></i>
 	</div>
 	<MkSpacer :marginMin="20" :marginMax="28">
 		<div class="_gaps_m">
@@ -21,7 +21,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 			<MkFolder v-if="availableServerRules" :defaultOpen="true">
 				<template #label>{{ i18n.ts.serverRules }}</template>
-				<template #suffix><i v-if="agreeServerRules" class="ti ti-check" style="color: var(--success)"></i></template>
+				<template #suffix><i v-if="agreeServerRules" class="ph-check ph-bold ph-lg" style="color: var(--success)"></i></template>
 
 				<ol class="_gaps_s" :class="$style.rules">
 					<li v-for="item in instance.serverRules" :class="$style.rule"><div :class="$style.ruleText" v-html="item"></div></li>
@@ -32,18 +32,18 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 			<MkFolder v-if="availableTos" :defaultOpen="true">
 				<template #label>{{ i18n.ts.termsOfService }}</template>
-				<template #suffix><i v-if="agreeTos" class="ti ti-check" style="color: var(--success)"></i></template>
+				<template #suffix><i v-if="agreeTos" class="ph-check ph-bold ph-lg" style="color: var(--success)"></i></template>
 
-				<a :href="instance.tosUrl" class="_link" target="_blank">{{ i18n.ts.termsOfService }} <i class="ti ti-external-link"></i></a>
+				<a :href="instance.tosUrl" class="_link" target="_blank">{{ i18n.ts.termsOfService }} <i class="ph-arrow-square-out ph-bold ph-lg"></i></a>
 
 				<MkSwitch :modelValue="agreeTos" style="margin-top: 16px;" @update:modelValue="updateAgreeTos">{{ i18n.ts.agree }}</MkSwitch>
 			</MkFolder>
 
 			<MkFolder :defaultOpen="true">
 				<template #label>{{ i18n.ts.basicNotesBeforeCreateAccount }}</template>
-				<template #suffix><i v-if="agreeNote" class="ti ti-check" style="color: var(--success)"></i></template>
+				<template #suffix><i v-if="agreeNote" class="ph-check ph-bold ph-lg" style="color: var(--success)"></i></template>
 
-				<a href="https://misskey-hub.net/docs/notes.html" class="_link" target="_blank">{{ i18n.ts.basicNotesBeforeCreateAccount }} <i class="ti ti-external-link"></i></a>
+				<a href="https://misskey-hub.net/docs/notes.html" class="_link" target="_blank">{{ i18n.ts.basicNotesBeforeCreateAccount }} <i class="ph-arrow-square-out ph-bold ph-lg"></i></a>
 
 				<MkSwitch :modelValue="agreeNote" style="margin-top: 16px;" data-cy-signup-rules-notes-agree @update:modelValue="updateAgreeNote">{{ i18n.ts.agree }}</MkSwitch>
 			</MkFolder>
@@ -52,7 +52,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 			<div class="_buttonsCenter">
 				<MkButton inline rounded @click="emit('cancel')">{{ i18n.ts.cancel }}</MkButton>
-				<MkButton inline primary rounded gradate :disabled="!agreed" data-cy-signup-rules-continue @click="emit('done')">{{ i18n.ts.continue }} <i class="ti ti-arrow-right"></i></MkButton>
+				<MkButton inline primary rounded gradate :disabled="!agreed" data-cy-signup-rules-continue @click="emit('done')">{{ i18n.ts.continue }} <i class="ph-arrow-right ph-bold pg-lg"></i></MkButton>
 			</div>
 		</div>
 	</MkSpacer>
@@ -165,7 +165,7 @@ async function updateAgreeNote(v: boolean) {
 		font-weight: bold;
 		align-items: center;
 		justify-content: center;
-		border-radius: 999px;
+		border-radius: 4px;
 	}
 }
 

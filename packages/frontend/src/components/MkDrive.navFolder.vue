@@ -12,7 +12,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	@dragleave="onDragleave"
 	@drop.stop="onDrop"
 >
-	<i v-if="folder == null" class="ti ti-cloud" style="margin-right: 4px;"></i>
+	<i v-if="folder == null" class="ph-cloud ph-bold ph-lg" style="margin-right: 4px;"></i>
 	<span>{{ folder == null ? i18n.ts.drive : folder.name }}</span>
 </div>
 </template>

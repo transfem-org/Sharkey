@@ -63,7 +63,7 @@ export class ApiAccountMastodon {
 			const data = await this.client.search((this.request.query as any).acct, { type: 'accounts' });
 			return convertAccount(data.data.accounts[0]);
 		} catch (e: any) {
-			/* console.error(e);
+			/* console.error(e)
 			console.error(e.response.data); */
 			return e.response;
 		}

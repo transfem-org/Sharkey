@@ -23,11 +23,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 		>
 			<slot></slot>
 		</select>
-		<div ref="suffixEl" :class="$style.suffix"><i class="ti ti-chevron-down" :class="[$style.chevron, { [$style.chevronOpening]: opening }]"></i></div>
+		<div ref="suffixEl" :class="$style.suffix"><i class="ph-caret-down ph-bold ph-lg" :class="[$style.chevron, { [$style.chevronOpening]: opening }]"></i></div>
 	</div>
 	<div :class="$style.caption"><slot name="caption"></slot></div>
 
-	<MkButton v-if="manualSave && changed" primary @click="updated"><i class="ti ti-device-floppy"></i> {{ i18n.ts.save }}</MkButton>
+	<MkButton v-if="manualSave && changed" primary @click="updated"><i class="ph-floppy-disk ph-bold pg-lg"></i> {{ i18n.ts.save }}</MkButton>
 </div>
 </template>
 
@@ -241,7 +241,7 @@ function show(ev: MouseEvent) {
 	color: var(--fg);
 	background: var(--panel);
 	border: solid 1px var(--panel);
-	border-radius: 6px;
+	border-radius: 5px;
 	outline: none;
 	box-shadow: none;
 	box-sizing: border-box;

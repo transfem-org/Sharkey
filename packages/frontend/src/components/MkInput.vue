@@ -35,7 +35,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</div>
 	<div :class="$style.caption"><slot name="caption"></slot></div>
 
-	<MkButton v-if="manualSave && changed" primary :class="$style.save" @click="updated"><i class="ti ti-check"></i> {{ i18n.ts.save }}</MkButton>
+	<MkButton v-if="manualSave && changed" primary :class="$style.save" @click="updated"><i class="ph-check ph-bold ph-lg"></i> {{ i18n.ts.save }}</MkButton>
 </div>
 </template>
 
@@ -221,7 +221,7 @@ defineExpose({
 	color: var(--fg);
 	background: var(--panel);
 	border: solid 1px var(--panel);
-	border-radius: 6px;
+	border-radius: 5px;
 	outline: none;
 	box-shadow: none;
 	box-sizing: border-box;

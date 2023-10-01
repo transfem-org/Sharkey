@@ -12,7 +12,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<div :class="$style.root">
 			<img :class="$style.img" :src="serverErrorImageUrl" class="_ghost"/>
 			<div :class="$style.text">
-				<i class="ti ti-alert-triangle"></i>
+				<i class="ph-warning ph-bold ph-lg"></i>
 				{{ i18n.ts.nothing }}
 			</div>
 		</div>
@@ -20,7 +20,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<MkSpacer v-else :contentMax="800">
 		<div class="_gaps_m" style="text-align: center;">
 			<div v-if="resetCycle && inviteLimit">{{ i18n.t('inviteLimitResetCycle', { time: resetCycle, limit: inviteLimit }) }}</div>
-			<MkButton inline primary rounded :disabled="currentInviteLimit !== null && currentInviteLimit <= 0" @click="create"><i class="ti ti-user-plus"></i> {{ i18n.ts.createInviteCode }}</MkButton>
+			<MkButton inline primary rounded :disabled="currentInviteLimit !== null && currentInviteLimit <= 0" @click="create"><i class="ph-user-plus ph-bold ph-lg"></i> {{ i18n.ts.createInviteCode }}</MkButton>
 			<div v-if="currentInviteLimit !== null">{{ i18n.t('createLimitRemaining', { limit: currentInviteLimit }) }}</div>
 
 			<MkPagination ref="pagingComponent" :pagination="pagination">
@@ -94,7 +94,7 @@ update();
 
 definePageMetadata({
 	title: i18n.ts.invite,
-	icon: 'ti ti-user-plus',
+	icon: 'ph-user-plus ph-bold ph-lg',
 });
 </script>
 
@@ -114,6 +114,6 @@ definePageMetadata({
 	width: 128px;
 	height: 128px;
 	margin-bottom: 16px;
-	border-radius: 16px;
+	border-radius: 4px;
 }
 </style>

@@ -13,7 +13,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 >
 	<header :class="$style.header">
 		<div :class="$style.headerLeft">
-			<button v-if="!fixed" :class="$style.cancel" class="_button" @click="cancel"><i class="ti ti-x"></i></button>
+			<button v-if="!fixed" :class="$style.cancel" class="_button" @click="cancel"><i class="ph-x ph-bold ph-lg"></i></button>
 			<button v-click-anime v-tooltip="i18n.ts.switchAccount" :class="$style.account" class="_button" @click="openAccountMenu">
 				<MkAvatar :user="postAccount ?? $i" :class="$style.avatar"/>
 			</button>
@@ -21,47 +21,47 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<div :class="$style.headerRight">
 			<template v-if="!(channel != null && fixed)">
 				<button v-if="channel == null" ref="visibilityButton" v-click-anime v-tooltip="i18n.ts.visibility" :class="['_button', $style.headerRightItem, $style.visibility]" @click="setVisibility">
-					<span v-if="visibility === 'public'"><i class="ti ti-world"></i></span>
-					<span v-if="visibility === 'home'"><i class="ti ti-home"></i></span>
-					<span v-if="visibility === 'followers'"><i class="ti ti-lock"></i></span>
-					<span v-if="visibility === 'specified'"><i class="ti ti-mail"></i></span>
+					<span v-if="visibility === 'public'"><i class="ph-globe-hemisphere-west ph-bold ph-lg"></i></span>
+					<span v-if="visibility === 'home'"><i class="ph-house ph-bold ph-lg"></i></span>
+					<span v-if="visibility === 'followers'"><i class="ph-lock ph-bold ph-lg"></i></span>
+					<span v-if="visibility === 'specified'"><i class="ph-envelope ph-bold ph-lg"></i></span>
 					<span :class="$style.headerRightButtonText">{{ i18n.ts._visibility[visibility] }}</span>
 				</button>
 				<button v-else class="_button" :class="[$style.headerRightItem, $style.visibility]" disabled>
-					<span><i class="ti ti-device-tv"></i></span>
+					<span><i class="ph-television ph-bold ph-lg"></i></span>
 					<span :class="$style.headerRightButtonText">{{ channel.name }}</span>
 				</button>
 			</template>
 			<button v-click-anime v-tooltip="i18n.ts._visibility.disableFederation" class="_button" :class="[$style.headerRightItem, { [$style.danger]: localOnly }]" :disabled="channel != null || visibility === 'specified'" @click="toggleLocalOnly">
-				<span v-if="!localOnly"><i class="ti ti-rocket"></i></span>
-				<span v-else><i class="ti ti-rocket-off"></i></span>
+				<span v-if="!localOnly"><i class="ph-rocket-launch ph-bold pg-lg"></i></span>
+				<span v-else><i class="ph-rocket ph-bold pg-lg"></i></span>
 			</button>
 			<button v-click-anime v-tooltip="i18n.ts.reactionAcceptance" class="_button" :class="[$style.headerRightItem, { [$style.danger]: reactionAcceptance === 'likeOnly' }]" @click="toggleReactionAcceptance">
-				<span v-if="reactionAcceptance === 'likeOnly'"><i class="ti ti-heart"></i></span>
-				<span v-else-if="reactionAcceptance === 'likeOnlyForRemote'"><i class="ti ti-heart-plus"></i></span>
-				<span v-else><i class="ti ti-icons"></i></span>
+				<span v-if="reactionAcceptance === 'likeOnly'"><i class="ph-heart ph-bold ph-lg"></i></span>
+				<span v-else-if="reactionAcceptance === 'likeOnlyForRemote'"><i class="ph-heart ph-bold ph-lg"></i></span>
+				<span v-else><i class="ph-smiley ph-bold pg-lg"></i></span>
 			</button>
 			<button v-click-anime class="_button" :class="$style.submit" :disabled="!canPost" data-cy-open-post-form-submit @click="post">
 				<div :class="$style.submitInner">
 					<template v-if="posted"></template>
 					<template v-else-if="posting"><MkEllipsis/></template>
 					<template v-else>{{ submitText }}</template>
-					<i style="margin-left: 6px;" :class="posted ? 'ti ti-check' : reply ? 'ti ti-arrow-back-up' : renote ? 'ti ti-quote' : 'ti ti-send'"></i>
+					<i style="margin-left: 6px;" :class="posted ? 'ph-check ph-bold ph-lg' : reply ? 'ph-arrow-u-up-left ph-bold pg-lg' : renote ? 'ph-quotes ph-bold ph-lg' : 'ph-paper-plane-tilt ph-bold ph-lg'"></i>
 				</div>
 			</button>
 		</div>
 	</header>
 	<MkNoteSimple v-if="reply" :class="$style.targetNote" :note="reply"/>
 	<MkNoteSimple v-if="renote" :class="$style.targetNote" :note="renote"/>
-	<div v-if="quoteId" :class="$style.withQuote"><i class="ti ti-quote"></i> {{ i18n.ts.quoteAttached }}<button @click="quoteId = null"><i class="ti ti-x"></i></button></div>
+	<div v-if="quoteId" :class="$style.withQuote"><i class="ph-quotes ph-bold ph-lg"></i> {{ i18n.ts.quoteAttached }}<button @click="quoteId = null"><i class="ph-x ph-bold ph-lg"></i></button></div>
 	<div v-if="visibility === 'specified'" :class="$style.toSpecified">
 		<span style="margin-right: 8px;">{{ i18n.ts.recipient }}</span>
 		<div :class="$style.visibleUsers">
 			<span v-for="u in visibleUsers" :key="u.id" :class="$style.visibleUser">
 				<MkAcct :user="u"/>
-				<button class="_button" style="padding: 4px 8px;" @click="removeVisibleUser(u)"><i class="ti ti-x"></i></button>
+				<button class="_button" style="padding: 4px 8px;" @click="removeVisibleUser(u)"><i class="ph-x ph-bold ph-lg"></i></button>
 			</span>
-			<button class="_buttonPrimary" style="padding: 4px; border-radius: 8px;" @click="addVisibleUser"><i class="ti ti-plus ti-fw"></i></button>
+			<button class="_buttonPrimary" style="padding: 4px; border-radius: 5px;" @click="addVisibleUser"><i class="ph-plus ph-bold ph-lg ti-fw"></i></button>
 		</div>
 	</div>
 	<MkInfo v-if="hasNotSpecifiedMentions" warn :class="$style.hasNotSpecifiedMentions">{{ i18n.ts.notSpecifiedMentionWarning }} - <button class="_textButton" @click="addMissingMention()">{{ i18n.ts.add }}</button></MkInfo>
@@ -78,17 +78,17 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</div>
 	<footer :class="$style.footer">
 		<div :class="$style.footerLeft">
-			<button v-tooltip="i18n.ts.attachFile" class="_button" :class="$style.footerButton" @click="chooseFileFrom"><i class="ti ti-photo-plus"></i></button>
-			<button v-tooltip="i18n.ts.poll" class="_button" :class="[$style.footerButton, { [$style.footerButtonActive]: poll }]" @click="togglePoll"><i class="ti ti-chart-arrows"></i></button>
-			<button v-tooltip="i18n.ts.useCw" class="_button" :class="[$style.footerButton, { [$style.footerButtonActive]: useCw }]" @click="useCw = !useCw"><i class="ti ti-eye-off"></i></button>
-			<button v-tooltip="i18n.ts.mention" class="_button" :class="$style.footerButton" @click="insertMention"><i class="ti ti-at"></i></button>
-			<button v-tooltip="i18n.ts.hashtags" class="_button" :class="[$style.footerButton, { [$style.footerButtonActive]: withHashtags }]" @click="withHashtags = !withHashtags"><i class="ti ti-hash"></i></button>
-			<button v-if="postFormActions.length > 0" v-tooltip="i18n.ts.plugin" class="_button" :class="$style.footerButton" @click="showActions"><i class="ti ti-plug"></i></button>
-			<button v-tooltip="i18n.ts.emoji" :class="['_button', $style.footerButton]" @click="insertEmoji"><i class="ti ti-mood-happy"></i></button>
+			<button v-tooltip="i18n.ts.attachFile" class="_button" :class="$style.footerButton" @click="chooseFileFrom"><i class="ph-image-square ph-bold ph-lg-plus"></i></button>
+			<button v-tooltip="i18n.ts.poll" class="_button" :class="[$style.footerButton, { [$style.footerButtonActive]: poll }]" @click="togglePoll"><i class="ph-chart-bar-horizontal ph-bold pg-lg"></i></button>
+			<button v-tooltip="i18n.ts.useCw" class="_button" :class="[$style.footerButton, { [$style.footerButtonActive]: useCw }]" @click="useCw = !useCw"><i class="ph-eye-slash ph-bold ph-lg"></i></button>
+			<button v-tooltip="i18n.ts.mention" class="_button" :class="$style.footerButton" @click="insertMention"><i class="ph-at ph-bold ph-lg"></i></button>
+			<button v-tooltip="i18n.ts.hashtags" class="_button" :class="[$style.footerButton, { [$style.footerButtonActive]: withHashtags }]" @click="withHashtags = !withHashtags"><i class="ph-hash ph-bold ph-lg"></i></button>
+			<button v-if="postFormActions.length > 0" v-tooltip="i18n.ts.plugin" class="_button" :class="$style.footerButton" @click="showActions"><i class="ph-plug ph-bold ph-lg"></i></button>
+			<button v-tooltip="i18n.ts.emoji" :class="['_button', $style.footerButton]" @click="insertEmoji"><i class="ph-smiley ph-bold ph-lg"></i></button>
 		</div>
 		<div :class="$style.footerRight">
-			<button v-tooltip="i18n.ts.previewNoteText" class="_button" :class="[$style.footerButton, { [$style.previewButtonActive]: showPreview }]" @click="showPreview = !showPreview"><i class="ti ti-eye"></i></button>
-			<!--<button v-tooltip="i18n.ts.more" class="_button" :class="$style.footerButton" @click="showingOptions = !showingOptions"><i class="ti ti-dots"></i></button>-->
+			<button v-tooltip="i18n.ts.previewNoteText" class="_button" :class="[$style.footerButton, { [$style.previewButtonActive]: showPreview }]" @click="showPreview = !showPreview"><i class="ph-eye ph-bold ph-lg"></i></button>
+			<!--<button v-tooltip="i18n.ts.more" class="_button" :class="$style.footerButton" @click="showingOptions = !showingOptions"><i class="ph-dots-three ph-bold ph-lg"></i></button>-->
 		</div>
 	</footer>
 	<datalist id="hashtags">
@@ -993,7 +993,7 @@ defineExpose({
 	padding: 0 12px;
 	line-height: 34px;
 	font-weight: bold;
-	border-radius: 6px;
+	border-radius: 5px;
 	min-width: 90px;
 	box-sizing: border-box;
 	color: var(--fgOnAccent);
@@ -1003,7 +1003,7 @@ defineExpose({
 .headerRightItem {
 	margin: 0;
 	padding: 8px;
-	border-radius: 6px;
+	border-radius: 5px;
 
 	&:hover {
 		background: var(--X5);
@@ -1066,7 +1066,7 @@ defineExpose({
 .visibleUser {
 	margin-right: 14px;
 	padding: 8px 0 8px 8px;
-	border-radius: 8px;
+	border-radius: 5px;
 	background: var(--X4);
 }
 
@@ -1135,7 +1135,7 @@ defineExpose({
 	padding: 4px 6px;
 	font-size: .9em;
 	color: var(--warn);
-	border-radius: 6px;
+	border-radius: 5px;
 	min-width: 1.6em;
 	text-align: center;
 
@@ -1175,7 +1175,7 @@ defineExpose({
 	font-size: 1em;
 	width: auto;
 	height: 100%;
-	border-radius: 6px;
+	border-radius: 5px;
 
 	&:hover {
 		background: var(--X5);

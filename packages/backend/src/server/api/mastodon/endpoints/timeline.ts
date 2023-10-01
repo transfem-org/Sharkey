@@ -1,8 +1,11 @@
 import { ParsedUrlQuery } from 'querystring';
-import { convertId, IdConvertType as IdType, convertAccount, convertConversation, convertList, convertStatus } from '../converters.js';
+import { convertId, IdConvertType as IdType, convertAccount, convertConversation, convertList, MastoConverters } from '../converters.js';
 import { getClient } from '../MastodonApiServerService.js';
 import type { Entity } from 'megalodon';
 import type { FastifyInstance } from 'fastify';
+import type { Config } from '@/config.js';
+import { NotesRepository, UsersRepository } from '@/models/_.js';
+import { UserEntityService } from '@/core/entities/UserEntityService.js';
 
 export function limitToInt(q: ParsedUrlQuery) {
 	const object: any = q;
@@ -38,9 +41,11 @@ export function convertTimelinesArgsId(q: ParsedUrlQuery) {
 
 export class ApiTimelineMastodon {
 	private fastify: FastifyInstance;
+	private mastoconverter: MastoConverters;
 
-	constructor(fastify: FastifyInstance) {
+	constructor(fastify: FastifyInstance, config: Config, usersRepository: UsersRepository, notesRepository: NotesRepository, userEntityService: UserEntityService) {
 		this.fastify = fastify;
+		this.mastoconverter = new MastoConverters(config, usersRepository, notesRepository, userEntityService);
 	}
 
 	public async getTL() {
@@ -53,7 +58,7 @@ export class ApiTimelineMastodon {
 				const data = query.local === 'true'
 					? await client.getLocalTimeline(convertTimelinesArgsId(argsToBools(limitToInt(query))))
 					: await client.getPublicTimeline(convertTimelinesArgsId(argsToBools(limitToInt(query))));
-				reply.send(data.data.map((status: Entity.Status) => convertStatus(status)));
+				reply.send(await Promise.all(data.data.map(async (status: Entity.Status) => await this.mastoconverter.convertStatus(status))));
 			} catch (e: any) {
 				console.error(e);
 				console.error(e.response.data);
@@ -70,7 +75,7 @@ export class ApiTimelineMastodon {
 			try {
 				const query: any = _request.query;
 				const data = await client.getHomeTimeline(convertTimelinesArgsId(limitToInt(query)));
-				reply.send(data.data.map((status: Entity.Status) => convertStatus(status)));
+				reply.send(await Promise.all(data.data.map(async (status: Entity.Status) => await this.mastoconverter.convertStatus(status))));
 			} catch (e: any) {
 				console.error(e);
 				console.error(e.response.data);
@@ -88,7 +93,7 @@ export class ApiTimelineMastodon {
 				const query: any = _request.query;
 				const params: any = _request.params;
 				const data = await client.getTagTimeline(params.hashtag, convertTimelinesArgsId(limitToInt(query)));
-				reply.send(data.data.map((status: Entity.Status) => convertStatus(status)));
+				reply.send(await Promise.all(data.data.map(async (status: Entity.Status) => await this.mastoconverter.convertStatus(status))));
 			} catch (e: any) {
 				console.error(e);
 				console.error(e.response.data);
@@ -106,7 +111,7 @@ export class ApiTimelineMastodon {
 				const query: any = _request.query;
 				const params: any = _request.params;
 				const data = await client.getListTimeline(convertId(params.id, IdType.SharkeyId), convertTimelinesArgsId(limitToInt(query)));
-				reply.send(data.data.map((status: Entity.Status) => convertStatus(status)));
+				reply.send(await Promise.all(data.data.map(async (status: Entity.Status) => await this.mastoconverter.convertStatus(status))));
 			} catch (e: any) {
 				console.error(e);
 				console.error(e.response.data);

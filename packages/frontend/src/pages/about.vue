@@ -144,27 +144,27 @@ const headerTabs = $computed(() => [{
 }, {
 	key: 'emojis',
 	title: i18n.ts.customEmojis,
-	icon: 'ti ti-icons',
+	icon: 'ph-smiley ph-bold pg-lg',
 }, {
 	key: 'federation',
 	title: i18n.ts.federation,
-	icon: 'ti ti-whirl',
+	icon: 'ph-globe-hemisphere-west ph-bold ph-lg',
 }, {
 	key: 'charts',
 	title: i18n.ts.charts,
-	icon: 'ti ti-chart-line',
+	icon: 'ph-chart-line ph-bold pg-lg',
 }]);
 
 definePageMetadata(computed(() => ({
 	title: i18n.ts.instanceInfo,
-	icon: 'ti ti-info-circle',
+	icon: 'ph-info ph-bold ph-lg',
 })));
 </script>
 
 <style lang="scss" module>
 .banner {
 	text-align: center;
-	border-radius: 10px;
+	border-radius: 5px;
 	overflow: clip;
 	background-size: cover;
 	background-position: center center;
@@ -174,7 +174,7 @@ definePageMetadata(computed(() => ({
 	display: block;
 	margin: 16px auto 0 auto;
 	height: 64px;
-	border-radius: 8px;
+	border-radius: 5px;
 }
 
 .bannerName {
@@ -213,7 +213,7 @@ definePageMetadata(computed(() => ({
 		font-weight: bold;
 		align-items: center;
 		justify-content: center;
-		border-radius: 999px;
+		border-radius: 4px;
 	}
 }
 
