@@ -52,7 +52,7 @@ const toggle = () => {
 	background: var(--switchOffBg);
 	background-clip: content-box;
 	border: solid 1px var(--switchOffBg);
-	border-radius: 4px;
+	border-radius: 999px;
 	cursor: pointer;
 	transition: inherit;
 	user-select: none;
@@ -72,7 +72,7 @@ const toggle = () => {
 	top: 3px;
 	width: 15px;
 	height: 15px;
-	border-radius: 4px;
+	border-radius: 999px;
 	transition: all 0.2s ease;
 
 	&:not(.knobChecked) {

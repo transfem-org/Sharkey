@@ -412,7 +412,7 @@ if (props.detail) {
 	left: 8px;
 	width: 5px;
 	height: calc(100% - 8px);
-	border-radius: 4px;
+	border-radius: 999px;
 	pointer-events: none;
 }
 
@@ -422,7 +422,7 @@ if (props.detail) {
 	margin: 0 8px 0 0;
 	width: 38px;
 	height: 38px;
-	border-radius: 5px;
+	border-radius: 8px;
 }
 
 .body {
@@ -504,6 +504,6 @@ if (props.detail) {
 	padding: 8px !important;
 	border: 1px solid var(--divider);
 	margin: 8px 8px 0 8px;
-	border-radius: 5px;
+	border-radius: 8px;
 }
 </style>

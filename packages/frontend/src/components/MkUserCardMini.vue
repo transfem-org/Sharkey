@@ -50,7 +50,7 @@ onMounted(() => {
 	align-items: center;
 	padding: 16px;
 	background: var(--panel);
-	border-radius: 5px;
+	border-radius: 8px;
 
 	> :global(.avatar) {
 		display: block;

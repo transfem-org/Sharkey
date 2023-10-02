@@ -50,7 +50,7 @@ const showContent = $ref(false);
 	margin: 0 10px 0 0;
 	width: 34px;
 	height: 34px;
-	border-radius: 5px;
+	border-radius: 8px;
 	position: sticky !important;
 	top: calc(16px + var(--stickyTop, 0px));
 	left: 0;

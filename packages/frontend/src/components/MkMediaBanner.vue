@@ -79,7 +79,7 @@ watch(audioEl, () => {
 }
 
 .audio {
-	border-radius: 5px;
+	border-radius: 8px;
 	overflow: clip;
 }
 </style>

@@ -84,7 +84,7 @@ onActivated(() => {
 	display: block;
 	padding: 16px;
 	border: solid 1px var(--divider);
-	border-radius: 5px;
+	border-radius: 6px;
 	margin-bottom: 8px;
 
 	&:hover {

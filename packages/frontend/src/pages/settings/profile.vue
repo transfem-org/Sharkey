@@ -296,7 +296,7 @@ definePageMetadata({
 	background-size: cover;
 	background-position: center;
 	border: solid 1px var(--divider);
-	border-radius: 5px;
+	border-radius: 10px;
 	overflow: clip;
 }
 
