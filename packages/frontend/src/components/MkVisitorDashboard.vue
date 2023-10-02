@@ -151,7 +151,7 @@ function exploreOtherServers() {
 	right: 16px;
 	width: 32px;
 	height: 32px;
-	border-radius: 5px;
+	border-radius: 8px;
 	font-size: 18px;
 }
 

@@ -43,7 +43,7 @@ const bgCss = bg.toRgbString();
 .root {
 	display: inline-block;
 	padding: 4px 8px 4px 4px;
-	border-radius: 4px;
+	border-radius: 999px;
 	color: var(--mention);
 
 	&.isMe {

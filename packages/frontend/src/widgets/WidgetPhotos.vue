@@ -101,7 +101,7 @@ defineExpose<WidgetComponentExpose>({
 
 	.img {
 		border: solid 4px transparent;
-		border-radius: 5px;
+		border-radius: 8px;
 	}
 }
 

@@ -385,7 +385,7 @@ onUnmounted(() => {
 						color: #fff;
 						background: rgba(0, 0, 0, 0.7);
 						font-size: 0.7em;
-						border-radius: 5px;
+						border-radius: 6px;
 					}
 
 					> .actions {
@@ -492,7 +492,7 @@ onUnmounted(() => {
 
 					> .role {
 						border: solid 1px var(--color, var(--divider));
-						border-radius: 4px;
+						border-radius: 999px;
 						margin-right: 4px;
 						padding: 3px 8px;
 					}
@@ -507,7 +507,7 @@ onUnmounted(() => {
 					background: transparent;
 					color: var(--fg);
 					border: 1px solid var(--divider);
-					border-radius: 5px;
+					border-radius: 8px;
 					padding: 8px;
 					line-height: 0;
 
@@ -713,9 +713,9 @@ onUnmounted(() => {
 	margin: calc(var(--margin) / 2) 0;
 	padding: calc(var(--margin) / 2) 0;
 	background: var(--bg);
-	border-radius: 5px;
+	border-radius: 8px;
 	> button {
-		border-radius: 5px;
+		border-radius: 8px;
 		margin-left: 0.4rem;
 		margin-right: 0.4rem;
 	}
