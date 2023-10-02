@@ -307,7 +307,7 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	squareAvatars: {
 		where: 'device',
-		default: true,
+		default: false,
 	},
 	postFormWithHashtags: {
 		where: 'device',
