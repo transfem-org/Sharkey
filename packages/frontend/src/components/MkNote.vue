@@ -217,9 +217,12 @@ const reactButton = shallowRef<HTMLElement>();
 const clipButton = shallowRef<HTMLElement>();
 const likeButton = shallowRef<HTMLElement>();
 let appearNote = $computed(() => isRenote ? note.renote as Misskey.entities.Note : note);
+const renoteUrl = appearNote.renote ? appearNote.renote.url : null;
+const renoteUri = appearNote.renote ? appearNote.renote.uri : null;
+
 const isMyRenote = $i && ($i.id === note.userId);
 const showContent = ref(false);
-const urls = appearNote.text ? extractUrlFromMfm(mfm.parse(appearNote.text)) : null;
+const urls = appearNote.text ? extractUrlFromMfm(mfm.parse(appearNote.text)).filter(u => u !== renoteUrl && u !== renoteUri) : null;
 const isLong = shouldCollapsed(appearNote);
 const collapsed = ref(appearNote.cw == null && isLong);
 const isDeleted = ref(false);

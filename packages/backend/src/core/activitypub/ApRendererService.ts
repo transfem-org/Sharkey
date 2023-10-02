@@ -437,6 +437,7 @@ export class ApRendererService {
 			},
 			_misskey_quote: quote,
 			quoteUrl: quote,
+			quoteUri: quote,
 			published: note.createdAt.toISOString(),
 			to,
 			cc,
@@ -627,6 +628,8 @@ export class ApRendererService {
 					sensitive: 'as:sensitive',
 					Hashtag: 'as:Hashtag',
 					quoteUrl: 'as:quoteUrl',
+					fedibird: 'http://fedibird.com/ns#',
+					quoteUri: 'fedibird:quoteUri',
 					// Mastodon
 					toot: 'http://joinmastodon.org/ns#',
 					Emoji: 'toot:Emoji',
