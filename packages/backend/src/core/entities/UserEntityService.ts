@@ -493,7 +493,6 @@ export class UserEntityService implements OnModuleInit {
 				isMuted: relation.isMuted,
 				isRenoteMuted: relation.isRenoteMuted,
 				notify: relation.following?.notify ?? 'none',
-				withReplies: relation.following?.withReplies ?? false,
 			} : {}),
 		} as Promiseable<Packed<'User'>> as Promiseable<IsMeAndIsUserDetailed<ExpectsMe, D>>;
 

@@ -283,10 +283,6 @@ export const packedUserDetailedNotMeOnlySchema = {
 			type: 'string',
 			nullable: false, optional: true,
 		},
-		withReplies: {
-			type: 'boolean',
-			nullable: false, optional: true,
-		},
 		//#endregion
 	},
 } as const;

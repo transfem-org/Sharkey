@@ -128,7 +128,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</div>
 				<MkInfo v-else-if="$i && $i.id === user.id">{{ i18n.ts.userPagePinTip }}</MkInfo>
 				<template v-if="narrow">
-					<XFiles :key="user.id" :user="user"/>
+					<XPhotos :key="user.id" :user="user"/>
 					<XActivity :key="user.id" :user="user"/>
 				</template>
 				<MkStickyContainer>
@@ -144,7 +144,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</div>
 		</div>
 		<div v-if="!narrow" class="sub _gaps" style="container-type: inline-size;">
-			<XFiles :key="user.id" :user="user"/>
+			<XPhotos :key="user.id" :user="user"/>
 			<XActivity :key="user.id" :user="user"/>
 			<XListenBrainz v-if="user.listenbrainz && listenbrainzdata" :key="user.id" :user="user"/>
 		</div>
@@ -193,7 +193,7 @@ function calcAge(birthdate: string): number {
 	return yearDiff;
 }
 
-const XFiles = defineAsyncComponent(() => import('./index.files.vue'));
+const XPhotos = defineAsyncComponent(() => import('./index.photos.vue'));
 const XActivity = defineAsyncComponent(() => import('./index.activity.vue'));
 const XListenBrainz = defineAsyncComponent(() => import("./index.listenbrainz.vue"));
 

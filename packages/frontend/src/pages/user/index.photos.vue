@@ -9,18 +9,17 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<template #header>{{ i18n.ts.images }}</template>
 	<div :class="$style.root">
 		<MkLoading v-if="fetching"/>
-		<div v-if="!fetching && files.length > 0" :class="$style.stream">
+		<div v-if="!fetching && images.length > 0" :class="$style.stream">
 			<MkA
-				v-for="file in files"
-				:key="file.note.id + file.file.id"
+				v-for="image in images"
+				:key="image.note.id + image.file.id"
 				:class="$style.img"
-				:to="notePage(file.note)"
+				:to="notePage(image.note)"
 			>
-				<!-- TODO: 画像以外のファイルに対応 -->
-				<ImgWithBlurhash :hash="file.file.blurhash" :src="thumbnail(file.file)" :title="file.file.name"/>
+				<ImgWithBlurhash :hash="image.file.blurhash" :src="thumbnail(image.file)" :title="image.file.name"/>
 			</MkA>
 		</div>
-		<p v-if="!fetching && files.length == 0" :class="$style.empty">{{ i18n.ts.nothing }}</p>
+		<p v-if="!fetching && images.length == 0" :class="$style.empty">{{ i18n.ts.nothing }}</p>
 	</div>
 </MkContainer>
 </template>
@@ -41,7 +40,7 @@ const props = defineProps<{
 }>();
 
 let fetching = $ref(true);
-let files = $ref<{
+let images = $ref<{
 	note: Misskey.entities.Note;
 	file: Misskey.entities.DriveFile;
 }[]>([]);
@@ -53,15 +52,24 @@ function thumbnail(image: Misskey.entities.DriveFile): string {
 }
 
 onMounted(() => {
+	const image = [
+		'image/jpeg',
+		'image/webp',
+		'image/avif',
+		'image/png',
+		'image/gif',
+		'image/apng',
+		'image/vnd.mozilla.apng',
+	];
 	os.api('users/notes', {
 		userId: props.user.id,
-		withFiles: true,
+		fileType: image,
 		excludeNsfw: defaultStore.state.nsfw !== 'ignore',
-		limit: 15,
+		limit: 10,
 	}).then(notes => {
 		for (const note of notes) {
 			for (const file of note.files) {
-				files.push({
+				images.push({
 					note,
 					file,
 				});
