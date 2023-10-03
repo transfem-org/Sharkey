@@ -283,6 +283,10 @@ export const packedUserDetailedNotMeOnlySchema = {
 			type: 'string',
 			nullable: false, optional: true,
 		},
+		withReplies: {
+			type: 'boolean',
+			nullable: false, optional: true,
+		},
 		//#endregion
 	},
 } as const;
@@ -393,13 +397,9 @@ export const packedMeDetailedOnlySchema = {
 				nullable: false, optional: false,
 			},
 		},
-		mutingNotificationTypes: {
-			type: 'array',
-			nullable: true, optional: false,
-			items: {
-				type: 'string',
-				nullable: false, optional: false,
-			},
+		notificationRecieveConfig: {
+			type: 'object',
+			nullable: false, optional: false,
 		},
 		emailNotificationTypes: {
 			type: 'array',

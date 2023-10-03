@@ -23,10 +23,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<MkTimeline
 		v-else-if="column.tl"
 		ref="timeline"
-		:key="column.tl + withRenotes + withReplies"
+		:key="column.tl + withRenotes + onlyFiles"
 		:src="column.tl"
 		:withRenotes="withRenotes"
-		:withReplies="withReplies"
+		:onlyFiles="onlyFiles"
 	/>
 </XColumn>
 </template>
@@ -51,7 +51,7 @@ let disabled = $ref(false);
 const isLocalTimelineAvailable = (($i == null && instance.policies.ltlAvailable) || ($i != null && $i.policies.ltlAvailable));
 const isGlobalTimelineAvailable = (($i == null && instance.policies.gtlAvailable) || ($i != null && $i.policies.gtlAvailable));
 const withRenotes = $ref(props.column.withRenotes ?? true);
-const withReplies = $ref(props.column.withReplies ?? false);
+const onlyFiles = $ref(props.column.onlyFiles ?? false);
 
 watch($$(withRenotes), v => {
 	updateColumn(props.column.id, {
@@ -59,9 +59,9 @@ watch($$(withRenotes), v => {
 	});
 });
 
-watch($$(withReplies), v => {
+watch($$(onlyFiles), v => {
 	updateColumn(props.column.id, {
-		withReplies: v,
+		onlyFiles: v,
 	});
 });
 
@@ -109,8 +109,8 @@ const menu = [{
 	ref: $$(withRenotes),
 }, {
 	type: 'switch',
-	text: i18n.ts.withReplies,
-	ref: $$(withReplies),
+	text: i18n.ts.fileAttachedOnly,
+	ref: $$(onlyFiles),
 }];
 </script>
 

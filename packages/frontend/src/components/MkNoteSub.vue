@@ -108,7 +108,7 @@ const props = withDefaults(defineProps<{
 });
 
 const el = shallowRef<HTMLElement>();
-const muted = ref(checkWordMute(props.note, $i, defaultStore.state.mutedWords));
+const muted = ref($i ? checkWordMute(props.note, $i, $i.mutedWords) : false);
 const translation = ref(null);
 const translating = ref(false);
 const isDeleted = ref(false);

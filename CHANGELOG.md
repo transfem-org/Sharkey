@@ -12,18 +12,60 @@
 
 -->
 
-## next
+## 2023.10.0
+### NOTE
+- muted_noteテーブルは使われなくなったため手動で削除を行ってください。
+
+### Changes
+- API: users/notes, notes/local-timeline で fileType 指定はできなくなりました
+- API: notes/global-timeline は現在常に `[]` を返します
 
 ### General
-- Enhance: タイムラインからRenoteを除外するオプションを追加
-- Enhance: ユーザーページのノート一覧でRenoteを除外できるように
+- Feat: ユーザーごとに他ユーザーへの返信をタイムラインに含めるか設定可能になりました
+- Feat: ユーザーリスト内のメンバーごとに他ユーザーへの返信をユーザーリストタイムラインに含めるか設定可能になりました
+- Enhance: ソフトワードミュートとハードワードミュートは統合されました
 
 ### Client
+- Enhance: 二要素認証のバックアップコード一覧をテキストファイルでダウンロード可能に
+- Fix: リアクションしたユーザ一覧のUIが稀に左上に残ってしまう不具合を修正
+
+### Server
+- Enhance: タイムライン取得時のパフォーマンスを改善
+
+## 2023.9.3
+### General
+- Enhance: ノートの翻訳機能の利用可否をロールで設定可能に
+
+### Client
+- Enhance: AiScriptでホストのアドレスを参照する定数`SERVER_URL`を追加
 - Enhance: モデレーションログ機能の強化
+- Enhance: ローカリゼーションの更新
+
+### Server
+- Fix: Redisに古いバージョンのキャッシュが残っている場合、キャッシュが消えるまでの間通知が届かなくなる問題を修正
+- Fix: 後方互換性の修正
+
+## 2023.9.2
+
+### General
+- Feat: ノートの編集をできるように
+	- ロールで編集可否を設定可能
+- Feat: 通知を種類ごとに 全員から受け取る/フォロー中のユーザーのみ受け取る/フォロワーのみ受け取る/相互のみ受け取る/指定したリストのメンバーのみ受け取る/受け取らない から選べるように
+- Enhance: タイムラインからRenoteを除外するオプションを追加
+- Enhance: ユーザーページのノート一覧でRenoteを除外できるように
+- Enhance: タイムラインでファイルが添付されたノートのみ表示するオプションを追加
+- Enhance: モデレーションログ機能の強化
+- Enhance: 依存関係の更新
+- Enhance: ローカリゼーションの更新
+
+### Client
 - Enhance: Plugin:register_post_form_actionを用いてCWを取得・変更できるように
+- Enhance: admin/ad/listにて掲載中の広告が絞り込めるように
+- Enhance: AiScriptにリモートサーバーのAPIを叩く用の関数を追加（`Mk:apiExternal`）
 
 ### Server
 - Enhance: MasterプロセスのPIDを書き出せるように
+- Enhance: admin/ad/createにてレスポンス200、設定した広告情報を返すように
 
 ## 2023.9.1
 

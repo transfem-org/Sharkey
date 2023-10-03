@@ -5,7 +5,7 @@
 
 import { setImmediate } from 'node:timers/promises';
 import * as mfm from 'mfm-js';
-import { In } from 'typeorm';
+import { In, LessThan } from 'typeorm';
 import * as Redis from 'ioredis';
 import { Inject, Injectable, OnApplicationShutdown } from '@nestjs/common';
 import RE2 from 're2';
@@ -14,7 +14,7 @@ import { extractCustomEmojisFromMfm } from '@/misc/extract-custom-emojis-from-mf
 import { extractHashtags } from '@/misc/extract-hashtags.js';
 import type { IMentionedRemoteUsers } from '@/models/Note.js';
 import { MiNote } from '@/models/Note.js';
-import type { NoteEditRepository, ChannelsRepository, InstancesRepository, MutedNotesRepository, MutingsRepository, NotesRepository, NoteThreadMutingsRepository, UserProfilesRepository, UsersRepository } from '@/models/_.js';
+import type { NoteEditRepository, ChannelsRepository, InstancesRepository, MutingsRepository, NotesRepository, NoteThreadMutingsRepository, UserProfilesRepository, UsersRepository, UserListMembershipsRepository, ChannelFollowingsRepository, MiFollowing } from '@/models/_.js';
 import type { MiDriveFile } from '@/models/DriveFile.js';
 import type { MiApp } from '@/models/App.js';
 import { concat } from '@/misc/prelude/array.js';
@@ -48,8 +48,6 @@ import { DB_MAX_NOTE_TEXT_LENGTH } from '@/const.js';
 import { RoleService } from '@/core/RoleService.js';
 import { MetaService } from '@/core/MetaService.js';
 import { SearchService } from '@/core/SearchService.js';
-
-const mutedWordsCache = new MemorySingleCache<{ userId: MiUserProfile['userId']; mutedWords: MiUserProfile['mutedWords']; }[]>(1000 * 60 * 5);
 
 type NotificationType = 'reply' | 'renote' | 'quote' | 'mention';
 
@@ -105,9 +103,8 @@ class NotificationManager {
 			// 通知される側のユーザーが通知する側のユーザーをミュートしていない限りは通知する
 			if (!mentioneesMutedUserIds.includes(this.notifier.id)) {
 				this.notificationService.createNotification(x.target, x.reason, {
-					notifierId: this.notifier.id,
 					noteId: this.note.id,
-				});
+				}, this.notifier.id);
 			}
 		}
 	}
@@ -152,8 +149,8 @@ export class NoteEditService implements OnApplicationShutdown {
 		@Inject(DI.config)
 		private config: Config,
 
-		@Inject(DI.redis)
-		private redisClient: Redis.Redis,
+		@Inject(DI.redisForTimelines)
+		private redisForTimelines: Redis.Redis,
 
 		@Inject(DI.usersRepository)
 		private usersRepository: UsersRepository,
@@ -170,11 +167,14 @@ export class NoteEditService implements OnApplicationShutdown {
 		@Inject(DI.userProfilesRepository)
 		private userProfilesRepository: UserProfilesRepository,
 
-		@Inject(DI.mutedNotesRepository)
-		private mutedNotesRepository: MutedNotesRepository,
-
 		@Inject(DI.channelsRepository)
 		private channelsRepository: ChannelsRepository,
+
+		@Inject(DI.userListMembershipsRepository)
+		private userListMembershipsRepository: UserListMembershipsRepository,
+
+		@Inject(DI.channelFollowingsRepository)
+		private channelFollowingsRepository: ChannelFollowingsRepository,
 
 		@Inject(DI.noteThreadMutingsRepository)
 		private noteThreadMutingsRepository: NoteThreadMutingsRepository,
@@ -423,7 +423,7 @@ export class NoteEditService implements OnApplicationShutdown {
 		await this.notesRepository.update(oldnote.id, note);
 
 		if (data.channel) {
-			this.redisClient.xadd(
+			this.redisForTimelines.xadd(
 				`channelTimeline:${data.channel.id}`,
 				'MAXLEN', '~', this.config.perChannelMaxNoteCacheCount.toString(),
 				'*',
@@ -461,27 +461,6 @@ export class NoteEditService implements OnApplicationShutdown {
 			this.hashtagService.updateHashtags(user, tags);
 		}
 
-		// Word mute
-		mutedWordsCache.fetch(() => this.userProfilesRepository.find({
-			where: {
-				enableWordMute: true,
-			},
-			select: ['userId', 'mutedWords'],
-		})).then(us => {
-			for (const u of us) {
-				checkWordMute(note, { id: u.userId }, u.mutedWords).then(shouldMute => {
-					if (shouldMute) {
-						this.mutedNotesRepository.insert({
-							id: this.idService.genId(),
-							userId: u.userId,
-							noteId: note.id,
-							reason: 'word',
-						});
-					}
-				});
-			}
-		});
-
 		if (data.poll && data.poll.expiresAt) {
 			const delay = data.poll.expiresAt.getTime() - Date.now();
 			this.queueService.endedPollNotificationQueue.add(note.id, {
@@ -490,6 +469,14 @@ export class NoteEditService implements OnApplicationShutdown {
 				delay,
 				removeOnComplete: true,
 			});
+		}
+
+		if (data.visibility === 'public' || data.visibility === 'home') {
+			this.pushToTl(note, user);
+		} else if (data.visibility === 'followers') {
+			this.pushToTl(note, user);
+		} else if (data.visibility === 'specified') {
+			// TODO
 		}
 
 		if (!silent) {
@@ -524,7 +511,8 @@ export class NoteEditService implements OnApplicationShutdown {
 			const noteObj = await this.noteEntityService.pack(note);
 
 			this.globalEventService.publishNoteStream(note.id, 'updated', {
-				updatedAt: note.updatedAt!,
+				cw: note.cw,
+				text: note.text!,
 			});
 
 			this.roleService.addNoteToRoleTimeline(noteObj);
@@ -649,6 +637,163 @@ export class NoteEditService implements OnApplicationShutdown {
 
 		// Register to search database
 		this.index(note);
+	}
+
+	@bindThis
+	private async pushToTl(note: MiNote, user: { id: MiUser['id']; host: MiUser['host']; }) {
+		const redisPipeline = this.redisForTimelines.pipeline();
+
+		if (note.channelId) {
+			const channelFollowings = await this.channelFollowingsRepository.find({
+				where: {
+					followeeId: note.channelId,
+				},
+				select: ['followerId'],
+			});
+
+			for (const channelFollowing of channelFollowings) {
+				redisPipeline.xadd(
+					`homeTimeline:${channelFollowing.followerId}`,
+					'MAXLEN', '~', '200',
+					'*',
+					'note', note.id);
+
+				if (note.fileIds.length > 0) {
+					redisPipeline.xadd(
+						`homeTimelineWithFiles:${channelFollowing.followerId}`,
+						'MAXLEN', '~', '100',
+						'*',
+						'note', note.id);
+				}
+			}
+		} else {
+			// TODO: キャッシュ？
+
+			const userListMemberships = await this.userListMembershipsRepository.find({
+				where: {
+					userId: user.id,
+				},
+				select: ['userListId', 'withReplies'],
+			});
+
+			// TODO
+			//if (note.visibility === 'followers') {
+			//	// TODO: 重そうだから何とかしたい Set 使う？
+			//	userLists = userLists.filter(x => followings.some(f => f.followerId === x.userListUserId));
+			//}
+
+			for (const userListMembership of userListMemberships) {
+				// 自分自身以外への返信
+				if (note.replyId && note.replyUserId !== note.userId) {
+					if (!userListMembership.withReplies) continue;
+				}
+
+				redisPipeline.xadd(
+					`userListTimeline:${userListMembership.userListId}`,
+					'MAXLEN', '~', '200',
+					'*',
+					'note', note.id);
+
+				if (note.fileIds.length > 0) {
+					redisPipeline.xadd(
+						`userListTimelineWithFiles:${userListMembership.userListId}`,
+						'MAXLEN', '~', '100',
+						'*',
+						'note', note.id);
+				}
+			}
+
+			{ // 自分自身のHTL
+				redisPipeline.xadd(
+					`homeTimeline:${user.id}`,
+					'MAXLEN', '~', '200',
+					'*',
+					'note', note.id);
+
+				if (note.fileIds.length > 0) {
+					redisPipeline.xadd(
+						`homeTimelineWithFiles:${user.id}`,
+						'MAXLEN', '~', '100',
+						'*',
+						'note', note.id);
+				}
+			}
+
+			if (note.visibility === 'public' || note.visibility === 'home') {
+				// 自分自身以外への返信
+				if (note.replyId && note.replyUserId !== note.userId) {
+					redisPipeline.xadd(
+						`userTimelineWithReplies:${user.id}`,
+						'MAXLEN', '~', '1000',
+						'*',
+						'note', note.id);
+				} else {
+					redisPipeline.xadd(
+						`userTimeline:${user.id}`,
+						'MAXLEN', '~', '1000',
+						'*',
+						'note', note.id);
+
+					if (note.fileIds.length > 0) {
+						redisPipeline.xadd(
+							`userTimelineWithFiles:${user.id}`,
+							'MAXLEN', '~', '500',
+							'*',
+							'note', note.id);
+					}
+
+					if (note.visibility === 'public' && note.userHost == null) {
+						redisPipeline.xadd(
+							'localTimeline',
+							'MAXLEN', '~', '1000',
+							'*',
+							'note', note.id);
+
+						if (note.fileIds.length > 0) {
+							redisPipeline.xadd(
+								'localTimelineWithFiles',
+								'MAXLEN', '~', '500',
+								'*',
+								'note', note.id);
+						}
+					}
+				}
+			}
+		}
+
+		redisPipeline.exec();
+	}
+
+	@bindThis
+	public async checkHibernation(followings: MiFollowing[]) {
+		if (followings.length === 0) return;
+
+		const shuffle = (array: MiFollowing[]) => {
+			for (let i = array.length - 1; i > 0; i--) {
+				const j = Math.floor(Math.random() * (i + 1));
+				[array[i], array[j]] = [array[j], array[i]];
+			}
+			return array;
+		};
+
+		// ランダムに最大1000件サンプリング
+		const samples = shuffle(followings).slice(0, Math.min(followings.length, 1000));
+
+		const hibernatedUsers = await this.usersRepository.find({
+			where: {
+				id: In(samples.map(x => x.followerId)),
+				lastActiveDate: LessThan(new Date(Date.now() - (1000 * 60 * 60 * 24 * 50))),
+			},
+			select: ['id'],
+		});
+
+		if (hibernatedUsers.length > 0) {
+			this.usersRepository.update({
+				id: In(hibernatedUsers.map(x => x.id)),
+			}, {
+				isHibernated: true,
+			});
+		}
 	}
 
 	@bindThis

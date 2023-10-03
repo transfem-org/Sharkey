@@ -23,10 +23,10 @@ const props = withDefaults(defineProps<{
 	role?: string;
 	sound?: boolean;
 	withRenotes?: boolean;
-	withReplies?: boolean;
+	onlyFiles?: boolean;
 }>(), {
 	withRenotes: true,
-	withReplies: false,
+	onlyFiles: false,
 });
 
 const emit = defineEmits<{
@@ -68,11 +68,11 @@ if (props.src === 'antenna') {
 	endpoint = 'notes/timeline';
 	query = {
 		withRenotes: props.withRenotes,
-		withReplies: props.withReplies,
+		withFiles: props.onlyFiles ? true : undefined,
 	};
 	connection = stream.useChannel('homeTimeline', {
 		withRenotes: props.withRenotes,
-		withReplies: props.withReplies,
+		withFiles: props.onlyFiles ? true : undefined,
 	});
 	connection.on('note', prepend);
 
@@ -81,33 +81,33 @@ if (props.src === 'antenna') {
 	endpoint = 'notes/local-timeline';
 	query = {
 		withRenotes: props.withRenotes,
-		withReplies: props.withReplies,
+		withFiles: props.onlyFiles ? true : undefined,
 	};
 	connection = stream.useChannel('localTimeline', {
 		withRenotes: props.withRenotes,
-		withReplies: props.withReplies,
+		withFiles: props.onlyFiles ? true : undefined,
 	});
 	connection.on('note', prepend);
 } else if (props.src === 'social') {
 	endpoint = 'notes/hybrid-timeline';
 	query = {
 		withRenotes: props.withRenotes,
-		withReplies: props.withReplies,
+		withFiles: props.onlyFiles ? true : undefined,
 	};
 	connection = stream.useChannel('hybridTimeline', {
 		withRenotes: props.withRenotes,
-		withReplies: props.withReplies,
+		withFiles: props.onlyFiles ? true : undefined,
 	});
 	connection.on('note', prepend);
 } else if (props.src === 'global') {
 	endpoint = 'notes/global-timeline';
 	query = {
 		withRenotes: props.withRenotes,
-		withReplies: props.withReplies,
+		withFiles: props.onlyFiles ? true : undefined,
 	};
 	connection = stream.useChannel('globalTimeline', {
 		withRenotes: props.withRenotes,
-		withReplies: props.withReplies,
+		withFiles: props.onlyFiles ? true : undefined,
 	});
 	connection.on('note', prepend);
 } else if (props.src === 'mentions') {
@@ -130,12 +130,12 @@ if (props.src === 'antenna') {
 	endpoint = 'notes/user-list-timeline';
 	query = {
 		withRenotes: props.withRenotes,
-		withReplies: props.withReplies,
+		withFiles: props.onlyFiles ? true : undefined,
 		listId: props.list,
 	};
 	connection = stream.useChannel('userList', {
 		withRenotes: props.withRenotes,
-		withReplies: props.withReplies,
+		withFiles: props.onlyFiles ? true : undefined,
 		listId: props.list,
 	});
 	connection.on('note', prepend);

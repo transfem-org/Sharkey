@@ -458,7 +458,8 @@ export class UserEntityService implements OnModuleInit {
 				hasPendingReceivedFollowRequest: this.getHasPendingReceivedFollowRequest(user.id),
 				mutedWords: profile!.mutedWords,
 				mutedInstances: profile!.mutedInstances,
-				mutingNotificationTypes: profile!.mutingNotificationTypes,
+				mutingNotificationTypes: [], // 後方互換性のため
+				notificationRecieveConfig: profile!.notificationRecieveConfig,
 				emailNotificationTypes: profile!.emailNotificationTypes,
 				achievements: profile!.achievements,
 				loggedInDays: profile!.loggedInDates.length,
@@ -492,6 +493,7 @@ export class UserEntityService implements OnModuleInit {
 				isMuted: relation.isMuted,
 				isRenoteMuted: relation.isRenoteMuted,
 				notify: relation.following?.notify ?? 'none',
+				withReplies: relation.following?.withReplies ?? false,
 			} : {}),
 		} as Promiseable<Packed<'User'>> as Promiseable<IsMeAndIsUserDetailed<ExpectsMe, D>>;
 
