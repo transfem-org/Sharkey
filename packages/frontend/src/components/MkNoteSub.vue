@@ -83,9 +83,9 @@ import { notePage } from '@/filters/note.js';
 import * as os from '@/os.js';
 import { i18n } from '@/i18n.js';
 import { $i } from '@/account.js';
-import { userPage } from "@/filters/user";
-import { checkWordMute } from "@/scripts/check-word-mute";
-import { defaultStore } from "@/store";
+import { userPage } from "@/filters/user.js";
+import { checkWordMute } from "@/scripts/check-word-mute.js";
+import { defaultStore } from "@/store.js";
 import { pleaseLogin } from '@/scripts/please-login.js';
 import { showMovedDialog } from '@/scripts/show-moved-dialog.js';
 import MkRippleEffect from '@/components/MkRippleEffect.vue';
@@ -108,7 +108,7 @@ const props = withDefaults(defineProps<{
 });
 
 const el = shallowRef<HTMLElement>();
-const muted = ref(checkWordMute(props.note, $i, defaultStore.state.mutedWords));
+const muted = ref($i ? checkWordMute(props.note, $i, $i.mutedWords) : false);
 const translation = ref(null);
 const translating = ref(false);
 const isDeleted = ref(false);
