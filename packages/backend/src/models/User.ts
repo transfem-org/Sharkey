@@ -175,7 +175,7 @@ export class MiUser {
 	public isCat: boolean;
 
 	@Column('boolean', {
-		default: false,
+		default: true,
 		comment: 'Whether the User speaks in nya.',
 	})
 	public speakAsCat: boolean;
