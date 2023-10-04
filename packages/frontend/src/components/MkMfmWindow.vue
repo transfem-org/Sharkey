@@ -376,7 +376,7 @@ const preview_link = ref(`[${i18n.ts._mfm.dummy}](https://joinsharkey.org)`);
 const preview_emoji = ref(`:heart:`);
 const preview_bold = ref(`**${i18n.ts._mfm.dummy}**`);
 const preview_small = ref(
-	`<small>${i18n.ts._mfm.dummy}</small> $[small ${i18n.ts._mfm.dummy}]`,
+	`<small>${i18n.ts._mfm.dummy}</small>`,
 );
 const preview_center = ref(
 	`<center>${i18n.ts._mfm.dummy}</center>`,
@@ -418,7 +418,7 @@ const preview_flip = ref(
 	`$[flip ${i18n.ts._mfm.dummy}]\n$[flip.v ${i18n.ts._mfm.dummy}]\n$[flip.h,v ${i18n.ts._mfm.dummy}]`,
 );
 const preview_font = ref(
-	`$[font.serif ${i18n.ts._mfm.dummy}]\n$[font.monospace ${i18n.ts._mfm.dummy}]\n$[font.cursive ${i18n.ts._mfm.dummy}]\n$[font.fantasy ${i18n.ts._mfm.dummy}]`,
+	`$[font.serif ${i18n.ts._mfm.dummy}]\n$[font.monospace ${i18n.ts._mfm.dummy}]`,
 );
 const preview_x2 = ref("$[x2 🍮]");
 const preview_x3 = ref("$[x3 🍮]");
