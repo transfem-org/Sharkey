@@ -501,6 +501,7 @@ export class ApRendererService {
 			discoverable: user.isExplorable,
 			publicKey: this.renderKey(user, keypair, '#main-key'),
 			isCat: user.isCat,
+			speakAsCat: user.speakAsCat,
 			attachment: attachment.length ? attachment : undefined,
 		};
 
@@ -646,6 +647,9 @@ export class ApRendererService {
 					'_misskey_reaction': 'misskey:_misskey_reaction',
 					'_misskey_votes': 'misskey:_misskey_votes',
 					'isCat': 'misskey:isCat',
+					// Firefish
+					firefish: "https://joinfirefish.org/ns#",
+					speakAsCat: "firefish:speakAsCat",
 					// vcard
 					vcard: 'http://www.w3.org/2006/vcard/ns#',
 				},

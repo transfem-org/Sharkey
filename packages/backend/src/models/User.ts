@@ -176,6 +176,12 @@ export class MiUser {
 
 	@Column('boolean', {
 		default: false,
+		comment: 'Whether the User speaks in nya.',
+	})
+	public speakAsCat: boolean;
+
+	@Column('boolean', {
+		default: false,
 		comment: 'Whether the User is the root.',
 	})
 	public isRoot: boolean;

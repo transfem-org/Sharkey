@@ -1541,6 +1541,7 @@ export type Endpoints = {
             noCrawle?: boolean;
             isBot?: boolean;
             isCat?: boolean;
+            speakAsCat?: boolean;
             injectFeaturedNote?: boolean;
             receiveAnnouncementEmail?: boolean;
             alwaysMarkNsfw?: boolean;
@@ -2915,6 +2916,7 @@ type UserDetailed = UserLite & {
     isBlocking: boolean;
     isBot: boolean;
     isCat: boolean;
+    speakAsCat: boolean;
     isFollowed: boolean;
     isFollowing: boolean;
     isLocked: boolean;
