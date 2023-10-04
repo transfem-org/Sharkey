@@ -72,19 +72,12 @@ export function useNoteCapture(props: {
 				break;
 			}
 
-			case 'updated': {
-				note.value.updatedAt = new Date().toISOString();
-				note.value.cw = body.cw;
-				note.value.text = body.text;
-				break;
-			}
-
 			case 'deleted': {
 				props.isDeletedRef.value = true;
 				break;
 			}
 
-			case "updated": {
+			case 'updated': {
 				const editedNote = await os.api("notes/show", {
 					noteId: id,
 				});

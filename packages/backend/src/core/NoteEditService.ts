@@ -5,7 +5,7 @@
 
 import { setImmediate } from 'node:timers/promises';
 import * as mfm from 'mfm-js';
-import { In, LessThan } from 'typeorm';
+import { DataSource, In, LessThan } from 'typeorm';
 import * as Redis from 'ioredis';
 import { Inject, Injectable, OnApplicationShutdown } from '@nestjs/common';
 import RE2 from 're2';
@@ -20,7 +20,7 @@ import type { MiApp } from '@/models/App.js';
 import { concat } from '@/misc/prelude/array.js';
 import { IdService } from '@/core/IdService.js';
 import type { MiUser, MiLocalUser, MiRemoteUser } from '@/models/User.js';
-import type { IPoll } from '@/models/Poll.js';
+import { MiPoll, type IPoll } from '@/models/Poll.js';
 import { checkWordMute } from '@/misc/check-word-mute.js';
 import type { MiChannel } from '@/models/Channel.js';
 import { normalizeForSearch } from '@/misc/normalize-for-search.js';
@@ -153,6 +153,9 @@ export class NoteEditService implements OnApplicationShutdown {
 
 		@Inject(DI.redis)
 		private redisClient: Redis.Redis,
+
+		@Inject(DI.db)
+		private db: DataSource,
 
 		@Inject(DI.usersRepository)
 		private usersRepository: UsersRepository,
@@ -419,7 +422,27 @@ export class NoteEditService implements OnApplicationShutdown {
 			}));
 		}
 
-		await this.notesRepository.update(oldnote.id, note);
+		if (data.poll != null) {
+			// Start transaction
+			await this.db.transaction(async transactionalEntityManager => {
+				await transactionalEntityManager.update(MiNote, oldnote.id, note);
+
+				const poll = new MiPoll({
+					noteId: note.id,
+					choices: data.poll!.choices,
+					expiresAt: data.poll!.expiresAt,
+					multiple: data.poll!.multiple,
+					votes: new Array(data.poll!.choices.length).fill(0),
+					noteVisibility: note.visibility,
+					userId: user.id,
+					userHost: user.host,
+				});
+
+				await transactionalEntityManager.update(MiPoll, oldnote.id, poll);
+			});
+		} else {
+			await this.notesRepository.update(oldnote.id, note);
+		};
 
 		if (data.channel) {
 			this.redisClient.xadd(
@@ -483,6 +506,7 @@ export class NoteEditService implements OnApplicationShutdown {
 
 		if (data.poll && data.poll.expiresAt) {
 			const delay = data.poll.expiresAt.getTime() - Date.now();
+			this.queueService.endedPollNotificationQueue.remove(note.id);
 			this.queueService.endedPollNotificationQueue.add(note.id, {
 				noteId: note.id,
 			}, {
@@ -521,11 +545,17 @@ export class NoteEditService implements OnApplicationShutdown {
 
 			// Pack the note
 			const noteObj = await this.noteEntityService.pack(note);
-
-			this.globalEventService.publishNoteStream(note.id, 'updated', {
-				cw: note.cw,
-				text: note.text!,
-			});
+			if (data.poll != null) {
+				this.globalEventService.publishNoteStream(note.id, 'updated', {
+					cw: note.cw,
+					text: note.text!,
+				});
+			} else {
+				this.globalEventService.publishNoteStream(note.id, 'updated', {
+					cw: note.cw,
+					text: note.text!
+				});
+			}
 
 			this.roleService.addNoteToRoleTimeline(noteObj);
 
