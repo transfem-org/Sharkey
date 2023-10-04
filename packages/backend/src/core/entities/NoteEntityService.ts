@@ -364,7 +364,7 @@ export class NoteEntityService implements OnModuleInit {
 			} : {}),
 		});
 
-		if (packed.user.speakAsCat && packed.text) {
+		if (packed.user.isCat && packed.user.speakAsCat && packed.text) {
 			const tokens = packed.text ? mfm.parse(packed.text) : [];
 			function nyaizeNode(node: mfm.MfmNode) {
 				if (node.type === 'quote') return;
