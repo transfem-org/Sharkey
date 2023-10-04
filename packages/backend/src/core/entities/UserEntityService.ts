@@ -352,6 +352,7 @@ export class UserEntityService implements OnModuleInit {
 			createdAt: user.createdAt.toISOString(),
 			isBot: user.isBot ?? falsy,
 			isCat: user.isCat ?? falsy,
+			speakAsCat: user.speakAsCat ?? falsy,
 			instance: user.host ? this.federatedInstanceService.federatedInstanceCache.fetch(user.host).then(instance => instance ? {
 				name: instance.name,
 				softwareName: instance.softwareName,

@@ -50,6 +50,7 @@ export type UserDetailed = UserLite & {
 	isBlocking: boolean;
 	isBot: boolean;
 	isCat: boolean;
+	speakAsCat: boolean;
 	isFollowed: boolean;
 	isFollowing: boolean;
 	isLocked: boolean;
