@@ -442,7 +442,7 @@ export class NoteEditService implements OnApplicationShutdown {
 			});
 		} else {
 			await this.notesRepository.update(oldnote.id, note);
-		};
+		}
 
 		if (data.channel) {
 			this.redisClient.xadd(
