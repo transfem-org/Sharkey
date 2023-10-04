@@ -96,7 +96,7 @@ async function refresh() {
 	if (!props.note.uri) return;
 	const obj = await os.apiWithDialog("ap/show", { uri: props.note.uri });
 	if (obj.type === "Note" && obj.object.poll) {
-		props.note.poll = obj.object.poll;
+		props.note.poll = obj.object.poll // eslint-disable-line vue/no-mutating-props
 	}
 };
 </script>
