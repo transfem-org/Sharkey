@@ -182,6 +182,7 @@ export function getNoteMenu(props: {
 			}
 		});
 	}
+
 	function edit(): void {
 		os.post({
 			initialNote: appearNote,
@@ -190,7 +191,7 @@ export function getNoteMenu(props: {
 			channel: appearNote.channel,
 			editId: appearNote.id,
 		});
-}
+	}
 
 	function toggleFavorite(favorite: boolean): void {
 		claimAchievement('noteFavorited1');
@@ -307,7 +308,7 @@ export function getNoteMenu(props: {
 				text: i18n.ts.share,
 				action: share,
 			},
-			instance.translatorAvailable ? {
+			$i && $i.policies.canUseTranslator && instance.translatorAvailable ? {
 				icon: 'ph-translate ph-bold ph-lg',
 				text: i18n.ts.translate,
 				action: translate,

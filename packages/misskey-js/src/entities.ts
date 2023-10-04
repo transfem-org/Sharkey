@@ -1,4 +1,4 @@
-import { ModerationLogPayloads } from './consts.js';
+import { ModerationLogPayloads, notificationTypes } from './consts.js';
 
 export type ID = string;
 export type DateString = string;
@@ -50,6 +50,7 @@ export type UserDetailed = UserLite & {
 	isBlocking: boolean;
 	isBot: boolean;
 	isCat: boolean;
+	speakAsCat: boolean;
 	isFollowed: boolean;
 	isFollowing: boolean;
 	isLocked: boolean;
@@ -104,7 +105,22 @@ export type MeDetailed = UserDetailed & {
 	isDeleted: boolean;
 	isExplorable: boolean;
 	mutedWords: string[][];
-	mutingNotificationTypes: string[];
+	notificationRecieveConfig: {
+		[notificationType in typeof notificationTypes[number]]?: {
+			type: 'all';
+		} | {
+			type: 'never';
+		} | {
+			type: 'following';
+		} | {
+			type: 'follower';
+		} | {
+			type: 'mutualFollow';
+		} | {
+			type: 'list';
+			userListId: string;
+		};
+	};
 	noCrawle: boolean;
 	receiveAnnouncementEmail: boolean;
 	usePasswordLessLogin: boolean;
@@ -162,6 +178,7 @@ export type GalleryPost = {
 export type Note = {
 	id: ID;
 	createdAt: DateString;
+	updatedAt?: DateString | null;
 	text: string | null;
 	cw: string | null;
 	user: User;
@@ -196,7 +213,6 @@ export type Note = {
 	uri?: string;
 	url?: string;
 	isHidden?: boolean;
-	updatedAt?: DateString;
 };
 
 export type NoteReaction = {
@@ -669,4 +685,13 @@ export type ModerationLog = {
 } | {
 	type: 'createInvitation';
 	info: ModerationLogPayloads['createInvitation'];
+} | {
+	type: 'createAd';
+	info: ModerationLogPayloads['createAd'];
+} | {
+	type: 'updateAd';
+	info: ModerationLogPayloads['updateAd'];
+} | {
+	type: 'deleteAd';
+	info: ModerationLogPayloads['deleteAd'];
 });

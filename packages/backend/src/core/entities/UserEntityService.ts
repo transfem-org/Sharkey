@@ -352,6 +352,7 @@ export class UserEntityService implements OnModuleInit {
 			createdAt: user.createdAt.toISOString(),
 			isBot: user.isBot ?? falsy,
 			isCat: user.isCat ?? falsy,
+			speakAsCat: user.speakAsCat ?? falsy,
 			instance: user.host ? this.federatedInstanceService.federatedInstanceCache.fetch(user.host).then(instance => instance ? {
 				name: instance.name,
 				softwareName: instance.softwareName,
@@ -458,7 +459,8 @@ export class UserEntityService implements OnModuleInit {
 				hasPendingReceivedFollowRequest: this.getHasPendingReceivedFollowRequest(user.id),
 				mutedWords: profile!.mutedWords,
 				mutedInstances: profile!.mutedInstances,
-				mutingNotificationTypes: profile!.mutingNotificationTypes,
+				mutingNotificationTypes: [], // 後方互換性のため
+				notificationRecieveConfig: profile!.notificationRecieveConfig,
 				emailNotificationTypes: profile!.emailNotificationTypes,
 				achievements: profile!.achievements,
 				loggedInDays: profile!.loggedInDates.length,

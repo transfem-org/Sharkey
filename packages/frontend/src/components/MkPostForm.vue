@@ -88,6 +88,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</div>
 		<div :class="$style.footerRight">
 			<button v-tooltip="i18n.ts.previewNoteText" class="_button" :class="[$style.footerButton, { [$style.previewButtonActive]: showPreview }]" @click="showPreview = !showPreview"><i class="ph-eye ph-bold ph-lg"></i></button>
+			<button v-tooltip="'MFM Cheatsheet'" class="_button" :class="$style.footerButton" @click="MFMWindow"><i class="ph-notebook ph-bold ph-lg"></i></button>
 			<!--<button v-tooltip="i18n.ts.more" class="_button" :class="$style.footerButton" @click="showingOptions = !showingOptions"><i class="ph-dots-three ph-bold ph-lg"></i></button>-->
 		</div>
 	</footer>
@@ -344,6 +345,10 @@ function watchForDraft() {
 	watch($$(files), () => saveDraft(), { deep: true });
 	watch($$(visibility), () => saveDraft());
 	watch($$(localOnly), () => saveDraft());
+}
+
+function MFMWindow() {
+	os.popup(defineAsyncComponent(() => import('@/components/MkMfmWindow.vue')), {}, {}, 'closed');
 }
 
 function checkMissingMention() {
@@ -699,13 +704,13 @@ async function post(ev?: MouseEvent) {
 	}
 
 	let postData = {
-		text: text === '' ? undefined : text,
+		text: text === '' ? null : text,
 		fileIds: files.length > 0 ? files.map(f => f.id) : undefined,
 		replyId: props.reply ? props.reply.id : undefined,
 		renoteId: props.renote ? props.renote.id : quoteId ? quoteId : undefined,
 		channelId: props.channel ? props.channel.id : undefined,
 		poll: poll,
-		cw: useCw ? cw ?? '' : undefined,
+		cw: useCw ? cw ?? '' : null,
 		localOnly: localOnly,
 		visibility: visibility,
 		visibleUserIds: visibility === 'specified' ? visibleUsers.map(u => u.id) : undefined,
@@ -1159,7 +1164,7 @@ defineExpose({
 }
 
 .footerRight {
-	flex: 0;
+	flex: 0.3;
 	margin-left: auto;
 	display: grid;
 	grid-auto-flow: row;

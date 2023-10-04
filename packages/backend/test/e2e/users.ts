@@ -70,6 +70,7 @@ describe('ユーザー', () => {
 			avatarBlurhash: user.avatarBlurhash,
 			isBot: user.isBot,
 			isCat: user.isCat,
+			speakAsCat: user.speakAsCat,
 			instance: user.instance,
 			emojis: user.emojis,
 			onlineStatus: user.onlineStatus,
@@ -167,6 +168,7 @@ describe('ユーザー', () => {
 			mutedWords: user.mutedWords,
 			mutedInstances: user.mutedInstances,
 			mutingNotificationTypes: user.mutingNotificationTypes,
+			notificationRecieveConfig: user.notificationRecieveConfig,
 			emailNotificationTypes: user.emailNotificationTypes,
 			achievements: user.achievements,
 			loggedInDays: user.loggedInDays,
@@ -349,6 +351,7 @@ describe('ユーザー', () => {
 		assert.strictEqual(response.avatarBlurhash, null);
 		assert.strictEqual(response.isBot, false);
 		assert.strictEqual(response.isCat, false);
+		assert.strictEqual(response.speakAsCat, false);
 		assert.strictEqual(response.instance, undefined);
 		assert.deepStrictEqual(response.emojis, {});
 		assert.strictEqual(response.onlineStatus, 'unknown');
@@ -415,6 +418,7 @@ describe('ユーザー', () => {
 		assert.deepStrictEqual(response.mutedWords, []);
 		assert.deepStrictEqual(response.mutedInstances, []);
 		assert.deepStrictEqual(response.mutingNotificationTypes, []);
+		assert.deepStrictEqual(response.notificationRecieveConfig, {});
 		assert.deepStrictEqual(response.emailNotificationTypes, ['follow', 'receiveFollowRequest']);
 		assert.deepStrictEqual(response.achievements, []);
 		assert.deepStrictEqual(response.loggedInDays, 0);
@@ -479,6 +483,8 @@ describe('ユーザー', () => {
 		{ parameters: (): object => ({ isBot: false }) },
 		{ parameters: (): object => ({ isCat: true }) },
 		{ parameters: (): object => ({ isCat: false }) },
+		{ parameters: (): object => ({ speakAsCat: true }) },
+		{ parameters: (): object => ({ speakAsCat: false }) },
 		{ parameters: (): object => ({ injectFeaturedNote: true }) },
 		{ parameters: (): object => ({ injectFeaturedNote: false }) },
 		{ parameters: (): object => ({ receiveAnnouncementEmail: true }) },
@@ -495,8 +501,8 @@ describe('ユーザー', () => {
 		{ parameters: (): object => ({ mutedWords: [] }) },
 		{ parameters: (): object => ({ mutedInstances: ['xxxx.xxxxx'] }) },
 		{ parameters: (): object => ({ mutedInstances: [] }) },
-		{ parameters: (): object => ({ mutingNotificationTypes: ['note', 'follow', 'mention', 'reply', 'renote', 'quote', 'reaction', 'pollEnded', 'receiveFollowRequest', 'followRequestAccepted', 'achievementEarned', 'app'] }) },
-		{ parameters: (): object => ({ mutingNotificationTypes: [] }) },
+		{ parameters: (): object => ({ notificationRecieveConfig: { mention: { type: 'following' } } }) },
+		{ parameters: (): object => ({ notificationRecieveConfig: {} }) },
 		{ parameters: (): object => ({ emailNotificationTypes: ['mention', 'reply', 'quote', 'follow', 'receiveFollowRequest'] }) },
 		{ parameters: (): object => ({ emailNotificationTypes: [] }) },
 	] as const)('を書き換えることができる($#)', async ({ parameters }) => {

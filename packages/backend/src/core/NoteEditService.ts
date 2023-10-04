@@ -5,7 +5,7 @@
 
 import { setImmediate } from 'node:timers/promises';
 import * as mfm from 'mfm-js';
-import { In } from 'typeorm';
+import { DataSource, In, LessThan } from 'typeorm';
 import * as Redis from 'ioredis';
 import { Inject, Injectable, OnApplicationShutdown } from '@nestjs/common';
 import RE2 from 're2';
@@ -20,7 +20,7 @@ import type { MiApp } from '@/models/App.js';
 import { concat } from '@/misc/prelude/array.js';
 import { IdService } from '@/core/IdService.js';
 import type { MiUser, MiLocalUser, MiRemoteUser } from '@/models/User.js';
-import type { IPoll } from '@/models/Poll.js';
+import { MiPoll, type IPoll } from '@/models/Poll.js';
 import { checkWordMute } from '@/misc/check-word-mute.js';
 import type { MiChannel } from '@/models/Channel.js';
 import { normalizeForSearch } from '@/misc/normalize-for-search.js';
@@ -105,9 +105,8 @@ class NotificationManager {
 			// 通知される側のユーザーが通知する側のユーザーをミュートしていない限りは通知する
 			if (!mentioneesMutedUserIds.includes(this.notifier.id)) {
 				this.notificationService.createNotification(x.target, x.reason, {
-					notifierId: this.notifier.id,
 					noteId: this.note.id,
-				});
+				}, this.notifier.id);
 			}
 		}
 	}
@@ -155,6 +154,9 @@ export class NoteEditService implements OnApplicationShutdown {
 		@Inject(DI.redis)
 		private redisClient: Redis.Redis,
 
+		@Inject(DI.db)
+		private db: DataSource,
+
 		@Inject(DI.usersRepository)
 		private usersRepository: UsersRepository,
 
@@ -170,11 +172,11 @@ export class NoteEditService implements OnApplicationShutdown {
 		@Inject(DI.userProfilesRepository)
 		private userProfilesRepository: UserProfilesRepository,
 
-		@Inject(DI.mutedNotesRepository)
-		private mutedNotesRepository: MutedNotesRepository,
-
 		@Inject(DI.channelsRepository)
 		private channelsRepository: ChannelsRepository,
+
+		@Inject(DI.mutedNotesRepository)
+		private mutedNotesRepository: MutedNotesRepository,
 
 		@Inject(DI.noteThreadMutingsRepository)
 		private noteThreadMutingsRepository: NoteThreadMutingsRepository,
@@ -420,7 +422,27 @@ export class NoteEditService implements OnApplicationShutdown {
 			}));
 		}
 
-		await this.notesRepository.update(oldnote.id, note);
+		if (data.poll != null) {
+			// Start transaction
+			await this.db.transaction(async transactionalEntityManager => {
+				await transactionalEntityManager.update(MiNote, oldnote.id, note);
+
+				const poll = new MiPoll({
+					noteId: note.id,
+					choices: data.poll!.choices,
+					expiresAt: data.poll!.expiresAt,
+					multiple: data.poll!.multiple,
+					votes: new Array(data.poll!.choices.length).fill(0),
+					noteVisibility: note.visibility,
+					userId: user.id,
+					userHost: user.host,
+				});
+
+				await transactionalEntityManager.update(MiPoll, oldnote.id, poll);
+			});
+		} else {
+			await this.notesRepository.update(oldnote.id, note);
+		}
 
 		if (data.channel) {
 			this.redisClient.xadd(
@@ -484,6 +506,7 @@ export class NoteEditService implements OnApplicationShutdown {
 
 		if (data.poll && data.poll.expiresAt) {
 			const delay = data.poll.expiresAt.getTime() - Date.now();
+			this.queueService.endedPollNotificationQueue.remove(note.id);
 			this.queueService.endedPollNotificationQueue.add(note.id, {
 				noteId: note.id,
 			}, {
@@ -522,10 +545,17 @@ export class NoteEditService implements OnApplicationShutdown {
 
 			// Pack the note
 			const noteObj = await this.noteEntityService.pack(note);
-
-			this.globalEventService.publishNoteStream(note.id, 'updated', {
-				updatedAt: note.updatedAt!,
-			});
+			if (data.poll != null) {
+				this.globalEventService.publishNoteStream(note.id, 'updated', {
+					cw: note.cw,
+					text: note.text!,
+				});
+			} else {
+				this.globalEventService.publishNoteStream(note.id, 'updated', {
+					cw: note.cw,
+					text: note.text!
+				});
+			}
 
 			this.roleService.addNoteToRoleTimeline(noteObj);
 

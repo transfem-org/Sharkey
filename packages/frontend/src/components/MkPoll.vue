@@ -21,6 +21,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<a v-if="!closed && !isVoted" style="color: inherit;" @click="showResult = !showResult">{{ showResult ? i18n.ts._poll.vote : i18n.ts._poll.showResult }}</a>
 		<span v-if="isVoted">{{ i18n.ts._poll.voted }}</span>
 		<span v-else-if="closed">{{ i18n.ts._poll.closed }}</span>
+		<span v-if="!isLocal"><span> · </span><a @click.stop="refresh">{{ i18n.ts.reload }}</a></span>
 		<span v-if="remaining > 0"> · {{ timer }}</span>
 	</p>
 </div>
@@ -44,6 +45,7 @@ const remaining = ref(-1);
 
 const total = computed(() => sum(props.note.poll.choices.map(x => x.votes)));
 const closed = computed(() => remaining.value === 0);
+const isLocal = computed(() => !props.note.uri);
 const isVoted = computed(() => !props.note.poll.multiple && props.note.poll.choices.some(c => c.isVoted));
 const timer = computed(() => i18n.t(
 	remaining.value >= 86400 ? '_poll.remainingDays' :
@@ -89,6 +91,14 @@ const vote = async (id) => {
 	});
 	if (!showResult.value) showResult.value = !props.note.poll.multiple;
 };
+
+async function refresh() {
+	if (!props.note.uri) return;
+	const obj = await os.apiWithDialog("ap/show", { uri: props.note.uri });
+	if (obj.type === "Note" && obj.object.poll) {
+		props.note.poll = obj.object.poll; // eslint-disable-line vue/no-mutating-props
+	}
+}
 </script>
 
 <style lang="scss" module>

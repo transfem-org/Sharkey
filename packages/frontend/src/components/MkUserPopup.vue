@@ -15,6 +15,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<div v-if="user != null">
 			<div :class="$style.banner" :style="user.bannerUrl ? `background-image: url(${user.bannerUrl})` : ''">
 				<span v-if="$i && $i.id != user.id && user.isFollowed" :class="$style.followed">{{ i18n.ts.followsYou }}</span>
+				<span v-if="user.isLocked && $i && $i.id != user.id && !user.isFollowing" :title="i18n.ts.isLocked" :class="$style.locked"><i class="ph-lock ph-bold ph-lg"></i></span>
 			</div>
 			<svg viewBox="0 0 128 128" :class="$style.avatarBack">
 				<g transform="matrix(1.6,0,0,1.6,-38.4,-51.2)">
@@ -146,6 +147,28 @@ onMounted(() => {
 	background: rgba(0, 0, 0, 0.7);
 	font-size: 0.7em;
 	border-radius: 6px;
+}
+
+.locked:first-child {
+	position: absolute;
+	top: 12px;
+	left: 12px;
+	padding: 4px 8px;
+	color: #fff;
+	background: rgba(0, 0, 0, 0.7);
+	font-size: 0.7em;
+	border-radius: 5px;
+}
+
+.locked:not(:first-child) {
+	position: absolute;
+	top: 34px;
+	left: 12px;
+	padding: 4px 8px;
+	color: #fff;
+	background: rgba(0, 0, 0, 0.7);
+	font-size: 0.7em;
+	border-radius: 5px;
 }
 
 .avatarBack {

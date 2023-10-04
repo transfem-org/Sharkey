@@ -17,12 +17,12 @@ export const packedNoteSchema = {
 			optional: false, nullable: false,
 			format: 'date-time',
 		},
-		deletedAt: {
+		updatedAt: {
 			type: 'string',
 			optional: true, nullable: true,
 			format: 'date-time',
 		},
-		updatedAt: {
+		deletedAt: {
 			type: 'string',
 			optional: true, nullable: true,
 			format: 'date-time',
@@ -147,7 +147,7 @@ export const packedNoteSchema = {
 					isSensitive: {
 						type: 'boolean',
 						optional: true, nullable: false,
-					}
+					},
 				},
 			},
 		},
