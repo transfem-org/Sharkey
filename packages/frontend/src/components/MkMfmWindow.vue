@@ -365,7 +365,6 @@ import { ref } from 'vue';
 import MkWindow from '@/components/MkWindow.vue';
 import MkTextarea from '@/components/MkTextarea.vue';
 import { i18n } from "@/i18n.js";
-import { instance } from "@/instance.js";
 
 const emit = defineEmits<{
 	(ev: 'closed'): void;
@@ -375,7 +374,7 @@ const preview_mention = ref("@example");
 const preview_hashtag = ref("#test");
 const preview_link = ref(`[${i18n.ts._mfm.dummy}](https://joinsharkey.org)`);
 const preview_emoji = ref(
-	instance.emojis.length ? `:${instance.emojis[0].name}:` : ":emojiname:",
+	`:heart:` : ":emojiname:",
 );
 const preview_bold = ref(`**${i18n.ts._mfm.dummy}**`);
 const preview_small = ref(
