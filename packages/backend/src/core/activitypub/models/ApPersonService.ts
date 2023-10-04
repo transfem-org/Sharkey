@@ -461,6 +461,7 @@ export class ApPersonService implements OnModuleInit {
 			tags,
 			isBot: getApType(object) === 'Service',
 			isCat: (person as any).isCat === true,
+			speakAsCat: (person as any).speakAsCat != null ? (person as any).speakAsCat === true : (person as any).isCat === true,
 			isLocked: person.manuallyApprovesFollowers,
 			movedToUri: person.movedTo ?? null,
 			alsoKnownAs: person.alsoKnownAs ?? null,
