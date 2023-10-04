@@ -10,7 +10,7 @@
 		MFM Cheatsheet
 	</template>
     <MkStickyContainer>
-		<MkSpacer :content-max="800">
+		<MkSpacer :contentMax="800">
 			<div class="mfm-cheat-sheet">
 				<div>{{ i18n.ts._mfm.intro }}</div>
 				<br />
