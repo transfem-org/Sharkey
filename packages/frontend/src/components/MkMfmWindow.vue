@@ -373,9 +373,7 @@ const emit = defineEmits<{
 const preview_mention = ref("@example");
 const preview_hashtag = ref("#test");
 const preview_link = ref(`[${i18n.ts._mfm.dummy}](https://joinsharkey.org)`);
-const preview_emoji = ref(
-	`:heart:` : ":emojiname:",
-);
+const preview_emoji = ref(`:heart:`);
 const preview_bold = ref(`**${i18n.ts._mfm.dummy}**`);
 const preview_small = ref(
 	`<small>${i18n.ts._mfm.dummy}</small> $[small ${i18n.ts._mfm.dummy}]`,
