@@ -1284,7 +1284,7 @@ _achievements:
     _login1000:
       title: "ノートマスターⅢ"
       description: "通算ログイン日数が1,000日"
-      flavor: "Misskeyを使ってくれてありがとう！"
+      flavor: "Sharkeyを使ってくれてありがとう！"
     _noteClipped1:
       title: "クリップせずにはいられないな"
       description: "初めてノートをクリップした"
@@ -1344,9 +1344,9 @@ _achievements:
       title: "実績好き"
       description: "実績一覧を3分以上眺め続けた"
     _iLoveMisskey:
-      title: "I Love Misskey"
-      description: "\"I ❤ #Misskey\"を投稿した"
-      flavor: "Misskeyを使ってくださりありがとうございます！ by 開発チーム"
+      title: "I Love Sharkey"
+      description: "\"I ❤ #Sharkey\"を投稿した"
+      flavor: "Sharkeyを使ってくださりありがとうございます！ by 開発チーム"
     _foundTreasure:
       title: "宝探し"
       description: "隠されたお宝を発見した"
@@ -1420,7 +1420,7 @@ _achievements:
     _brainDiver:
       title: "Brain Diver"
       description: "Brain Diverへのリンクを投稿した"
-      flavor: "Sharkey-Sharkey La-Tu-Ma"
+      flavor: "Misskey-Misskey La-Tu-Ma"
     _smashTestNotificationButton:
       title: "テスト過剰"
       description: "通知のテストをごく短時間のうちに連続して行った"
