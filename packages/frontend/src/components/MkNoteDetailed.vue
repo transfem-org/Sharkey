@@ -2,7 +2,6 @@
 SPDX-FileCopyrightText: syuilo and other misskey contributors
 SPDX-License-Identifier: AGPL-3.0-only
 -->
-
 <template>
 <div
 	v-if="!muted"
@@ -109,16 +108,25 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<button
 				v-if="canRenote"
 				ref="renoteButton"
+				v-tooltip.noDelay.bottom="i18n.ts.renote"
 				class="_button"
 				:class="$style.noteFooterButton"
+				v-bind:style="hasRenotedBefore ? 'color: var(--accent) !important;' : ''"
 				@mousedown="renote()"
 			>
-				<i class="ph-repeat ph-bold ph-lg"></i>
+				<i class="ph-rocket-launch ph-bold ph-lg"></i>
 				<p v-if="appearNote.renoteCount > 0" :class="$style.noteFooterButtonCount">{{ appearNote.renoteCount }}</p>
 			</button>
-			<button v-else class="_button" :class="$style.noteFooterButton" disabled>
-				<i class="ph-prohibit ph-bold ph-lg"></i>
+			<button
+				v-else
+				v-tooltip.noDelay.bottom="i18n.ts.disabled"
+				class="_button"
+			    :class="$style.noteFooterButton"
+				disabled="true"
+			>
+				<i class="ph-rocket-launch ph-bold ph-lg"></i>
 			</button>
+
 			<button v-if="appearNote.myReaction == null && appearNote.reactionAcceptance !== 'likeOnly'" ref="likeButton" :class="$style.noteFooterButton" class="_button" @mousedown="like()">
 				<i class="ph-heart ph-bold ph-lg"></i>
 			</button>
@@ -328,6 +336,18 @@ useTooltip(renoteButton, async (showing) => {
 	}, {}, 'closed');
 });
 
+const hasRenotedBefore = ref(false);
+if ($i){
+	os.api("notes/renotes", {
+		noteId: props.note.id,
+		userId: $i.id,
+		limit: 1,
+	}).then((res) => {
+		hasRenotedBefore.value = res.length > 0;
+	});
+}
+
+
 function renote(viaKeyboard = false) {
 	pleaseLogin();
 	showMovedDialog();
@@ -365,7 +385,6 @@ function renote(viaKeyboard = false) {
 			},
 		}, null]);
 	}
-
 	items = items.concat([{
 		text: i18n.ts.renote,
 		icon: 'ph-repeat ph-bold ph-lg',
@@ -383,6 +402,7 @@ function renote(viaKeyboard = false) {
 			}).then(() => {
 				os.toast(i18n.ts.renoted);
 			});
+			hasRenotedBefore.value = true;
 		},
 	}, {
 		text: i18n.ts.quote,
@@ -393,7 +413,19 @@ function renote(viaKeyboard = false) {
 			});
 		},
 	}]);
-
+	if (hasRenotedBefore.value) {
+		items.push({
+			text: i18n.ts.unrenote,
+			icon: "ph-trash ph-bold ph-lg",
+			danger: true,
+			action: () => {
+				os.api("notes/unrenote", {
+					noteId: props.note.id,
+				});
+				hasRenotedBefore.value = false;
+			},
+		});
+	}
 	os.popupMenu(items, renoteButton.value, {
 		viaKeyboard,
 	});

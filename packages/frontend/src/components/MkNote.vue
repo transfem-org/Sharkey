@@ -98,16 +98,25 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<button
 					v-if="canRenote"
 					ref="renoteButton"
-					:class="$style.footerButton"
+					v-tooltip.noDelay.bottom="i18n.ts.renote"
 					class="_button"
+					:class="$style.footerButton"
+					v-bind:style="hasRenotedBefore ? 'color: var(--accent) !important;' : ''"
 					@mousedown="renote()"
 				>
-					<i class="ph-repeat ph-bold ph-lg"></i>
+					<i class="ph-rocket-launch ph-bold ph-lg"></i>
 					<p v-if="appearNote.renoteCount > 0" :class="$style.footerButtonCount">{{ appearNote.renoteCount }}</p>
 				</button>
-				<button v-else :class="$style.footerButton" class="_button" disabled>
-					<i class="ph-prohibit ph-bold ph-lg"></i>
+				<button
+					v-else
+					v-tooltip.noDelay.bottom="i18n.ts.disabled"
+					class="_button"
+					:class="$style.footerButton"
+					disabled="true"
+				>
+					<i class="ph-rocket-launch ph-bold ph-lg"></i>
 				</button>
+
 				<button v-if="appearNote.myReaction == null && appearNote.reactionAcceptance !== 'likeOnly'" ref="likeButton" :class="$style.footerButton" class="_button" v-on:click.stop @click="like()">
 					<i class="ph-heart ph-bold ph-lg"></i>
 				</button>
@@ -268,6 +277,17 @@ useTooltip(renoteButton, async (showing) => {
 	}, {}, 'closed');
 });
 
+const hasRenotedBefore = ref(false);
+if ($i){
+	os.api("notes/renotes", {
+		noteId: props.note.id,
+		userId: $i.id,
+		limit: 1,
+	}).then((res) => {
+		hasRenotedBefore.value = res.length > 0;
+	});
+}
+
 type Visibility = 'public' | 'home' | 'followers' | 'specified';
 
 // defaultStore.state.visibilityがstringなためstringも受け付けている
@@ -345,6 +365,7 @@ function renote(viaKeyboard = false) {
 			}).then(() => {
 				os.toast(i18n.ts.renoted);
 			});
+			hasRenotedBefore.value = true;
 		},
 	}, {
 		text: i18n.ts.quote,
@@ -355,7 +376,19 @@ function renote(viaKeyboard = false) {
 			});
 		},
 	}]);
-
+	if (hasRenotedBefore.value) {
+		items.push({
+			text: i18n.ts.unrenote,
+			icon: "ph-trash ph-bold ph-lg",
+			danger: true,
+			action: () => {
+				os.api("notes/unrenote", {
+					noteId: props.note.id,
+				});
+				hasRenotedBefore.value = false;
+			},
+		});
+	}
 	os.popupMenu(items, renoteButton.value, {
 		viaKeyboard,
 	});
