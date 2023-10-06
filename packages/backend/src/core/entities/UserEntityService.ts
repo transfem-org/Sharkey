@@ -308,6 +308,14 @@ export class UserEntityService implements OnModuleInit {
 				bannerBlurhash: banner.blurhash,
 			});
 		}
+		if (user.backgroundId != null && user.backgroundUrl === null) {
+			const background = await this.driveFilesRepository.findOneByOrFail({ id: user.backgroundId });
+			user.backgroundUrl = this.driveFileEntityService.getPublicUrl(background);
+			this.usersRepository.update(user.id, {
+				backgroundUrl: user.backgroundUrl,
+				backgroundBlurhash: background.blurhash,
+			});
+		}
 
 		const meId = me ? me.id : null;
 		const isMe = meId === user.id;
@@ -385,6 +393,8 @@ export class UserEntityService implements OnModuleInit {
 				lastFetchedAt: user.lastFetchedAt ? user.lastFetchedAt.toISOString() : null,
 				bannerUrl: user.bannerUrl,
 				bannerBlurhash: user.bannerBlurhash,
+				backgroundUrl: user.backgroundUrl,
+				backgroundBlurhash: user.backgroundBlurhash,
 				isLocked: user.isLocked,
 				isSilenced: this.roleService.getUserPolicies(user.id).then(r => !r.canPublicNote),
 				isSuspended: user.isSuspended ?? falsy,
@@ -429,6 +439,7 @@ export class UserEntityService implements OnModuleInit {
 			...(opts.detail && isMe ? {
 				avatarId: user.avatarId,
 				bannerId: user.bannerId,
+				backgroundId: user.backgroundId,
 				isModerator: isModerator,
 				isAdmin: isAdmin,
 				injectFeaturedNote: profile!.injectFeaturedNote,

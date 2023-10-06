@@ -122,6 +122,15 @@ export const packedUserDetailedNotMeOnlySchema = {
 			type: 'string',
 			nullable: true, optional: false,
 		},
+		backgroundUrl: {
+			type: 'string',
+			format: 'url',
+			nullable: true, optional: false,
+		},
+		backgroundBlurhash: {
+			type: 'string',
+			nullable: true, optional: false,
+		},
 		isLocked: {
 			type: 'boolean',
 			nullable: false, optional: false,
@@ -300,6 +309,11 @@ export const packedMeDetailedOnlySchema = {
 			format: 'id',
 		},
 		bannerId: {
+			type: 'string',
+			nullable: true, optional: false,
+			format: 'id',
+		},
+		backgroundId: {
 			type: 'string',
 			nullable: true, optional: false,
 			format: 'id',
