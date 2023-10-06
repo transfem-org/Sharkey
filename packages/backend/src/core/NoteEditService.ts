@@ -570,6 +570,8 @@ export class NoteEditService implements OnApplicationShutdown {
 
 			const nm = new NotificationManager(this.mutingsRepository, this.notificationService, user, note);
 
+			await this.createMentionedEvents(mentionedUsers, note, nm);
+
 			// If has in reply to note
 			if (data.reply) {
 				// 通知
@@ -622,20 +624,36 @@ export class NoteEditService implements OnApplicationShutdown {
 			//#region AP deliver
 			if (this.userEntityService.isLocalUser(user)) {
 				(async () => {
-					note.id = `https://dev.joinsharkey.org/notes/${note.id}`;
 					const noteActivity = await this.renderNoteOrRenoteActivity(data, note);
+					const dm = this.apDeliverManagerService.createDeliverManager(user, noteActivity);
 
-					/* // フォロワーに配送
+					// メンションされたリモートユーザーに配送
+					for (const u of mentionedUsers.filter(u => this.userEntityService.isRemoteUser(u))) {
+						dm.addDirectRecipe(u as MiRemoteUser);
+					}
+
+					// 投稿がリプライかつ投稿者がローカルユーザーかつリプライ先の投稿の投稿者がリモートユーザーなら配送
+					if (data.reply && data.reply.userHost !== null) {
+						const u = await this.usersRepository.findOneBy({ id: data.reply.userId });
+						if (u && this.userEntityService.isRemoteUser(u)) dm.addDirectRecipe(u);
+					}
+
+					// 投稿がRenoteかつ投稿者がローカルユーザーかつRenote元の投稿の投稿者がリモートユーザーなら配送
+					if (data.renote && data.renote.userHost !== null) {
+						const u = await this.usersRepository.findOneBy({ id: data.renote.userId });
+						if (u && this.userEntityService.isRemoteUser(u)) dm.addDirectRecipe(u);
+					}
+
+					// フォロワーに配送
 					if (['public', 'home', 'followers'].includes(note.visibility)) {
 						dm.addFollowersRecipe();
-					} */
+					}
 
-					/* if (['public'].includes(note.visibility)) {
+					if (['public'].includes(note.visibility)) {
 						this.relayService.deliverToRelays(user, noteActivity);
-					} */
+					}
 
-					this.relayService.deliverToRelays(user, noteActivity);
-					this.apDeliverManagerService.deliverToFollowers(user, noteActivity!);
+					dm.execute();
 				})();
 			}
 			//#endregion
@@ -726,7 +744,11 @@ export class NoteEditService implements OnApplicationShutdown {
 		const user = await this.usersRepository.findOneBy({ id: note.userId });
 		if (user == null) throw new Error('user not found');
 
-		return this.apRendererService.addContext(this.apRendererService.renderUpdate(await this.apRendererService.renderNote(note, false), user));
+		const content = data.renote && data.text == null && data.poll == null && (data.files == null || data.files.length === 0)
+			? this.apRendererService.renderAnnounce(data.renote.uri ? data.renote.uri : `${this.config.url}/notes/${data.renote.id}`, note)
+			: this.apRendererService.renderUpdate(await this.apRendererService.renderNote(note, false), user);
+
+		return this.apRendererService.addContext(content);
 	}
 
 	@bindThis
