@@ -10,6 +10,7 @@ jobs:
     steps:
       - uses: wow-actions/welcome@v1
         with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           FIRST_ISSUE: |
             👋 @{{ author }}
              Thanks for opening your first issue here! If you are reporting a bug, please make sure to include steps on how to reproduce it! :D
@@ -21,4 +22,4 @@ jobs:
 
           FIRST_PR_MERGED: |
             🎉 @{{ author }}
-            Congrats on merging your first pull request! We are proud of you :3 ❤️
+            Congrats on getting your first pull request merged! We are proud of you :3 ❤️
