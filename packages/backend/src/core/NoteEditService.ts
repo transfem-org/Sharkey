@@ -365,7 +365,7 @@ export class NoteEditService implements OnApplicationShutdown {
 		});
 
 		const note = new MiNote({
-			id: this.idService.genId(new Date(oldnote.createdAt!)),
+			id: oldnote.id,
 			createdAt: new Date(oldnote.createdAt!),
 			updatedAt: data.updatedAt ? data.updatedAt : new Date(),
 			fileIds: data.files ? data.files.map(file => file.id) : [],
@@ -622,6 +622,7 @@ export class NoteEditService implements OnApplicationShutdown {
 			//#region AP deliver
 			if (this.userEntityService.isLocalUser(user)) {
 				(async () => {
+					note.id = `https://dev.joinsharkey.org/notes/${note.id}`;
 					const noteActivity = await this.renderNoteOrRenoteActivity(data, note);
 
 					/* // フォロワーに配送
