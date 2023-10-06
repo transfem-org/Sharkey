@@ -597,6 +597,148 @@ export class ApRendererService {
 	}
 
 	@bindThis
+	public async renderUpNote(note: MiNote, dive = true): Promise<IPost> {
+		const getPromisedFiles = async (ids: string[]): Promise<MiDriveFile[]> => {
+			if (ids.length === 0) return [];
+			const items = await this.driveFilesRepository.findBy({ id: In(ids) });
+			return ids.map(id => items.find(item => item.id === id)).filter((item): item is MiDriveFile => item != null);
+		};
+
+		let inReplyTo;
+		let inReplyToNote: MiNote | null;
+
+		if (note.replyId) {
+			inReplyToNote = await this.notesRepository.findOneBy({ id: note.replyId });
+
+			if (inReplyToNote != null) {
+				const inReplyToUserExist = await this.usersRepository.exist({ where: { id: inReplyToNote.userId } });
+
+				if (inReplyToUserExist) {
+					if (inReplyToNote.uri) {
+						inReplyTo = inReplyToNote.uri;
+					} else {
+						if (dive) {
+							inReplyTo = await this.renderUpNote(inReplyToNote, false);
+						} else {
+							inReplyTo = `${this.config.url}/notes/${inReplyToNote.id}`;
+						}
+					}
+				}
+			}
+		} else {
+			inReplyTo = null;
+		}
+
+		let quote;
+
+		if (note.renoteId) {
+			const renote = await this.notesRepository.findOneBy({ id: note.renoteId });
+
+			if (renote) {
+				quote = renote.uri ? renote.uri : `${this.config.url}/notes/${renote.id}`;
+			}
+		}
+
+		const attributedTo = this.userEntityService.genLocalUserUri(note.userId);
+
+		const mentions = note.mentionedRemoteUsers ? (JSON.parse(note.mentionedRemoteUsers) as IMentionedRemoteUsers).map(x => x.uri) : [];
+
+		let to: string[] = [];
+		let cc: string[] = [];
+
+		if (note.visibility === 'public') {
+			to = ['https://www.w3.org/ns/activitystreams#Public'];
+			cc = [`${attributedTo}/followers`].concat(mentions);
+		} else if (note.visibility === 'home') {
+			to = [`${attributedTo}/followers`];
+			cc = ['https://www.w3.org/ns/activitystreams#Public'].concat(mentions);
+		} else if (note.visibility === 'followers') {
+			to = [`${attributedTo}/followers`];
+			cc = mentions;
+		} else {
+			to = mentions;
+		}
+
+		const mentionedUsers = note.mentions && note.mentions.length > 0 ? await this.usersRepository.findBy({
+			id: In(note.mentions),
+		}) : [];
+
+		const hashtagTags = note.tags.map(tag => this.renderHashtag(tag));
+		const mentionTags = mentionedUsers.map(u => this.renderMention(u as MiLocalUser | MiRemoteUser));
+
+		const files = await getPromisedFiles(note.fileIds);
+
+		const text = note.text ?? '';
+		let poll: MiPoll | null = null;
+
+		if (note.hasPoll) {
+			poll = await this.pollsRepository.findOneBy({ noteId: note.id });
+		}
+
+		let apText = text;
+
+		if (quote) {
+			apText += `\n\nRE: ${quote}`;
+		}
+
+		const summary = note.cw === '' ? String.fromCharCode(0x200B) : note.cw;
+
+		const content = this.apMfmService.getNoteHtml(Object.assign({}, note, {
+			text: apText,
+		}));
+
+		const emojis = await this.getEmojis(note.emojis);
+		const apemojis = emojis.filter(emoji => !emoji.localOnly).map(emoji => this.renderEmoji(emoji));
+
+		const tag = [
+			...hashtagTags,
+			...mentionTags,
+			...apemojis,
+		];
+
+		const asPoll = poll ? {
+			type: 'Question',
+			content: this.apMfmService.getNoteHtml(Object.assign({}, note, {
+				text: text,
+			})),
+			[poll.expiresAt && poll.expiresAt < new Date() ? 'closed' : 'endTime']: poll.expiresAt,
+			[poll.multiple ? 'anyOf' : 'oneOf']: poll.choices.map((text, i) => ({
+				type: 'Note',
+				name: text,
+				replies: {
+					type: 'Collection',
+					totalItems: poll!.votes[i],
+				},
+			})),
+		} as const : {};
+
+		return {
+			id: `${this.config.url}/notes/${note.id}`,
+			type: 'Note',
+			attributedTo,
+			summary: summary ?? undefined,
+			content: content ?? undefined,
+			updated: note.updatedAt?.toISOString(),
+			_misskey_content: text,
+			source: {
+				content: text,
+				mediaType: 'text/x.misskeymarkdown',
+			},
+			_misskey_quote: quote,
+			quoteUrl: quote,
+			quoteUri: quote,
+			published: note.createdAt.toISOString(),
+			to,
+			cc,
+			inReplyTo,
+			attachment: files.map(x => this.renderDocument(x)),
+			sensitive: note.cw != null || files.some(file => file.isSensitive),
+			tag,
+			...asPoll,
+		};
+	}
+
+	@bindThis
 	public renderVote(user: { id: MiUser['id'] }, vote: MiPollVote, note: MiNote, poll: MiPoll, pollOwner: MiRemoteUser): ICreate {
 		return {
 			id: `${this.config.url}/users/${user.id}#votes/${vote.id}/activity`,

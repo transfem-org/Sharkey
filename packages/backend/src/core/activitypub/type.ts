@@ -119,6 +119,7 @@ export interface IPost extends IObject {
 	_misskey_content?: string;
 	quoteUrl?: string;
 	quoteUri?: string;
+	updated?: string;
 }
 
 export interface IQuestion extends IObject {

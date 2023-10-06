@@ -625,6 +625,7 @@ export class NoteEditService implements OnApplicationShutdown {
 			if (this.userEntityService.isLocalUser(user)) {
 				(async () => {
 					const noteActivity = await this.renderNoteOrRenoteActivity(data, note);
+					(note as any).updated
 					const dm = this.apDeliverManagerService.createDeliverManager(user, noteActivity);
 
 					// メンションされたリモートユーザーに配送
@@ -746,7 +747,7 @@ export class NoteEditService implements OnApplicationShutdown {
 
 		const content = data.renote && data.text == null && data.poll == null && (data.files == null || data.files.length === 0)
 			? this.apRendererService.renderAnnounce(data.renote.uri ? data.renote.uri : `${this.config.url}/notes/${data.renote.id}`, note)
-			: this.apRendererService.renderUpdate(await this.apRendererService.renderNote(note, false), user);
+			: this.apRendererService.renderUpdate(await this.apRendererService.renderUpNote(note, false), user);
 
 		return this.apRendererService.addContext(content);
 	}
