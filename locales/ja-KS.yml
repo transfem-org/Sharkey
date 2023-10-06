@@ -1543,7 +1543,7 @@ _registry:
   key: "キー"
   keys: "キー"
   domain: "ドメイン"
-  createKey: "キーを作る
+  createKey: "キーを作る"
 _aboutMisskey:
   about: "Sharkeyは、syuiloが2014年からずっと作ってはる、Misskeyをベースにしたオープンソースなソフトウェアや。"
   contributors: "主な貢献者"
