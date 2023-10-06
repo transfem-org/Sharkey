@@ -8,18 +8,18 @@ jobs:
   run:
     runs-on: ubuntu-latest
     steps:
-      - uses: wow-actions/welcome@v1
+      - uses: EddieHubCommunity/gh-action-community/src/welcome@main
         with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          FIRST_ISSUE: |
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          issue-message: |
             👋 @{{ author }}
              Thanks for opening your first issue here! If you are reporting a bug, please make sure to include steps on how to reproduce it! :D
 
-          FIRST_PR: |
+          pr-message: |
             👋 @{{ author }}
             Thanks for opening this pull request! We will review it as soon as we can :3
             Please check out our contributing guidelines in the meantime.
 
-          FIRST_PR_MERGED: |
-            🎉 @{{ author }}
-            Congrats on getting your first pull request merged! We are proud of you :3 ❤️
+         # FIRST_PR_MERGED: |
+         #   🎉 @{{ author }}
+         #   Congrats on getting your first pull request merged! We are proud of you :3 ❤️
