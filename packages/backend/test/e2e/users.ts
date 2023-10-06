@@ -95,6 +95,8 @@ describe('ユーザー', () => {
 			lastFetchedAt: user.lastFetchedAt,
 			bannerUrl: user.bannerUrl,
 			bannerBlurhash: user.bannerBlurhash,
+			backgroundUrl: user.backgroundUrl,
+			backgroundBlurhash: user.backgroundBlurhash,
 			isLocked: user.isLocked,
 			isSilenced: user.isSilenced,
 			isSuspended: user.isSuspended,
@@ -366,6 +368,8 @@ describe('ユーザー', () => {
 		assert.strictEqual(response.lastFetchedAt, null);
 		assert.strictEqual(response.bannerUrl, null);
 		assert.strictEqual(response.bannerBlurhash, null);
+		assert.strictEqual(response.backgroundUrl, null);
+		assert.strictEqual(response.backgroundBlurhash, null);
 		assert.strictEqual(response.isLocked, false);
 		assert.strictEqual(response.isSilenced, false);
 		assert.strictEqual(response.isSuspended, false);
@@ -557,6 +561,31 @@ describe('ユーザー', () => {
 			bannerId: null,
 			bannerBlurhash: null,
 			bannerUrl: null,
+		};
+		assert.deepStrictEqual(response2, expected2, inspect(parameters));
+	});
+
+	test('を書き換えることができる(Background)', async () => {
+		const aliceFile = (await uploadFile(alice)).body;
+		const parameters = { bannerId: aliceFile.id };
+		const response = await successfulApiCall({ endpoint: 'i/update', parameters: parameters, user: alice });
+		assert.match(response.backgroundUrl ?? '.', /^[-a-zA-Z0-9@:%._\+~#&?=\/]+$/);
+		assert.match(response.backgroundBlurhash ?? '.', /[ -~]{54}/);
+		const expected = {
+			...meDetailed(alice, true),
+			backgroundId: aliceFile.id,
+			backgroundBlurhash: response.baackgroundBlurhash,
+			backgroundUrl: response.backgroundUrl,
+		};
+		assert.deepStrictEqual(response, expected, inspect(parameters));
+
+		const parameters2 = { backgroundId: null };
+		const response2 = await successfulApiCall({ endpoint: 'i/update', parameters: parameters2, user: alice });
+		const expected2 = {
+			...meDetailed(alice, true),
+			backgroundId: null,
+			backgroundBlurhash: null,
+			backgroundUrl: null,
 		};
 		assert.deepStrictEqual(response2, expected2, inspect(parameters));
 	});

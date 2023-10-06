@@ -60,6 +60,12 @@ export const meta = {
 			id: '0d8f5629-f210-41c2-9433-735831a58595',
 		},
 
+		noSuchBackground: {
+			message: 'No such background file.',
+			code: 'NO_SUCH_BACKGROUND',
+			id: '0d8f5629-f210-41c2-9433-735831a58582',
+		},
+
 		avatarNotAnImage: {
 			message: 'The file specified as an avatar is not an image.',
 			code: 'AVATAR_NOT_AN_IMAGE',
@@ -70,6 +76,12 @@ export const meta = {
 			message: 'The file specified as a banner is not an image.',
 			code: 'BANNER_NOT_AN_IMAGE',
 			id: '75aedb19-2afd-4e6d-87fc-67941256fa60',
+		},
+
+		backgroundNotAnImage: {
+			message: 'The file specified as a background is not an image.',
+			code: 'BACKGROUND_NOT_AN_IMAGE',
+			id: '75aedb19-2afd-4e6d-87fc-67941256fa40',
 		},
 
 		noSuchPage: {
@@ -133,6 +145,7 @@ export const paramDef = {
 		lang: { type: 'string', enum: [null, ...Object.keys(langmap)] as string[], nullable: true },
 		avatarId: { type: 'string', format: 'misskey:id', nullable: true },
 		bannerId: { type: 'string', format: 'misskey:id', nullable: true },
+		backgroundId: { type: 'string', format: 'misskey:id', nullable: true },
 		fields: {
 			type: 'array',
 			minItems: 0,
@@ -298,6 +311,21 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				updates.bannerId = null;
 				updates.bannerUrl = null;
 				updates.bannerBlurhash = null;
+			}
+
+			if (ps.backgroundId) {
+				const background = await this.driveFilesRepository.findOneBy({ id: ps.backgroundId });
+
+				if (background == null || background.userId !== user.id) throw new ApiError(meta.errors.noSuchBackground);
+				if (!background.type.startsWith('image/')) throw new ApiError(meta.errors.backgroundNotAnImage);
+
+				updates.backgroundId = background.id;
+				updates.backgroundUrl = this.driveFileEntityService.getPublicUrl(background);
+				updates.backgroundBlurhash = background.blurhash;
+			} else if (ps.backgroundId === null) {
+				updates.backgroundId = null;
+				updates.backgroundUrl = null;
+				updates.backgroundBlurhash = null;
 			}
 
 			if (ps.pinnedPageId) {

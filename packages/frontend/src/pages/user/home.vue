@@ -4,7 +4,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<MkSpacer :contentMax="narrow ? 800 : 1100">
+<MkSpacer :contentMax="narrow ? 800 : 1100" :style="background">
 	<div ref="rootEl" class="ftskorzw" :class="{ wide: !narrow }" style="container-type: inline-size;">
 		<div class="main _gaps">
 			<!-- TODO -->
@@ -236,6 +236,13 @@ if (props.user.listenbrainz) {
 	}
 }
 
+const background = computed(() => {
+	if (props.user.backgroundUrl == null) return {};
+	return {
+		'--backgroundImageStatic': `url('${props.user.backgroundUrl}')`
+	};
+});
+
 watch($$(moderationNote), async () => {
 	await os.api('admin/update-user-note', { userId: props.user.id, text: moderationNote });
 });
@@ -338,6 +345,24 @@ onUnmounted(() => {
 
 <style lang="scss" scoped>
 .ftskorzw {
+	&::before {
+		content: "";
+		position: fixed;
+		inset: 0;
+		background: var(--backgroundImageStatic);
+		background-size: cover;
+		background-position: center;
+		pointer-events: none;
+		filter: blur(8px) opacity(0.6);
+		// Funny CSS schenanigans to make background escape container
+		padding-left: 20px;
+		margin-left: -20px;
+		padding-right: 20px;
+		margin-right: -20px;
+		padding-top: 20px;
+		margin-top: -20px;
+		background-attachment: fixed;
+	}
 
 	> .main {
 
