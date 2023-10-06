@@ -1,0 +1,24 @@
+name: Welcome
+on:
+  pull_request:
+    types: [opened, closed]
+  issues:
+    types: [opened]
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: wow-actions/welcome@v1
+        with:
+          FIRST_ISSUE: |
+            👋 @{{ author }}
+             Thanks for opening your first issue here! If you are reporting a bug, please make sure to include steps on how to reproduce it! :D
+
+          FIRST_PR: |
+            👋 @{{ author }}
+            Thanks for opening this pull request! We will review it as soon as we can :3
+            Please check out our contributing guidelines in the meantime.
+
+          FIRST_PR_MERGED: |
+            🎉 @{{ author }}
+            Congrats on merging your first pull request! We are proud of you :3 ❤️
