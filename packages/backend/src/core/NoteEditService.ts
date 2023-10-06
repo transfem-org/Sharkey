@@ -365,8 +365,8 @@ export class NoteEditService implements OnApplicationShutdown {
 		});
 
 		const note = new MiNote({
-			id: oldnote.id,
-			createdAt: new Date(oldnote.createdAt!),
+			id: this.idService.genId(oldnote.createdAt!),
+			//createdAt: new Date(oldnote.createdAt!),
 			updatedAt: data.updatedAt ? data.updatedAt : new Date(),
 			fileIds: data.files ? data.files.map(file => file.id) : [],
 			replyId: data.reply ? data.reply.id : null,
@@ -570,8 +570,6 @@ export class NoteEditService implements OnApplicationShutdown {
 
 			const nm = new NotificationManager(this.mutingsRepository, this.notificationService, user, note);
 
-			await this.createMentionedEvents(mentionedUsers, note, nm);
-
 			// If has in reply to note
 			if (data.reply) {
 				// 通知
@@ -625,24 +623,6 @@ export class NoteEditService implements OnApplicationShutdown {
 			if (this.userEntityService.isLocalUser(user)) {
 				(async () => {
 					const noteActivity = await this.renderNoteOrRenoteActivity(data, note);
-					const dm = this.apDeliverManagerService.createDeliverManager(user, noteActivity);
-
-					// メンションされたリモートユーザーに配送
-					for (const u of mentionedUsers.filter(u => this.userEntityService.isRemoteUser(u))) {
-						dm.addDirectRecipe(u as MiRemoteUser);
-					}
-
-					// 投稿がリプライかつ投稿者がローカルユーザーかつリプライ先の投稿の投稿者がリモートユーザーなら配送
-					if (data.reply && data.reply.userHost !== null) {
-						const u = await this.usersRepository.findOneBy({ id: data.reply.userId });
-						if (u && this.userEntityService.isRemoteUser(u)) dm.addDirectRecipe(u);
-					}
-
-					// 投稿がRenoteかつ投稿者がローカルユーザーかつRenote元の投稿の投稿者がリモートユーザーなら配送
-					if (data.renote && data.renote.userHost !== null) {
-						const u = await this.usersRepository.findOneBy({ id: data.renote.userId });
-						if (u && this.userEntityService.isRemoteUser(u)) dm.addDirectRecipe(u);
-					}
 
 					/* // フォロワーに配送
 					if (['public', 'home', 'followers'].includes(note.visibility)) {
@@ -655,8 +635,6 @@ export class NoteEditService implements OnApplicationShutdown {
 
 					this.relayService.deliverToRelays(user, noteActivity);
 					this.apDeliverManagerService.deliverToFollowers(user, noteActivity!);
-
-					dm.execute();
 				})();
 			}
 			//#endregion
