@@ -308,6 +308,14 @@ export class UserEntityService implements OnModuleInit {
 				bannerBlurhash: banner.blurhash,
 			});
 		}
+		if (user.backgroundId != null && user.backgroundUrl === null) {
+			const background = await this.driveFilesRepository.findOneByOrFail({ id: user.backgroundId });
+			user.backgroundUrl = this.driveFileEntityService.getPublicUrl(background);
+			this.usersRepository.update(user.id, {
+				backgroundUrl: user.backgroundUrl,
+				backgroundBlurhash: background.blurhash,
+			});
+		}
 
 		const meId = me ? me.id : null;
 		const isMe = meId === user.id;
@@ -352,6 +360,7 @@ export class UserEntityService implements OnModuleInit {
 			createdAt: user.createdAt.toISOString(),
 			isBot: user.isBot ?? falsy,
 			isCat: user.isCat ?? falsy,
+			speakAsCat: user.speakAsCat ?? falsy,
 			instance: user.host ? this.federatedInstanceService.federatedInstanceCache.fetch(user.host).then(instance => instance ? {
 				name: instance.name,
 				softwareName: instance.softwareName,
@@ -384,6 +393,8 @@ export class UserEntityService implements OnModuleInit {
 				lastFetchedAt: user.lastFetchedAt ? user.lastFetchedAt.toISOString() : null,
 				bannerUrl: user.bannerUrl,
 				bannerBlurhash: user.bannerBlurhash,
+				backgroundUrl: user.backgroundUrl,
+				backgroundBlurhash: user.backgroundBlurhash,
 				isLocked: user.isLocked,
 				isSilenced: this.roleService.getUserPolicies(user.id).then(r => !r.canPublicNote),
 				isSuspended: user.isSuspended ?? falsy,
@@ -428,6 +439,7 @@ export class UserEntityService implements OnModuleInit {
 			...(opts.detail && isMe ? {
 				avatarId: user.avatarId,
 				bannerId: user.bannerId,
+				backgroundId: user.backgroundId,
 				isModerator: isModerator,
 				isAdmin: isAdmin,
 				injectFeaturedNote: profile!.injectFeaturedNote,
@@ -458,7 +470,8 @@ export class UserEntityService implements OnModuleInit {
 				hasPendingReceivedFollowRequest: this.getHasPendingReceivedFollowRequest(user.id),
 				mutedWords: profile!.mutedWords,
 				mutedInstances: profile!.mutedInstances,
-				mutingNotificationTypes: profile!.mutingNotificationTypes,
+				mutingNotificationTypes: [], // 後方互換性のため
+				notificationRecieveConfig: profile!.notificationRecieveConfig,
 				emailNotificationTypes: profile!.emailNotificationTypes,
 				achievements: profile!.achievements,
 				loggedInDays: profile!.loggedInDates.length,

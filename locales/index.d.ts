@@ -1125,6 +1125,10 @@ export interface Locale {
     "authenticationRequiredToContinue": string;
     "dateAndTime": string;
     "showRenotes": string;
+    "edited": string;
+    "notificationRecieveConfig": string;
+    "mutualFollow": string;
+    "fileAttachedOnly": string;
     "_announcement": {
         "forExistingUsers": string;
         "forExistingUsersDescription": string;
@@ -1538,6 +1542,7 @@ export interface Locale {
             "gtlAvailable": string;
             "ltlAvailable": string;
             "canPublicNote": string;
+            "canEditNote": string;
             "canInvite": string;
             "inviteLimit": string;
             "inviteLimitCycle": string;
@@ -1557,6 +1562,7 @@ export interface Locale {
             "descriptionOfRateLimitFactor": string;
             "canHideAds": string;
             "canSearchNotes": string;
+            "canUseTranslator": string;
         };
         "_condition": {
             "isLocal": string;
@@ -2279,6 +2285,9 @@ export interface Locale {
         "unmarkSensitiveDriveFile": string;
         "resolveAbuseReport": string;
         "createInvitation": string;
+        "createAd": string;
+        "deleteAd": string;
+        "updateAd": string;
     };
 }
 declare const locales: {

@@ -77,7 +77,7 @@ export function useNoteCapture(props: {
 				break;
 			}
 
-			case "updated": {
+			case 'updated': {
 				const editedNote = await os.api("notes/show", {
 					noteId: id,
 				});

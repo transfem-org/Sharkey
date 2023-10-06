@@ -124,6 +124,19 @@ export class MiUser {
 	@JoinColumn()
 	public banner: MiDriveFile | null;
 
+	@Column({
+		...id(),
+		nullable: true,
+		comment: 'The ID of background DriveFile.',
+	})
+	public backgroundId: MiDriveFile['id'] | null;
+
+	@OneToOne(type => MiDriveFile, {
+		onDelete: 'SET NULL',
+	})
+	@JoinColumn()
+	public background: MiDriveFile | null;
+
 	@Column('varchar', {
 		length: 512, nullable: true,
 	})
@@ -135,6 +148,11 @@ export class MiUser {
 	public bannerUrl: string | null;
 
 	@Column('varchar', {
+		length: 512, nullable: true,
+	})
+	public backgroundUrl: string | null;
+
+	@Column('varchar', {
 		length: 128, nullable: true,
 	})
 	public avatarBlurhash: string | null;
@@ -143,6 +161,11 @@ export class MiUser {
 		length: 128, nullable: true,
 	})
 	public bannerBlurhash: string | null;
+
+	@Column('varchar', {
+		length: 128, nullable: true,
+	})
+	public backgroundBlurhash: string | null;
 
 	@Index()
 	@Column('varchar', {
@@ -173,6 +196,12 @@ export class MiUser {
 		comment: 'Whether the User is a cat.',
 	})
 	public isCat: boolean;
+
+	@Column('boolean', {
+		default: true,
+		comment: 'Whether the User speaks in nya.',
+	})
+	public speakAsCat: boolean;
 
 	@Column('boolean', {
 		default: false,

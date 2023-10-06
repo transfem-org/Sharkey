@@ -312,6 +312,7 @@ export class NoteEntityService implements OnModuleInit {
 		const packed: Packed<'Note'> = await awaitAll({
 			id: note.id,
 			createdAt: note.createdAt.toISOString(),
+			updatedAt: note.updatedAt ? note.updatedAt.toISOString() : undefined,
 			userId: note.userId,
 			user: this.userEntityService.pack(note.user ?? note.userId, me, {
 				detail: false,
@@ -342,7 +343,6 @@ export class NoteEntityService implements OnModuleInit {
 			mentions: note.mentions && note.mentions.length > 0 ? note.mentions : undefined,
 			uri: note.uri ?? undefined,
 			url: note.url ?? undefined,
-			updatedAt: note.updatedAt != null ? note.updatedAt.toISOString() : undefined,
 			...(meId ? {
 				myReaction: this.populateMyReaction(note, meId, options?._hint_),
 			} : {}),
@@ -364,7 +364,7 @@ export class NoteEntityService implements OnModuleInit {
 			} : {}),
 		});
 
-		if (packed.user.isCat && packed.text) {
+		if (packed.user.isCat && packed.user.speakAsCat && packed.text) {
 			const tokens = packed.text ? mfm.parse(packed.text) : [];
 			function nyaizeNode(node: mfm.MfmNode) {
 				if (node.type === 'quote') return;

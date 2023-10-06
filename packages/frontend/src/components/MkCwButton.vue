@@ -42,7 +42,7 @@ const toggle = () => {
 .root {
 	display: inline-block;
 	padding: 4px 8px;
-	font-size: 0.7em;
+	font-size: 0.76em;
 	color: var(--cwFg);
 	background: var(--cwBg);
 	border-radius: 2px;

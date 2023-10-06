@@ -55,6 +55,10 @@ export const packedUserLiteSchema = {
 			type: 'boolean',
 			nullable: false, optional: true,
 		},
+		speakAsCat: {
+			type: 'boolean',
+			nullable: false, optional: true,
+		},
 		onlineStatus: {
 			type: 'string',
 			format: 'url',
@@ -115,6 +119,15 @@ export const packedUserDetailedNotMeOnlySchema = {
 			nullable: true, optional: false,
 		},
 		bannerBlurhash: {
+			type: 'string',
+			nullable: true, optional: false,
+		},
+		backgroundUrl: {
+			type: 'string',
+			format: 'url',
+			nullable: true, optional: false,
+		},
+		backgroundBlurhash: {
 			type: 'string',
 			nullable: true, optional: false,
 		},
@@ -300,6 +313,11 @@ export const packedMeDetailedOnlySchema = {
 			nullable: true, optional: false,
 			format: 'id',
 		},
+		backgroundId: {
+			type: 'string',
+			nullable: true, optional: false,
+			format: 'id',
+		},
 		injectFeaturedNote: {
 			type: 'boolean',
 			nullable: true, optional: false,
@@ -393,13 +411,9 @@ export const packedMeDetailedOnlySchema = {
 				nullable: false, optional: false,
 			},
 		},
-		mutingNotificationTypes: {
-			type: 'array',
-			nullable: true, optional: false,
-			items: {
-				type: 'string',
-				nullable: false, optional: false,
-			},
+		notificationRecieveConfig: {
+			type: 'object',
+			nullable: false, optional: false,
 		},
 		emailNotificationTypes: {
 			type: 'array',

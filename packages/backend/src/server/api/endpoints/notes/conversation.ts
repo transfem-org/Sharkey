@@ -86,6 +86,10 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				await get(note.replyId);
 			}
 
+			if (note.hasPoll) {
+				return await this.noteEntityService.packMany(conversation, me, { detail: true });
+			}
+
 			return await this.noteEntityService.packMany(conversation, me);
 		});
 	}

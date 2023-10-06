@@ -205,12 +205,12 @@ export class ApNoteService {
 		// 引用
 		let quote: MiNote | undefined | null = null;
 
-		if (note._misskey_quote ?? note.quoteUrl) {
+		if (note._misskey_quote ?? note.quoteUrl ?? note.quoteUri) {
 			const tryResolveNote = async (uri: string): Promise<
 				| { status: 'ok'; res: MiNote }
 				| { status: 'permerror' | 'temperror' }
 			> => {
-				if (!/^https?:/.test(uri)) return { status: 'permerror' };
+				if (typeof uri !== 'string' || !/^https?:/.test(uri)) return { status: 'permerror' };
 				try {
 					const res = await this.resolveNote(uri);
 					if (res == null) return { status: 'permerror' };
@@ -222,7 +222,7 @@ export class ApNoteService {
 				}
 			};
 
-			const uris = unique([note._misskey_quote, note.quoteUrl].filter((x): x is string => typeof x === 'string'));
+			const uris = unique([note._misskey_quote, note.quoteUrl, note.quoteUri].filter((x): x is string => typeof x === 'string'));
 			const results = await Promise.all(uris.map(tryResolveNote));
 
 			quote = results.filter((x): x is { status: 'ok', res: MiNote } => x.status === 'ok').map(x => x.res).at(0);
@@ -413,7 +413,7 @@ export class ApNoteService {
 		// 引用
 		let quote: MiNote | undefined | null = null;
 
-		if (note._misskey_quote ?? note.quoteUrl) {
+		if (note._misskey_quote ?? note.quoteUrl ?? note.quoteUri) {
 			const tryResolveNote = async (uri: string): Promise<
 				| { status: 'ok'; res: MiNote }
 				| { status: 'permerror' | 'temperror' }
@@ -430,7 +430,7 @@ export class ApNoteService {
 				}
 			};
 
-			const uris = unique([note._misskey_quote, note.quoteUrl].filter((x): x is string => typeof x === 'string'));
+			const uris = unique([note._misskey_quote, note.quoteUrl, note.quoteUri].filter((x): x is string => typeof x === 'string'));
 			const results = await Promise.all(uris.map(tryResolveNote));
 
 			quote = results.filter((x): x is { status: 'ok', res: MiNote } => x.status === 'ok').map(x => x.res).at(0);

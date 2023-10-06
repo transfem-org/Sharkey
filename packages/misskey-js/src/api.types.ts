@@ -414,6 +414,7 @@ export type Endpoints = {
 		birthday?: string | null;
 		avatarId?: DriveFile['id'] | null;
 		bannerId?: DriveFile['id'] | null;
+		backgroundId?: DriveFile['id'] | null;
 		fields?: {
 			name: string;
 			value: string;
@@ -426,11 +427,12 @@ export type Endpoints = {
 		noCrawle?: boolean;
 		isBot?: boolean;
 		isCat?: boolean;
+		speakAsCat?: boolean;
 		injectFeaturedNote?: boolean;
 		receiveAnnouncementEmail?: boolean;
 		alwaysMarkNsfw?: boolean;
 		mutedWords?: string[][];
-		mutingNotificationTypes?: Notification['type'][];
+		notificationRecieveConfig?: any;
 		emailNotificationTypes?: string[];
 		alsoKnownAs?: string[];
 	}; res: MeDetailed; };
