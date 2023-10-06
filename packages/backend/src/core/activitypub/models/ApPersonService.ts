@@ -225,8 +225,8 @@ export class ApPersonService implements OnModuleInit {
 		return null;
 	}
 
-	private async resolveAvatarAndBanner(user: MiRemoteUser, icon: any, image: any): Promise<Pick<MiRemoteUser, 'avatarId' | 'bannerId' | 'backgroundId' | 'avatarUrl' | 'bannerUrl' | 'backgroundUrl' | 'avatarBlurhash' | 'bannerBlurhash' | 'backgroundBlurhash'>> {
-		const [avatar, banner, background] = await Promise.all([icon, image].map(img => {
+	private async resolveAvatarAndBanner(user: MiRemoteUser, icon: any, image: any, bgimg: any): Promise<Pick<MiRemoteUser, 'avatarId' | 'bannerId' | 'backgroundId' | 'avatarUrl' | 'bannerUrl' | 'backgroundUrl' | 'avatarBlurhash' | 'bannerBlurhash' | 'backgroundBlurhash'>> {
+		const [avatar, banner, background] = await Promise.all([icon, image, bgimg].map(img => {
 			if (img == null) return null;
 			if (user == null) throw new Error('failed to create user: user is null');
 			return this.apImageService.resolveImage(user, img).catch(() => null);
@@ -307,6 +307,7 @@ export class ApPersonService implements OnModuleInit {
 					id: this.idService.genId(),
 					avatarId: null,
 					bannerId: null,
+					backgroundId: null,
 					createdAt: new Date(),
 					lastFetchedAt: new Date(),
 					name: truncate(person.name, nameLength),
@@ -341,6 +342,7 @@ export class ApPersonService implements OnModuleInit {
 					birthday: bday?.[0] ?? null,
 					location: person['vcard:Address'] ?? null,
 					userHost: host,
+					listenbrainz: person.listenbrainz ?? null,
 				}));
 
 				if (person.publicKey) {
@@ -386,7 +388,7 @@ export class ApPersonService implements OnModuleInit {
 
 		//#region アバターとヘッダー画像をフェッチ
 		try {
-			const updates = await this.resolveAvatarAndBanner(user, person.icon, person.image);
+			const updates = await this.resolveAvatarAndBanner(user, person.icon, person.image, person.backgroundUrl);
 			await this.usersRepository.update(user.id, updates);
 			user = { ...user, ...updates };
 
@@ -469,7 +471,7 @@ export class ApPersonService implements OnModuleInit {
 			movedToUri: person.movedTo ?? null,
 			alsoKnownAs: person.alsoKnownAs ?? null,
 			isExplorable: person.discoverable,
-			...(await this.resolveAvatarAndBanner(exist, person.icon, person.image).catch(() => ({}))),
+			...(await this.resolveAvatarAndBanner(exist, person.icon, person.image, person.backgroundUrl).catch(() => ({}))),
 		} as Partial<MiRemoteUser> & Pick<MiRemoteUser, 'isBot' | 'isCat' | 'speakAsCat' | 'isLocked' | 'movedToUri' | 'alsoKnownAs' | 'isExplorable'>;
 
 		const moving = ((): boolean => {
@@ -508,6 +510,7 @@ export class ApPersonService implements OnModuleInit {
 			description: person.summary ? this.apMfmService.htmlToMfm(truncate(person.summary, summaryLength), person.tag) : null,
 			birthday: bday?.[0] ?? null,
 			location: person['vcard:Address'] ?? null,
+			listenbrainz: person.listenbrainz ?? null,
 		});
 
 		this.globalEventService.publishInternalEvent('remoteUserUpdated', { id: exist.id });

@@ -523,6 +523,10 @@ export class ApRendererService {
 			person['vcard:Address'] = profile.location;
 		}
 
+		if (profile.listenbrainz) {
+			person.listenbrainz = profile.listenbrainz;
+		}
+
 		return person;
 	}
 
@@ -797,6 +801,7 @@ export class ApRendererService {
 					// Sharkey
 					sharkey: "https://joinsharkey.org/ns#",
 					backgroundUrl: "sharkey:backgroundUrl",
+					listenbrainz: "sharkey:listenbrainz",
 					// vcard
 					vcard: 'http://www.w3.org/2006/vcard/ns#',
 				},

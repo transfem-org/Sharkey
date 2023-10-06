@@ -38,6 +38,7 @@ export type UserDetailed = UserLite & {
 	backgroundUrl: string | null;
 	backgroundBlurhash: string | null;
 	birthday: string | null;
+	listenbrainz: string | null;
 	createdAt: DateString;
 	description: string | null;
 	ffVisibility: 'public' | 'followers' | 'private';
