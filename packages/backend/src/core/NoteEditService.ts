@@ -438,7 +438,11 @@ export class NoteEditService implements OnApplicationShutdown {
 					userHost: user.host,
 				});
 
-				await transactionalEntityManager.update(MiPoll, oldnote.id, poll);
+				if (!oldnote.hasPoll) {
+					await transactionalEntityManager.insert(MiPoll, poll);
+				} else {
+					await transactionalEntityManager.update(MiPoll, oldnote.id, poll);
+				}
 			});
 		} else {
 			await this.notesRepository.update(oldnote.id, note);
