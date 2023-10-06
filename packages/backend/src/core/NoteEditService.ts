@@ -625,7 +625,6 @@ export class NoteEditService implements OnApplicationShutdown {
 			if (this.userEntityService.isLocalUser(user)) {
 				(async () => {
 					const noteActivity = await this.renderNoteOrRenoteActivity(data, note);
-					(note as any).updated
 					const dm = this.apDeliverManagerService.createDeliverManager(user, noteActivity);
 
 					// メンションされたリモートユーザーに配送
