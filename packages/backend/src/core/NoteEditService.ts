@@ -438,7 +438,11 @@ export class NoteEditService implements OnApplicationShutdown {
 					userHost: user.host,
 				});
 
-				await transactionalEntityManager.update(MiPoll, oldnote.id, poll);
+				if (!oldnote.hasPoll) {
+					await transactionalEntityManager.insert(MiPoll, poll);
+				} else {
+					await transactionalEntityManager.update(MiPoll, oldnote.id, poll);
+				}
 			});
 		} else {
 			await this.notesRepository.update(oldnote.id, note);
@@ -746,7 +750,7 @@ export class NoteEditService implements OnApplicationShutdown {
 
 		const content = data.renote && data.text == null && data.poll == null && (data.files == null || data.files.length === 0)
 			? this.apRendererService.renderAnnounce(data.renote.uri ? data.renote.uri : `${this.config.url}/notes/${data.renote.id}`, note)
-			: this.apRendererService.renderUpdate(await this.apRendererService.renderNote(note, false), user);
+			: this.apRendererService.renderUpdate(await this.apRendererService.renderUpNote(note, false), user);
 
 		return this.apRendererService.addContext(content);
 	}

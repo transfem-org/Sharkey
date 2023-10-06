@@ -10,6 +10,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<MkAvatar :class="$style.avatar" :user="$i" @click="changeAvatar"/>
 			<MkButton primary rounded @click="changeAvatar">{{ i18n.ts._profile.changeAvatar }}</MkButton>
 		</div>
+		<MkButton primary rounded :class="$style.backgroundEdit" @click="changeBackground">Change Background</MkButton>
 		<MkButton primary rounded :class="$style.bannerEdit" @click="changeBanner">{{ i18n.ts._profile.changeBanner }}</MkButton>
 	</div>
 
@@ -254,6 +255,31 @@ function changeBanner(ev) {
 	});
 }
 
+function changeBackground(ev) {
+	selectFile(ev.currentTarget ?? ev.target, i18n.ts.banner).then(async (file) => {
+		let originalOrCropped = file;
+
+		const { canceled } = await os.confirm({
+			type: 'question',
+			text: i18n.t('cropImageAsk'),
+			okText: i18n.ts.cropYes,
+			cancelText: i18n.ts.cropNo,
+		});
+
+		if (!canceled) {
+			originalOrCropped = await os.cropImage(file, {
+				aspectRatio: 1,
+			});
+		}
+
+		const i = await os.apiWithDialog('i/update', {
+			backgroundId: originalOrCropped.id,
+		});
+		$i.backgroundId = i.backgroundId;
+		$i.backgroundUrl = i.backgroundUrl;
+	});
+}
+
 const headerActions = $computed(() => []);
 
 const headerTabs = $computed(() => []);
@@ -290,6 +316,11 @@ definePageMetadata({
 .bannerEdit {
 	position: absolute;
 	top: 16px;
+	right: 16px;
+}
+.backgroundEdit {
+	position: absolute;
+	top: 103px;
 	right: 16px;
 }
 

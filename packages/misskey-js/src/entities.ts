@@ -35,7 +35,10 @@ export type UserDetailed = UserLite & {
 	bannerBlurhash: string | null;
 	bannerColor: string | null;
 	bannerUrl: string | null;
+	backgroundUrl: string | null;
+	backgroundBlurhash: string | null;
 	birthday: string | null;
+	listenbrainz: string | null;
 	createdAt: DateString;
 	description: string | null;
 	ffVisibility: 'public' | 'followers' | 'private';
@@ -88,6 +91,7 @@ export type UserList = {
 export type MeDetailed = UserDetailed & {
 	avatarId: DriveFile['id'];
 	bannerId: DriveFile['id'];
+	backgroundId: DriveFile['id'];
 	autoAcceptFollowed: boolean;
 	alwaysMarkNsfw: boolean;
 	carefulBot: boolean;
