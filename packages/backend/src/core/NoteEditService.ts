@@ -365,8 +365,8 @@ export class NoteEditService implements OnApplicationShutdown {
 		});
 
 		const note = new MiNote({
-			id: this.idService.genId(oldnote.createdAt!),
-			//createdAt: new Date(oldnote.createdAt!),
+			id: this.idService.genId(new Date(oldnote.createdAt!)),
+			createdAt: new Date(oldnote.createdAt!),
 			updatedAt: data.updatedAt ? data.updatedAt : new Date(),
 			fileIds: data.files ? data.files.map(file => file.id) : [],
 			replyId: data.reply ? data.reply.id : null,
