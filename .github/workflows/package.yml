@@ -66,8 +66,9 @@ jobs:
           cd packages/backend
           echo mkdir dist
           echo rollup ./built/boot/entry.js --file ./dist/bundle.js --format cjs -p @rollup/plugin-node-resolve
-          cat ./build/boot/entry.js
-          pkg --debug --public ./build/boot/entry.js --targets latest-linuxstatic-x64,latest-linuxstatic-arm64,latest-macos-x64,latest-macos-arm64,latest-win-x64
+          ls built
+          cat ./built/boot/entry.js
+          pkg --debug --public ./built/boot/entry.js --targets latest-linuxstatic-x64,latest-linuxstatic-arm64,latest-macos-x64,latest-macos-arm64,latest-win-x64
           ls
       - name: Upload linux x64
         uses: actions/upload-artifact@v3.1.3
