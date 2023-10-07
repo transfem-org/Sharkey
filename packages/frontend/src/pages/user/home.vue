@@ -355,8 +355,8 @@ onUnmounted(() => {
 		pointer-events: none;
 		filter: blur(8px) opacity(0.6);
 		// Funny CSS schenanigans to make background escape container
-		top: -100%;
 		left: -100%;
+		top: -100%;
 		right: -100%;
 		background-attachment: fixed;
 	}

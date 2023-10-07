@@ -1,0 +1,96 @@
+name: Publish prebuild
+
+on:
+  push:
+    branches:
+      - stable
+  release:
+    types: [published]
+  workflow_dispatch:
+
+jobs:
+  build_binaries:
+    name: Build & ship binaries
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [20.x]
+        python-version: [3.11.x]
+    if: github.repository == 'transfem-org/Sharkey'
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4.1.0
+        with:
+          lfs: true
+          submodules: 'recursive'
+        
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v4.7.1
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Cache APT Packages
+        uses: awalsh128/cache-apt-pkgs-action@v1.3.0
+        with:
+          packages: "build-essential binfmt-support qemu-user-static ffmpeg tini curl libjemalloc-dev libjemalloc2 uuid-dev libx11-dev libxkbfile-dev execstack libgconf-2-4 libsecret-1-dev"
+
+      - name: Cache node modules
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: v1-npm-deps-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: v1-npm-deps-
+
+      - uses: MOZGIII/install-ldid-action@v1
+        with:
+          tag: v2.1.5-procursus2
+
+      - name: Build
+        run: |
+          corepack enable
+          corepack prepare pnpm@latest --activate
+          pnpm install
+          npm install -g pkg
+          npm install -g rollup
+          npm install -g @rollup/plugin-node-resolve
+          pnpm run build
+          cd packages/backend
+          mkdir dist
+          rollup ./built/boot/entry.js --file ./dist/bundle.js --format cjs -p @rollup/plugin-node-resolve
+          pkg --debug --public ./dist/bundle.js --targets latest-linuxstatic-x64,latest-linuxstatic-arm64,latest-macos-x64,latest-macos-arm64,latest-win-x64
+          ls
+      - name: Upload linux x64
+        uses: actions/upload-artifact@v3.1.3
+        with: 
+          name: sharkey-linux-x64
+          path: packages/backend/bundle-linuxstatic-x64
+      - name: Upload linux arm64
+        uses: actions/upload-artifact@v3.1.3
+        with: 
+          name: sharkey-linux-arm64
+          path: packages/backend/bundle-linuxstatic-arm64
+      - name: Upload mac arm64
+        uses: actions/upload-artifact@v3.1.3
+        with: 
+          name: sharkey-macos-arm64
+          path: packages/backend/bundle-macos-arm64
+      - name: Upload mac x64
+        uses: actions/upload-artifact@v3.1.3
+        with: 
+          name: sharkey-macos-arm64
+          path: packages/backend/bundle-macos-x64
+      - name: Upload Windows
+        uses: actions/upload-artifact@v3.1.3
+        with: 
+          name: sharkey-win-x64.exe
+          path: packages/backend/bundle-win-x64.exe
+        

@@ -61,7 +61,8 @@ services:
 #    volumes:
 #      - ./meili_data:/meili_data
 
+
 networks:
   shonk:
   web:
-		external: true
+    external: true

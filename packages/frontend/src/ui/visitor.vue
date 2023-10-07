@@ -185,6 +185,7 @@ defineExpose({
 		width: 500px;
 		height: 100vh;
 		background: var(--accent);
+		z-index: 1;
 
 		> .banner {
 			position: absolute;
@@ -213,6 +214,8 @@ defineExpose({
 
 		> .header {
 			background: var(--panel);
+			position: relative;
+			z-index: 1;
 
 			> .wide {
 				line-height: 50px;
