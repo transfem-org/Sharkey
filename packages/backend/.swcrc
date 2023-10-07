@@ -17,7 +17,10 @@
 		"paths": {
 			"@/*": ["*"]
 		},
-		"target": "es2022"
+		"target": "es2018"
+	},
+	"module": {
+		"type": "commonjs",
 	},
 	"minify": false
 }
