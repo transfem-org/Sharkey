@@ -74,25 +74,25 @@ jobs:
         uses: actions/upload-artifact@v3.1.3
         with: 
           name: sharkey-linux-x64
-          path: packages/backend/bundle-linuxstatic-x64
+          path: packages/backend/entry-linuxstatic-x64
       - name: Upload linux arm64
         uses: actions/upload-artifact@v3.1.3
         with: 
           name: sharkey-linux-arm64
-          path: packages/backend/bundle-linuxstatic-arm64
+          path: packages/backend/entry-linuxstatic-arm64
       - name: Upload mac arm64
         uses: actions/upload-artifact@v3.1.3
         with: 
           name: sharkey-macos-arm64
-          path: packages/backend/bundle-macos-arm64
+          path: packages/backend/entry-macos-arm64
       - name: Upload mac x64
         uses: actions/upload-artifact@v3.1.3
         with: 
           name: sharkey-macos-arm64
-          path: packages/backend/bundle-macos-x64
+          path: packages/backend/entry-macos-x64
       - name: Upload Windows
         uses: actions/upload-artifact@v3.1.3
         with: 
           name: sharkey-win-x64.exe
-          path: packages/backend/bundle-win-x64.exe
+          path: packages/backend/entry-win-x64.exe
         
