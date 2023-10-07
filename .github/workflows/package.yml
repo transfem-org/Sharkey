@@ -12,8 +12,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  push_to_registry:
-    name: Push Docker image to GHCR
+  build_binaries:
+    name: Build & ship binaries
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -52,9 +52,11 @@ jobs:
 
       - name: Build
         run: |
-          corepack enable pnpm@latest
+          corepack enable
+          corepack prepare pnpm@latest --activate
           pnpm install
           npm install -g pkg
           pnpm run build
           cd packages/backend
           pkg --public ./built/boot/entry.js
+          ls
