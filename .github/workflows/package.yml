@@ -44,7 +44,7 @@ jobs:
       - name: Cache APT Packages
         uses: awalsh128/cache-apt-pkgs-action@v1.3.0
         with:
-          packages: "build-essential ffmpeg tini curl libjemalloc-dev libjemalloc2 uuid-dev libx11-dev libxkbfile-dev execstack libgconf-2-4 libsecret-1-dev"
+          packages: "build-essential binfmt-support qemu-user-static ffmpeg tini curl libjemalloc-dev libjemalloc2 uuid-dev libx11-dev libxkbfile-dev execstack libgconf-2-4 libsecret-1-dev"
 
       - name: Cache node modules
         uses: actions/cache@v3
@@ -52,6 +52,10 @@ jobs:
           path: ~/.npm
           key: v1-npm-deps-${{ hashFiles('**/package-lock.json') }}
           restore-keys: v1-npm-deps-
+
+      - uses: MOZGIII/install-ldid-action@v1
+        with:
+          tag: v2.1.5-procursus2
 
       - name: Build
         run: |
@@ -61,5 +65,5 @@ jobs:
           npm install -g pkg
           pnpm run build
           cd packages/backend
-          pkg --public ./built/boot/entry.js
+          pkg --debug --public ./built/boot/entry.js --targets latest-linuxstatic-x64,latest-linuxstatic-arm64,latest-macos-x64,latest-macos-arm64,latest-win-x64
           ls
