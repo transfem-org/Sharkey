@@ -61,10 +61,11 @@ jobs:
           pnpm install
           npm install -g pkg
           npm install -g rollup
+          npm install -g @rollup/plugin-node-resolve
           pnpm run build
           cd packages/backend
           mkdir dist
-          rollup ./built/boot/entry.js --file ./dist/bundle.js --format cjs
+          rollup ./built/boot/entry.js --file ./dist/bundle.js --format cjs -p @rollup/plugin-node-resolve
           pkg --debug --public ./dist/bundle.js --targets latest-linuxstatic-x64,latest-linuxstatic-arm64,latest-macos-x64,latest-macos-arm64,latest-win-x64
           ls
       - name: Upload linux x64
