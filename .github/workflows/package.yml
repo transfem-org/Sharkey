@@ -63,7 +63,10 @@ jobs:
           corepack prepare pnpm@latest --activate
           pnpm install
           npm install -g pkg
+          npm install -g rollup
           pnpm run build
           cd packages/backend
+          mkdir dist
+          rollup ./built/boot/entry.js --file ./dist/bundle.js --format cjs
           pkg --debug --public ./built/boot/entry.js --targets latest-linuxstatic-x64,latest-linuxstatic-arm64,latest-macos-x64,latest-macos-arm64,latest-win-x64
           ls
