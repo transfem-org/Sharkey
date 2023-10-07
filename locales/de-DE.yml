@@ -984,7 +984,7 @@ permissionDeniedError: "Aktion verweigert"
 permissionDeniedErrorDescription: "Dieses Benutzerkonto besitzt nicht die Berechtigung, um diese Aktion auszuführen."
 preset: "Vorlage"
 selectFromPresets: "Aus Vorlagen wählen"
-achievements: "Errungenschaften"
+achievements: "Erfolge"
 gotInvalidResponseError: "Ungültige Antwort des Servers"
 gotInvalidResponseErrorDescription: "Eventuell ist der Server momentan nicht erreichbar oder untergeht Wartungsarbeiten. Bitte versuche es später noch einmal."
 thisPostMayBeAnnoying: "Dieser Beitrag stört eventuell andere Benutzer."
@@ -1184,22 +1184,22 @@ _achievements:
       description: "Sende deine erste Notiz"
       flavor: "Hab eine schöne Zeit mit Sharkey!"
     _notes10:
-      title: "Ein paar Notizen"
+      title: "Notizblog"
       description: "10 Notizen gesendet"
     _notes100:
-      title: "Viele Notizen"
+      title: "Schreiberling"
       description: "100 Notizen gesendet"
     _notes500:
-      title: "Überschüttet mit Notizen"
+      title: "Autor"
       description: "500 Notizen gesendet"
     _notes1000:
-      title: "Berg an Notizen"
+      title: "Bestseller"
       description: "1.000 Notizen gesendet"
     _notes5000:
-      title: "Überquellende Notizen"
+      title: "Dicker Wälzer"
       description: "5.000 Notizen gesendet"
     _notes10000:
-      title: "Supernotiz"
+      title: "Verlagshaus"
       description: "10.000 Notizen gesendet"
     _notes20000:
       title: "Brauche... mehr... Notizen..."
@@ -1226,28 +1226,28 @@ _achievements:
       title: "Notizversum"
       description: "90.000 Notizen gesendet"
     _notes100000:
-      title: "ALL YOUR NOTE ARE BELONG TO US"
+      title: "Alter Bibliothekar"
       description: "100.000 Notizen gesendet"
       flavor: "Du hast wirklich viel zu sagen."
     _login3:
-      title: "Anfänger Ⅰ"
+      title: "Neuling Ⅰ"
       description: "An 3 Tagen eingeloggt"
       flavor: "Nenn' mich ab heute Misskist"
     _login7:
-      title: "Anfänger Ⅱ"
+      title: "Neuling Ⅱ"
       description: "An 7 Tagen eingeloggt"
       flavor: "Na, eingewöht?"
     _login15:
-      title: "Anfänger Ⅲ"
+      title: "Neuling Ⅲ"
       description: "An 15 Tagen eingeloggt"
     _login30:
-      title: "Misskist Ⅰ"
+      title: "Fedizen Ⅰ"
       description: "An 30 Tagen eingeloggt"
     _login60:
-      title: "Misskist Ⅱ"
+      title: "Fedizen Ⅱ"
       description: "An 60 Tagen eingeloggt"
     _login100:
-      title: "Misskist Ⅲ"
+      title: "Fedizen Ⅲ"
       description: "An 100 Tagen eingeloggt"
       flavor: "Violent Misskist"
     _login200:
@@ -1260,14 +1260,14 @@ _achievements:
       title: "Stammbesucher Ⅲ"
       description: "An 400 Tagen eingeloggt"
     _login500:
-      title: "Veteran Ⅰ"
+      title: "Alter Hase Ⅰ"
       description: "An 500 Tagen eingeloggt"
       flavor: "Meine Kameraden, ich liebe sie, die Notizen."
     _login600:
-      title: "Veteran Ⅱ"
+      title: "Alter Hase Ⅱ"
       description: "An 600 Tagen eingeloggt"
     _login700:
-      title: "Veteran Ⅲ"
+      title: "Alter Hase Ⅲ"
       description: "An 700 Tagen eingeloggt"
     _login800:
       title: "Meister der Notizen Ⅰ"
@@ -1276,39 +1276,39 @@ _achievements:
       title: "Meister der Notizen Ⅱ"
       description: "An 900 Tagen eingeloggt"
     _login1000:
-      title: "Meister der Notizen Ⅲ"
+      title: "Wie die Zeit vergeht"
       description: "An 1000 Tagen eingeloggt"
       flavor: "Danke, dass du Sharkey nutzt!"
     _noteClipped1:
-      title: "Muss... clippen..."
+      title: "Das merk ich mir"
       description: "Die erste Notiz geclippt"
     _noteFavorited1:
       title: "Sternengucker"
       description: "Eine Notiz als Favorit markiert"
     _myNoteFavorited1:
-      title: "Sternensucher"
+      title: "Hilfreich"
       description: "Ein anderer Benutzer hat eine deiner Notizen als Favoriten markiert"
     _profileFilled:
       title: "Perfekte Vorbereitung"
       description: "Fülle dein Profil aus"
     _markedAsCat:
-      title: "Ich der Kater"
-      description: "Markiere dein Konto als Katze"
-      flavor: "Einen Namen bekommst du später. "
+      title: "Das Königreich der Katzen"
+      description: "Markiere dein Profil als Katze"
+      flavor: "Einen Namen bekommst du später~ "
     _following1:
-      title: "Das Folgen beginnt"
+      title: "Immer auf dem neusten Stand"
       description: "Du folgst deiner ersten Person"
     _following10:
       title: "Folge ihnen... folge ihnen..."
       description: "Du folgst über 10 Leuten"
     _following50:
-      title: "Viele Freunde"
+      title: "Lieblingsposter"
       description: "Du folgst über 50 Leuten"
     _following100:
-      title: "100 Freunde"
+      title: "Die Top 100"
       description: "Du folgst über 100 Leuten"
     _following300:
-      title: "Freundeüberschuss"
+      title: "Folgen, folgen, folgen!"
       description: "Du folgst über 300 Leuten"
     _followers1:
       title: "Der erste Follower"
@@ -1323,7 +1323,7 @@ _achievements:
       title: "Beliebt"
       description: "Die Anzahl deiner Follower hat 100 überschritten"
     _followers300:
-      title: "Eine geordnete Reihe, bitte!"
+      title: "Teil des Schiffs, Teil der Crew"
       description: "Die Anzahl deiner Follower hat 300 überschritten"
     _followers500:
       title: "Funkmast"
@@ -1332,10 +1332,10 @@ _achievements:
       title: "Influencer"
       description: "Die Anzahl deiner Follower hat 1000 überschritten"
     _collectAchievements30:
-      title: "Sammler der Errungenschaften"
+      title: "Sammler der Erfolge"
       description: "Schalte 30 Errungenschaften frei"
     _viewAchievements3min:
-      title: "Fan von Errungenschaften"
+      title: "Ausstellung"
       description: "Schau dir die Liste deiner Errungenschaften für mindestens 3 Minuten an"
     _iLoveMisskey:
       title: "I Love Sharkey"
@@ -1351,12 +1351,12 @@ _achievements:
       title: "Munter mit Sharkey"
       description: "Habe Sharkey für mindestens 60 Minuten geöffnet"
     _noteDeletedWithin1min:
-      title: "Ups"
+      title: "Katze auf der Tastatur"
       description: "Lösche eine Notiz innerhalb von 1 Minute nachdem sie gesendet wurde"
     _postedAtLateNight:
       title: "Nachtaktiv"
       description: "Sende mitten in der Nacht eine Notiz"
-      flavor: "Geh bald schlafen."
+      flavor: "Echte Katzen sind nunmal nachtaktiv~"
     _postedAt0min0sec:
       title: "Zeitansage"
       description: "Sende um 00:00 eine Notiz"
@@ -1371,7 +1371,7 @@ _achievements:
       title: "Analyst"
       description: "Schau dir die Messwerte der Instanz an"
     _outputHelloWorldOnScratchpad:
-      title: "Hallo Welt!"
+      title: "Junghacker"
       description: "Gib \"hello world\" in der Testumgebung aus"
     _open3windows:
       title: "Splitscreen"
@@ -1380,25 +1380,25 @@ _achievements:
       title: "Zyklischer Verweis"
       description: "Versuche, in Drive einen Zirkelbezug von Ordnern herzustellen"
     _reactWithoutRead:
-      title: "Hast du das wirklich gelesen?"
+      title: "Erst reagieren, dann lesen"
       description: "Reagiere auf eine Notiz mit mindestens 100 Zeichen innerhalb von 3 Sekunden der Erstellung der Notiz"
     _clickedClickHere:
       title: "Klicke hier"
       description: "Du hast hier geklickt"
     _justPlainLucky:
-      title: "Pures Glück"
+      title: "Glück 100"
       description: "Kann alle 10 Sekunden mit einer Warscheinlichkeit von 0.005% erhalten werden"
     _setNameToSyuilo:
       title: "Gottkomplex"
       description: "Setze deinen Namen auf \"syuilo\""
     _passedSinceAccountCreated1:
-      title: "Einjahresjubiläum"
+      title: "Davon erzähle ich meinen Enkeln"
       description: "Seit der Erstellung deines Kontos ist 1 Jahr vergangen"
     _passedSinceAccountCreated2:
-      title: "Zweijahresjubiläum"
+      title: "Diese Software hat mich zur Katze gemacht"
       description: "Seit der Erstellung deines Kontos sind 2 Jahre vergangen"
     _passedSinceAccountCreated3:
-      title: "Dreijahresjubiläum"
+      title: "Goldene Zeit"
       description: "Seit der Erstellung deines Kontos sind 3 Jahre vergangen"
     _loggedInOnBirthday:
       title: "Alles Gute Zum Geburtstag"
@@ -1406,9 +1406,9 @@ _achievements:
     _loggedInOnNewYearsDay:
       title: "Frohes Neujahr"
       description: "Logge dich am Neujahrstag ein"
-      flavor: "Auf ein weiteres tolles Jahr in dieser Instanz"
+      flavor: "Auf ein weiteres tolles Jahr in diesem Universum!"
     _cookieClicked:
-      title: "Ein Spiel, in dem du auf einen Keks klickst"
+      title: "Kreise klicken für Omas"
       description: "Den Keks geklickt"
       flavor: "Bist du hier richtig?"
     _brainDiver:
