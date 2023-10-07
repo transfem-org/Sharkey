@@ -4,9 +4,6 @@ on:
   push:
     branches:
       - stable
-    paths:
-      - packages/**
-      - locales/**
   release:
     types: [published]
   workflow_dispatch:
@@ -70,3 +67,29 @@ jobs:
           rollup ./built/boot/entry.js --file ./dist/bundle.js --format cjs
           pkg --debug --public ./dist/bundle.js --targets latest-linuxstatic-x64,latest-linuxstatic-arm64,latest-macos-x64,latest-macos-arm64,latest-win-x64
           ls
+      - name: Upload linux x64
+        uses: actions/upload-artifact@v3.1.3
+        with: 
+          name: sharkey-linux-x64
+          path: packages/backend/bundle-linuxstatic-x64
+      - name: Upload linux arm64
+        uses: actions/upload-artifact@v3.1.3
+        with: 
+          name: sharkey-linux-arm64
+          path: packages/backend/bundle-linuxstatic-arm64
+      - name: Upload mac arm64
+        uses: actions/upload-artifact@v3.1.3
+        with: 
+          name: sharkey-macos-arm64
+          path: packages/backend/bundle-macos-arm64
+      - name: Upload mac x64
+        uses: actions/upload-artifact@v3.1.3
+        with: 
+          name: sharkey-macos-arm64
+          path: packages/backend/bundle-macos-x64
+      - name: Upload Windows
+        uses: actions/upload-artifact@v3.1.3
+        with: 
+          name: sharkey-win-x64.exe
+          path: packages/backend/bundle-win-x64.exe
+        
