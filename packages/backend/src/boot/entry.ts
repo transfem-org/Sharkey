@@ -27,60 +27,63 @@ const logger = new Logger('core', 'cyan');
 const clusterLogger = logger.createSubLogger('cluster', 'orange', false);
 const ev = new Xev();
 
-//#region Events
+// We wrap this in a main function, that gets called,
+// because not all platforms support top level await :/
 
-// Listen new workers
-cluster.on('fork', worker => {
-	clusterLogger.debug(`Process forked: [${worker.id}]`);
-});
+async function main() {
+	//#region Events
+	// Listen new workers
+	cluster.on('fork', worker => {
+		clusterLogger.debug(`Process forked: [${worker.id}]`);
+	});
 
-// Listen online workers
-cluster.on('online', worker => {
-	clusterLogger.debug(`Process is now online: [${worker.id}]`);
-});
+	// Listen online workers
+	cluster.on('online', worker => {
+		clusterLogger.debug(`Process is now online: [${worker.id}]`);
+	});
 
-// Listen for dying workers
-cluster.on('exit', worker => {
-	// Replace the dead worker,
-	// we're not sentimental
-	clusterLogger.error(chalk.red(`[${worker.id}] died :(`));
-	cluster.fork();
-});
+	// Listen for dying workers
+	cluster.on('exit', worker => {
+		// Replace the dead worker,
+		// we're not sentimental
+		clusterLogger.error(chalk.red(`[${worker.id}] died :(`));
+		cluster.fork();
+	});
 
-// Display detail of unhandled promise rejection
-if (!envOption.quiet) {
-	process.on('unhandledRejection', console.dir);
-}
+	// Display detail of unhandled promise rejection
+	if (!envOption.quiet) {
+		process.on('unhandledRejection', console.dir);
+	}
 
-// Display detail of uncaught exception
-process.on('uncaughtException', err => {
-	try {
-		logger.error(err);
-		console.trace(err);
-	} catch { }
-});
+	// Display detail of uncaught exception
+	process.on('uncaughtException', err => {
+		try {
+			logger.error(err);
+			console.trace(err);
+		} catch { }
+	});
 
-// Dying away...
-process.on('exit', code => {
-	logger.info(`The process is going to exit with code ${code}`);
-});
+	// Dying away...
+	process.on('exit', code => {
+		logger.info(`The process is going to exit with code ${code}`);
+	});
+	//#endregion
 
-//#endregion
+	if (cluster.isPrimary || envOption.disableClustering) {
+		await masterMain();
+		if (cluster.isPrimary) {
+			ev.mount();
+		}
+	}
+	if (cluster.isWorker || envOption.disableClustering) {
+		await workerMain();
+	}
 
-if (cluster.isPrimary || envOption.disableClustering) {
-	await masterMain();
-
-	if (cluster.isPrimary) {
-		ev.mount();
+	// ユニットテスト時にMisskeyが子プロセスで起動された時のため
+	// それ以外のときは process.send は使えないので弾く
+	if (process.send) {
+		process.send('ok');
 	}
 }
 
-if (cluster.isWorker || envOption.disableClustering) {
-	await workerMain();
-}
-
-// ユニットテスト時にMisskeyが子プロセスで起動された時のため
-// それ以外のときは process.send は使えないので弾く
-if (process.send) {
-	process.send('ok');
-}
+main();
