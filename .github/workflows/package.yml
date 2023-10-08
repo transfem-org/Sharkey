@@ -58,44 +58,11 @@ jobs:
         run: |
           corepack enable
           corepack prepare pnpm@latest --activate
-          pnpm install
-          npm install -g pkg
-          npm install -g esbuild
-          echo npm install -g @rollup/plugin-node-resolve
-          pnpm run build
-          cd packages/backend
-          echo mkdir dist
-          echo rollup ./built/boot/entry.js --file ./dist/bundle.js --format cjs -p @rollup/plugin-node-resolve
-          ls built
-          cat ./built/boot/entry.js
-
-          esbuild --platform=node --bundle --outfile=build/sharkey.js ./built/boot/entry.js
-          
-          pkg --debug --public-packages '*' --no-bytecode --public ./build/sharkey --targets latest-linuxstatic-x64,latest-linuxstatic-arm64,latest-macos-x64,latest-macos-arm64,latest-win-x64 --compress brotli
-          ls
+          CI=true pnpm install --shamefully-hoist 
+          CI=true pnpm run build
+          pnpm --prod deploy prebuild
       - name: Upload linux x64
         uses: actions/upload-artifact@v3.1.3
         with: 
           name: sharkey-linux-x64
-          path: packages/backend/sharkey-linuxstatic-x64
-      - name: Upload linux arm64
-        uses: actions/upload-artifact@v3.1.3
-        with: 
-          name: sharkey-linux-arm64
-          path: packages/backend/sharkey-linuxstatic-arm64
-      - name: Upload mac arm64
-        uses: actions/upload-artifact@v3.1.3
-        with: 
-          name: sharkey-macos-arm64
-          path: packages/backend/sharkey-macos-arm64
-      - name: Upload mac x64
-        uses: actions/upload-artifact@v3.1.3
-        with: 
-          name: sharkey-macos-arm64
-          path: packages/backend/sharkey-macos-x64
-      - name: Upload Windows
-        uses: actions/upload-artifact@v3.1.3
-        with: 
-          name: sharkey-win-x64.exe
-          path: packages/backend/sharkey-win-x64.exe
-        
+          path: prebuild
