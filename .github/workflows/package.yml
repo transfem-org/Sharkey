@@ -56,7 +56,7 @@ jobs:
           corepack prepare pnpm@latest --activate
           CI=true pnpm install
           CI=true pnpm run build
-          pnpm --filter=sharkey --prod deploy prebuild
+          pnpm --filter="*" --prod deploy prebuild
       - name: Upload linux x64
         uses: actions/upload-artifact@v3.1.3
         with: 
