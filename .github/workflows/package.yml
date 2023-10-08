@@ -43,54 +43,32 @@ jobs:
         with:
           packages: "build-essential binfmt-support qemu-user-static ffmpeg tini curl libjemalloc-dev libjemalloc2 uuid-dev libx11-dev libxkbfile-dev execstack libgconf-2-4 libsecret-1-dev"
 
+      - name: Set pnpm store path
+        run: echo "PNPM_STORE_PATH=$(pnpm store path)" >> $GITHUB_ENV
+
       - name: Cache node modules
         uses: actions/cache@v3
         with:
-          path: ~/.npm
-          key: v1-npm-deps-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: v1-npm-deps-
-
-      - uses: MOZGIII/install-ldid-action@v1
-        with:
-          tag: v2.1.5-procursus2
+          path: ${{ env.PNPM_STORE_PATH }}
+          key: pnpm-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            pnpm-${{ runner.os }}-
 
       - name: Build
         run: |
           corepack enable
           corepack prepare pnpm@latest --activate
-          pnpm install
-          npm install -g pkg
-          npm install -g rollup
-          npm install -g @rollup/plugin-node-resolve
-          pnpm run build
-          cd packages/backend
-          mkdir dist
-          rollup ./built/boot/entry.js --file ./dist/bundle.js --format cjs -p @rollup/plugin-node-resolve
-          pkg --debug --public ./dist/bundle.js --targets latest-linuxstatic-x64,latest-linuxstatic-arm64,latest-macos-x64,latest-macos-arm64,latest-win-x64
-          ls
+          CI=true pnpm install
+          CI=true pnpm run build
+          rm -rdf packages/backend/node_modules
+          rm -rdf packages/frontend/node_modules
+          rm -rdf packages/megalodon/node_modules
+          rm -rdf packages/misskey-js/node_modules
+          rm -rdf node_modules
+          CI=true pnpm --prod --no-optional install
+          tar -czf /tmp/workspace.tar.gz .
       - name: Upload linux x64
         uses: actions/upload-artifact@v3.1.3
         with: 
           name: sharkey-linux-x64
-          path: packages/backend/bundle-linuxstatic-x64
-      - name: Upload linux arm64
-        uses: actions/upload-artifact@v3.1.3
-        with: 
-          name: sharkey-linux-arm64
-          path: packages/backend/bundle-linuxstatic-arm64
-      - name: Upload mac arm64
-        uses: actions/upload-artifact@v3.1.3
-        with: 
-          name: sharkey-macos-arm64
-          path: packages/backend/bundle-macos-arm64
-      - name: Upload mac x64
-        uses: actions/upload-artifact@v3.1.3
-        with: 
-          name: sharkey-macos-arm64
-          path: packages/backend/bundle-macos-x64
-      - name: Upload Windows
-        uses: actions/upload-artifact@v3.1.3
-        with: 
-          name: sharkey-win-x64.exe
-          path: packages/backend/bundle-win-x64.exe
-        
+          path: /tmp/workspace.tar.gz
