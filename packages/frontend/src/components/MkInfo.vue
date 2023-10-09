@@ -23,13 +23,15 @@ const props = defineProps<{
 .root {
 	padding: 12px 14px;
 	font-size: 90%;
-	background: var(--infoBg);
+	background: color-mix(in srgb, var(--infoBg) 65%, transparent);
+	backdrop-filter: blur(16px);
 	color: var(--infoFg);
 	border-radius: var(--radius);
 	white-space: pre-wrap;
+	z-index: 1;
 
 	&.warn {
-		background: var(--infoWarnBg);
+		background: color-mix(in srgb, var(--infoWarnBg) 65%, transparent);
 		color: var(--infoWarnFg);
 	}
 }

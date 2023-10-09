@@ -56,7 +56,8 @@ defineExpose({
 .root {
 	&.noGap {
 		> .notes {
-			background: var(--panel);
+			background: color-mix(in srgb, var(--panel) 65%, transparent);
+			backdrop-filter: blur(16px);
 		}
 	}
 
@@ -65,7 +66,8 @@ defineExpose({
 			background: var(--bg);
 
 			.note {
-				background: var(--panel);
+				background: color-mix(in srgb, var(--panel) 65%, transparent);
+				backdrop-filter: blur(16px);
 				border-radius: var(--radius);
 			}
 		}

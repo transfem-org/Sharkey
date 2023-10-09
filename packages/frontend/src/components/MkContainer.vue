@@ -138,7 +138,8 @@ onUnmounted(() => {
 	position: relative;
 	overflow: clip;
 	contain: content;
-
+	background: color-mix(in srgb, var(--panel) 65%, transparent);
+	backdrop-filter: blur(16px);
 	&.naked {
 		background: transparent !important;
 		box-shadow: none !important;
@@ -168,10 +169,12 @@ onUnmounted(() => {
 	top: var(--stickyTop, 0px);
 	left: 0;
 	color: var(--panelHeaderFg);
-	background: var(--panelHeaderBg);
+	//background: var(--panelHeaderBg);
 	border-bottom: solid 0.5px var(--panelHeaderDivider);
 	z-index: 2;
 	line-height: 1.4em;
+	background: color-mix(in srgb, var(--panelHeaderBg) 35%, transparent);
+	backdrop-filter: blur(16px);
 }
 
 .title {

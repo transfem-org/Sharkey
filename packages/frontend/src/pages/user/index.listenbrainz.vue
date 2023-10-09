@@ -1,9 +1,9 @@
 <template>
-	<MkContainer :foldable="true">
+	<MkContainer>
 		<template #header
 			><i
 				class="ph-headphones ph-bold ph-lg"
-				style="margin-right: 0.5em"
+				style="margin-right: 0.5em;"
 			></i
 			>Music</template
 		>
