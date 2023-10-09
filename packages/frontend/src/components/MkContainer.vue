@@ -169,7 +169,6 @@ onUnmounted(() => {
 	top: var(--stickyTop, 0px);
 	left: 0;
 	color: var(--panelHeaderFg);
-	//background: var(--panelHeaderBg);
 	border-bottom: solid 0.5px var(--panelHeaderDivider);
 	z-index: 2;
 	line-height: 1.4em;
