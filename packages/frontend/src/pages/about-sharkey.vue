@@ -84,6 +84,21 @@ SPDX-License-Identifier: AGPL-3.0-only
 						</a>
 					</div>
 				</FormSection>
+				<FormSection>
+					<template #label>Our lovely GitHub Sponsors</template>
+					<div :class="$style.contributors">
+						<span
+							v-for="sponsor in sponsors[0]"
+							:key="sponsor"
+							style="margin-bottom: 0.5rem;"
+						>
+							<a :href="sponsor.profile" target="_blank" :class="$style.contributor">
+								<img :src="sponsor.avatar" :class="$style.contributorAvatar">
+								<span :class="$style.contributorUsername">{{ sponsor.details.name }}</span>
+							</a>
+						</span>
+					</div>
+				</FormSection>
 			</div>
 		</MkSpacer>
 	</div>
@@ -110,7 +125,10 @@ let thereIsTreasure = $ref($i && !claimedAchievements.includes('foundTreasure'))
 let easterEggReady = false;
 let easterEggEmojis = $ref([]);
 let easterEggEngine = $ref(null);
+let sponsors = $ref([]);
 const containerEl = $shallowRef<HTMLElement>();
+
+await os.api('sponsors', { forceUpdate: true }).then((res) => sponsors.push(res.sponsor_data));
 
 function iconLoaded() {
 	const emojis = defaultStore.state.reactions;

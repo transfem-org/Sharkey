@@ -583,6 +583,9 @@ export type Endpoints = {
 	// reset-password
 	'reset-password': { req: { token: string; password: string; }; res: null; };
 
+	// sponsors
+	'sponsors': { req: { forceUpdate: boolean; }; res: null; };
+
 	// room
 	'room/show': { req: TODO; res: TODO; };
 	'room/update': { req: TODO; res: TODO; };
