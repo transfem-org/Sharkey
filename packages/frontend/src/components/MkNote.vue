@@ -103,7 +103,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					:style="renoted ? 'color: var(--accent) !important;' : ''"
 					@mousedown="renoted ? undoRenote() : renote()"
 				>
-					<i class="ph-repeat ph-bold ph-lg"></i>
+					<i class="ph-rocket-launch ph-bold ph-lg"></i>
 					<p v-if="appearNote.renoteCount > 0" :class="$style.footerButtonCount">{{ appearNote.renoteCount }}</p>
 				</button>
 				<button v-else :class="$style.footerButton" class="_button" disabled>
