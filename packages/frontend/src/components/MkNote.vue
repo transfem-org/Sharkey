@@ -442,7 +442,7 @@ function undoReact(note): void {
 }
 
 function undoRenote() : void {
-	if (!renoted) return;
+	if (!renoted.value) return;
 	os.api("notes/unrenote", {
 		noteId: appearNote.id,
 	});
