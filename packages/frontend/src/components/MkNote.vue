@@ -100,7 +100,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 					ref="renoteButton"
 					:class="$style.footerButton"
 					class="_button"
-					@mousedown="renote()"
+					:style="renoted ? 'color: var(--accent) !important;' : ''"
+					@mousedown="renoted ? undoRenote() : renote()"
 				>
 					<i class="ph-repeat ph-bold ph-lg"></i>
 					<p v-if="appearNote.renoteCount > 0" :class="$style.footerButtonCount">{{ appearNote.renoteCount }}</p>
@@ -226,6 +227,7 @@ const urls = appearNote.text ? extractUrlFromMfm(mfm.parse(appearNote.text)).fil
 const isLong = shouldCollapsed(appearNote);
 const collapsed = ref(appearNote.cw == null && isLong);
 const isDeleted = ref(false);
+const renoted = ref(false);
 const muted = ref($i ? checkWordMute(appearNote, $i, $i.mutedWords) : false);
 const translation = ref<any>(null);
 const translating = ref(false);
@@ -268,6 +270,16 @@ useTooltip(renoteButton, async (showing) => {
 	}, {}, 'closed');
 });
 
+if ($i) {
+	os.api("notes/renotes", {
+		noteId: appearNote.id,
+		userId: $i.id,
+		limit: 1,
+	}).then((res) => {
+		renoted.value = res.length > 0;
+	});
+}
+
 type Visibility = 'public' | 'home' | 'followers' | 'specified';
 
 // defaultStore.state.visibilityがstringなためstringも受け付けている
@@ -288,7 +300,7 @@ function renote(viaKeyboard = false) {
 	if (appearNote.channel) {
 		items = items.concat([{
 			text: i18n.ts.inChannelRenote,
-			icon: 'ph-repeat ph-bold ph-lg',
+			icon: 'ph-rocket-launch ph-bold ph-lg',
 			action: () => {
 				const el = renoteButton.value as HTMLElement | null | undefined;
 				if (el) {
@@ -303,6 +315,7 @@ function renote(viaKeyboard = false) {
 					channelId: appearNote.channelId,
 				}).then(() => {
 					os.toast(i18n.ts.renoted);
+					renoted.value = true;
 				});
 			},
 		}, {
@@ -319,7 +332,7 @@ function renote(viaKeyboard = false) {
 
 	items = items.concat([{
 		text: i18n.ts.renote,
-		icon: 'ph-repeat ph-bold ph-lg',
+		icon: 'ph-rocket-launch ph-bold ph-lg',
 		action: () => {
 			const el = renoteButton.value as HTMLElement | null | undefined;
 			if (el) {
@@ -344,6 +357,7 @@ function renote(viaKeyboard = false) {
 				renoteId: appearNote.id,
 			}).then(() => {
 				os.toast(i18n.ts.renoted);
+				renoted.value = true;
 			});
 		},
 	}, {
@@ -425,6 +439,14 @@ function undoReact(note): void {
 	os.api('notes/reactions/delete', {
 		noteId: note.id,
 	});
+}
+
+function undoRenote() : void {
+	if (!renoted) return;
+	os.api("notes/unrenote", {
+		noteId: appearNote.id,
+	});
+	renoted.value = false;
 }
 
 function onContextmenu(ev: MouseEvent): void {
