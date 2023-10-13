@@ -277,7 +277,7 @@ const conversation = ref<Misskey.entities.Note[]>([]);
 const replies = ref<Misskey.entities.Note[]>([]);
 const canRenote = computed(() => ['public', 'home'].includes(appearNote.visibility) || appearNote.userId === $i.id);
 
-if ($i){
+if ($i) {
 	os.api("notes/renotes", {
 		noteId: appearNote.id,
 		userId: $i.id,
@@ -349,7 +349,7 @@ function renote(viaKeyboard = false) {
 	if (appearNote.channel) {
 		items = items.concat([{
 			text: i18n.ts.inChannelRenote,
-			icon: 'ph-rocket-launcher ph-bold ph-lg',
+			icon: 'ph-rocket-launch ph-bold ph-lg',
 			action: () => {
 				const el = renoteButton.value as HTMLElement | null | undefined;
 				if (el) {
