@@ -69,7 +69,7 @@ const headerTabs = $computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.externalServices,
-	icon: 'ph-square-arrow-out ph-bold ph-lg',
+	icon: 'ph-arrow-square-out ph-bold ph-lg',
 });
 </script>
 
