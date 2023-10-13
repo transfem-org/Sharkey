@@ -102,7 +102,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					class="_button"
 					:style="renoted ? 'color: var(--accent) !important;' : ''"
 					v-on:click.stop
-					@mousedown="renoted ? undoRenote() : renote()"
+					@mousedown="renoted ? undoRenote(appearNote) : renote()"
 				>
 					<i class="ph-rocket-launch ph-bold ph-lg"></i>
 					<p v-if="appearNote.renoteCount > 0" :class="$style.footerButtonCount">{{ appearNote.renoteCount }}</p>
@@ -442,10 +442,10 @@ function undoReact(note): void {
 	});
 }
 
-function undoRenote() : void {
+function undoRenote(note) : void {
 	if (!renoted.value) return;
 	os.api("notes/unrenote", {
-		noteId: appearNote.id,
+		noteId: note.id,
 	});
 	renoted.value = false;
 }
