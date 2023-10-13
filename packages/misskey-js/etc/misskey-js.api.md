@@ -2409,6 +2409,8 @@ type LiteInstanceMetadata = {
     tosUrl: string | null;
     repositoryUrl: string;
     feedbackUrl: string;
+    impressumUrl: string | null;
+    privacyPolicyUrl: string | null;
     disableRegistration: boolean;
     disableLocalTimeline: boolean;
     disableGlobalTimeline: boolean;
@@ -2447,6 +2449,7 @@ type LiteInstanceMetadata = {
         url: string;
         imageUrl: string;
     }[];
+    notesPerOneAd: number;
     translatorAvailable: boolean;
     serverRules: string[];
 };
@@ -2640,7 +2643,6 @@ export const mutedNoteReasons: readonly ["word", "manual", "spam", "other"];
 type Note = {
     id: ID;
     createdAt: DateString;
-    updatedAt?: DateString | null;
     text: string | null;
     cw: string | null;
     user: User;
@@ -2755,6 +2757,9 @@ type Notification_2 = {
     user: User;
     userId: User['id'];
 } | {
+    type: 'achievementEarned';
+    achievement: string;
+} | {
     type: 'app';
     header?: string | null;
     body: string;
@@ -2764,7 +2769,7 @@ type Notification_2 = {
 });
 
 // @public (undocumented)
-export const notificationTypes: readonly ["note", "follow", "mention", "reply", "renote", "quote", "reaction", "pollVote", "pollEnded", "receiveFollowRequest", "followRequestAccepted", "groupInvited", "app"];
+export const notificationTypes: readonly ["note", "follow", "mention", "reply", "renote", "quote", "reaction", "pollVote", "pollEnded", "receiveFollowRequest", "followRequestAccepted", "groupInvited", "app", "achievementEarned"];
 
 // @public (undocumented)
 type OriginType = 'combined' | 'local' | 'remote';
@@ -2981,7 +2986,7 @@ type UserSorting = '+follower' | '-follower' | '+createdAt' | '-createdAt' | '+u
 // src/api.types.ts:18:25 - (ae-forgotten-export) The symbol "NoParams" needs to be exported by the entry point index.d.ts
 // src/api.types.ts:630:18 - (ae-forgotten-export) The symbol "ShowUserReq" needs to be exported by the entry point index.d.ts
 // src/entities.ts:107:2 - (ae-forgotten-export) The symbol "notificationTypes_2" needs to be exported by the entry point index.d.ts
-// src/entities.ts:595:2 - (ae-forgotten-export) The symbol "ModerationLogPayloads" needs to be exported by the entry point index.d.ts
+// src/entities.ts:600:2 - (ae-forgotten-export) The symbol "ModerationLogPayloads" needs to be exported by the entry point index.d.ts
 // src/streaming.types.ts:33:4 - (ae-forgotten-export) The symbol "FIXME" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)

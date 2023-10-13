@@ -131,15 +131,19 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<XFiles :key="user.id" :user="user"/>
 					<XActivity :key="user.id" :user="user"/>
 				</template>
+				<!-- <div v-if="!disableNotes">
+					<div style="margin-bottom: 8px; z-index: 1;">{{ i18n.ts.featured }}</div>
+					<MkNotes :class="$style.tl" :noGap="true" :pagination="pagination"/>
+				</div> -->
 				<MkStickyContainer>
 					<template #header>
 						<MkTab v-model="noteview" :class="$style.tab">
 							<option :value="null">{{ i18n.ts.notes }}</option>
-							<option value="replies">{{ i18n.ts.notesAndReplies }}</option>
+							<option value="replies">{{ i18n.ts.all }}</option>
 							<option value="files">{{ i18n.ts.withFiles }}</option>
 						</MkTab>
 					</template>
-					<MkNotes v-if="!disableNotes" :class="$style.tl" :noGap="true" :pagination="pagination"/>
+					<MkNotes :class="$style.tl" :noGap="true" :pagination="AllPagination"/>
 				</MkStickyContainer>
 			</div>
 		</div>
@@ -248,11 +252,21 @@ watch($$(moderationNote), async () => {
 });
 
 const pagination = {
+	endpoint: 'users/featured-notes' as const,
+	limit: 10,
+	params: computed(() => ({
+		userId: props.user.id
+	})),
+};
+
+const AllPagination = {
 	endpoint: 'users/notes' as const,
 	limit: 10,
 	params: computed(() => ({
 		userId: props.user.id,
-		withReplies: noteview === 'replies' || noteview === 'files',
+		withRenotes: noteview === 'all',
+		withReplies: noteview === 'all' || noteview === 'files',
+		withChannelNotes: noteview === 'all',
 		withFiles: noteview === 'files',
 	})),
 };

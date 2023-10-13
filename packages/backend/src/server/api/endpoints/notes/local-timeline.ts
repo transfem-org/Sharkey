@@ -15,6 +15,7 @@ import { RoleService } from '@/core/RoleService.js';
 import { IdService } from '@/core/IdService.js';
 import { CacheService } from '@/core/CacheService.js';
 import { isUserRelated } from '@/misc/is-user-related.js';
+import { RedisTimelineService } from '@/core/RedisTimelineService.js';
 import { ApiError } from '../../error.js';
 
 export const meta = {
@@ -44,6 +45,7 @@ export const paramDef = {
 	properties: {
 		withFiles: { type: 'boolean', default: false },
 		withRenotes: { type: 'boolean', default: true },
+		withReplies: { type: 'boolean', default: false },
 		excludeNsfw: { type: 'boolean', default: false },
 		limit: { type: 'integer', minimum: 1, maximum: 100, default: 10 },
 		sinceId: { type: 'string', format: 'misskey:id' },
@@ -68,8 +70,12 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 		private activeUsersChart: ActiveUsersChart,
 		private idService: IdService,
 		private cacheService: CacheService,
+		private redisTimelineService: RedisTimelineService,
 	) {
 		super(meta, paramDef, async (ps, me) => {
+			const untilId = ps.untilId ?? (ps.untilDate ? this.idService.genId(new Date(ps.untilDate!)) : null);
+			const sinceId = ps.sinceId ?? (ps.sinceDate ? this.idService.genId(new Date(ps.sinceDate!)) : null);
+
 			const policies = await this.roleService.getUserPolicies(me ? me.id : null);
 			if (!policies.ltlAvailable) {
 				throw new ApiError(meta.errors.ltlDisabled);
@@ -85,20 +91,20 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				this.cacheService.userBlockedCache.fetch(me.id),
 			]) : [new Set<string>(), new Set<string>(), new Set<string>()];
 
-			let timeline: MiNote[] = [];
+			let noteIds: string[];
 
-			const limit = ps.limit + (ps.untilId ? 1 : 0); // untilIdに指定したものも含まれるため+1
-			let noteIdsRes: [string, string[]][] = [];
-
-			if (!ps.sinceId && !ps.sinceDate) {
-				noteIdsRes = await this.redisForTimelines.xrevrange(
-					ps.withFiles ? 'localTimelineWithFiles' : 'localTimeline',
-					ps.untilId ? this.idService.parse(ps.untilId).date.getTime() : ps.untilDate ?? '+',
-					'-',
-					'COUNT', limit);
+			if (ps.withFiles) {
+				noteIds = await this.redisTimelineService.get('localTimelineWithFiles', untilId, sinceId);
+			} else {
+				const [nonReplyNoteIds, replyNoteIds] = await this.redisTimelineService.getMulti([
+					'localTimeline',
+					'localTimelineWithReplies',
+				], untilId, sinceId);
+				noteIds = Array.from(new Set([...nonReplyNoteIds, ...replyNoteIds]));
+				noteIds.sort((a, b) => a > b ? -1 : 1);
 			}
 
-			const noteIds = noteIdsRes.map(x => x[1][1]).filter(x => x !== ps.untilId);
+			noteIds = noteIds.slice(0, ps.limit);
 
 			if (noteIds.length === 0) {
 				return [];
@@ -113,12 +119,13 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				.leftJoinAndSelect('renote.user', 'renoteUser')
 				.leftJoinAndSelect('note.channel', 'channel');
 
-			timeline = await query.getMany();
+			let timeline = await query.getMany();
 
 			timeline = timeline.filter(note => {
 				if (me && (note.userId === me.id)) {
 					return true;
 				}
+				if (!ps.withReplies && note.replyId && (me == null || note.replyUserId !== me.id)) return false;
 				if (me && isUserRelated(note, userIdsWhoBlockingMe)) return false;
 				if (me && isUserRelated(note, userIdsWhoMeMuting)) return false;
 				if (note.renoteId) {
@@ -130,6 +137,8 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 
 				return true;
 			});
+
+			// TODO: フィルタした結果件数が足りなかった場合の対応
 
 			timeline.sort((a, b) => a.id > b.id ? -1 : 1);
 
