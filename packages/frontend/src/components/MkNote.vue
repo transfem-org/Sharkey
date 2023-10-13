@@ -101,6 +101,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					:class="$style.footerButton"
 					class="_button"
 					:style="renoted ? 'color: var(--accent) !important;' : ''"
+					v-on:click.stop
 					@mousedown="renoted ? undoRenote() : renote()"
 				>
 					<i class="ph-rocket-launch ph-bold ph-lg"></i>
