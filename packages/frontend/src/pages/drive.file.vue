@@ -38,15 +38,15 @@ const headerActions = computed(() => []);
 const headerTabs = computed(() => [{
 	key: 'info',
 	title: i18n.ts.info,
-	icon: 'ti ti-info-circle',
+	icon: 'ph-info ph-bold ph-lg',
 }, {
 	key: 'notes',
 	title: i18n.ts._fileViewer.attachedNotes,
-	icon: 'ti ti-pencil',
+	icon: 'ph-pencil ph-bold ph-lg',
 }]);
 
 definePageMetadata(computed(() => ({
 	title: i18n.ts._fileViewer.title,
-	icon: 'ti ti-file',
+	icon: 'ph-file-text ph-bold ph-lg',
 })));
 </script>

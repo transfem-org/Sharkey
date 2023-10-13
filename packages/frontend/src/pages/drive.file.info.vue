@@ -14,26 +14,26 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<div :class="$style.fileQuickActionsRoot">
 			<button class="_button" :class="$style.fileNameEditBtn" @click="rename()">
 				<h2 class="_nowrap" :class="$style.fileName">{{ file.name }}</h2>
-				<i class="ti ti-pencil" :class="$style.fileNameEditIcon"></i>
+				<i class="ph-pencil ph-bold ph-lg" :class="$style.fileNameEditIcon"></i>
 			</button>
 			<div :class="$style.fileQuickActionsOthers">
 				<button v-tooltip="i18n.ts.createNoteFromTheFile" class="_button" :class="$style.fileQuickActionsOthersButton" @click="postThis()">
-					<i class="ti ti-pencil"></i>
+					<i class="ph-pencil ph-bold ph-lg"></i>
 				</button>
 				<button v-if="isImage" v-tooltip="i18n.ts.cropImage" class="_button" :class="$style.fileQuickActionsOthersButton" @click="crop()">
 					<i class="ti ti-crop"></i>
 				</button>
 				<button v-if="file.isSensitive" v-tooltip="i18n.ts.unmarkAsSensitive" class="_button" :class="$style.fileQuickActionsOthersButton" @click="toggleSensitive()">
-					<i class="ti ti-eye"></i>
+					<i class="ph-eye ph-bold ph-lg"></i>
 				</button>
 				<button v-else v-tooltip="i18n.ts.markAsSensitive" class="_button" :class="$style.fileQuickActionsOthersButton" @click="toggleSensitive()">
-					<i class="ti ti-eye-exclamation"></i>
+					<i class="ph-eye-slash ph-bold ph-lg"></i>
 				</button>
 				<a v-tooltip="i18n.ts.download" :href="file.url" :download="file.name" class="_button" :class="$style.fileQuickActionsOthersButton">
-					<i class="ti ti-download"></i>
+					<i class="ph-download ph-bold ph-lg"></i>
 				</a>
 				<button v-tooltip="i18n.ts.delete" class="_button" :class="[$style.fileQuickActionsOthersButton, $style.danger]" @click="deleteFile()">
-					<i class="ti ti-trash"></i>
+					<i class="ph-trash ph-bold ph-lg"></i>
 				</button>
 			</div>
 		</div>
