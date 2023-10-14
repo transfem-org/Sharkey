@@ -19,7 +19,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<div v-if="isRenote" :class="$style.renote">
 		<div v-if="note.channel" :class="$style.colorBar" :style="{ background: note.channel.color }"></div>
 		<MkAvatar :class="$style.renoteAvatar" :user="note.user" link preview/>
-		<i class="ph-repeat ph-bold ph-lg" style="margin-right: 4px;"></i>
+		<i class="ph-rocket-launch ph-bold ph-lg" style="margin-right: 4px;"></i>
 		<I18n :src="i18n.ts.renotedBy" tag="span" :class="$style.renoteText">
 			<template #user>
 				<MkA v-user-preview="note.userId" :class="$style.renoteUserName" :to="userPage(note.user)">

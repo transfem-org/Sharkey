@@ -146,7 +146,7 @@ const headerActions = $computed(() => [{
 		os.popupMenu([{
 			type: 'switch',
 			text: i18n.ts.showRenotes,
-			icon: 'ph-repeat ph-bold ph-lg',
+			icon: 'ph-rocket-launch ph-bold ph-lg',
 			ref: $$(withRenotes),
 		}, src === 'local' || src === 'social' ? {
 			type: 'switch',

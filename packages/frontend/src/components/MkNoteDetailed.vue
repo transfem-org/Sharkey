@@ -20,7 +20,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<MkNoteSub v-if="appearNote.reply" :note="appearNote.reply" :class="$style.replyTo"/>
 	<div v-if="isRenote" :class="$style.renote">
 		<MkAvatar :class="$style.renoteAvatar" :user="note.user" link preview/>
-		<i class="ph-repeat ph-bold ph-lg" style="margin-right: 4px;"></i>
+		<i class="ph-rocket-launch ph-bold ph-lg" style="margin-right: 4px;"></i>
 		<span :class="$style.renoteText">
 			<I18n :src="i18n.ts.renotedBy" tag="span">
 				<template #user>
@@ -140,7 +140,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</article>
 	<div :class="$style.tabs">
 		<button class="_button" :class="[$style.tab, { [$style.tabActive]: tab === 'replies' }]" @click="tab = 'replies'"><i class="ph-arrow-u-up-left ph-bold pg-lg"></i> {{ i18n.ts.replies }}</button>
-		<button class="_button" :class="[$style.tab, { [$style.tabActive]: tab === 'renotes' }]" @click="tab = 'renotes'"><i class="ph-repeat ph-bold ph-lg"></i> {{ i18n.ts.renotes }}</button>
+		<button class="_button" :class="[$style.tab, { [$style.tabActive]: tab === 'renotes' }]" @click="tab = 'renotes'"><i class="ph-rocket-launch ph-bold ph-lg"></i> {{ i18n.ts.renotes }}</button>
 		<button class="_button" :class="[$style.tab, { [$style.tabActive]: tab === 'reactions' }]" @click="tab = 'reactions'"><i class="ph-smiley ph-bold pg-lg"></i> {{ i18n.ts.reactions }}</button>
 	</div>
 	<div>
