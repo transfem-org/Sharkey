@@ -7,10 +7,10 @@ export class MetaCacheSettings1696373953614 {
     name = 'MetaCacheSettings1696373953614'
 
     async up(queryRunner) {
-        await queryRunner.query(`ALTER TABLE "meta" ADD "perLocalUserUserTimelineCacheMax" integer NOT NULL DEFAULT '300'`);
-        await queryRunner.query(`ALTER TABLE "meta" ADD "perRemoteUserUserTimelineCacheMax" integer NOT NULL DEFAULT '100'`);
-        await queryRunner.query(`ALTER TABLE "meta" ADD "perUserHomeTimelineCacheMax" integer NOT NULL DEFAULT '300'`);
-        await queryRunner.query(`ALTER TABLE "meta" ADD "perUserListTimelineCacheMax" integer NOT NULL DEFAULT '300'`);
+        await queryRunner.query(`ALTER TABLE "meta" ADD "perLocalUserUserTimelineCacheMax" integer NOT NULL DEFAULT '800'`);
+        await queryRunner.query(`ALTER TABLE "meta" ADD "perRemoteUserUserTimelineCacheMax" integer NOT NULL DEFAULT '800'`);
+        await queryRunner.query(`ALTER TABLE "meta" ADD "perUserHomeTimelineCacheMax" integer NOT NULL DEFAULT '800'`);
+        await queryRunner.query(`ALTER TABLE "meta" ADD "perUserListTimelineCacheMax" integer NOT NULL DEFAULT '800'`);
     }
 
     async down(queryRunner) {
