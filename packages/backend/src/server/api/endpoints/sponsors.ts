@@ -36,11 +36,11 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
                     return ctrl.signal;
                 };
 
-                sponsors = await fetch("https://kaifa.ch/transfem-sponsors.json",{ signal: AbortSignal.timeout(2000) })
+                sponsors = await fetch("https://kaifa.ch/transfem-sponsors.json", { signal: AbortSignal.timeout(2000) })
                     .then((response) => response.json());
                 await this.redisClient.set("sponsors", JSON.stringify(sponsors), "EX", 3600);
             }
             return { sponsor_data: sponsors['sponsors'] };
-        })
+        });
     }
 }
