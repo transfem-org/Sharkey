@@ -27,6 +27,7 @@ const props = defineProps<{
 	color: var(--infoFg);
 	border-radius: var(--radius);
 	white-space: pre-wrap;
+	z-index: 1;
 
 	&.warn {
 		background: var(--infoWarnBg);
