@@ -21,7 +21,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<i class="ph-pencil ph-bold ph-lg"></i>
 				</button>
 				<button v-if="isImage" v-tooltip="i18n.ts.cropImage" class="_button" :class="$style.fileQuickActionsOthersButton" @click="crop()">
-					<i class="ti ti-crop"></i>
+					<i class="ph-crop ph-bold ph-lg"></i>
 				</button>
 				<button v-if="file.isSensitive" v-tooltip="i18n.ts.unmarkAsSensitive" class="_button" :class="$style.fileQuickActionsOthersButton" @click="toggleSensitive()">
 					<i class="ph-eye ph-bold ph-lg"></i>
