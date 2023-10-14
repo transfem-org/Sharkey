@@ -32,6 +32,7 @@ const props = defineProps<{
 	&.warn {
 		background: var(--infoWarnBg);
 		color: var(--infoWarnFg);
+		z-index: 1;
 	}
 }
 
