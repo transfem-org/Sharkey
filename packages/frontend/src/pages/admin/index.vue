@@ -199,6 +199,11 @@ const menuDef = $computed(() => [{
 		to: '/admin/proxy-account',
 		active: currentPage?.route.name === 'proxy-account',
 	}, {
+		icon: 'ph-arrow-square-out ph-bold pg-lg',
+		text: i18n.ts.externalServices,
+		to: '/admin/external-services',
+		active: currentPage?.route.name === 'external-services',
+	}, {
 		icon: 'ph-faders ph-bold ph-lg',
 		text: i18n.ts.other,
 		to: '/admin/other-settings',

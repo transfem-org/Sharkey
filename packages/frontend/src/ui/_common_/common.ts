@@ -68,7 +68,25 @@ export function openInstanceMenu(ev: MouseEvent) {
 			text: i18n.ts.manageCustomEmojis,
 			icon: 'ph-smiley ph-bold pg-lg',
 		} : undefined],
-	}, null, {
+	}, null, (instance.impressumUrl) ? {
+		text: i18n.ts.impressum,
+		icon: 'ph-newspaper-clipping ph-bold pg-lg',
+		action: () => {
+			window.open(instance.impressumUrl, '_blank');
+		},
+	} : undefined, (instance.tosUrl) ? {
+		text: i18n.ts.termsOfService,
+		icon: 'ph-notebook ph-bold pg-lg',
+		action: () => {
+			window.open(instance.tosUrl, '_blank');
+		},
+	} : undefined, (instance.privacyPolicyUrl) ? {
+		text: i18n.ts.privacyPolicy,
+		icon: 'ph-shield ph-bold pg-lg',
+		action: () => {
+			window.open(instance.privacyPolicyUrl, '_blank');
+		},
+	} : undefined, (!instance.impressumUrl && !instance.tosUrl && !instance.privacyPolicyUrl) ? undefined : null, {
 		text: i18n.ts.help,
 		icon: 'ph-question ph-bold ph-lg',
 		action: () => {

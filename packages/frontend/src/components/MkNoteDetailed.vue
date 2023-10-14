@@ -20,7 +20,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<MkNoteSub v-if="appearNote.reply" :note="appearNote.reply" :class="$style.replyTo"/>
 	<div v-if="isRenote" :class="$style.renote">
 		<MkAvatar :class="$style.renoteAvatar" :user="note.user" link preview/>
-		<i class="ph-repeat ph-bold ph-lg" style="margin-right: 4px;"></i>
+		<i class="ph-rocket-launch ph-bold ph-lg" style="margin-right: 4px;"></i>
 		<span :class="$style.renoteText">
 			<I18n :src="i18n.ts.renotedBy" tag="span">
 				<template #user>
@@ -111,9 +111,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 				ref="renoteButton"
 				class="_button"
 				:class="$style.noteFooterButton"
-				@mousedown="renote()"
+				:style="renoted ? 'color: var(--accent) !important;' : ''"
+				@mousedown="renoted ? undoRenote() : renote()"
 			>
-				<i class="ph-repeat ph-bold ph-lg"></i>
+				<i class="ph-rocket-launch ph-bold ph-lg"></i>
 				<p v-if="appearNote.renoteCount > 0" :class="$style.noteFooterButtonCount">{{ appearNote.renoteCount }}</p>
 			</button>
 			<button v-else class="_button" :class="$style.noteFooterButton" disabled>
@@ -139,7 +140,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</article>
 	<div :class="$style.tabs">
 		<button class="_button" :class="[$style.tab, { [$style.tabActive]: tab === 'replies' }]" @click="tab = 'replies'"><i class="ph-arrow-u-up-left ph-bold pg-lg"></i> {{ i18n.ts.replies }}</button>
-		<button class="_button" :class="[$style.tab, { [$style.tabActive]: tab === 'renotes' }]" @click="tab = 'renotes'"><i class="ph-repeat ph-bold ph-lg"></i> {{ i18n.ts.renotes }}</button>
+		<button class="_button" :class="[$style.tab, { [$style.tabActive]: tab === 'renotes' }]" @click="tab = 'renotes'"><i class="ph-rocket-launch ph-bold ph-lg"></i> {{ i18n.ts.renotes }}</button>
 		<button class="_button" :class="[$style.tab, { [$style.tabActive]: tab === 'reactions' }]" @click="tab = 'reactions'"><i class="ph-smiley ph-bold pg-lg"></i> {{ i18n.ts.reactions }}</button>
 	</div>
 	<div>
@@ -218,7 +219,7 @@ import { useNoteCapture } from '@/scripts/use-note-capture.js';
 import { deepClone } from '@/scripts/clone.js';
 import { useTooltip } from '@/scripts/use-tooltip.js';
 import { claimAchievement } from '@/scripts/achievements.js';
-import { MenuItem } from '@/types/menu';
+import { MenuItem } from '@/types/menu.js';
 import MkRippleEffect from '@/components/MkRippleEffect.vue';
 import { showMovedDialog } from '@/scripts/show-moved-dialog.js';
 import MkUserCardMini from '@/components/MkUserCardMini.vue';
@@ -266,7 +267,8 @@ const renoteUri = appearNote.renote ? appearNote.renote.uri : null;
 const isMyRenote = $i && ($i.id === note.userId);
 const showContent = ref(false);
 const isDeleted = ref(false);
-const muted = ref(checkWordMute(appearNote, $i, defaultStore.state.mutedWords));
+const renoted = ref(false);
+const muted = ref($i ? checkWordMute(appearNote, $i, $i.mutedWords) : false);
 const translation = ref(null);
 const translating = ref(false);
 const urls = appearNote.text ? extractUrlFromMfm(mfm.parse(appearNote.text)).filter(u => u !== renoteUrl && u !== renoteUri) : null;
@@ -274,6 +276,16 @@ const showTicker = (defaultStore.state.instanceTicker === 'always') || (defaultS
 const conversation = ref<Misskey.entities.Note[]>([]);
 const replies = ref<Misskey.entities.Note[]>([]);
 const canRenote = computed(() => ['public', 'home'].includes(appearNote.visibility) || appearNote.userId === $i.id);
+
+if ($i) {
+	os.api("notes/renotes", {
+		noteId: appearNote.id,
+		userId: $i.id,
+		limit: 1,
+	}).then((res) => {
+		renoted.value = res.length > 0;
+	});
+}
 
 const keymap = {
 	'r': () => reply(true),
@@ -337,7 +349,7 @@ function renote(viaKeyboard = false) {
 	if (appearNote.channel) {
 		items = items.concat([{
 			text: i18n.ts.inChannelRenote,
-			icon: 'ph-repeat ph-bold ph-lg',
+			icon: 'ph-rocket-launch ph-bold ph-lg',
 			action: () => {
 				const el = renoteButton.value as HTMLElement | null | undefined;
 				if (el) {
@@ -352,6 +364,7 @@ function renote(viaKeyboard = false) {
 					channelId: appearNote.channelId,
 				}).then(() => {
 					os.toast(i18n.ts.renoted);
+					renoted.value = true;
 				});
 			},
 		}, {
@@ -368,7 +381,7 @@ function renote(viaKeyboard = false) {
 
 	items = items.concat([{
 		text: i18n.ts.renote,
-		icon: 'ph-repeat ph-bold ph-lg',
+		icon: 'ph-rocket-launch ph-bold ph-lg',
 		action: () => {
 			const el = renoteButton.value as HTMLElement | null | undefined;
 			if (el) {
@@ -382,6 +395,7 @@ function renote(viaKeyboard = false) {
 				renoteId: appearNote.id,
 			}).then(() => {
 				os.toast(i18n.ts.renoted);
+				renoted.value = true;
 			});
 		},
 	}, {
@@ -464,6 +478,14 @@ function undoReact(note): void {
 	os.api('notes/reactions/delete', {
 		noteId: note.id,
 	});
+}
+
+function undoRenote() : void {
+	if (!renoted.value) return;
+	os.api("notes/unrenote", {
+		noteId: appearNote.id,
+	});
+	renoted.value = false;
 }
 
 function onContextmenu(ev: MouseEvent): void {

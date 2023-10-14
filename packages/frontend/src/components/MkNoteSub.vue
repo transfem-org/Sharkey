@@ -26,13 +26,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<p v-if="note.repliesCount > 0" :class="$style.noteFooterButtonCount">{{ note.repliesCount }}</p>
 				</button>
 				<button
-				v-if="canRenote"
-				ref="renoteButton"
-				class="_button"
-				:class="$style.noteFooterButton"
-				@mousedown="renote()"
+					v-if="canRenote"
+					ref="renoteButton"
+					class="_button"
+					:class="$style.noteFooterButton"
+					:style="renoted ? 'color: var(--accent) !important;' : ''"
+					@mousedown="renoted ? undoRenote() : renote()"
 				>
-					<i class="ph-repeat ph-bold ph-lg"></i>
+					<i class="ph-rocket-launch ph-bold ph-lg"></i>
 					<p v-if="note.renoteCount > 0" :class="$style.noteFooterButtonCount">{{ note.renoteCount }}</p>
 				</button>
 				<button v-else class="_button" :class="$style.noteFooterButton" disabled>
@@ -83,9 +84,9 @@ import { notePage } from '@/filters/note.js';
 import * as os from '@/os.js';
 import { i18n } from '@/i18n.js';
 import { $i } from '@/account.js';
-import { userPage } from "@/filters/user";
-import { checkWordMute } from "@/scripts/check-word-mute";
-import { defaultStore } from "@/store";
+import { userPage } from "@/filters/user.js";
+import { checkWordMute } from "@/scripts/check-word-mute.js";
+import { defaultStore } from "@/store.js";
 import { pleaseLogin } from '@/scripts/please-login.js';
 import { showMovedDialog } from '@/scripts/show-moved-dialog.js';
 import MkRippleEffect from '@/components/MkRippleEffect.vue';
@@ -108,10 +109,11 @@ const props = withDefaults(defineProps<{
 });
 
 const el = shallowRef<HTMLElement>();
-const muted = ref(checkWordMute(props.note, $i, defaultStore.state.mutedWords));
+const muted = ref($i ? checkWordMute(props.note, $i, $i.mutedWords) : false);
 const translation = ref(null);
 const translating = ref(false);
 const isDeleted = ref(false);
+const renoted = ref(false);
 const reactButton = shallowRef<HTMLElement>();
 const renoteButton = shallowRef<HTMLElement>();
 const menuButton = shallowRef<HTMLElement>();
@@ -131,6 +133,16 @@ useNoteCapture({
 	note: $$(appearNote),
 	isDeletedRef: isDeleted,
 });
+
+if ($i) {
+	os.api("notes/renotes", {
+		noteId: appearNote.id,
+		userId: $i.id,
+		limit: 1,
+	}).then((res) => {
+		renoted.value = res.length > 0;
+	});
+}
 
 function focus() {
 	el.value.focus();
@@ -203,6 +215,14 @@ function undoReact(note): void {
 	});
 }
 
+function undoRenote() : void {
+	if (!renoted.value) return;
+	os.api("notes/unrenote", {
+		noteId: appearNote.id,
+	});
+	renoted.value = false;
+}
+
 let showContent = $ref(false);
 let replies: Misskey.entities.Note[] = $ref([]);
 
@@ -215,7 +235,7 @@ function renote(viaKeyboard = false) {
 	if (props.note.channel) {
 		items = items.concat([{
 			text: i18n.ts.inChannelRenote,
-			icon: 'ph-repeat ph-bold ph-lg',
+			icon: 'ph-rocket-launch ph-bold ph-lg',
 			action: () => {
 				const el = renoteButton.value as HTMLElement | null | undefined;
 				if (el) {
@@ -230,6 +250,7 @@ function renote(viaKeyboard = false) {
 					channelId: props.note.channelId,
 				}).then(() => {
 					os.toast(i18n.ts.renoted);
+					renoted.value = true;
 				});
 			},
 		}, {
@@ -246,7 +267,7 @@ function renote(viaKeyboard = false) {
 
 	items = items.concat([{
 		text: i18n.ts.renote,
-		icon: 'ph-repeat ph-bold ph-lg',
+		icon: 'ph-rocket-launch ph-bold ph-lg',
 		action: () => {
 			const el = renoteButton.value as HTMLElement | null | undefined;
 			if (el) {
@@ -260,6 +281,7 @@ function renote(viaKeyboard = false) {
 				renoteId: props.note.id,
 			}).then(() => {
 				os.toast(i18n.ts.renoted);
+				renoted.value = true;
 			});
 		},
 	}, {

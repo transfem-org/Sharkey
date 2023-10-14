@@ -80,6 +80,15 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: Router 
 		});
 	}
 
+	async function toggleWithReplies() {
+		os.apiWithDialog('following/update', {
+			userId: user.id,
+			withReplies: !user.withReplies,
+		}).then(() => {
+			user.withReplies = !user.withReplies;
+		});
+	}
+
 	async function toggleNotify() {
 		os.apiWithDialog('following/update', {
 			userId: user.id,
@@ -282,6 +291,10 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: Router 
 		// フォローしたとしても user.isFollowing はリアルタイム更新されないので不便なため
 		//if (user.isFollowing) {
 		menu = menu.concat([{
+			icon: user.withReplies ? 'ph-envelope-open ph-bold pg-lg' : 'ph-envelope ph-bold pg-lg-off',
+			text: user.withReplies ? i18n.ts.hideRepliesToOthersInTimeline : i18n.ts.showRepliesToOthersInTimeline,
+			action: toggleWithReplies,
+		}, {
 			icon: user.notify === 'none' ? 'ph-bell ph-bold pg-lg' : 'ph-bell ph-bold pg-lg-off',
 			text: user.notify === 'none' ? i18n.ts.notifyNotes : i18n.ts.unnotifyNotes,
 			action: toggleNotify,

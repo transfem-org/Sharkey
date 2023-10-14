@@ -167,6 +167,8 @@ export interface Locale {
     "flagAsBotDescription": string;
     "flagAsCat": string;
     "flagAsCatDescription": string;
+    "flagSpeakAsCat": string;
+    "flagSpeakAsCatDescription": string;
     "flagShowTimelineReplies": string;
     "flagShowTimelineRepliesDescription": string;
     "autoAcceptFollowed": string;
@@ -1129,6 +1131,15 @@ export interface Locale {
     "notificationRecieveConfig": string;
     "mutualFollow": string;
     "fileAttachedOnly": string;
+    "showRepliesToOthersInTimeline": string;
+    "hideRepliesToOthersInTimeline": string;
+    "externalServices": string;
+    "impressum": string;
+    "impressumUrl": string;
+    "impressumDescription": string;
+    "privacyPolicy": string;
+    "privacyPolicyUrl": string;
+    "tosAndPrivacyPolicy": string;
     "_announcement": {
         "forExistingUsers": string;
         "forExistingUsersDescription": string;
@@ -1542,7 +1553,6 @@ export interface Locale {
             "gtlAvailable": string;
             "ltlAvailable": string;
             "canPublicNote": string;
-            "canEditNote": string;
             "canInvite": string;
             "inviteLimit": string;
             "inviteLimitCycle": string;
@@ -1619,6 +1629,10 @@ export interface Locale {
         "reduceFrequencyOfThisAd": string;
         "hide": string;
         "timezoneinfo": string;
+        "adsSettings": string;
+        "notesPerOneAd": string;
+        "setZeroToDisable": string;
+        "adsTooClose": string;
     };
     "_forgotPassword": {
         "enterEmail": string;
@@ -1719,11 +1733,6 @@ export interface Locale {
         "muteWords": string;
         "muteWordsDescription": string;
         "muteWordsDescription2": string;
-        "softDescription": string;
-        "hardDescription": string;
-        "soft": string;
-        "hard": string;
-        "mutedNotes": string;
     };
     "_instanceMute": {
         "instanceMuteDescription": string;
@@ -1789,9 +1798,6 @@ export interface Locale {
             "infoFg": string;
             "infoWarnBg": string;
             "infoWarnFg": string;
-            "cwBg": string;
-            "cwFg": string;
-            "cwHoverBg": string;
             "toastBg": string;
             "toastFg": string;
             "buttonBg": string;
@@ -1811,8 +1817,6 @@ export interface Locale {
         "note": string;
         "noteMy": string;
         "notification": string;
-        "chat": string;
-        "chatBg": string;
         "antenna": string;
         "channel": string;
     };
@@ -2288,6 +2292,15 @@ export interface Locale {
         "createAd": string;
         "deleteAd": string;
         "updateAd": string;
+    };
+    "_fileViewer": {
+        "title": string;
+        "type": string;
+        "size": string;
+        "url": string;
+        "uploadedAt": string;
+        "attachedNotes": string;
+        "thisPageCanBeSeenFromTheAuthor": string;
     };
 }
 declare const locales: {
