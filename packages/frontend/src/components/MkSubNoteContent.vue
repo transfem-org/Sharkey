@@ -71,7 +71,9 @@ const collapsed = $ref(isLong);
 			left: 0;
 			width: 100%;
 			height: 64px;
-			mask: linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%);
+			--mix: color-mix(in srgb, var(--panel) 10%, transparent);
+			background: linear-gradient(0deg, var(--mix), transparent);
+			backdrop-filter: blur(1px);
 
 			> .fadeLabel {
 				display: inline-block;
