@@ -36,6 +36,16 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<i class="ph-rocket-launch ph-bold ph-lg"></i>
 					<p v-if="note.renoteCount > 0" :class="$style.noteFooterButtonCount">{{ note.renoteCount }}</p>
 				</button>
+				<button
+					v-if="canRenote"
+					ref="quoteButton"
+					class="_button"
+					:class="$style.noteFooterButton"
+					:style="quoted ? 'color: var(--accent) !important;' : ''"
+					@mousedown="quoted ? undoQuote() : quote()"
+				>
+					<i class="ph-quotes ph-bold ph-lg"></i>
+				</button>
 				<button v-else class="_button" :class="$style.noteFooterButton" disabled>
 					<i class="ph-prohibit ph-bold ph-lg"></i>
 				</button>
@@ -114,8 +124,10 @@ const translation = ref(null);
 const translating = ref(false);
 const isDeleted = ref(false);
 const renoted = ref(false);
+const quoted = ref(false);
 const reactButton = shallowRef<HTMLElement>();
 const renoteButton = shallowRef<HTMLElement>();
+const quoteButton = shallowRef<HTMLElement>();
 const menuButton = shallowRef<HTMLElement>();
 const likeButton = shallowRef<HTMLElement>();
 
@@ -141,6 +153,15 @@ if ($i) {
 		limit: 1,
 	}).then((res) => {
 		renoted.value = res.length > 0;
+	});
+
+	os.api("notes/renotes", {
+		noteId: appearNote.id,
+		userId: $i.id,
+		limit: 1,
+		quote: true,
+	}).then((res) => {
+		quoted.value = res.length > 0;
 	});
 }
 
@@ -223,80 +244,103 @@ function undoRenote() : void {
 	renoted.value = false;
 }
 
+function undoQuote() : void {
+	os.api("notes/unrenote", {
+		noteId: appearNote.id,
+		quote: true
+	});
+	quoted.value = false;
+}
+
 let showContent = $ref(false);
 let replies: Misskey.entities.Note[] = $ref([]);
 
-function renote(viaKeyboard = false) {
+function renote() {
 	pleaseLogin();
 	showMovedDialog();
 
-	let items = [] as MenuItem[];
+	if (appearNote.channel) {
+		const el = renoteButton.value as HTMLElement | null | undefined;
+		if (el) {
+			const rect = el.getBoundingClientRect();
+			const x = rect.left + (el.offsetWidth / 2);
+			const y = rect.top + (el.offsetHeight / 2);
+			os.popup(MkRippleEffect, { x, y }, {}, 'end');
+		}
 
-	if (props.note.channel) {
-		items = items.concat([{
-			text: i18n.ts.inChannelRenote,
-			icon: 'ph-rocket-launch ph-bold ph-lg',
-			action: () => {
-				const el = renoteButton.value as HTMLElement | null | undefined;
-				if (el) {
+		os.api('notes/create', {
+			renoteId: props.note.id,
+			channelId: props.note.channelId,
+		}).then(() => {
+			os.toast(i18n.ts.renoted);
+			renoted.value = true;
+		});
+	} else {
+		const el = renoteButton.value as HTMLElement | null | undefined;
+		if (el) {
+			const rect = el.getBoundingClientRect();
+			const x = rect.left + (el.offsetWidth / 2);
+			const y = rect.top + (el.offsetHeight / 2);
+			os.popup(MkRippleEffect, { x, y }, {}, 'end');
+		}
+
+		os.api('notes/create', {
+			renoteId: props.note.id,
+		}).then(() => {
+			os.toast(i18n.ts.renoted);
+			renoted.value = true;
+		});
+	}
+}
+
+function quote() {
+	pleaseLogin();
+	showMovedDialog();
+
+	if (appearNote.channel) {
+		os.post({
+			renote: appearNote,
+			channel: appearNote.channel,
+		}).then(() => {
+			os.api("notes/renotes", {
+				noteId: props.note.id,
+				userId: $i.id,
+				limit: 1,
+				quote: true,
+			}).then((res) => {
+				const el = quoteButton.value as HTMLElement | null | undefined;
+				if (el && res.length > 0) {
 					const rect = el.getBoundingClientRect();
 					const x = rect.left + (el.offsetWidth / 2);
 					const y = rect.top + (el.offsetHeight / 2);
 					os.popup(MkRippleEffect, { x, y }, {}, 'end');
 				}
 
-				os.api('notes/create', {
-					renoteId: props.note.id,
-					channelId: props.note.channelId,
-				}).then(() => {
-					os.toast(i18n.ts.renoted);
-					renoted.value = true;
-				});
-			},
-		}, {
-			text: i18n.ts.inChannelQuote,
-			icon: 'ph-quotes ph-bold ph-lg',
-			action: () => {
-				os.post({
-					renote: props.note,
-					channel: props.note.channel,
-				});
-			},
-		}, null]);
+				quoted.value = res.length > 0;
+			});
+		});
+	} else {
+		os.post({
+			renote: appearNote,
+		}).then(() => {
+			os.api("notes/renotes", {
+				noteId: props.note.id,
+				userId: $i.id,
+				limit: 1,
+				quote: true,
+			}).then((res) => {
+				const el = quoteButton.value as HTMLElement | null | undefined;
+				if (el && res.length > 0) {
+					const rect = el.getBoundingClientRect();
+					const x = rect.left + (el.offsetWidth / 2);
+					const y = rect.top + (el.offsetHeight / 2);
+					os.popup(MkRippleEffect, { x, y }, {}, 'end');
+				}
+
+				quoted.value = res.length > 0;
+			});
+		});
 	}
-
-	items = items.concat([{
-		text: i18n.ts.renote,
-		icon: 'ph-rocket-launch ph-bold ph-lg',
-		action: () => {
-			const el = renoteButton.value as HTMLElement | null | undefined;
-			if (el) {
-				const rect = el.getBoundingClientRect();
-				const x = rect.left + (el.offsetWidth / 2);
-				const y = rect.top + (el.offsetHeight / 2);
-				os.popup(MkRippleEffect, { x, y }, {}, 'end');
-			}
-
-			os.api('notes/create', {
-				renoteId: props.note.id,
-			}).then(() => {
-				os.toast(i18n.ts.renoted);
-				renoted.value = true;
-			});
-		},
-	}, {
-		text: i18n.ts.quote,
-		icon: 'ph-quotes ph-bold ph-lg',
-		action: () => {
-			os.post({
-				renote: props.note,
-			});
-		},
-	}]);
-
-	os.popupMenu(items, renoteButton.value, {
-		viaKeyboard,
-	});
 }
 
 function menu(viaKeyboard = false): void {

@@ -535,7 +535,7 @@ export class NoteCreateService implements OnApplicationShutdown {
 			});
 		}
 
-		if (data.renote && data.renote.userId !== user.id && !user.isBot) {
+		if (data.renote && data.text == null && data.renote.userId !== user.id && !user.isBot) {
 			this.incRenoteCount(data.renote);
 		}
 

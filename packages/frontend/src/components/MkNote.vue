@@ -110,6 +110,17 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<button v-else :class="$style.footerButton" class="_button" disabled>
 					<i class="ph-prohibit ph-bold ph-lg"></i>
 				</button>
+				<button
+					v-if="canRenote"
+					ref="quoteButton"
+					:class="$style.footerButton"
+					class="_button"
+					:style="quoted ? 'color: var(--accent) !important;' : ''"
+					v-on:click.stop
+					@mousedown="quoted ? undoQuote(appearNote) : quote()"
+				>
+					<i class="ph-quotes ph-bold ph-lg"></i>
+				</button>
 				<button v-if="appearNote.myReaction == null && appearNote.reactionAcceptance !== 'likeOnly'" ref="likeButton" :class="$style.footerButton" class="_button" v-on:click.stop @click="like()">
 					<i class="ph-heart ph-bold ph-lg"></i>
 				</button>
@@ -216,6 +227,7 @@ const menuButton = shallowRef<HTMLElement>();
 const renoteButton = shallowRef<HTMLElement>();
 const renoteTime = shallowRef<HTMLElement>();
 const reactButton = shallowRef<HTMLElement>();
+const quoteButton = shallowRef<HTMLElement>();
 const clipButton = shallowRef<HTMLElement>();
 const likeButton = shallowRef<HTMLElement>();
 let appearNote = $computed(() => isRenote ? note.renote as Misskey.entities.Note : note);
@@ -229,6 +241,7 @@ const isLong = shouldCollapsed(appearNote);
 const collapsed = ref(appearNote.cw == null && isLong);
 const isDeleted = ref(false);
 const renoted = ref(false);
+const quoted = ref(false);
 const muted = ref($i ? checkWordMute(appearNote, $i, $i.mutedWords) : false);
 const translation = ref<any>(null);
 const translating = ref(false);
@@ -271,6 +284,25 @@ useTooltip(renoteButton, async (showing) => {
 	}, {}, 'closed');
 });
 
+useTooltip(quoteButton, async (showing) => {
+	const renotes = await os.api('notes/renotes', {
+		noteId: appearNote.id,
+		limit: 11,
+		quote: true,
+	});
+
+	const users = renotes.map(x => x.user);
+
+	if (users.length < 1) return;
+
+	os.popup(MkUsersTooltip, {
+		showing,
+		users,
+		count: appearNote.renoteCount,
+		targetElement: quoteButton.value,
+	}, {}, 'closed');
+});
+
 if ($i) {
 	os.api("notes/renotes", {
 		noteId: appearNote.id,
@@ -278,6 +310,15 @@ if ($i) {
 		limit: 1,
 	}).then((res) => {
 		renoted.value = res.length > 0;
+	});
+
+	os.api("notes/renotes", {
+		noteId: appearNote.id,
+		userId: $i.id,
+		limit: 1,
+		quote: true,
+	}).then((res) => {
+		quoted.value = res.length > 0;
 	});
 }
 
@@ -292,88 +333,103 @@ function smallerVisibility(a: Visibility | string, b: Visibility | string): Visi
 	return 'public';
 }
 
-function renote(viaKeyboard = false) {
+function renote() {
 	pleaseLogin();
 	showMovedDialog();
 
-	let items = [] as MenuItem[];
+	if (appearNote.channel) {
+		const el = renoteButton.value as HTMLElement | null | undefined;
+		if (el) {
+			const rect = el.getBoundingClientRect();
+			const x = rect.left + (el.offsetWidth / 2);
+			const y = rect.top + (el.offsetHeight / 2);
+			os.popup(MkRippleEffect, { x, y }, {}, 'end');
+		}
+
+		os.api('notes/create', {
+			renoteId: appearNote.id,
+			channelId: appearNote.channelId,
+		}).then(() => {
+			os.toast(i18n.ts.renoted);
+			renoted.value = true;
+		});
+	} else {
+		const el = renoteButton.value as HTMLElement | null | undefined;
+		if (el) {
+			const rect = el.getBoundingClientRect();
+			const x = rect.left + (el.offsetWidth / 2);
+			const y = rect.top + (el.offsetHeight / 2);
+			os.popup(MkRippleEffect, { x, y }, {}, 'end');
+		}
+
+		const configuredVisibility = defaultStore.state.rememberNoteVisibility ? defaultStore.state.visibility : defaultStore.state.defaultNoteVisibility;
+		const localOnly = defaultStore.state.rememberNoteVisibility ? defaultStore.state.localOnly : defaultStore.state.defaultNoteLocalOnly;
+
+		let visibility = appearNote.visibility;
+		visibility = smallerVisibility(visibility, configuredVisibility);
+		if (appearNote.channel?.isSensitive) {
+			visibility = smallerVisibility(visibility, 'home');
+		}
+
+		os.api('notes/create', {
+			localOnly,
+			visibility,
+			renoteId: appearNote.id,
+		}).then(() => {
+			os.toast(i18n.ts.renoted);
+			renoted.value = true;
+		});
+	}
+}
+
+function quote() {
+	pleaseLogin();
+	showMovedDialog();
 
 	if (appearNote.channel) {
-		items = items.concat([{
-			text: i18n.ts.inChannelRenote,
-			icon: 'ph-rocket-launch ph-bold ph-lg',
-			action: () => {
-				const el = renoteButton.value as HTMLElement | null | undefined;
-				if (el) {
+		os.post({
+			renote: appearNote,
+			channel: appearNote.channel,
+		}).then(() => {
+			os.api("notes/renotes", {
+				noteId: appearNote.id,
+				userId: $i.id,
+				limit: 1,
+				quote: true,
+			}).then((res) => {
+				const el = quoteButton.value as HTMLElement | null | undefined;
+				if (el && res.length > 0) {
 					const rect = el.getBoundingClientRect();
 					const x = rect.left + (el.offsetWidth / 2);
 					const y = rect.top + (el.offsetHeight / 2);
 					os.popup(MkRippleEffect, { x, y }, {}, 'end');
 				}
 
-				os.api('notes/create', {
-					renoteId: appearNote.id,
-					channelId: appearNote.channelId,
-				}).then(() => {
-					os.toast(i18n.ts.renoted);
-					renoted.value = true;
-				});
-			},
-		}, {
-			text: i18n.ts.inChannelQuote,
-			icon: 'ph-quotes ph-bold ph-lg',
-			action: () => {
-				os.post({
-					renote: appearNote,
-					channel: appearNote.channel,
-				});
-			},
-		}, null]);
+				quoted.value = res.length > 0;
+			});
+		});
+	} else {
+		os.post({
+			renote: appearNote,
+		}).then(() => {
+			os.api("notes/renotes", {
+				noteId: appearNote.id,
+				userId: $i.id,
+				limit: 1,
+				quote: true,
+			}).then((res) => {
+				const el = quoteButton.value as HTMLElement | null | undefined;
+				if (el && res.length > 0) {
+					const rect = el.getBoundingClientRect();
+					const x = rect.left + (el.offsetWidth / 2);
+					const y = rect.top + (el.offsetHeight / 2);
+					os.popup(MkRippleEffect, { x, y }, {}, 'end');
+				}
+
+				quoted.value = res.length > 0;
+			});
+		});
 	}
-
-	items = items.concat([{
-		text: i18n.ts.renote,
-		icon: 'ph-rocket-launch ph-bold ph-lg',
-		action: () => {
-			const el = renoteButton.value as HTMLElement | null | undefined;
-			if (el) {
-				const rect = el.getBoundingClientRect();
-				const x = rect.left + (el.offsetWidth / 2);
-				const y = rect.top + (el.offsetHeight / 2);
-				os.popup(MkRippleEffect, { x, y }, {}, 'end');
-			}
-
-			const configuredVisibility = defaultStore.state.rememberNoteVisibility ? defaultStore.state.visibility : defaultStore.state.defaultNoteVisibility;
-			const localOnly = defaultStore.state.rememberNoteVisibility ? defaultStore.state.localOnly : defaultStore.state.defaultNoteLocalOnly;
-
-			let visibility = appearNote.visibility;
-			visibility = smallerVisibility(visibility, configuredVisibility);
-			if (appearNote.channel?.isSensitive) {
-				visibility = smallerVisibility(visibility, 'home');
-			}
-
-			os.api('notes/create', {
-				localOnly,
-				visibility,
-				renoteId: appearNote.id,
-			}).then(() => {
-				os.toast(i18n.ts.renoted);
-				renoted.value = true;
-			});
-		},
-	}, {
-		text: i18n.ts.quote,
-		icon: 'ph-quotes ph-bold ph-lg',
-		action: () => {
-			os.post({
-				renote: appearNote,
-			});
-		},
-	}]);
-
-	os.popupMenu(items, renoteButton.value, {
-		viaKeyboard,
-	});
 }
 
 function reply(viaKeyboard = false): void {
@@ -443,11 +499,18 @@ function undoReact(note): void {
 }
 
 function undoRenote(note) : void {
-	if (!renoted.value) return;
 	os.api("notes/unrenote", {
-		noteId: note.id,
+		noteId: note.id
 	});
 	renoted.value = false;
+}
+
+function undoQuote(note) : void {
+	os.api("notes/unrenote", {
+		noteId: note.id,
+		quote: true
+	});
+	quoted.value = false;
 }
 
 function onContextmenu(ev: MouseEvent): void {
