@@ -68,6 +68,10 @@ export class NoteDeleteService {
 			await this.notesRepository.decrement({ id: note.replyId }, 'repliesCount', 1);
 		}
 
+		if (note.renoteId && note.renote?.userId != user.id && note.text == null && !note.hasPoll && (note.fileIds == null || note.fileIds.length === 0)) {
+			await this.notesRepository.decrement({ id: note.renoteId }, 'renoteCount', 1);
+		}
+
 		if (!quiet) {
 			this.globalEventService.publishNoteStream(note.id, 'deleted', {
 				deletedAt: deletedAt,
