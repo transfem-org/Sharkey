@@ -485,7 +485,7 @@ pleaseDonate: "Misskey är en gratis programvara som används på {host}. Donera
 resetPasswordConfirm: "Återställ verkligen ditt lösenord?"
 dataSaver: "Databesparing"
 icon: "Profilbild"
-replies: "Svara"
+replies: "Svar"
 renotes: "Omnotera"
 _achievements:
   _types:

@@ -1094,7 +1094,7 @@ doYouAgree: "Souhlasíte?"
 beSureToReadThisAsItIsImportant: "Přečtěte si prosím tyto důležité informace."
 iHaveReadXCarefullyAndAgree: "Přečetl jsem si text \"{x}\" a souhlasím s ním."
 icon: "Avatar"
-replies: "Odpovědět"
+replies: "Odpovědi"
 renotes: "Přeposlat"
 _initialAccountSetting:
   accountCreated: "Váš účet byl úspěšně vytvořen!"
