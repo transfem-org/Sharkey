@@ -373,6 +373,7 @@ onUnmounted(() => {
 		left: -100%;
 		top: -100%;
 		right: -100%;
+		bottom: -100%;
 		background-attachment: fixed;
 	}
 
@@ -388,6 +389,8 @@ onUnmounted(() => {
 			> .main {
 				position: relative;
 				overflow: clip;
+				background: color-mix(in srgb, var(--panel) 65%, transparent);
+				backdrop-filter: blur(16px);
 
 				> .banner-container {
 					position: relative;
@@ -741,15 +744,17 @@ onUnmounted(() => {
 
 <style lang="scss" module>
 .tl {
-	background: var(--bg);
+	background-color: rgba(0, 0, 0, 0);
 	border-radius: var(--radius);
 	overflow: clip;
+	z-index: 0;
 }
 
 .tab {
 	margin: calc(var(--margin) / 2) 0;
 	padding: calc(var(--margin) / 2) 0;
-	background: var(--bg);
+	background: color-mix(in srgb, var(--bg) 65%, transparent);
+	backdrop-filter: blur(16px);
 	border-radius: 5px;
 	> button {
 		border-radius: 5px;
