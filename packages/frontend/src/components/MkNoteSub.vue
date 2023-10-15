@@ -19,7 +19,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<MkSubNoteContent :class="$style.text" :note="note"/>
 				</div>
 			</div>
-			<footer>
+			<footer :class="$style.footer">
 				<MkReactionsViewer ref="reactionsViewer" :note="note"/>
 				<button class="_button" :class="$style.noteFooterButton" @click="reply()">
 					<i class="ph-arrow-u-up-left ph-bold pg-lg"></i>
@@ -394,6 +394,14 @@ if (props.detail) {
 	}
 }
 
+.footer {
+		position: relative;
+		z-index: 1;
+		margin-top: 0.4em;
+		width: max-content;
+		min-width: max-content;
+}
+
 .main {
 	display: flex;
 }
@@ -433,7 +441,7 @@ if (props.detail) {
 	opacity: 0.7;
 
 	&:not(:last-child) {
-		margin-right: 14px;
+		margin-right: 1.5em;
 	}
 
 	&:hover {
