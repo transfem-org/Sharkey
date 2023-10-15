@@ -333,6 +333,10 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: false,
 	},
+	clickToOpen: {
+		where: 'device',
+		default: true,
+	},
 	aiChanMode: {
 		where: 'device',
 		default: false,
