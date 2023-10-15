@@ -111,6 +111,7 @@ export interface Locale {
     "renote": string;
     "unrenote": string;
     "renoted": string;
+    "quoted": string;
     "rmboost": string;
     "rmquote": string;
     "cantRenote": string;

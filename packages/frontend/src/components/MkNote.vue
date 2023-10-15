@@ -406,6 +406,7 @@ function quote() {
 				}
 
 				quoted.value = res.length > 0;
+				os.toast(i18n.ts.quoted);
 			});
 		});
 	} else {
@@ -427,6 +428,7 @@ function quote() {
 				}
 
 				quoted.value = res.length > 0;
+				os.toast(i18n.ts.quoted);
 			});
 		});
 	}
@@ -502,7 +504,16 @@ function undoRenote(note) : void {
 	os.api("notes/unrenote", {
 		noteId: note.id
 	});
+	os.toast(i18n.ts.rmboost);
 	renoted.value = false;
+
+	const el = renoteButton.value as HTMLElement | null | undefined;
+	if (el) {
+		const rect = el.getBoundingClientRect();
+		const x = rect.left + (el.offsetWidth / 2);
+		const y = rect.top + (el.offsetHeight / 2);
+		os.popup(MkRippleEffect, { x, y }, {}, 'end');
+	}
 }
 
 function undoQuote(note) : void {
@@ -510,7 +521,16 @@ function undoQuote(note) : void {
 		noteId: note.id,
 		quote: true
 	});
+	os.toast(i18n.ts.rmquote);
 	quoted.value = false;
+
+	const el = quoteButton.value as HTMLElement | null | undefined;
+	if (el) {
+		const rect = el.getBoundingClientRect();
+		const x = rect.left + (el.offsetWidth / 2);
+		const y = rect.top + (el.offsetHeight / 2);
+		os.popup(MkRippleEffect, { x, y }, {}, 'end');
+	}
 }
 
 function onContextmenu(ev: MouseEvent): void {
