@@ -111,6 +111,8 @@ export interface Locale {
     "renote": string;
     "unrenote": string;
     "renoted": string;
+    "rmboost": string;
+    "rmquote": string;
     "cantRenote": string;
     "cantReRenote": string;
     "quote": string;
@@ -326,6 +328,7 @@ export interface Locale {
     "rename": string;
     "avatar": string;
     "banner": string;
+    "background": string;
     "displayOfSensitiveMedia": string;
     "whenServerDisconnected": string;
     "disconnectedFromServer": string;
@@ -2042,6 +2045,7 @@ export interface Locale {
         "metadataContent": string;
         "changeAvatar": string;
         "changeBanner": string;
+        "changeBackground": string;
         "verifiedLinkDescription": string;
     };
     "_exportOrImport": {

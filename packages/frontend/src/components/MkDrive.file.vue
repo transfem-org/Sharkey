@@ -24,7 +24,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</div>
 		<div v-if="$i?.backgroundId == file.id" :class="[$style.label]">
 			<img :class="$style.labelImg" src="/client-assets/label.svg"/>
-			<p :class="$style.labelText">Background</p>
+			<p :class="$style.labelText">{{ i18n.ts.background }}</p>
 		</div>
 		<div v-if="file.isSensitive" :class="[$style.label, $style.red]">
 			<img :class="$style.labelImg" src="/client-assets/label-red.svg"/>
