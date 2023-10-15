@@ -23,6 +23,7 @@ defineProps<{
 	color: var(--infoWarnFg);
 	border-radius: var(--radius);
 	overflow: clip;
+	z-index: 1;
 }
 
 .link {
