@@ -348,7 +348,7 @@ export class NoteEntityService implements OnModuleInit {
 			url: note.url ?? undefined,
 			poll: note.hasPoll ? this.populatePoll(note, meId) : undefined,
 			...(meId ? {
-				myReaction: this.populateMyReaction(note, meId, options?._hint_),
+				myReaction: this.populateMyReaction(note.id, meId, options?._hint_),
 			} : {}),
 
 			...(opts.detail ? {
@@ -363,12 +363,6 @@ export class NoteEntityService implements OnModuleInit {
 					detail: true,
 					_hint_: options?._hint_,
 				}) : undefined,
-
-				poll: note.hasPoll ? this.populatePoll(note, meId) : undefined,
-
-				...(meId ? {
-					myReaction: this.populateMyReaction(note.id, meId, options?._hint_),
-				} : {}),
 			} : {}),
 		});
 
