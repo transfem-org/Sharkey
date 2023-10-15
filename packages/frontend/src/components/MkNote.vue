@@ -397,6 +397,7 @@ function quote() {
 				limit: 1,
 				quote: true,
 			}).then((res) => {
+				if (!(res.length > 0)) return;
 				const el = quoteButton.value as HTMLElement | null | undefined;
 				if (el && res.length > 0) {
 					const rect = el.getBoundingClientRect();
@@ -419,6 +420,7 @@ function quote() {
 				limit: 1,
 				quote: true,
 			}).then((res) => {
+				if (!(res.length > 0)) return;
 				const el = quoteButton.value as HTMLElement | null | undefined;
 				if (el && res.length > 0) {
 					const rect = el.getBoundingClientRect();
