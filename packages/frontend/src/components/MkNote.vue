@@ -866,6 +866,7 @@ function readPromo() {
 	position: relative;
 	max-height: 9em;
 	overflow: clip;
+	mask: linear-gradient(black calc(100% - 64px),transparent);
 }
 
 .collapsed {
@@ -876,7 +877,8 @@ function readPromo() {
 	z-index: 2;
 	width: 100%;
 	height: 64px;
-	background: linear-gradient(0deg, var(--panel), var(--X15));
+	//background: linear-gradient(0deg, var(--panel), var(--X15));
+	backdrop-filter: blur(1.6px);
 
 	&:hover > .collapsedLabel {
 		background: var(--panelHighlight);
