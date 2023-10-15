@@ -364,7 +364,7 @@ useTooltip(renoteButton, async (showing) => {
 	os.popup(MkUsersTooltip, {
 		showing,
 		users,
-		count: quotes.length,
+		count: appearNote.renoteCount,
 		targetElement: renoteButton.value,
 	}, {}, 'closed');
 });
@@ -383,7 +383,7 @@ useTooltip(quoteButton, async (showing) => {
 	os.popup(MkUsersTooltip, {
 		showing,
 		users,
-		count: appearNote.Count,
+		count: appearNote.renoteCount,
 		targetElement: quoteButton.value,
 	}, {}, 'closed');
 });
