@@ -542,7 +542,7 @@ export class NoteEditService implements OnApplicationShutdown {
 			}
 
 			// Pack the note
-			const noteObj = await this.noteEntityService.pack(note);
+			const noteObj = await this.noteEntityService.pack(note, null, { skipHide: true });
 			if (data.poll != null) {
 				this.globalEventService.publishNoteStream(note.id, 'updated', {
 					cw: note.cw,

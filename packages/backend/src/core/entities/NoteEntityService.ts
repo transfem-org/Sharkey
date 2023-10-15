@@ -16,6 +16,7 @@ import type { UsersRepository, NotesRepository, FollowingsRepository, PollsRepos
 import { bindThis } from '@/decorators.js';
 import { isNotNull } from '@/misc/is-not-null.js';
 import { DebounceLoader } from '@/misc/loader.js';
+import { IdService } from '@/core/IdService.js';
 import type { OnModuleInit } from '@nestjs/common';
 import type { CustomEmojiService } from '../CustomEmojiService.js';
 import type { ReactionService } from '../ReactionService.js';
@@ -29,6 +30,7 @@ export class NoteEntityService implements OnModuleInit {
 	private driveFileEntityService: DriveFileEntityService;
 	private customEmojiService: CustomEmojiService;
 	private reactionService: ReactionService;
+	private idService: IdService;
 	private noteLoader = new DebounceLoader(this.findNoteOrFail);
 
 	constructor(
@@ -70,6 +72,7 @@ export class NoteEntityService implements OnModuleInit {
 		this.driveFileEntityService = this.moduleRef.get('DriveFileEntityService');
 		this.customEmojiService = this.moduleRef.get('CustomEmojiService');
 		this.reactionService = this.moduleRef.get('ReactionService');
+		this.idService = this.moduleRef.get('IdService');
 	}
 
 	@bindThis
@@ -171,11 +174,11 @@ export class NoteEntityService implements OnModuleInit {
 	}
 
 	@bindThis
-	private async populateMyReaction(note: MiNote, meId: MiUser['id'], _hint_?: {
+	public async populateMyReaction(noteId: MiNote['id'], meId: MiUser['id'], _hint_?: {
 		myReactions: Map<MiNote['id'], MiNoteReaction | null>;
 	}) {
 		if (_hint_?.myReactions) {
-			const reaction = _hint_.myReactions.get(note.id);
+			const reaction = _hint_.myReactions.get(noteId);
 			if (reaction) {
 				return this.reactionService.convertLegacyReaction(reaction.reaction);
 			} else if (reaction === null) {
@@ -185,13 +188,13 @@ export class NoteEntityService implements OnModuleInit {
 		}
 
 		// パフォーマンスのためノートが作成されてから2秒以上経っていない場合はリアクションを取得しない
-		if (note.createdAt.getTime() + 2000 > Date.now()) {
+		if (this.idService.parse(noteId).date.getTime() + 2000 > Date.now()) {
 			return undefined;
 		}
 
 		const reaction = await this.noteReactionsRepository.findOneBy({
 			userId: meId,
-			noteId: note.id,
+			noteId: noteId,
 		});
 
 		if (reaction) {
@@ -360,6 +363,12 @@ export class NoteEntityService implements OnModuleInit {
 					detail: true,
 					_hint_: options?._hint_,
 				}) : undefined,
+
+				poll: note.hasPoll ? this.populatePoll(note, meId) : undefined,
+
+				...(meId ? {
+					myReaction: this.populateMyReaction(note.id, meId, options?._hint_),
+				} : {}),
 			} : {}),
 		});
 
