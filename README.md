@@ -1,14 +1,11 @@
 <div align="center">
 <a href="https://joinsharkey.org/">
-	<img src="https://cdn.transfem.social/files/06eb1052-fd80-448a-803e-3adf7a2d03a3.png" alt="Sharkey logo" style="border-radius:50%" width="400"/>
+	<img src="https://raw.githubusercontent.com/transfem-org/Sharkey/5180b4093f30e3bf3ff8d6b16751b69ebed9fb12/packages/frontend/assets/sharkey.svg" alt="Sharkey logo" style="border-radius:50%" width="400"/>
 </a>
 
 **🌎 **[Sharkey](https://joinsharkey.org/)** is an open source, decentralized social media platform that's free forever! 🚀**
 
 ---
-<a href="https://translate.joinsharkey.org/engage/sharkey/">
-<img src="https://translate.joinsharkey.org/widget/sharkey/github/287x66-black.png" alt="Translation status" />
-</a>
 
 ---
 
@@ -16,7 +13,7 @@
 
 <div>
 
-<a href="https://joinsharkey.org/"><img src="https://cdn.transfem.social/files/dce7b668-fa9e-44e9-8e53-60fd743681aa.png" align="right" height="320px"/></a>
+<a href="https://joinsharkey.org/"><img src="https://cdn.transfem.social/files/ea04ee81-b3ab-4207-9c22-3a030c23856e.webp" align="right" height="520px"/></a>
 
 ## ✨ Features
 - **ActivityPub support**\
