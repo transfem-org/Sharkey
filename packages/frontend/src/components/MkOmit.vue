@@ -64,7 +64,6 @@ onUnmounted(() => {
 			height: 64px;
 			//background: linear-gradient(0deg, var(--panel), var(--X15));
 			mask: linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%);
-			backdrop-filter: blur(1.6px);
 
 			> .fadeLabel {
 				display: inline-block;

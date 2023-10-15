@@ -878,7 +878,6 @@ function readPromo() {
 	width: 100%;
 	height: 64px;
 	//background: linear-gradient(0deg, var(--panel), var(--X15));
-	backdrop-filter: blur(1.6px);
 
 	&:hover > .collapsedLabel {
 		background: var(--panelHighlight);
