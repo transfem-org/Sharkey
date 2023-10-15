@@ -130,6 +130,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<template v-if="narrow">
 					<XFiles :key="user.id" :user="user"/>
 					<XActivity :key="user.id" :user="user"/>
+					<XListenBrainz v-if="user.listenbrainz && listenbrainzdata" :key="user.id" :user="user"/>
 				</template>
 				<!-- <div v-if="!disableNotes">
 					<div style="margin-bottom: 8px; z-index: 1;">{{ i18n.ts.featured }}</div>
