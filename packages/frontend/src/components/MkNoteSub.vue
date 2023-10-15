@@ -448,6 +448,7 @@ if (props.detail) {
 		color: var(--fgHighlighted);
 	}
 }
+	
 @container (max-width: 400px) {
 	.noteFooterButton {
 		&:not(:last-child) {
