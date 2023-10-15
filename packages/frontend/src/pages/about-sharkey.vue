@@ -227,6 +227,7 @@ definePageMetadata({
 				border-radius: 4px;
 				position: relative;
 				z-index: 1;
+				transform: translateX(-10%);
 			}
 
 			> .misskey {
