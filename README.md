@@ -7,13 +7,11 @@
 
 ---
 
----
-
 </div>
 
 <div>
 
-<a href="https://joinsharkey.org/"><img src="https://cdn.transfem.social/files/ea04ee81-b3ab-4207-9c22-3a030c23856e.webp" align="right" height="520px"/></a>
+<a href="https://joinsharkey.org/"><img src="https://cdn.transfem.social/files/b2721164-e015-463e-b851-3e953dd0d9f9.webp" align="right" height="520px"/></a>
 
 ## ✨ Features
 - **ActivityPub support**\
