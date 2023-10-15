@@ -1025,7 +1025,7 @@ function readPromo() {
 	.root:not(.showActionsOnlyHover) {
 		.footerButton {
 			&:not(:last-child) {
-				margin-right: 18px;
+				margin-right: 0.2em;
 			}
 		}
 	}
@@ -1035,7 +1035,7 @@ function readPromo() {
 	.root:not(.showActionsOnlyHover) {
 		.footerButton {
 			&:not(:last-child) {
-				margin-right: 12px;
+				margin-right: 0.1em;
 			}
 		}
 	}
@@ -1057,7 +1057,7 @@ function readPromo() {
 	.root:not(.showActionsOnlyHover) {
 		.footerButton {
 			&:not(:last-child) {
-				margin-right: 8px;
+				margin-right: 0.1em;
 			}
 		}
 	}
