@@ -92,7 +92,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</div>
 			<MkA v-if="appearNote.channel && !inChannel" :class="$style.channel" :to="`/channels/${appearNote.channel.id}`"><i class="ph-television ph-bold ph-lg"></i> {{ appearNote.channel.name }}</MkA>
 		</div>
-		<footer>
+		<footer :class="$style.footer">
 			<div :class="$style.noteFooterInfo">
 				<div v-if="appearNote.updatedAt">
 					{{ i18n.ts.edited }}: <MkTime :time="appearNote.updatedAt" mode="detail"/>
@@ -683,6 +683,14 @@ if (appearNote.reply && appearNote.reply.replyId && defaultStore.state.autoloadC
 	contain: content;
 }
 
+.footer {
+		position: relative;
+		z-index: 1;
+		margin-top: 0.4em;
+		width: max-content;
+		min-width: max-content;
+}
+
 .replyTo {
 	opacity: 0.7;
 	padding-bottom: 0;
@@ -855,7 +863,7 @@ if (appearNote.reply && appearNote.reply.replyId && defaultStore.state.autoloadC
 	opacity: 0.7;
 
 	&:not(:last-child) {
-		margin-right: 28px;
+		margin-right: 1.5em;
 	}
 
 	&:hover {

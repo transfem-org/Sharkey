@@ -668,6 +668,9 @@ function readPromo() {
 	.footer {
 		position: relative;
 		z-index: 1;
+		margin-top: 0.4em;
+		width: max-content;
+		min-width: max-content;
 	}
 
 	&:hover > .article > .main > .footer > .footerButton {
@@ -939,7 +942,7 @@ function readPromo() {
 	opacity: 0.7;
 
 	&:not(:last-child) {
-		margin-right: 28px;
+		margin-right: 1.5em;
 	}
 
 	&:hover {
