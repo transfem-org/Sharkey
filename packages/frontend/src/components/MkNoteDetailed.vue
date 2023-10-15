@@ -951,7 +951,7 @@ if (appearNote.reply && appearNote.reply.replyId && defaultStore.state.autoloadC
 @container (max-width: 350px) {
 	.noteFooterButton {
 		&:not(:last-child) {
-			margin-right: 18px;
+			margin-right: 0.1em;
 		}
 	}
 }
@@ -968,7 +968,7 @@ if (appearNote.reply && appearNote.reply.replyId && defaultStore.state.autoloadC
 
 	.noteFooterButton {
 		&:not(:last-child) {
-			margin-right: 12px;
+			margin-right: 0.1em;
 		}
 	}
 }
