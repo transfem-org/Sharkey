@@ -1001,6 +1001,8 @@ export interface Locale {
     "thisPostMayBeAnnoyingCancel": string;
     "thisPostMayBeAnnoyingIgnore": string;
     "collapseRenotes": string;
+    "collapseFiles": string;
+    "autoloadConversation": string;
     "internalServerError": string;
     "internalServerErrorDescription": string;
     "copyErrorInfo": string;
@@ -1124,6 +1126,7 @@ export interface Locale {
     "loadConversation": string;
     "pinnedList": string;
     "keepScreenOn": string;
+    "clickToOpen": string;
     "verifiedLink": string;
     "notifyNotes": string;
     "unnotifyNotes": string;
