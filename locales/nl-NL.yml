@@ -426,7 +426,7 @@ windowMaximize: "Maximaliseren"
 windowRestore: "Herstellen"
 loggedInAsBot: "Momenteel als bot ingelogd"
 icon: "Avatar"
-replies: "Antwoord"
+replies: "Antwoorden"
 renotes: "Herdelen"
 _email:
   _follow:
@@ -438,7 +438,6 @@ _theme:
 _sfx:
   note: "Notities"
   notification: "Meldingen"
-  chat: "Chat"
 _2fa:
   renewTOTPCancel: "Nee, bedankt"
 _widgets:

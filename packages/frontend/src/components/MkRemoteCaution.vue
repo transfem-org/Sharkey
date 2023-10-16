@@ -19,10 +19,12 @@ defineProps<{
 .root {
 	font-size: 0.8em;
 	padding: 16px;
-	background: var(--infoWarnBg);
+	background: color-mix(in srgb, var(--infoWarnBg) 65%, transparent);
+	backdrop-filter: blur(16px);
 	color: var(--infoWarnFg);
 	border-radius: var(--radius);
 	overflow: clip;
+	z-index: 1;
 }
 
 .link {

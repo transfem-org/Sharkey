@@ -34,6 +34,7 @@ export const paramDef = {
 		limit: { type: 'integer', minimum: 1, maximum: 100, default: 10 },
 		sinceId: { type: 'string', format: 'misskey:id' },
 		untilId: { type: 'string', format: 'misskey:id' },
+		showQuotes: { type: 'boolean', default: true },
 	},
 	required: ['noteId'],
 } as const;
@@ -49,16 +50,21 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 	) {
 		super(meta, paramDef, async (ps, me) => {
 			const query = this.queryService.makePaginationQuery(this.notesRepository.createQueryBuilder('note'), ps.sinceId, ps.untilId)
-				.andWhere(new Brackets(qb => { qb
-					.where('note.replyId = :noteId', { noteId: ps.noteId })
-					.orWhere(new Brackets(qb => { qb
-						.where('note.renoteId = :noteId', { noteId: ps.noteId })
-						.andWhere(new Brackets(qb => { qb
-							.where('note.text IS NOT NULL')
-							.orWhere('note.fileIds != \'{}\'')
-							.orWhere('note.hasPoll = TRUE');
-						}));
-					}));
+				.andWhere(new Brackets(qb => {
+					qb
+						.where('note.replyId = :noteId', { noteId: ps.noteId });
+						if (ps.showQuotes) {
+							qb.orWhere(new Brackets(qb => {
+								qb
+									.where('note.renoteId = :noteId', { noteId: ps.noteId })
+									.andWhere(new Brackets(qb => {
+										qb
+											.where('note.text IS NOT NULL')
+											.orWhere('note.fileIds != \'{}\'')
+											.orWhere('note.hasPoll = TRUE');
+									}));
+							}));
+						}
 				}))
 				.innerJoinAndSelect('note.user', 'user')
 				.leftJoinAndSelect('note.reply', 'reply')

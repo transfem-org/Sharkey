@@ -64,14 +64,15 @@ export class NoteDeleteService {
 		const deletedAt = new Date();
 		const cascadingNotes = await this.findCascadingNotes(note);
 
-		// この投稿を除く指定したユーザーによる指定したノートのリノートが存在しないとき
-		if (note.renoteId && (await this.noteEntityService.countSameRenotes(user.id, note.renoteId, note.id)) === 0) {
-			this.notesRepository.decrement({ id: note.renoteId }, 'renoteCount', 1);
-			if (!user.isBot) this.notesRepository.decrement({ id: note.renoteId }, 'score', 1);
-		}
-
 		if (note.replyId) {
 			await this.notesRepository.decrement({ id: note.replyId }, 'repliesCount', 1);
+		}
+
+		if (note.renoteId && note.text == null && !note.hasPoll && (note.fileIds == null || note.fileIds.length === 0)) {
+			await this.notesRepository.findOneBy({ id: note.renoteId }).then(async (renote) => {
+				if (!renote) return;
+				if (renote.userId !== user.id) await this.notesRepository.decrement({ id: renote.id }, 'renoteCount', 1);
+			});
 		}
 
 		if (!quiet) {
