@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <div :class="[$style.root, { [$style.collapsed]: collapsed }]">
-	<div @click="noteclick(note.id)">
+	<div @click="defaultStore.state.clickToOpen ? noteclick(note.id) : undefined">
 		<span v-if="note.isHidden" style="opacity: 0.5">({{ i18n.ts.private }})</span>
 		<span v-if="note.deletedAt" style="opacity: 0.5">({{ i18n.ts.deleted }})</span>
 		<MkA v-if="note.replyId" :class="$style.reply" :to="`/notes/${note.replyId}`" v-on:click.stop><i class="ph-arrow-bend-left-up ph-bold pg-lg"></i></MkA>
@@ -71,7 +71,7 @@ const collapsed = $ref(isLong);
 			left: 0;
 			width: 100%;
 			height: 64px;
-			background: linear-gradient(0deg, var(--panel), var(--X15));
+			//background: linear-gradient(0deg, var(--panel), var(--X15));
 
 			> .fadeLabel {
 				display: inline-block;

@@ -381,7 +381,7 @@ user: "Usuaris"
 global: "Global"
 searchByGoogle: "Cercar"
 file: "Fitxers"
-replies: "Respondre"
+replies: "Respostes"
 renotes: "Impulsa"
 _role:
   _options:
@@ -398,7 +398,6 @@ _theme:
 _sfx:
   note: "Notes"
   notification: "Notificacions"
-  chat: "Xat"
   antenna: "Antenes"
 _2fa:
   renewTOTPCancel: "No, gràcies"

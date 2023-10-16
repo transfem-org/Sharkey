@@ -19,21 +19,32 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<MkSubNoteContent :class="$style.text" :note="note"/>
 				</div>
 			</div>
-			<footer>
+			<footer :class="$style.footer">
 				<MkReactionsViewer ref="reactionsViewer" :note="note"/>
 				<button class="_button" :class="$style.noteFooterButton" @click="reply()">
 					<i class="ph-arrow-u-up-left ph-bold pg-lg"></i>
 					<p v-if="note.repliesCount > 0" :class="$style.noteFooterButtonCount">{{ note.repliesCount }}</p>
 				</button>
 				<button
-				v-if="canRenote"
-				ref="renoteButton"
-				class="_button"
-				:class="$style.noteFooterButton"
-				@mousedown="renote()"
+					v-if="canRenote"
+					ref="renoteButton"
+					class="_button"
+					:class="$style.noteFooterButton"
+					:style="renoted ? 'color: var(--accent) !important;' : ''"
+					@mousedown="renoted ? undoRenote() : renote()"
 				>
-					<i class="ph-repeat ph-bold ph-lg"></i>
+					<i class="ph-rocket-launch ph-bold ph-lg"></i>
 					<p v-if="note.renoteCount > 0" :class="$style.noteFooterButtonCount">{{ note.renoteCount }}</p>
+				</button>
+				<button
+					v-if="canRenote"
+					ref="quoteButton"
+					class="_button"
+					:class="$style.noteFooterButton"
+					:style="quoted ? 'color: var(--accent) !important;' : ''"
+					@mousedown="quoted ? undoQuote() : quote()"
+				>
+					<i class="ph-quotes ph-bold ph-lg"></i>
 				</button>
 				<button v-else class="_button" :class="$style.noteFooterButton" disabled>
 					<i class="ph-prohibit ph-bold ph-lg"></i>
@@ -83,9 +94,9 @@ import { notePage } from '@/filters/note.js';
 import * as os from '@/os.js';
 import { i18n } from '@/i18n.js';
 import { $i } from '@/account.js';
-import { userPage } from "@/filters/user";
-import { checkWordMute } from "@/scripts/check-word-mute";
-import { defaultStore } from "@/store";
+import { userPage } from "@/filters/user.js";
+import { checkWordMute } from "@/scripts/check-word-mute.js";
+import { defaultStore } from "@/store.js";
 import { pleaseLogin } from '@/scripts/please-login.js';
 import { showMovedDialog } from '@/scripts/show-moved-dialog.js';
 import MkRippleEffect from '@/components/MkRippleEffect.vue';
@@ -108,12 +119,15 @@ const props = withDefaults(defineProps<{
 });
 
 const el = shallowRef<HTMLElement>();
-const muted = ref(checkWordMute(props.note, $i, defaultStore.state.mutedWords));
+const muted = ref($i ? checkWordMute(props.note, $i, $i.mutedWords) : false);
 const translation = ref(null);
 const translating = ref(false);
 const isDeleted = ref(false);
+const renoted = ref(false);
+const quoted = ref(false);
 const reactButton = shallowRef<HTMLElement>();
 const renoteButton = shallowRef<HTMLElement>();
+const quoteButton = shallowRef<HTMLElement>();
 const menuButton = shallowRef<HTMLElement>();
 const likeButton = shallowRef<HTMLElement>();
 
@@ -131,6 +145,25 @@ useNoteCapture({
 	note: $$(appearNote),
 	isDeletedRef: isDeleted,
 });
+
+if ($i) {
+	os.api("notes/renotes", {
+		noteId: appearNote.id,
+		userId: $i.id,
+		limit: 1,
+	}).then((res) => {
+		renoted.value = res.length > 0;
+	});
+
+	os.api("notes/renotes", {
+		noteId: appearNote.id,
+		userId: $i.id,
+		limit: 1,
+		quote: true,
+	}).then((res) => {
+		quoted.value = res.length > 0;
+	});
+}
 
 function focus() {
 	el.value.focus();
@@ -203,78 +236,133 @@ function undoReact(note): void {
 	});
 }
 
+function undoRenote() : void {
+	if (!renoted.value) return;
+	os.api("notes/unrenote", {
+		noteId: appearNote.id,
+	});
+	os.toast(i18n.ts.rmboost);
+	renoted.value = false;
+
+	const el = renoteButton.value as HTMLElement | null | undefined;
+	if (el) {
+		const rect = el.getBoundingClientRect();
+		const x = rect.left + (el.offsetWidth / 2);
+		const y = rect.top + (el.offsetHeight / 2);
+		os.popup(MkRippleEffect, { x, y }, {}, 'end');
+	}
+}
+
+function undoQuote() : void {
+	os.api("notes/unrenote", {
+		noteId: appearNote.id,
+		quote: true
+	});
+	os.toast(i18n.ts.rmquote);
+	quoted.value = false;
+
+	const el = quoteButton.value as HTMLElement | null | undefined;
+	if (el) {
+		const rect = el.getBoundingClientRect();
+		const x = rect.left + (el.offsetWidth / 2);
+		const y = rect.top + (el.offsetHeight / 2);
+		os.popup(MkRippleEffect, { x, y }, {}, 'end');
+	}
+}
+
 let showContent = $ref(false);
 let replies: Misskey.entities.Note[] = $ref([]);
 
-function renote(viaKeyboard = false) {
+function renote() {
 	pleaseLogin();
 	showMovedDialog();
 
-	let items = [] as MenuItem[];
+	if (appearNote.channel) {
+		const el = renoteButton.value as HTMLElement | null | undefined;
+		if (el) {
+			const rect = el.getBoundingClientRect();
+			const x = rect.left + (el.offsetWidth / 2);
+			const y = rect.top + (el.offsetHeight / 2);
+			os.popup(MkRippleEffect, { x, y }, {}, 'end');
+		}
 
-	if (props.note.channel) {
-		items = items.concat([{
-			text: i18n.ts.inChannelRenote,
-			icon: 'ph-repeat ph-bold ph-lg',
-			action: () => {
-				const el = renoteButton.value as HTMLElement | null | undefined;
-				if (el) {
+		os.api('notes/create', {
+			renoteId: props.note.id,
+			channelId: props.note.channelId,
+		}).then(() => {
+			os.toast(i18n.ts.renoted);
+			renoted.value = true;
+		});
+	} else {
+		const el = renoteButton.value as HTMLElement | null | undefined;
+		if (el) {
+			const rect = el.getBoundingClientRect();
+			const x = rect.left + (el.offsetWidth / 2);
+			const y = rect.top + (el.offsetHeight / 2);
+			os.popup(MkRippleEffect, { x, y }, {}, 'end');
+		}
+
+		os.api('notes/create', {
+			renoteId: props.note.id,
+		}).then(() => {
+			os.toast(i18n.ts.renoted);
+			renoted.value = true;
+		});
+	}
+}
+
+function quote() {
+	pleaseLogin();
+	showMovedDialog();
+
+	if (appearNote.channel) {
+		os.post({
+			renote: appearNote,
+			channel: appearNote.channel,
+		}).then(() => {
+			os.api("notes/renotes", {
+				noteId: props.note.id,
+				userId: $i.id,
+				limit: 1,
+				quote: true,
+			}).then((res) => {
+				if (!(res.length > 0)) return;
+				const el = quoteButton.value as HTMLElement | null | undefined;
+				if (el && res.length > 0) {
 					const rect = el.getBoundingClientRect();
 					const x = rect.left + (el.offsetWidth / 2);
 					const y = rect.top + (el.offsetHeight / 2);
 					os.popup(MkRippleEffect, { x, y }, {}, 'end');
 				}
 
-				os.api('notes/create', {
-					renoteId: props.note.id,
-					channelId: props.note.channelId,
-				}).then(() => {
-					os.toast(i18n.ts.renoted);
-				});
-			},
-		}, {
-			text: i18n.ts.inChannelQuote,
-			icon: 'ph-quotes ph-bold ph-lg',
-			action: () => {
-				os.post({
-					renote: props.note,
-					channel: props.note.channel,
-				});
-			},
-		}, null]);
+				quoted.value = res.length > 0;
+				os.toast(i18n.ts.quoted);
+			});
+		});
+	} else {
+		os.post({
+			renote: appearNote,
+		}).then(() => {
+			os.api("notes/renotes", {
+				noteId: props.note.id,
+				userId: $i.id,
+				limit: 1,
+				quote: true,
+			}).then((res) => {
+				if (!(res.length > 0)) return;
+				const el = quoteButton.value as HTMLElement | null | undefined;
+				if (el && res.length > 0) {
+					const rect = el.getBoundingClientRect();
+					const x = rect.left + (el.offsetWidth / 2);
+					const y = rect.top + (el.offsetHeight / 2);
+					os.popup(MkRippleEffect, { x, y }, {}, 'end');
+				}
+
+				quoted.value = res.length > 0;
+				os.toast(i18n.ts.quoted);
+			});
+		});
 	}
-
-	items = items.concat([{
-		text: i18n.ts.renote,
-		icon: 'ph-repeat ph-bold ph-lg',
-		action: () => {
-			const el = renoteButton.value as HTMLElement | null | undefined;
-			if (el) {
-				const rect = el.getBoundingClientRect();
-				const x = rect.left + (el.offsetWidth / 2);
-				const y = rect.top + (el.offsetHeight / 2);
-				os.popup(MkRippleEffect, { x, y }, {}, 'end');
-			}
-
-			os.api('notes/create', {
-				renoteId: props.note.id,
-			}).then(() => {
-				os.toast(i18n.ts.renoted);
-			});
-		},
-	}, {
-		text: i18n.ts.quote,
-		icon: 'ph-quotes ph-bold ph-lg',
-		action: () => {
-			os.post({
-				renote: props.note,
-			});
-		},
-	}]);
-
-	os.popupMenu(items, renoteButton.value, {
-		viaKeyboard,
-	});
 }
 
 function menu(viaKeyboard = false): void {
@@ -304,6 +392,14 @@ if (props.detail) {
 		padding: 10px 0 0 16px;
 		font-size: 1em;
 	}
+}
+
+.footer {
+		position: relative;
+		z-index: 1;
+		margin-top: 0.4em;
+		width: max-content;
+		min-width: max-content;
 }
 
 .main {
@@ -345,11 +441,19 @@ if (props.detail) {
 	opacity: 0.7;
 
 	&:not(:last-child) {
-		margin-right: 14px;
+		margin-right: 1.5em;
 	}
 
 	&:hover {
 		color: var(--fgHighlighted);
+	}
+}
+	
+@container (max-width: 400px) {
+	.noteFooterButton {
+		&:not(:last-child) {
+			margin-right: 0.7em;
+		}
 	}
 }
 

@@ -38,6 +38,7 @@ export const paramDef = {
 	type: 'object',
 	properties: {
 		noteId: { type: 'string', format: 'misskey:id' },
+		quote: { type: 'boolean', default: false },
 	},
 	required: ['noteId'],
 } as const;
@@ -66,7 +67,11 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 			});
 
 			for (const note of renotes) {
-				this.noteDeleteService.delete(await this.usersRepository.findOneByOrFail({ id: me.id }), note);
+				if (ps.quote) {
+					if (note.text) this.noteDeleteService.delete(await this.usersRepository.findOneByOrFail({ id: me.id }), note, false);
+				} else {
+					if (!note.text) this.noteDeleteService.delete(await this.usersRepository.findOneByOrFail({ id: me.id }), note, false);
+				}
 			}
 		});
 	}

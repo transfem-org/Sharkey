@@ -20,7 +20,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<MkNoteSub v-if="appearNote.reply" :note="appearNote.reply" :class="$style.replyTo"/>
 	<div v-if="isRenote" :class="$style.renote">
 		<MkAvatar :class="$style.renoteAvatar" :user="note.user" link preview/>
-		<i class="ph-repeat ph-bold ph-lg" style="margin-right: 4px;"></i>
+		<i class="ph-rocket-launch ph-bold ph-lg" style="margin-right: 4px;"></i>
 		<span :class="$style.renoteText">
 			<I18n :src="i18n.ts.renotedBy" tag="span">
 				<template #user>
@@ -92,7 +92,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</div>
 			<MkA v-if="appearNote.channel && !inChannel" :class="$style.channel" :to="`/channels/${appearNote.channel.id}`"><i class="ph-television ph-bold ph-lg"></i> {{ appearNote.channel.name }}</MkA>
 		</div>
-		<footer>
+		<footer :class="$style.footer">
 			<div :class="$style.noteFooterInfo">
 				<div v-if="appearNote.updatedAt">
 					{{ i18n.ts.edited }}: <MkTime :time="appearNote.updatedAt" mode="detail"/>
@@ -111,13 +111,24 @@ SPDX-License-Identifier: AGPL-3.0-only
 				ref="renoteButton"
 				class="_button"
 				:class="$style.noteFooterButton"
-				@mousedown="renote()"
+				:style="renoted ? 'color: var(--accent) !important;' : ''"
+				@mousedown="renoted ? undoRenote() : renote()"
 			>
-				<i class="ph-repeat ph-bold ph-lg"></i>
+				<i class="ph-rocket-launch ph-bold ph-lg"></i>
 				<p v-if="appearNote.renoteCount > 0" :class="$style.noteFooterButtonCount">{{ appearNote.renoteCount }}</p>
 			</button>
 			<button v-else class="_button" :class="$style.noteFooterButton" disabled>
 				<i class="ph-prohibit ph-bold ph-lg"></i>
+			</button>
+			<button
+				v-if="canRenote"
+				ref="quoteButton"
+				class="_button"
+				:class="$style.noteFooterButton"
+				:style="quoted ? 'color: var(--accent) !important;' : ''"
+				@mousedown="quoted ? undoQuote() : quote()"
+			>
+				<i class="ph-quotes ph-bold ph-lg"></i>
 			</button>
 			<button v-if="appearNote.myReaction == null && appearNote.reactionAcceptance !== 'likeOnly'" ref="likeButton" :class="$style.noteFooterButton" class="_button" @mousedown="like()">
 				<i class="ph-heart ph-bold ph-lg"></i>
@@ -139,7 +150,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</article>
 	<div :class="$style.tabs">
 		<button class="_button" :class="[$style.tab, { [$style.tabActive]: tab === 'replies' }]" @click="tab = 'replies'"><i class="ph-arrow-u-up-left ph-bold pg-lg"></i> {{ i18n.ts.replies }}</button>
-		<button class="_button" :class="[$style.tab, { [$style.tabActive]: tab === 'renotes' }]" @click="tab = 'renotes'"><i class="ph-repeat ph-bold ph-lg"></i> {{ i18n.ts.renotes }}</button>
+		<button class="_button" :class="[$style.tab, { [$style.tabActive]: tab === 'renotes' }]" @click="tab = 'renotes'"><i class="ph-rocket-launch ph-bold ph-lg"></i> {{ i18n.ts.renotes }}</button>
+		<button class="_button" :class="[$style.tab, { [$style.tabActive]: tab === 'quotes' }]" @click="tab = 'quotes'"><i class="ph-quotes ph-bold ph-lg"></i> {{ i18n.ts._notification._types.quote }}</button>
 		<button class="_button" :class="[$style.tab, { [$style.tabActive]: tab === 'reactions' }]" @click="tab = 'reactions'"><i class="ph-smiley ph-bold pg-lg"></i> {{ i18n.ts.reactions }}</button>
 	</div>
 	<div>
@@ -159,6 +171,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 					</div>
 				</template>
 			</MkPagination>
+		</div>
+		<div v-if="tab === 'quotes'" :class="$style.tab_replies">
+			<div v-if="!quotesLoaded" style="padding: 16px">
+				<MkButton style="margin: 0 auto;" primary rounded @click="loadQuotes">{{ i18n.ts.loadReplies }}</MkButton>
+			</div>
+			<MkNoteSub v-for="note in quotes" :key="note.id" :note="note" :class="$style.reply" :detail="true"/>
 		</div>
 		<div v-else-if="tab === 'reactions'" :class="$style.tab_reactions">
 			<div :class="$style.reactionTabs">
@@ -218,7 +236,7 @@ import { useNoteCapture } from '@/scripts/use-note-capture.js';
 import { deepClone } from '@/scripts/clone.js';
 import { useTooltip } from '@/scripts/use-tooltip.js';
 import { claimAchievement } from '@/scripts/achievements.js';
-import { MenuItem } from '@/types/menu';
+import { MenuItem } from '@/types/menu.js';
 import MkRippleEffect from '@/components/MkRippleEffect.vue';
 import { showMovedDialog } from '@/scripts/show-moved-dialog.js';
 import MkUserCardMini from '@/components/MkUserCardMini.vue';
@@ -257,6 +275,7 @@ const menuButton = shallowRef<HTMLElement>();
 const renoteButton = shallowRef<HTMLElement>();
 const renoteTime = shallowRef<HTMLElement>();
 const reactButton = shallowRef<HTMLElement>();
+const quoteButton = shallowRef<HTMLElement>();
 const clipButton = shallowRef<HTMLElement>();
 const likeButton = shallowRef<HTMLElement>();
 let appearNote = $computed(() => isRenote ? note.renote as Misskey.entities.Note : note);
@@ -266,14 +285,36 @@ const renoteUri = appearNote.renote ? appearNote.renote.uri : null;
 const isMyRenote = $i && ($i.id === note.userId);
 const showContent = ref(false);
 const isDeleted = ref(false);
-const muted = ref(checkWordMute(appearNote, $i, defaultStore.state.mutedWords));
+const renoted = ref(false);
+const quoted = ref(false);
+const muted = ref($i ? checkWordMute(appearNote, $i, $i.mutedWords) : false);
 const translation = ref(null);
 const translating = ref(false);
 const urls = appearNote.text ? extractUrlFromMfm(mfm.parse(appearNote.text)).filter(u => u !== renoteUrl && u !== renoteUri) : null;
 const showTicker = (defaultStore.state.instanceTicker === 'always') || (defaultStore.state.instanceTicker === 'remote' && appearNote.user.instance);
 const conversation = ref<Misskey.entities.Note[]>([]);
 const replies = ref<Misskey.entities.Note[]>([]);
+const quotes = ref<Misskey.entities.Note[]>([]);
 const canRenote = computed(() => ['public', 'home'].includes(appearNote.visibility) || appearNote.userId === $i.id);
+
+if ($i) {
+	os.api("notes/renotes", {
+		noteId: appearNote.id,
+		userId: $i.id,
+		limit: 1,
+	}).then((res) => {
+		renoted.value = res.length > 0;
+	});
+	
+	os.api("notes/renotes", {
+		noteId: appearNote.id,
+		userId: $i.id,
+		limit: 1,
+		quote: true,
+	}).then((res) => {
+		quoted.value = res.length > 0;
+	});
+}
 
 const keymap = {
 	'r': () => reply(true),
@@ -328,75 +369,115 @@ useTooltip(renoteButton, async (showing) => {
 	}, {}, 'closed');
 });
 
-function renote(viaKeyboard = false) {
+useTooltip(quoteButton, async (showing) => {
+	const renotes = await os.api('notes/renotes', {
+		noteId: appearNote.id,
+		limit: 11,
+		quote: true,
+	});
+
+	const users = renotes.map(x => x.user);
+
+	if (users.length < 1) return;
+
+	os.popup(MkUsersTooltip, {
+		showing,
+		users,
+		count: appearNote.renoteCount,
+		targetElement: quoteButton.value,
+	}, {}, 'closed');
+});
+
+function renote() {
 	pleaseLogin();
 	showMovedDialog();
 
-	let items = [] as MenuItem[];
+	if (appearNote.channel) {
+		const el = renoteButton.value as HTMLElement | null | undefined;
+		if (el) {
+			const rect = el.getBoundingClientRect();
+			const x = rect.left + (el.offsetWidth / 2);
+			const y = rect.top + (el.offsetHeight / 2);
+			os.popup(MkRippleEffect, { x, y }, {}, 'end');
+		}
+
+		os.api('notes/create', {
+			renoteId: appearNote.id,
+			channelId: appearNote.channelId,
+		}).then(() => {
+			os.toast(i18n.ts.renoted);
+			renoted.value = true;
+		});
+	} else {
+		const el = renoteButton.value as HTMLElement | null | undefined;
+		if (el) {
+			const rect = el.getBoundingClientRect();
+			const x = rect.left + (el.offsetWidth / 2);
+			const y = rect.top + (el.offsetHeight / 2);
+			os.popup(MkRippleEffect, { x, y }, {}, 'end');
+		}
+
+		os.api('notes/create', {
+			renoteId: appearNote.id,
+		}).then(() => {
+			os.toast(i18n.ts.renoted);
+			renoted.value = true;
+		});
+	}
+}
+
+function quote() {
+	pleaseLogin();
+	showMovedDialog();
 
 	if (appearNote.channel) {
-		items = items.concat([{
-			text: i18n.ts.inChannelRenote,
-			icon: 'ph-repeat ph-bold ph-lg',
-			action: () => {
-				const el = renoteButton.value as HTMLElement | null | undefined;
-				if (el) {
+		os.post({
+			renote: appearNote,
+			channel: appearNote.channel,
+		}).then(() => {
+			os.api("notes/renotes", {
+				noteId: appearNote.id,
+				userId: $i.id,
+				limit: 1,
+				quote: true,
+			}).then((res) => {
+				if (!(res.length > 0)) return;
+				const el = quoteButton.value as HTMLElement | null | undefined;
+				if (el && res.length > 0) {
 					const rect = el.getBoundingClientRect();
 					const x = rect.left + (el.offsetWidth / 2);
 					const y = rect.top + (el.offsetHeight / 2);
 					os.popup(MkRippleEffect, { x, y }, {}, 'end');
 				}
 
-				os.api('notes/create', {
-					renoteId: appearNote.id,
-					channelId: appearNote.channelId,
-				}).then(() => {
-					os.toast(i18n.ts.renoted);
-				});
-			},
-		}, {
-			text: i18n.ts.inChannelQuote,
-			icon: 'ph-quotes ph-bold ph-lg',
-			action: () => {
-				os.post({
-					renote: appearNote,
-					channel: appearNote.channel,
-				});
-			},
-		}, null]);
+				quoted.value = res.length > 0;
+				os.toast(i18n.ts.quoted);
+			});
+		});
+	} else {
+		os.post({
+			renote: appearNote,
+		}).then(() => {
+			os.api("notes/renotes", {
+				noteId: appearNote.id,
+				userId: $i.id,
+				limit: 1,
+				quote: true,
+			}).then((res) => {
+				if (!(res.length > 0)) return;
+				const el = quoteButton.value as HTMLElement | null | undefined;
+				if (el && res.length > 0) {
+					const rect = el.getBoundingClientRect();
+					const x = rect.left + (el.offsetWidth / 2);
+					const y = rect.top + (el.offsetHeight / 2);
+					os.popup(MkRippleEffect, { x, y }, {}, 'end');
+				}
+
+				quoted.value = res.length > 0;
+				os.toast(i18n.ts.quoted);
+			});
+		});
 	}
-
-	items = items.concat([{
-		text: i18n.ts.renote,
-		icon: 'ph-repeat ph-bold ph-lg',
-		action: () => {
-			const el = renoteButton.value as HTMLElement | null | undefined;
-			if (el) {
-				const rect = el.getBoundingClientRect();
-				const x = rect.left + (el.offsetWidth / 2);
-				const y = rect.top + (el.offsetHeight / 2);
-				os.popup(MkRippleEffect, { x, y }, {}, 'end');
-			}
-
-			os.api('notes/create', {
-				renoteId: appearNote.id,
-			}).then(() => {
-				os.toast(i18n.ts.renoted);
-			});
-		},
-	}, {
-		text: i18n.ts.quote,
-		icon: 'ph-quotes ph-bold ph-lg',
-		action: () => {
-			os.post({
-				renote: appearNote,
-			});
-		},
-	}]);
-
-	os.popupMenu(items, renoteButton.value, {
-		viaKeyboard,
-	});
 }
 
 function reply(viaKeyboard = false): void {
@@ -466,6 +547,40 @@ function undoReact(note): void {
 	});
 }
 
+function undoRenote() : void {
+	if (!renoted.value) return;
+	os.api("notes/unrenote", {
+		noteId: appearNote.id,
+	});
+	os.toast(i18n.ts.rmboost);
+	renoted.value = false;
+
+	const el = renoteButton.value as HTMLElement | null | undefined;
+	if (el) {
+		const rect = el.getBoundingClientRect();
+		const x = rect.left + (el.offsetWidth / 2);
+		const y = rect.top + (el.offsetHeight / 2);
+		os.popup(MkRippleEffect, { x, y }, {}, 'end');
+	}
+}
+
+function undoQuote() : void {
+	os.api("notes/unrenote", {
+		noteId: appearNote.id,
+		quote: true
+	});
+	os.toast(i18n.ts.rmquote);
+	quoted.value = false;
+
+	const el = quoteButton.value as HTMLElement | null | undefined;
+	if (el) {
+		const rect = el.getBoundingClientRect();
+		const x = rect.left + (el.offsetWidth / 2);
+		const y = rect.top + (el.offsetHeight / 2);
+		os.popup(MkRippleEffect, { x, y }, {}, 'end');
+	}
+}
+
 function onContextmenu(ev: MouseEvent): void {
 	const isLink = (el: HTMLElement) => {
 		if (el.tagName === 'A') return true;
@@ -528,11 +643,25 @@ function loadReplies() {
 	os.api('notes/children', {
 		noteId: appearNote.id,
 		limit: 30,
+		showQuotes: false,
 	}).then(res => {
 		replies.value = res;
 	});
 }
 loadReplies();
+
+const quotesLoaded = ref(false);
+function loadQuotes() {
+	quotesLoaded.value = true;
+	os.api('notes/renotes', {
+		noteId: appearNote.id,
+		limit: 30,
+		quote: true,
+	}).then(res => {
+		quotes.value = res;
+	});
+}
+loadQuotes();
 
 const conversationLoaded = ref(false);
 function loadConversation() {
@@ -552,6 +681,14 @@ if (appearNote.reply && appearNote.reply.replyId && defaultStore.state.autoloadC
 	transition: box-shadow 0.1s ease;
 	overflow: clip;
 	contain: content;
+}
+
+.footer {
+		position: relative;
+		z-index: 1;
+		margin-top: 0.4em;
+		width: max-content;
+		min-width: max-content;
 }
 
 .replyTo {
@@ -726,7 +863,7 @@ if (appearNote.reply && appearNote.reply.replyId && defaultStore.state.autoloadC
 	opacity: 0.7;
 
 	&:not(:last-child) {
-		margin-right: 28px;
+		margin-right: 1.5em;
 	}
 
 	&:hover {
@@ -814,7 +951,7 @@ if (appearNote.reply && appearNote.reply.replyId && defaultStore.state.autoloadC
 @container (max-width: 350px) {
 	.noteFooterButton {
 		&:not(:last-child) {
-			margin-right: 18px;
+			margin-right: 0.1em;
 		}
 	}
 }
@@ -831,7 +968,7 @@ if (appearNote.reply && appearNote.reply.replyId && defaultStore.state.autoloadC
 
 	.noteFooterButton {
 		&:not(:last-child) {
-			margin-right: 12px;
+			margin-right: 0.1em;
 		}
 	}
 }
