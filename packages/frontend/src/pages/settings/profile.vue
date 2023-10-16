@@ -10,7 +10,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<MkAvatar :class="$style.avatar" :user="$i" @click="changeAvatar"/>
 			<MkButton primary rounded @click="changeAvatar">{{ i18n.ts._profile.changeAvatar }}</MkButton>
 		</div>
-		<MkButton primary rounded :class="$style.backgroundEdit" @click="changeBackground">{{ i18n.ts._profile.changeBackground }}</MkButton>
+		<MkButton primary rounded :class="$style.backgroundEdit" @click="changeBackground">Change Background</MkButton>
 		<MkButton primary rounded :class="$style.bannerEdit" @click="changeBanner">{{ i18n.ts._profile.changeBanner }}</MkButton>
 	</div>
 
@@ -256,7 +256,7 @@ function changeBanner(ev) {
 }
 
 function changeBackground(ev) {
-	selectFile(ev.currentTarget ?? ev.target, i18n.ts.background).then(async (file) => {
+	selectFile(ev.currentTarget ?? ev.target, i18n.ts.banner).then(async (file) => {
 		let originalOrCropped = file;
 
 		const { canceled } = await os.confirm({

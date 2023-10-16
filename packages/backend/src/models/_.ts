@@ -28,6 +28,7 @@ import { MiHashtag } from '@/models/Hashtag.js';
 import { MiInstance } from '@/models/Instance.js';
 import { MiMeta } from '@/models/Meta.js';
 import { MiModerationLog } from '@/models/ModerationLog.js';
+import { MiMutedNote } from '@/models/MutedNote.js';
 import { MiMuting } from '@/models/Muting.js';
 import { MiRenoteMuting } from '@/models/RenoteMuting.js';
 import { MiNote } from '@/models/Note.js';
@@ -52,7 +53,7 @@ import { MiUser } from '@/models/User.js';
 import { MiUserIp } from '@/models/UserIp.js';
 import { MiUserKeypair } from '@/models/UserKeypair.js';
 import { MiUserList } from '@/models/UserList.js';
-import { MiUserListMembership } from '@/models/UserListMembership.js';
+import { MiUserListJoining } from '@/models/UserListJoining.js';
 import { MiUserNotePining } from '@/models/UserNotePining.js';
 import { MiUserPending } from '@/models/UserPending.js';
 import { MiUserProfile } from '@/models/UserProfile.js';
@@ -96,6 +97,7 @@ export {
 	MiInstance,
 	MiMeta,
 	MiModerationLog,
+	MiMutedNote,
 	MiMuting,
 	MiRenoteMuting,
 	MiNote,
@@ -121,7 +123,7 @@ export {
 	MiUserKeypair,
 	MiUserList,
 	MiUserListFavorite,
-	MiUserListMembership,
+	MiUserListJoining,
 	MiUserNotePining,
 	MiUserPending,
 	MiUserProfile,
@@ -163,6 +165,7 @@ export type HashtagsRepository = Repository<MiHashtag>;
 export type InstancesRepository = Repository<MiInstance>;
 export type MetasRepository = Repository<MiMeta>;
 export type ModerationLogsRepository = Repository<MiModerationLog>;
+export type MutedNotesRepository = Repository<MiMutedNote>;
 export type MutingsRepository = Repository<MiMuting>;
 export type RenoteMutingsRepository = Repository<MiRenoteMuting>;
 export type NotesRepository = Repository<MiNote>;
@@ -188,7 +191,7 @@ export type UserIpsRepository = Repository<MiUserIp>;
 export type UserKeypairsRepository = Repository<MiUserKeypair>;
 export type UserListsRepository = Repository<MiUserList>;
 export type UserListFavoritesRepository = Repository<MiUserListFavorite>;
-export type UserListMembershipsRepository = Repository<MiUserListMembership>;
+export type UserListJoiningsRepository = Repository<MiUserListJoining>;
 export type UserNotePiningsRepository = Repository<MiUserNotePining>;
 export type UserPendingsRepository = Repository<MiUserPending>;
 export type UserProfilesRepository = Repository<MiUserProfile>;

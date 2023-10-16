@@ -128,28 +128,23 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</div>
 				<MkInfo v-else-if="$i && $i.id === user.id">{{ i18n.ts.userPagePinTip }}</MkInfo>
 				<template v-if="narrow">
-					<XFiles :key="user.id" :user="user"/>
+					<XPhotos :key="user.id" :user="user"/>
 					<XActivity :key="user.id" :user="user"/>
-					<XListenBrainz v-if="user.listenbrainz && listenbrainzdata" :key="user.id" :user="user"/>
 				</template>
-				<!-- <div v-if="!disableNotes">
-					<div style="margin-bottom: 8px; z-index: 1;">{{ i18n.ts.featured }}</div>
-					<MkNotes :class="$style.tl" :noGap="true" :pagination="pagination"/>
-				</div> -->
 				<MkStickyContainer>
 					<template #header>
 						<MkTab v-model="noteview" :class="$style.tab">
 							<option :value="null">{{ i18n.ts.notes }}</option>
-							<option value="replies">{{ i18n.ts.all }}</option>
+							<option value="replies">{{ i18n.ts.notesAndReplies }}</option>
 							<option value="files">{{ i18n.ts.withFiles }}</option>
 						</MkTab>
 					</template>
-					<MkNotes :class="$style.tl" :noGap="true" :pagination="AllPagination"/>
+					<MkNotes v-if="!disableNotes" :class="$style.tl" :noGap="true" :pagination="pagination"/>
 				</MkStickyContainer>
 			</div>
 		</div>
 		<div v-if="!narrow" class="sub _gaps" style="container-type: inline-size;">
-			<XFiles :key="user.id" :user="user"/>
+			<XPhotos :key="user.id" :user="user"/>
 			<XActivity :key="user.id" :user="user"/>
 			<XListenBrainz v-if="user.listenbrainz && listenbrainzdata" :key="user.id" :user="user"/>
 		</div>
@@ -198,7 +193,7 @@ function calcAge(birthdate: string): number {
 	return yearDiff;
 }
 
-const XFiles = defineAsyncComponent(() => import('./index.files.vue'));
+const XPhotos = defineAsyncComponent(() => import('./index.photos.vue'));
 const XActivity = defineAsyncComponent(() => import('./index.activity.vue'));
 const XListenBrainz = defineAsyncComponent(() => import("./index.listenbrainz.vue"));
 
@@ -253,21 +248,11 @@ watch($$(moderationNote), async () => {
 });
 
 const pagination = {
-	endpoint: 'users/featured-notes' as const,
-	limit: 10,
-	params: computed(() => ({
-		userId: props.user.id
-	})),
-};
-
-const AllPagination = {
 	endpoint: 'users/notes' as const,
 	limit: 10,
 	params: computed(() => ({
 		userId: props.user.id,
-		withRenotes: noteview === 'all',
-		withReplies: noteview === 'all' || noteview === 'files',
-		withChannelNotes: noteview === 'all',
+		withReplies: noteview === 'replies' || noteview === 'files',
 		withFiles: noteview === 'files',
 	})),
 };
@@ -373,7 +358,6 @@ onUnmounted(() => {
 		left: -100%;
 		top: -100%;
 		right: -100%;
-		bottom: -100%;
 		background-attachment: fixed;
 	}
 
@@ -389,8 +373,6 @@ onUnmounted(() => {
 			> .main {
 				position: relative;
 				overflow: clip;
-				background: color-mix(in srgb, var(--panel) 65%, transparent);
-				backdrop-filter: blur(16px);
 
 				> .banner-container {
 					position: relative;
@@ -744,17 +726,15 @@ onUnmounted(() => {
 
 <style lang="scss" module>
 .tl {
-	background-color: rgba(0, 0, 0, 0);
+	background: var(--bg);
 	border-radius: var(--radius);
 	overflow: clip;
-	z-index: 0;
 }
 
 .tab {
 	margin: calc(var(--margin) / 2) 0;
 	padding: calc(var(--margin) / 2) 0;
-	background: color-mix(in srgb, var(--bg) 65%, transparent);
-	backdrop-filter: blur(16px);
+	background: var(--bg);
 	border-radius: 5px;
 	> button {
 		border-radius: 5px;

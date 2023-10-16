@@ -5,7 +5,7 @@
 
 import { markRaw, ref } from 'vue';
 import * as Misskey from 'misskey-js';
-import { miLocalStorage } from './local-storage.js';
+import { miLocalStorage } from './local-storage';
 import { Storage } from '@/pizzax.js';
 
 interface PostFormAction {
@@ -104,6 +104,10 @@ export const defaultStore = markRaw(new Storage('base', {
 	reactionAcceptance: {
 		where: 'account',
 		default: 'nonSensitiveOnly' as 'likeOnly' | 'likeOnlyForRemote' | 'nonSensitiveOnly' | 'nonSensitiveOnlyForLocalLikeOnlyForRemote' | null,
+	},
+	mutedWords: {
+		where: 'account',
+		default: [],
 	},
 	mutedAds: {
 		where: 'account',
@@ -333,10 +337,6 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: false,
 	},
-	clickToOpen: {
-		where: 'device',
-		default: true,
-	},
 	aiChanMode: {
 		where: 'device',
 		default: false,
@@ -366,10 +366,6 @@ export const defaultStore = markRaw(new Storage('base', {
 		default: {} as Record<string, Record<string, string[]>>,
 	},
 	keepScreenOn: {
-		where: 'device',
-		default: false,
-	},
-	tlWithReplies: {
 		where: 'device',
 		default: false,
 	},

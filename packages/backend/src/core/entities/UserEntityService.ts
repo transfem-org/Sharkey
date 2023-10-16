@@ -147,76 +147,64 @@ export class UserEntityService implements OnModuleInit {
 
 	@bindThis
 	public async getRelation(me: MiUser['id'], target: MiUser['id']) {
-		const [
+		const following = await this.followingsRepository.findOneBy({
+			followerId: me,
+			followeeId: target,
+		});
+		return awaitAll({
+			id: target,
 			following,
-			isFollowed,
-			hasPendingFollowRequestFromYou,
-			hasPendingFollowRequestToYou,
-			isBlocking,
-			isBlocked,
-			isMuted,
-			isRenoteMuted,
-		] = await Promise.all([
-			this.followingsRepository.findOneBy({
-				followerId: me,
-				followeeId: target,
-			}),
-			this.followingsRepository.exist({
+			isFollowing: following != null,
+			isFollowed: this.followingsRepository.count({
 				where: {
 					followerId: target,
 					followeeId: me,
 				},
-			}),
-			this.followRequestsRepository.exist({
+				take: 1,
+			}).then(n => n > 0),
+			hasPendingFollowRequestFromYou: this.followRequestsRepository.count({
 				where: {
 					followerId: me,
 					followeeId: target,
 				},
-			}),
-			this.followRequestsRepository.exist({
+				take: 1,
+			}).then(n => n > 0),
+			hasPendingFollowRequestToYou: this.followRequestsRepository.count({
 				where: {
 					followerId: target,
 					followeeId: me,
 				},
-			}),
-			this.blockingsRepository.exist({
+				take: 1,
+			}).then(n => n > 0),
+			isBlocking: this.blockingsRepository.count({
 				where: {
 					blockerId: me,
 					blockeeId: target,
 				},
-			}),
-			this.blockingsRepository.exist({
+				take: 1,
+			}).then(n => n > 0),
+			isBlocked: this.blockingsRepository.count({
 				where: {
 					blockerId: target,
 					blockeeId: me,
 				},
-			}),
-			this.mutingsRepository.exist({
+				take: 1,
+			}).then(n => n > 0),
+			isMuted: this.mutingsRepository.count({
 				where: {
 					muterId: me,
 					muteeId: target,
 				},
-			}),
-			this.renoteMutingsRepository.exist({
+				take: 1,
+			}).then(n => n > 0),
+			isRenoteMuted: this.renoteMutingsRepository.count({
 				where: {
 					muterId: me,
 					muteeId: target,
 				},
-			}),
-		]);
-
-		return {
-			id: target,
-			following,
-			isFollowing: following != null,
-			isFollowed,
-			hasPendingFollowRequestFromYou,
-			hasPendingFollowRequestToYou,
-			isBlocking,
-			isBlocked,
-			isMuted,
-			isRenoteMuted,
-		};
+				take: 1,
+			}).then(n => n > 0),
+		});
 	}
 
 	@bindThis
@@ -517,7 +505,6 @@ export class UserEntityService implements OnModuleInit {
 				isMuted: relation.isMuted,
 				isRenoteMuted: relation.isRenoteMuted,
 				notify: relation.following?.notify ?? 'none',
-				withReplies: relation.following?.withReplies ?? false,
 			} : {}),
 		} as Promiseable<Packed<'User'>> as Promiseable<IsMeAndIsUserDetailed<ExpectsMe, D>>;
 

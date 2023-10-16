@@ -6,21 +6,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <div class="_gaps_m">
 	<MkFolder>
-		<template #icon><i class="ph-envelope ph-bold ph-lg"></i></template>
-		<template #label>{{ i18n.ts.wordMute }}</template>
-
-		<XWordMute/>
-	</MkFolder>
-
-	<MkFolder>
-		<template #icon><i class="ph-globe-simple ph-bold ph-lg"></i></template>
-		<template #label>{{ i18n.ts.instanceMute }}</template>
-
-		<XInstanceMute/>
-	</MkFolder>
-
-	<MkFolder>
-		<template #icon><i class="ph-repeat ph-bold ph-lg"></i></template>
+		<template #icon><i class="ti ti-repeat-off"></i></template>
 		<template #label>{{ i18n.ts.mutedUsers }} ({{ i18n.ts.renote }})</template>
 
 		<MkPagination :pagination="renoteMutingPagination">
@@ -51,7 +37,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</MkFolder>
 
 	<MkFolder>
-		<template #icon><i class="ph-eye-slash ph-bold ph-lg"></i></template>
+		<template #icon><i class="ti ti-eye-off"></i></template>
 		<template #label>{{ i18n.ts.mutedUsers }}</template>
 
 		<MkPagination :pagination="mutingPagination">
@@ -84,7 +70,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</MkFolder>
 
 	<MkFolder>
-		<template #icon><i class="ph-prohibit ph-bold ph-lg"></i></template>
+		<template #icon><i class="ti ti-ban"></i></template>
 		<template #label>{{ i18n.ts.blockedUsers }}</template>
 
 		<MkPagination :pagination="blockingPagination">
@@ -120,8 +106,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { } from 'vue';
-import XInstanceMute from './mute-block.instance-mute.vue';
-import XWordMute from './mute-block.word-mute.vue';
 import MkPagination from '@/components/MkPagination.vue';
 import { userPage } from '@/filters/user.js';
 import { i18n } from '@/i18n.js';

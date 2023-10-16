@@ -379,10 +379,9 @@ export class ActivityPubServerService {
 		if (page) {
 			const query = this.queryService.makePaginationQuery(this.notesRepository.createQueryBuilder('note'), sinceId, untilId)
 				.andWhere('note.userId = :userId', { userId: user.id })
-				.andWhere(new Brackets(qb => {
-					qb
-						.where('note.visibility = \'public\'')
-						.orWhere('note.visibility = \'home\'');
+				.andWhere(new Brackets(qb => { qb
+					.where('note.visibility = \'public\'')
+					.orWhere('note.visibility = \'home\'');
 				}))
 				.andWhere('note.localOnly = FALSE');
 

@@ -181,11 +181,6 @@ export const meta = {
 					},
 				},
 			},
-			notesPerOneAd: {
-				type: 'number',
-				optional: false, nullable: false,
-				default: 0,
-			},
 			requireSetup: {
 				type: 'boolean',
 				optional: false, nullable: false,
@@ -219,11 +214,11 @@ export const meta = {
 						type: 'boolean',
 						optional: false, nullable: false,
 					},
-					localTimeline: {
+					localTimeLine: {
 						type: 'boolean',
 						optional: false, nullable: false,
 					},
-					globalTimeline: {
+					globalTimeLine: {
 						type: 'boolean',
 						optional: false, nullable: false,
 					},
@@ -304,8 +299,6 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				tosUrl: instance.termsOfServiceUrl,
 				repositoryUrl: instance.repositoryUrl,
 				feedbackUrl: instance.feedbackUrl,
-				impressumUrl: instance.impressumUrl,
-				privacyPolicyUrl: instance.privacyPolicyUrl,
 				disableRegistration: instance.disableRegistration,
 				emailRequiredForSignup: instance.emailRequiredForSignup,
 				enableHcaptcha: instance.enableHcaptcha,
@@ -337,7 +330,6 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 					imageUrl: ad.imageUrl,
 					dayOfWeek: ad.dayOfWeek,
 				})),
-				notesPerOneAd: instance.notesPerOneAd,
 				enableEmail: instance.enableEmail,
 				enableServiceWorker: instance.enableServiceWorker,
 
