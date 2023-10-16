@@ -286,7 +286,8 @@ definePageMetadata(computed(() => {
 	let title = i18n.ts._pages.newPage;
 	if (props.initPageId) {
 		title = i18n.ts._pages.editPage;
-	} else if (props.initPageName && props.initUser) {
+	}
+	else if (props.initPageName && props.initUser) {
 		title = i18n.ts._pages.readPage;
 	}
 	return {

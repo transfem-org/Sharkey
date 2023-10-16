@@ -202,10 +202,10 @@ export class ServerService implements OnApplicationShutdown {
 					includeSecrets: true,
 				}));
 
-				reply.code(200).send('Verification succeeded! メールアドレスの認証に成功しました。');
-				return;
+				reply.code(200);
+				return 'Verify succeeded!';
 			} else {
-				reply.code(404).send('Verification failed. Please try again. メールアドレスの認証に失敗しました。もう一度お試しください');
+				reply.code(404);
 				return;
 			}
 		});

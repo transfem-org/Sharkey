@@ -22,6 +22,7 @@ import MkButton from '@/components/MkButton.vue';
 import * as os from '@/os.js';
 import { $i } from '@/account.js';
 import { i18n } from '@/i18n.js';
+import { definePageMetadata } from '@/scripts/page-metadata.js';
 
 const instanceMutes = ref($i!.mutedInstances.join('\n'));
 const changed = ref(false);
@@ -44,5 +45,14 @@ async function save() {
 
 watch(instanceMutes, () => {
 	changed.value = true;
+});
+
+const headerActions = $computed(() => []);
+
+const headerTabs = $computed(() => []);
+
+definePageMetadata({
+	title: i18n.ts.instanceMute,
+	icon: 'ph-prohibit ph-bold pg-lg',
 });
 </script>

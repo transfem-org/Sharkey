@@ -23,8 +23,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 			:spellcheck="spellcheck"
 			:step="step"
 			:list="id"
-			:min="min"
-			:max="max"
 			@focus="focused = true"
 			@blur="focused = false"
 			@keydown="onKeydown($event)"
@@ -61,8 +59,6 @@ const props = defineProps<{
 	spellcheck?: boolean;
 	step?: any;
 	datalist?: string[];
-	min?: number;
-	max?: number;
 	inline?: boolean;
 	debounce?: boolean;
 	manualSave?: boolean;

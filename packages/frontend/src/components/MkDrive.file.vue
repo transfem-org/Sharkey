@@ -24,7 +24,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</div>
 		<div v-if="$i?.backgroundId == file.id" :class="[$style.label]">
 			<img :class="$style.labelImg" src="/client-assets/label.svg"/>
-			<p :class="$style.labelText">{{ i18n.ts.background }}</p>
+			<p :class="$style.labelText">Background</p>
 		</div>
 		<div v-if="file.isSensitive" :class="[$style.label, $style.red]">
 			<img :class="$style.labelImg" src="/client-assets/label-red.svg"/>
@@ -49,10 +49,7 @@ import bytes from '@/filters/bytes.js';
 import * as os from '@/os.js';
 import { i18n } from '@/i18n.js';
 import { $i } from '@/account.js';
-import { useRouter } from '@/router.js';
 import { getDriveFileMenu } from '@/scripts/get-drive-file-menu.js';
-
-const router = useRouter();
 
 const props = withDefaults(defineProps<{
 	file: Misskey.entities.DriveFile;
@@ -78,7 +75,7 @@ function onClick(ev: MouseEvent) {
 	if (props.selectMode) {
 		emit('chosen', props.file);
 	} else {
-		router.push(`/my/drive/file/${props.file.id}`);
+		os.popupMenu(getDriveFileMenu(props.file, props.folder), (ev.currentTarget ?? ev.target ?? undefined) as HTMLElement | undefined);
 	}
 }
 

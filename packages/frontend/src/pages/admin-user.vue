@@ -55,24 +55,41 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<template #label>{{ i18n.ts.moderationNote }}</template>
 				</MkTextarea>
 
-				<FormSection v-if="user.host">
+				<!--
+				<FormSection>
 					<template #label>ActivityPub</template>
 
 					<div class="_gaps_m">
 						<div style="display: flex; flex-direction: column; gap: 1em;">
-							<MkKeyValue oneline>
+							<MkKeyValue v-if="user.host" oneline>
 								<template #key>{{ i18n.ts.instanceInfo }}</template>
 								<template #value><MkA :to="`/instance-info/${user.host}`" class="_link">{{ user.host }} <i class="ph-caret-right ph-bold ph-lg"></i></MkA></template>
 							</MkKeyValue>
+							<MkKeyValue v-else oneline>
+								<template #key>{{ i18n.ts.instanceInfo }}</template>
+								<template #value>(Local user)</template>
+							</MkKeyValue>
 							<MkKeyValue oneline>
 								<template #key>{{ i18n.ts.updatedAt }}</template>
-								<template #value><MkTime mode="detail" :time="user.lastFetchedAt"/></template>
+								<template #value><MkTime v-if="user.lastFetchedAt" mode="detail" :time="user.lastFetchedAt"/><span v-else>N/A</span></template>
+							</MkKeyValue>
+							<MkKeyValue v-if="ap" oneline>
+								<template #key>Type</template>
+								<template #value><span class="_monospace">{{ ap.type }}</span></template>
 							</MkKeyValue>
 						</div>
 
-						<MkButton @click="updateRemoteUser"><i class="ph-arrows-counter-clockwise ph-bold pg-lg"></i> {{ i18n.ts.updateRemoteUser }}</MkButton>
+						<MkButton v-if="user.host != null" @click="updateRemoteUser"><i class="ph-arrows-counter-clockwise ph-bold pg-lg"></i> {{ i18n.ts.updateRemoteUser }}</MkButton>
+
+						<MkFolder>
+							<template #label>Raw</template>
+
+							<MkObjectView v-if="ap" tall :value="ap">
+							</MkObjectView>
+						</MkFolder>
 					</div>
 				</FormSection>
+			-->
 
 				<FormSection>
 					<div class="_gaps">

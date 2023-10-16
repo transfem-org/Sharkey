@@ -6,24 +6,20 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <MkContainer :max-height="300" :foldable="true">
 	<template #icon><i class="ph-image-square ph-bold ph-lg"></i></template>
-	<template #header>{{ i18n.ts.files }}</template>
+	<template #header>{{ i18n.ts.images }}</template>
 	<div :class="$style.root">
 		<MkLoading v-if="fetching"/>
-		<div v-if="!fetching && files.length > 0" :class="$style.stream">
-			<template v-for="file in files" :key="file.note.id + file.file.id">
-				<div v-if="file.file.isSensitive && !showingFiles.includes(file.file.id)" :class="$style.sensitive" @click="showingFiles.push(file.file.id)">
-					<div>
-						<div><i class="ti ti-eye-exclamation"></i> {{ i18n.ts.sensitive }}</div>
-						<div>{{ i18n.ts.clickToShow }}</div>
-					</div>
-				</div>
-				<MkA v-else :class="$style.img" :to="notePage(file.note)">
-					<!-- TODO: 画像以外のファイルに対応 -->
-					<ImgWithBlurhash :hash="file.file.blurhash" :src="thumbnail(file.file)" :title="file.file.name"/>
-				</MkA>
-			</template>
+		<div v-if="!fetching && images.length > 0" :class="$style.stream">
+			<MkA
+				v-for="image in images"
+				:key="image.note.id + image.file.id"
+				:class="$style.img"
+				:to="notePage(image.note)"
+			>
+				<ImgWithBlurhash :hash="image.file.blurhash" :src="thumbnail(image.file)" :title="image.file.name"/>
+			</MkA>
 		</div>
-		<p v-if="!fetching && files.length == 0" :class="$style.empty">{{ i18n.ts.nothing }}</p>
+		<p v-if="!fetching && images.length == 0" :class="$style.empty">{{ i18n.ts.nothing }}</p>
 	</div>
 </MkContainer>
 </template>
@@ -44,11 +40,10 @@ const props = defineProps<{
 }>();
 
 let fetching = $ref(true);
-let files = $ref<{
+let images = $ref<{
 	note: Misskey.entities.Note;
 	file: Misskey.entities.DriveFile;
 }[]>([]);
-let showingFiles = $ref<string[]>([]);
 
 function thumbnail(image: Misskey.entities.DriveFile): string {
 	return defaultStore.state.disableShowingAnimatedImages
@@ -57,15 +52,24 @@ function thumbnail(image: Misskey.entities.DriveFile): string {
 }
 
 onMounted(() => {
+	const image = [
+		'image/jpeg',
+		'image/webp',
+		'image/avif',
+		'image/png',
+		'image/gif',
+		'image/apng',
+		'image/vnd.mozilla.apng',
+	];
 	os.api('users/notes', {
 		userId: props.user.id,
-		withFiles: true,
+		fileType: image,
 		excludeNsfw: defaultStore.state.nsfw !== 'ignore',
-		limit: 15,
+		limit: 10,
 	}).then(notes => {
 		for (const note of notes) {
 			for (const file of note.files) {
-				files.push({
+				images.push({
 					note,
 					file,
 				});
@@ -97,10 +101,5 @@ onMounted(() => {
 	margin: 0;
 	padding: 16px;
 	text-align: center;
-}
-
-.sensitive {
-	display: grid;
-  place-items: center;
 }
 </style>

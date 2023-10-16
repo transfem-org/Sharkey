@@ -84,7 +84,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 										</MkKeyValue>
 									</div>
 
-									<MkButton primary rounded gradate @click="downloadBackupCodes"><i class="ph-download ph-bold ph-lg"></i> {{ i18n.ts.download }}</MkButton>
+									<MkButton primary rounded gradate @click="downloadBackupCodes"><i class="ti ti-download"></i> {{ i18n.ts.download }}</MkButton>
 								</div>
 							</MkFolder>
 						</div>

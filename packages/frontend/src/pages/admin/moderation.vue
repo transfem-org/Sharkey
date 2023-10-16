@@ -25,11 +25,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<template #label>{{ i18n.ts.tosUrl }}</template>
 					</MkInput>
 
-					<MkInput v-model="privacyPolicyUrl">
-						<template #prefix><i class="ti ti-link"></i></template>
-						<template #label>{{ i18n.ts.privacyPolicyUrl }}</template>
-					</MkInput>
-
 					<MkTextarea v-model="preservedUsernames">
 						<template #label>{{ i18n.ts.preservedUsernames }}</template>
 						<template #caption>{{ i18n.ts.preservedUsernamesDescription }}</template>
@@ -74,7 +69,6 @@ let emailRequiredForSignup: boolean = $ref(false);
 let sensitiveWords: string = $ref('');
 let preservedUsernames: string = $ref('');
 let tosUrl: string | null = $ref(null);
-let privacyPolicyUrl: string | null = $ref(null);
 
 async function init() {
 	const meta = await os.api('admin/meta');
@@ -83,7 +77,6 @@ async function init() {
 	sensitiveWords = meta.sensitiveWords.join('\n');
 	preservedUsernames = meta.preservedUsernames.join('\n');
 	tosUrl = meta.tosUrl;
-	privacyPolicyUrl = meta.privacyPolicyUrl;
 }
 
 function save() {
@@ -91,7 +84,6 @@ function save() {
 		disableRegistration: !enableRegistration,
 		emailRequiredForSignup,
 		tosUrl,
-		privacyPolicyUrl,
 		sensitiveWords: sensitiveWords.split('\n'),
 		preservedUsernames: preservedUsernames.split('\n'),
 	}).then(() => {
