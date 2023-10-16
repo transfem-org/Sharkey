@@ -165,8 +165,7 @@ export class SignupApiService {
 			const hash = await argon2.hash(password);
 
 			const pendingUser = await this.userPendingsRepository.insert({
-				id: this.idService.genId(),
-				createdAt: new Date(),
+				id: this.idService.gen(),
 				code,
 				email: emailAddress!,
 				username: username,

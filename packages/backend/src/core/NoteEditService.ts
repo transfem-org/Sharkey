@@ -53,6 +53,7 @@ import { RedisTimelineService } from '@/core/RedisTimelineService.js';
 import { AntennaService } from './AntennaService.js';
 import NotesChart from './chart/charts/notes.js';
 import PerUserNotesChart from './chart/charts/per-user-notes.js';
+import { UtilityService } from '@/core/UtilityService.js';
 
 type NotificationType = 'reply' | 'renote' | 'quote' | 'mention';
 
@@ -217,6 +218,7 @@ export class NoteEditService implements OnApplicationShutdown {
 		private perUserNotesChart: PerUserNotesChart,
 		private activeUsersChart: ActiveUsersChart,
 		private instanceChart: InstanceChart,
+		private utilityService: UtilityService,
 	) { }
 
 	@bindThis
@@ -224,7 +226,6 @@ export class NoteEditService implements OnApplicationShutdown {
 		id: MiUser['id'];
 		username: MiUser['username'];
 		host: MiUser['host'];
-		createdAt: MiUser['createdAt'];
 		isBot: MiUser['isBot'];
 	}, editid: MiNote['id'], data: Option, silent = false): Promise<MiNote> {
 		if (!editid) {
@@ -273,6 +274,12 @@ export class NoteEditService implements OnApplicationShutdown {
 			} else if ((await this.roleService.getUserPolicies(user.id)).canPublicNote === false) {
 				data.visibility = 'home';
 			}
+		}
+
+		const inSilencedInstance = this.utilityService.isSilencedHost((await this.metaService.fetch()).silencedHosts, user.host);
+
+		if (data.visibility === 'public' && inSilencedInstance && user.host !== null) {
+			data.visibility = 'home';
 		}
 
 		if (data.renote) {
@@ -381,7 +388,7 @@ export class NoteEditService implements OnApplicationShutdown {
 		}
 
 		await this.noteEditRepository.insert({
-			id: this.idService.genId(),
+			id: this.idService.gen(),
 			noteId: oldnote.id,
 			text: data.text || undefined,
 			cw: data.cw,
@@ -391,7 +398,6 @@ export class NoteEditService implements OnApplicationShutdown {
 
 		const note = new MiNote({
 			id: oldnote.id,
-			createdAt: new Date(oldnote.createdAt!),
 			updatedAt: data.updatedAt ? data.updatedAt : new Date(),
 			fileIds: data.files ? data.files.map(file => file.id) : [],
 			replyId: data.reply ? data.reply.id : null,
@@ -486,7 +492,6 @@ export class NoteEditService implements OnApplicationShutdown {
 		id: MiUser['id'];
 		username: MiUser['username'];
 		host: MiUser['host'];
-		createdAt: MiUser['createdAt'];
 		isBot: MiUser['isBot'];
 	}, data: Option, silent: boolean, tags: string[], mentionedUsers: MinimumUser[]) {
 		// Register host

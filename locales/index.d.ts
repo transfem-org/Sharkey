@@ -203,6 +203,7 @@ export interface Locale {
     "perDay": string;
     "stopActivityDelivery": string;
     "blockThisInstance": string;
+    "silenceThisInstance": string;
     "operations": string;
     "software": string;
     "version": string;
@@ -222,6 +223,8 @@ export interface Locale {
     "clearCachedFilesConfirm": string;
     "blockedInstances": string;
     "blockedInstancesDescription": string;
+    "silencedInstances": string;
+    "silencedInstancesDescription": string;
     "muteAndBlock": string;
     "mutedUsers": string;
     "blockedUsers": string;
