@@ -57,11 +57,11 @@ const headerActions = $computed(() => []);
 const headerTabs = $computed(() => [{
 	key: 'block',
 	title: i18n.ts.block,
-	icon: 'ti ti-ban',
+	icon: 'ph-prohibit ph-bold ph-lg',
 }, {
 	key: 'silence',
 	title: i18n.ts.silence,
-	icon: 'ti ti-eye-off',
+	icon: 'ph-eye-closed ph-bold ph-lg',
 }]);
 
 definePageMetadata({
