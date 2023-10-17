@@ -154,6 +154,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<XListenBrainz v-if="user.listenbrainz && listenbrainzdata" :key="user.id" :user="user"/>
 		</div>
 	</div>
+	<div class="background"></div>
 </MkSpacer>
 </template>
 
@@ -359,23 +360,23 @@ onUnmounted(() => {
 </script>
 
 <style lang="scss" scoped>
+.background{
+	position: fixed;
+	z-index: -1;
+	background: var(--backgroundImageStatic);
+	background-size: cover;
+	background-position: center;
+	pointer-events: none;
+	filter: blur(8px) opacity(0.6);
+	// Funny CSS schenanigans to make background escape container
+	left: -100%;
+	top: -5%;
+	right: -100%;
+	bottom: -100%;
+	background-attachment: fixed;
+}
+
 .ftskorzw {
-	&::before {
-		content: "";
-		position: fixed;
-		inset: 0;
-		background: var(--backgroundImageStatic);
-		background-size: cover;
-		background-position: center;
-		pointer-events: none;
-		filter: blur(8px) opacity(0.6);
-		// Funny CSS schenanigans to make background escape container
-		left: -100%;
-		top: -5%;
-		right: -100%;
-		bottom: -100%;
-		background-attachment: fixed;
-	}
 
 	> .main {
 
