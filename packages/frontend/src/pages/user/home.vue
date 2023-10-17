@@ -371,7 +371,7 @@ onUnmounted(() => {
 		filter: blur(8px) opacity(0.6);
 		// Funny CSS schenanigans to make background escape container
 		left: -100%;
-		top: -100%;
+		top: -5%;
 		right: -100%;
 		bottom: -100%;
 		background-attachment: fixed;
