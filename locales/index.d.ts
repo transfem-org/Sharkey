@@ -462,6 +462,8 @@ export interface Locale {
     "next": string;
     "retype": string;
     "noteOf": string;
+    "expandAllCws": string;
+    "collapseAllCws": string;
     "quoteAttached": string;
     "quoteQuestion": string;
     "noMessagesYet": string;
