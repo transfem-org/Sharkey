@@ -296,9 +296,9 @@ export class ApPersonService implements OnModuleInit {
 
 		//#region resolve counts
 		const _resolver = resolver ?? this.apResolverService.createResolver();
-		const outboxcollection = await _resolver.resolveCollection(person.outbox);
-		const followerscollection = await _resolver.resolveCollection(person.followers!);
-		const followingcollection = await _resolver.resolveCollection(person.following!);
+		const outboxcollection = await _resolver.resolveCollection(person.outbox).catch(() => { return null; });
+		const followerscollection = await _resolver.resolveCollection(person.followers!).catch(() => { return null; });
+		const followingcollection = await _resolver.resolveCollection(person.following!).catch(() => { return null; });
 
 		try {
 			// Start transaction
@@ -320,9 +320,9 @@ export class ApPersonService implements OnModuleInit {
 					host,
 					inbox: person.inbox,
 					sharedInbox: person.sharedInbox ?? person.endpoints?.sharedInbox,
-					notesCount: outboxcollection.totalItems ?? 0,
-					followersCount: followerscollection.totalItems ?? 0,
-					followingCount: followingcollection.totalItems ?? 0,
+					notesCount: outboxcollection?.totalItems ?? 0,
+					followersCount: followerscollection?.totalItems ?? 0,
+					followingCount: followingcollection?.totalItems ?? 0,
 					followersUri: person.followers ? getApId(person.followers) : undefined,
 					featured: person.featured ? getApId(person.featured) : undefined,
 					uri: person.id,
