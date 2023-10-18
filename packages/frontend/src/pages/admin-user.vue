@@ -77,6 +77,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<FormSection>
 					<div class="_gaps">
 						<MkSwitch v-model="suspended" @update:modelValue="toggleSuspend">{{ i18n.ts.suspend }}</MkSwitch>
+						<MkSwitch v-model="markedAsNSFW" @update:modelValue="toggleNSFW">{{ i18n.ts.markAsNSFW }}</MkSwitch>
 
 						<div>
 							<MkButton v-if="user.host == null" inline style="margin-right: 8px;" @click="resetPassword"><i class="ph-key ph-bold ph-lg"></i> {{ i18n.ts.resetPassword }}</MkButton>
@@ -223,6 +224,7 @@ let ap = $ref(null);
 let moderator = $ref(false);
 let silenced = $ref(false);
 let suspended = $ref(false);
+let markedAsNSFW = $ref(false);
 let moderationNote = $ref('');
 const filesPagination = {
 	endpoint: 'admin/drive/files' as const,
@@ -255,6 +257,7 @@ function createFetcher() {
 		silenced = info.isSilenced;
 		suspended = info.isSuspended;
 		moderationNote = info.moderationNote;
+		markedAsNSFW = info.alwaysMarkNsfw;
 
 		watch($$(moderationNote), async () => {
 			await os.api('admin/update-user-note', { userId: user.id, text: moderationNote });
@@ -287,6 +290,19 @@ async function resetPassword() {
 			type: 'success',
 			text: i18n.t('newPasswordIs', { password }),
 		});
+	}
+}
+
+async function toggleNSFW(v) {
+	const confirm = await os.confirm({
+		type: 'warning',
+		text: v ? i18n.ts.nsfwConfirm : i18n.ts.unNsfwConfirm,
+	});
+	if (confirm.canceled) {
+		markedAsNSFW = !v;
+	} else {
+		await os.api(v ? 'admin/nsfw-user' : 'admin/unnsfw-user', { userId: user.id });
+		await refreshUser();
 	}
 }
 

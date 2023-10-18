@@ -61,6 +61,8 @@ import * as ep___admin_serverInfo from './endpoints/admin/server-info.js';
 import * as ep___admin_showModerationLogs from './endpoints/admin/show-moderation-logs.js';
 import * as ep___admin_showUser from './endpoints/admin/show-user.js';
 import * as ep___admin_showUsers from './endpoints/admin/show-users.js';
+import * as ep___admin_nsfwUser from './endpoints/admin/nsfw-user.js';
+import * as ep___admin_unnsfwUser from './endpoints/admin/unnsfw-user.js';
 import * as ep___admin_suspendUser from './endpoints/admin/suspend-user.js';
 import * as ep___admin_unsuspendUser from './endpoints/admin/unsuspend-user.js';
 import * as ep___admin_updateMeta from './endpoints/admin/update-meta.js';
@@ -412,6 +414,8 @@ const eps = [
 	['admin/show-moderation-logs', ep___admin_showModerationLogs],
 	['admin/show-user', ep___admin_showUser],
 	['admin/show-users', ep___admin_showUsers],
+	['admin/nsfw-user', ep___admin_nsfwUser],
+	['admin/unnsfw-user', ep___admin_unnsfwUser],
 	['admin/suspend-user', ep___admin_suspendUser],
 	['admin/unsuspend-user', ep___admin_unsuspendUser],
 	['admin/update-meta', ep___admin_updateMeta],

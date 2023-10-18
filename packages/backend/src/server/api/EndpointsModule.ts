@@ -61,6 +61,8 @@ import * as ep___admin_serverInfo from './endpoints/admin/server-info.js';
 import * as ep___admin_showModerationLogs from './endpoints/admin/show-moderation-logs.js';
 import * as ep___admin_showUser from './endpoints/admin/show-user.js';
 import * as ep___admin_showUsers from './endpoints/admin/show-users.js';
+import * as ep___admin_nsfwUser from './endpoints/admin/nsfw-user.js';
+import * as ep___admin_unnsfwUser from './endpoints/admin/unnsfw-user.js';
 import * as ep___admin_suspendUser from './endpoints/admin/suspend-user.js';
 import * as ep___admin_unsuspendUser from './endpoints/admin/unsuspend-user.js';
 import * as ep___admin_updateMeta from './endpoints/admin/update-meta.js';
@@ -414,6 +416,8 @@ const $admin_serverInfo: Provider = { provide: 'ep:admin/server-info', useClass:
 const $admin_showModerationLogs: Provider = { provide: 'ep:admin/show-moderation-logs', useClass: ep___admin_showModerationLogs.default };
 const $admin_showUser: Provider = { provide: 'ep:admin/show-user', useClass: ep___admin_showUser.default };
 const $admin_showUsers: Provider = { provide: 'ep:admin/show-users', useClass: ep___admin_showUsers.default };
+const $admin_nsfwUser: Provider = { provide: 'ep:admin/nsfw-user', useClass: ep___admin_nsfwUser.default };
+const $admin_unnsfwUser: Provider = { provide: 'ep:admin/unnsfw-user', useClass: ep___admin_unnsfwUser.default };
 const $admin_suspendUser: Provider = { provide: 'ep:admin/suspend-user', useClass: ep___admin_suspendUser.default };
 const $admin_unsuspendUser: Provider = { provide: 'ep:admin/unsuspend-user', useClass: ep___admin_unsuspendUser.default };
 const $admin_updateMeta: Provider = { provide: 'ep:admin/update-meta', useClass: ep___admin_updateMeta.default };
@@ -771,6 +775,8 @@ const $sponsors: Provider = { provide: 'ep:sponsors', useClass: ep___sponsors.de
 		$admin_showModerationLogs,
 		$admin_showUser,
 		$admin_showUsers,
+		$admin_nsfwUser,
+		$admin_unnsfwUser,
 		$admin_suspendUser,
 		$admin_unsuspendUser,
 		$admin_updateMeta,
@@ -1122,6 +1128,8 @@ const $sponsors: Provider = { provide: 'ep:sponsors', useClass: ep___sponsors.de
 		$admin_showModerationLogs,
 		$admin_showUser,
 		$admin_showUsers,
+		$admin_nsfwUser,
+		$admin_unnsfwUser,
 		$admin_suspendUser,
 		$admin_unsuspendUser,
 		$admin_updateMeta,
