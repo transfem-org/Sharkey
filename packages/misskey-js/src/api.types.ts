@@ -33,6 +33,7 @@ export type Endpoints = {
 	'admin/suspend-user': { req: TODO; res: TODO; };
 	'admin/nsfw-user': { req: TODO; res: TODO; };
 	'admin/unnsfw-user': { req: TODO; res: TODO; };
+	'admin/approve-user': { req: TODO; res: TODO; };
 	'admin/unsilence-user': { req: TODO; res: TODO; };
 	'admin/unsuspend-user': { req: TODO; res: TODO; };
 	'admin/update-meta': { req: TODO; res: TODO; };
