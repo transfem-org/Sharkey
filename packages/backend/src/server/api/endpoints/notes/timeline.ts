@@ -46,6 +46,7 @@ export const paramDef = {
 		includeLocalRenotes: { type: 'boolean', default: true },
 		withFiles: { type: 'boolean', default: false },
 		withRenotes: { type: 'boolean', default: true },
+		withBots: { type: 'boolean', default: true },
 	},
 	required: [],
 } as const;
@@ -97,6 +98,8 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				.leftJoinAndSelect('renote.user', 'renoteUser')
 				.leftJoinAndSelect('note.channel', 'channel');
 
+			if (!ps.withBots) query.andWhere('user.isBot = FALSE');
+
 			let timeline = await query.getMany();
 
 			timeline = timeline.filter(note => {
@@ -114,6 +117,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				if (note.reply && note.reply.visibility === 'followers') {
 					if (!Object.hasOwn(followings, note.reply.userId)) return false;
 				}
+				if (note.user?.isSilenced && note.userId !== me.id && !followings[note.userId]) return false;
 
 				return true;
 			});

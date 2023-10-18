@@ -31,6 +31,8 @@ export type Endpoints = {
 	'admin/show-users': { req: TODO; res: TODO; };
 	'admin/silence-user': { req: TODO; res: TODO; };
 	'admin/suspend-user': { req: TODO; res: TODO; };
+	'admin/nsfw-user': { req: TODO; res: TODO; };
+	'admin/unnsfw-user': { req: TODO; res: TODO; };
 	'admin/unsilence-user': { req: TODO; res: TODO; };
 	'admin/unsuspend-user': { req: TODO; res: TODO; };
 	'admin/update-meta': { req: TODO; res: TODO; };

@@ -13,6 +13,7 @@ import ActiveUsersChart from '@/core/chart/charts/active-users.js';
 import { DI } from '@/di-symbols.js';
 import { RoleService } from '@/core/RoleService.js';
 import { ApiError } from '../../error.js';
+import { CacheService } from '@/core/CacheService.js';
 
 export const meta = {
 	tags: ['notes'],
@@ -40,6 +41,7 @@ export const paramDef = {
 	type: 'object',
 	properties: {
 		withFiles: { type: 'boolean', default: false },
+		withBots: { type: 'boolean', default: true },
 		withRenotes: { type: 'boolean', default: true },
 		limit: { type: 'integer', minimum: 1, maximum: 100, default: 10 },
 		sinceId: { type: 'string', format: 'misskey:id' },
@@ -60,12 +62,19 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 		private queryService: QueryService,
 		private roleService: RoleService,
 		private activeUsersChart: ActiveUsersChart,
+		private cacheService: CacheService,
 	) {
 		super(meta, paramDef, async (ps, me) => {
 			const policies = await this.roleService.getUserPolicies(me ? me.id : null);
 			if (!policies.gtlAvailable) {
 				throw new ApiError(meta.errors.gtlDisabled);
 			}
+
+			const [
+				followings,
+			] = me ? await Promise.all([
+				this.cacheService.userFollowingsCache.fetch(me.id),
+			]) : [undefined];
 
 			//#region Construct query
 			const query = this.queryService.makePaginationQuery(this.notesRepository.createQueryBuilder('note'),
@@ -87,9 +96,16 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 			if (ps.withFiles) {
 				query.andWhere('note.fileIds != \'{}\'');
 			}
+
+			if (!ps.withBots) query.andWhere('user.isBot = FALSE');
 			//#endregion
 
-			const timeline = await query.limit(ps.limit).getMany();
+			let timeline = await query.limit(ps.limit).getMany();
+
+			timeline = timeline.filter(note => {
+				if (note.user?.isSilenced && me && followings && note.userId !== me.id && !followings[note.userId]) return false;
+				return true;
+			});
 
 			process.nextTick(() => {
 				if (me) {

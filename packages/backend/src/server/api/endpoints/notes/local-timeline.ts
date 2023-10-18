@@ -46,6 +46,7 @@ export const paramDef = {
 		withFiles: { type: 'boolean', default: false },
 		withRenotes: { type: 'boolean', default: true },
 		withReplies: { type: 'boolean', default: false },
+		withBots: { type: 'boolean', default: true },
 		excludeNsfw: { type: 'boolean', default: false },
 		limit: { type: 'integer', minimum: 1, maximum: 100, default: 10 },
 		sinceId: { type: 'string', format: 'misskey:id' },
@@ -82,14 +83,16 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 			}
 
 			const [
+				followings,
 				userIdsWhoMeMuting,
 				userIdsWhoMeMutingRenotes,
 				userIdsWhoBlockingMe,
 			] = me ? await Promise.all([
+				this.cacheService.userFollowingsCache.fetch(me.id),
 				this.cacheService.userMutingsCache.fetch(me.id),
 				this.cacheService.renoteMutingsCache.fetch(me.id),
 				this.cacheService.userBlockedCache.fetch(me.id),
-			]) : [new Set<string>(), new Set<string>(), new Set<string>()];
+			]) : [undefined, new Set<string>(), new Set<string>(), new Set<string>()];
 
 			let noteIds: string[];
 
@@ -119,6 +122,8 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				.leftJoinAndSelect('renote.user', 'renoteUser')
 				.leftJoinAndSelect('note.channel', 'channel');
 
+			if (!ps.withBots) query.andWhere('user.isBot = FALSE');
+
 			let timeline = await query.getMany();
 
 			timeline = timeline.filter(note => {
@@ -134,6 +139,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 						if (ps.withRenotes === false) return false;
 					}
 				}
+				if (note.user?.isSilenced && me && followings && note.userId !== me.id && !followings[note.userId]) return false;
 
 				return true;
 			});

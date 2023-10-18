@@ -368,6 +368,7 @@ export class UserEntityService implements OnModuleInit {
 			createdAt: this.idService.parse(user.id).date.toISOString(),
 			isBot: user.isBot ?? falsy,
 			isCat: user.isCat ?? falsy,
+			isSilenced: user.isSilenced || this.roleService.getUserPolicies(user.id).then(r => !r.canPublicNote),
 			speakAsCat: user.speakAsCat ?? falsy,
 			instance: user.host ? this.federatedInstanceService.federatedInstanceCache.fetch(user.host).then(instance => instance ? {
 				name: instance.name,
@@ -404,7 +405,6 @@ export class UserEntityService implements OnModuleInit {
 				backgroundUrl: user.backgroundUrl,
 				backgroundBlurhash: user.backgroundBlurhash,
 				isLocked: user.isLocked,
-				isSilenced: this.roleService.getUserPolicies(user.id).then(r => !r.canPublicNote),
 				isSuspended: user.isSuspended ?? falsy,
 				location: profile!.location,
 				birthday: profile!.birthday,

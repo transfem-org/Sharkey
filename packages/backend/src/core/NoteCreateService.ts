@@ -511,7 +511,11 @@ export class NoteCreateService implements OnApplicationShutdown {
 
 		// ハッシュタグ更新
 		if (data.visibility === 'public' || data.visibility === 'home') {
-			this.hashtagService.updateHashtags(user, tags);
+			if (user.isBot && meta.enableBotTrending) {
+				this.hashtagService.updateHashtags(user, tags);
+			} else if (!user.isBot) {
+				this.hashtagService.updateHashtags(user, tags);
+			}
 		}
 
 		// Increment notes count (user)

@@ -1099,6 +1099,10 @@ export interface Locale {
     "installed": string;
     "branding": string;
     "enableServerMachineStats": string;
+    "enableAchievements": string;
+    "turnOffAchievements": string;
+    "enableBotTrending": string;
+    "turnOffBotTrending": string;
     "enableIdenticonGeneration": string;
     "turnOffToImprovePerformance": string;
     "createInviteCode": string;
@@ -1135,6 +1139,7 @@ export interface Locale {
     "pinnedList": string;
     "keepScreenOn": string;
     "clickToOpen": string;
+    "showBots": string;
     "verifiedLink": string;
     "notifyNotes": string;
     "unnotifyNotes": string;
