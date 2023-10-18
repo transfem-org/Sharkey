@@ -19,6 +19,7 @@ class LocalTimelineChannel extends Channel {
 	public static requireCredential = false;
 	private withRenotes: boolean;
 	private withReplies: boolean;
+	private withBots: boolean;
 	private withFiles: boolean;
 
 	constructor(
@@ -40,6 +41,7 @@ class LocalTimelineChannel extends Channel {
 
 		this.withRenotes = params.withRenotes ?? true;
 		this.withReplies = params.withReplies ?? false;
+		this.withBots = params.withBots ?? true;
 		this.withFiles = params.withFiles ?? false;
 
 		// Subscribe events
@@ -49,6 +51,7 @@ class LocalTimelineChannel extends Channel {
 	@bindThis
 	private async onNote(note: Packed<'Note'>) {
 		if (this.withFiles && (note.fileIds == null || note.fileIds.length === 0)) return;
+		if (!this.withBots && note.user.isBot) return;
 
 		if (note.user.host !== null) return;
 		if (note.visibility !== 'public') return;

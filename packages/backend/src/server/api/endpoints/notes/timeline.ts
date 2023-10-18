@@ -46,6 +46,7 @@ export const paramDef = {
 		includeLocalRenotes: { type: 'boolean', default: true },
 		withFiles: { type: 'boolean', default: false },
 		withRenotes: { type: 'boolean', default: true },
+		withBots: { type: 'boolean', default: true },
 	},
 	required: [],
 } as const;
@@ -96,6 +97,8 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				.leftJoinAndSelect('reply.user', 'replyUser')
 				.leftJoinAndSelect('renote.user', 'renoteUser')
 				.leftJoinAndSelect('note.channel', 'channel');
+
+			if (!ps.withBots) query.andWhere('user.isBot = FALSE');
 
 			let timeline = await query.getMany();
 

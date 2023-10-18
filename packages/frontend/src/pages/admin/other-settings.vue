@@ -24,6 +24,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</div>
 
 				<div class="_panel" style="padding: 16px;">
+					<MkSwitch v-model="enableBotTrending">
+						<template #label>Populate Hashtags with Bots</template>
+						<template #caption>Turning this off will stop Bots from populating Hashtags</template>
+					</MkSwitch>
+				</div>
+
+				<div class="_panel" style="padding: 16px;">
 					<MkSwitch v-model="enableIdenticonGeneration">
 						<template #label>{{ i18n.ts.enableIdenticonGeneration }}</template>
 						<template #caption>{{ i18n.ts.turnOffToImprovePerformance }}</template>
@@ -61,6 +68,7 @@ import MkSwitch from '@/components/MkSwitch.vue';
 
 let enableServerMachineStats: boolean = $ref(false);
 let enableAchievements: boolean = $ref(false);
+let enableBotTrending: boolean = $ref(false);
 let enableIdenticonGeneration: boolean = $ref(false);
 let enableChartsForRemoteUser: boolean = $ref(false);
 let enableChartsForFederatedInstances: boolean = $ref(false);
@@ -69,6 +77,7 @@ async function init() {
 	const meta = await os.api('admin/meta');
 	enableServerMachineStats = meta.enableServerMachineStats;
 	enableAchievements = meta.enableAchievements;
+	enableBotTrending = meta.enableBotTrending;
 	enableIdenticonGeneration = meta.enableIdenticonGeneration;
 	enableChartsForRemoteUser = meta.enableChartsForRemoteUser;
 	enableChartsForFederatedInstances = meta.enableChartsForFederatedInstances;
@@ -78,6 +87,7 @@ function save() {
 	os.apiWithDialog('admin/update-meta', {
 		enableServerMachineStats,
 		enableAchievements,
+		enableBotTrending,
 		enableIdenticonGeneration,
 		enableChartsForRemoteUser,
 		enableChartsForFederatedInstances,
