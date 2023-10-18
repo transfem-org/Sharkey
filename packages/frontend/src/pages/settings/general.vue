@@ -152,7 +152,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<MkSwitch v-model="enableInfiniteScroll">{{ i18n.ts.enableInfiniteScroll }}</MkSwitch>
 				<MkSwitch v-model="keepScreenOn">{{ i18n.ts.keepScreenOn }}</MkSwitch>
 				<MkSwitch v-model="clickToOpen">{{ i18n.ts.clickToOpen }}</MkSwitch>
-				<MkSwitch v-model="showBots">Show bots in timeline</MkSwitch>
+				<MkSwitch v-model="showBots">{{ i18n.ts.showBots }}</MkSwitch>
 			</div>
 			<MkSelect v-model="serverDisconnectedBehavior">
 				<template #label>{{ i18n.ts.whenServerDisconnected }}</template>

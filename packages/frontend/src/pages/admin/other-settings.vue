@@ -18,15 +18,15 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 				<div class="_panel" style="padding: 16px;">
 					<MkSwitch v-model="enableAchievements">
-						<template #label>Enable Achievements</template>
-						<template #caption>Turning this off will disable the achievement system</template>
+						<template #label>{{ i18n.ts.enableAchievements }}</template>
+						<template #caption>{{ i18n.ts.turnOffAchievements}}</template>
 					</MkSwitch>
 				</div>
 
 				<div class="_panel" style="padding: 16px;">
 					<MkSwitch v-model="enableBotTrending">
-						<template #label>Populate Hashtags with Bots</template>
-						<template #caption>Turning this off will stop Bots from populating Hashtags</template>
+						<template #label>{{ i18n.ts.enableBotTrending }}</template>
+						<template #caption>{{ i18n.ts.turnOffBotTrending }}</template>
 					</MkSwitch>
 				</div>
 
