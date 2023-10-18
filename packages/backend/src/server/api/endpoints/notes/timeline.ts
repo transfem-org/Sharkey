@@ -199,7 +199,12 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				}
 				//#endregion
 
-				const timeline = await query.limit(ps.limit).getMany();
+				let timeline = await query.limit(ps.limit).getMany();
+
+				timeline = timeline.filter(note => {
+					if (note.user?.isSilenced && note.userId !== me.id && !followings[note.userId]) return false;
+					return true;
+				});
 
 				process.nextTick(() => {
 					this.activeUsersChart.read(me);

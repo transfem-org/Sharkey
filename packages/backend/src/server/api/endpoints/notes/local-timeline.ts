@@ -171,7 +171,12 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 					query.andWhere('note.fileIds != \'{}\'');
 				}
 
-				const timeline = await query.limit(ps.limit).getMany();
+				let timeline = await query.limit(ps.limit).getMany();
+
+				timeline = timeline.filter(note => {
+					if (note.user?.isSilenced && me && followings && note.userId !== me.id && !followings[note.userId]) return false;
+					return true;
+				});
 
 				process.nextTick(() => {
 					if (me) {
