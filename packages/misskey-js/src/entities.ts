@@ -16,6 +16,7 @@ export type UserLite = {
 	onlineStatus: 'online' | 'active' | 'offline' | 'unknown';
 	avatarUrl: string;
 	avatarBlurhash: string;
+	approved: boolean;
 	emojis: {
 		name: string;
 		url: string;
