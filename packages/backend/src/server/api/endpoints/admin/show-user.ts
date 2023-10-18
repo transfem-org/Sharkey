@@ -58,7 +58,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 			}
 
 			const isModerator = await this.roleService.isModerator(user);
-			const isSilenced = !(await this.roleService.getUserPolicies(user.id)).canPublicNote;
+			const isSilenced = user.isSilenced || !(await this.roleService.getUserPolicies(user.id)).canPublicNote;
 
 			const _me = await this.usersRepository.findOneByOrFail({ id: me.id });
 			if (!await this.roleService.isAdministrator(_me) && await this.roleService.isAdministrator(user)) {

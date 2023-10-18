@@ -87,10 +87,12 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 			}
 
 			const [
+				followings,
 				userIdsWhoMeMuting,
 				userIdsWhoMeMutingRenotes,
 				userIdsWhoBlockingMe,
 			] = await Promise.all([
+				this.cacheService.userFollowingsCache.fetch(me.id),
 				this.cacheService.userMutingsCache.fetch(me.id),
 				this.cacheService.renoteMutingsCache.fetch(me.id),
 				this.cacheService.userBlockedCache.fetch(me.id),
@@ -151,6 +153,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 						if (ps.withRenotes === false) return false;
 					}
 				}
+				if (note.user?.isSilenced && note.userId !== me.id && !followings[note.userId]) return false;
 
 				return true;
 			});
