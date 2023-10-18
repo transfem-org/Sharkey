@@ -370,6 +370,7 @@ export class UserEntityService implements OnModuleInit {
 			isCat: user.isCat,
 			isSilenced: user.isSilenced || this.roleService.getUserPolicies(user.id).then(r => !r.canPublicNote),
 			speakAsCat: user.speakAsCat ?? falsy,
+			approved: user.approved,
 			instance: user.host ? this.federatedInstanceService.federatedInstanceCache.fetch(user.host).then(instance => instance ? {
 				name: instance.name,
 				softwareName: instance.softwareName,
@@ -489,7 +490,6 @@ export class UserEntityService implements OnModuleInit {
 			...(opts.includeSecrets ? {
 				email: profile!.email,
 				emailVerified: profile!.emailVerified,
-				approved: user.approved,
 				signupReason: user.signupReason,
 				securityKeysList: profile!.twoFactorEnabled
 					? this.userSecurityKeysRepository.find({
