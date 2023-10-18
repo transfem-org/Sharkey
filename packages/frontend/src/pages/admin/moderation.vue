@@ -18,6 +18,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<template #label>{{ i18n.ts.emailRequiredForSignup }}</template>
 					</MkSwitch>
 
+					<MkSwitch v-model="approvalRequiredForSignup">
+						<template #label>{{ i18n.ts.approvalRequiredForSignup }}</template>
+					</MkSwitch>
+
 					<FormLink to="/admin/server-rules">{{ i18n.ts.serverRules }}</FormLink>
 
 					<MkInput v-model="tosUrl">
@@ -71,6 +75,7 @@ import FormLink from '@/components/form/link.vue';
 
 let enableRegistration: boolean = $ref(false);
 let emailRequiredForSignup: boolean = $ref(false);
+let approvalRequiredForSignup: boolean = $ref(false);
 let sensitiveWords: string = $ref('');
 let preservedUsernames: string = $ref('');
 let tosUrl: string | null = $ref(null);
@@ -80,6 +85,7 @@ async function init() {
 	const meta = await os.api('admin/meta');
 	enableRegistration = !meta.disableRegistration;
 	emailRequiredForSignup = meta.emailRequiredForSignup;
+	approvalRequiredForSignup = meta.approvalRequiredForSignup;
 	sensitiveWords = meta.sensitiveWords.join('\n');
 	preservedUsernames = meta.preservedUsernames.join('\n');
 	tosUrl = meta.tosUrl;
@@ -90,6 +96,7 @@ function save() {
 	os.apiWithDialog('admin/update-meta', {
 		disableRegistration: !enableRegistration,
 		emailRequiredForSignup,
+		approvalRequiredForSignup,
 		tosUrl,
 		privacyPolicyUrl,
 		sensitiveWords: sensitiveWords.split('\n'),

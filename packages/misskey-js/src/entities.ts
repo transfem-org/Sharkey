@@ -348,6 +348,7 @@ export type LiteInstanceMetadata = {
 	driveCapacityPerLocalUserMb: number;
 	driveCapacityPerRemoteUserMb: number;
 	emailRequiredForSignup: boolean;
+	approvalRequiredForSignup: boolean;
 	enableHcaptcha: boolean;
 	hcaptchaSiteKey: string | null;
 	enableRecaptcha: boolean;
