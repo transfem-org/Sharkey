@@ -77,6 +77,11 @@ export class MiMeta {
 	public sensitiveWords: string[];
 
 	@Column('varchar', {
+		length: 1024, array: true, default: '{}',
+	})
+	public silencedHosts: string[];
+
+	@Column('varchar', {
 		length: 1024,
 		nullable: true,
 	})
@@ -172,6 +177,11 @@ export class MiMeta {
 	@Column('boolean', {
 		default: false,
 	})
+	public approvalRequiredForSignup: boolean;
+
+	@Column('boolean', {
+		default: false,
+	})
 	public enableHcaptcha: boolean;
 
 	@Column('varchar', {
@@ -241,6 +251,11 @@ export class MiMeta {
 		default: false,
 	})
 	public enableSensitiveMediaDetectionForVideos: boolean;
+
+	@Column('boolean', {
+		default: true,
+	})
+	public enableBotTrending: boolean;
 
 	@Column('varchar', {
 		length: 1024,

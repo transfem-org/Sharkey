@@ -20,6 +20,7 @@ import { bindThis } from '@/decorators.js';
 import { RoleService } from '@/core/RoleService.js';
 import { ApPersonService } from '@/core/activitypub/models/ApPersonService.js';
 import { FederatedInstanceService } from '@/core/FederatedInstanceService.js';
+import { IdService } from '@/core/IdService.js';
 import type { OnModuleInit } from '@nestjs/common';
 import type { AnnouncementService } from '../AnnouncementService.js';
 import type { CustomEmojiService } from '../CustomEmojiService.js';
@@ -60,6 +61,7 @@ export class UserEntityService implements OnModuleInit {
 	private announcementService: AnnouncementService;
 	private roleService: RoleService;
 	private federatedInstanceService: FederatedInstanceService;
+	private idService: IdService;
 
 	constructor(
 		private moduleRef: ModuleRef,
@@ -111,13 +113,6 @@ export class UserEntityService implements OnModuleInit {
 
 		@Inject(DI.userMemosRepository)
 		private userMemosRepository: UserMemoRepository,
-
-		//private noteEntityService: NoteEntityService,
-		//private driveFileEntityService: DriveFileEntityService,
-		//private pageEntityService: PageEntityService,
-		//private customEmojiService: CustomEmojiService,
-		//private antennaService: AntennaService,
-		//private roleService: RoleService,
 	) {
 	}
 
@@ -130,6 +125,7 @@ export class UserEntityService implements OnModuleInit {
 		this.announcementService = this.moduleRef.get('AnnouncementService');
 		this.roleService = this.moduleRef.get('RoleService');
 		this.federatedInstanceService = this.moduleRef.get('FederatedInstanceService');
+		this.idService = this.moduleRef.get('IdService');
 	}
 
 	//#region Validators
@@ -369,9 +365,10 @@ export class UserEntityService implements OnModuleInit {
 			avatarUrl: user.avatarUrl ?? this.getIdenticonUrl(user),
 			avatarBlurhash: user.avatarBlurhash,
 			description: mastoapi ? mastoapi.description : profile ? profile.description : '',
-			createdAt: user.createdAt.toISOString(),
-			isBot: user.isBot ?? falsy,
-			isCat: user.isCat ?? falsy,
+			createdAt: this.idService.parse(user.id).date.toISOString(),
+			isBot: user.isBot,
+			isCat: user.isCat,
+			isSilenced: user.isSilenced || this.roleService.getUserPolicies(user.id).then(r => !r.canPublicNote),
 			speakAsCat: user.speakAsCat ?? falsy,
 			instance: user.host ? this.federatedInstanceService.federatedInstanceCache.fetch(user.host).then(instance => instance ? {
 				name: instance.name,
@@ -408,8 +405,7 @@ export class UserEntityService implements OnModuleInit {
 				backgroundUrl: user.backgroundUrl,
 				backgroundBlurhash: user.backgroundBlurhash,
 				isLocked: user.isLocked,
-				isSilenced: this.roleService.getUserPolicies(user.id).then(r => !r.canPublicNote),
-				isSuspended: user.isSuspended ?? falsy,
+				isSuspended: user.isSuspended,
 				location: profile!.location,
 				birthday: profile!.birthday,
 				listenbrainz: profile!.listenbrainz,
@@ -493,6 +489,8 @@ export class UserEntityService implements OnModuleInit {
 			...(opts.includeSecrets ? {
 				email: profile!.email,
 				emailVerified: profile!.emailVerified,
+				approved: user.approved,
+				signupReason: user.signupReason,
 				securityKeysList: profile!.twoFactorEnabled
 					? this.userSecurityKeysRepository.find({
 						where: {

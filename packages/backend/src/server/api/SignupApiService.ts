@@ -22,6 +22,7 @@ import { bindThis } from '@/decorators.js';
 import { L_CHARS, secureRndstr } from '@/misc/secure-rndstr.js';
 import { SigninService } from './SigninService.js';
 import type { FastifyRequest, FastifyReply } from 'fastify';
+import instance from './endpoints/charts/instance.js';
 
 @Injectable()
 export class SignupApiService {
@@ -63,6 +64,7 @@ export class SignupApiService {
 				host?: string;
 				invitationCode?: string;
 				emailAddress?: string;
+				reason?: string;
 				'hcaptcha-response'?: string;
 				'g-recaptcha-response'?: string;
 				'turnstile-response'?: string;
@@ -100,6 +102,7 @@ export class SignupApiService {
 		const password = body['password'];
 		const host: string | null = process.env.NODE_ENV === 'test' ? (body['host'] ?? null) : null;
 		const invitationCode = body['invitationCode'];
+		const reason = body['reason'];
 		const emailAddress = body['emailAddress'];
 
 		if (instance.emailRequiredForSignup) {
@@ -110,6 +113,13 @@ export class SignupApiService {
 
 			const res = await this.emailService.validateEmailForAccount(emailAddress);
 			if (!res.available) {
+				reply.code(400);
+				return;
+			}
+		}
+
+		if (instance.approvalRequiredForSignup) {
+			if (reason == null || typeof reason !== 'string') {
 				reply.code(400);
 				return;
 			}
@@ -165,12 +175,12 @@ export class SignupApiService {
 			const hash = await argon2.hash(password);
 
 			const pendingUser = await this.userPendingsRepository.insert({
-				id: this.idService.genId(),
-				createdAt: new Date(),
+				id: this.idService.gen(),
 				code,
 				email: emailAddress!,
 				username: username,
 				password: hash,
+				reason: reason,
 			}).then(x => this.userPendingsRepository.findOneByOrFail(x.identifiers[0]));
 
 			const link = `${this.config.url}/signup-complete/${code}`;
@@ -184,6 +194,19 @@ export class SignupApiService {
 					usedAt: new Date(),
 					pendingUserId: pendingUser.id,
 				});
+			}
+
+			reply.code(204);
+			return;
+		} else if (instance.approvalRequiredForSignup) {
+			await this.signupService.signup({
+				username, password, host, reason,
+			});
+
+			if (emailAddress) {
+				this.emailService.sendEmail(emailAddress, 'Approval pending',
+					'Congratulations! Your account is now pending approval. You will get notified when you have been accepted.',
+					'Congratulations! Your account is now pending approval. You will get notified when you have been accepted.');
 			}
 
 			reply.code(204);
@@ -223,12 +246,15 @@ export class SignupApiService {
 
 		const code = body['code'];
 
+		const instance = await this.metaService.fetch(true);
+
 		try {
 			const pendingUser = await this.userPendingsRepository.findOneByOrFail({ code });
 
 			const { account, secret } = await this.signupService.signup({
 				username: pendingUser.username,
 				passwordHash: pendingUser.password,
+				reason: pendingUser.reason,
 			});
 
 			this.userPendingsRepository.delete({
@@ -250,6 +276,15 @@ export class SignupApiService {
 					usedById: account.id,
 					pendingUserId: null,
 				});
+			}
+
+			if (instance.approvalRequiredForSignup) {
+				if (pendingUser.email) {
+					this.emailService.sendEmail(pendingUser.email, 'Approval pending',
+						'Congratulations! Your account is now pending approval. You will get notified when you have been accepted.',
+						'Congratulations! Your account is now pending approval. You will get notified when you have been accepted.');
+				}
+				return { pendingApproval: true };
 			}
 
 			return this.signinService.signin(request, reply, account as MiLocalUser);

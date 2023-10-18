@@ -25,7 +25,7 @@ jobs:
 
     steps:
       - name: Check out the repo
-        uses: actions/checkout@v4.1.0
+        uses: actions/checkout@v4.1.1
       - name: Set up Docker Buildx
         id: buildx
         uses: docker/setup-buildx-action@v3.0.0
@@ -62,10 +62,3 @@ jobs:
           labels: stable
           cache-from: type=gha
           cache-to: type=gha,mode=max
-      - name: Push update to server
-        if: steps.build.outcome == 'success'
-        uses: indiesdev/curl@v1.1
-        with:
-          url: ${{ secrets.AUTO_UPDATE_URL }}
-          method: POST
-          timeout: 600000

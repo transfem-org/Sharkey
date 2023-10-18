@@ -31,6 +31,9 @@ export type Endpoints = {
 	'admin/show-users': { req: TODO; res: TODO; };
 	'admin/silence-user': { req: TODO; res: TODO; };
 	'admin/suspend-user': { req: TODO; res: TODO; };
+	'admin/nsfw-user': { req: TODO; res: TODO; };
+	'admin/unnsfw-user': { req: TODO; res: TODO; };
+	'admin/approve-user': { req: TODO; res: TODO; };
 	'admin/unsilence-user': { req: TODO; res: TODO; };
 	'admin/unsuspend-user': { req: TODO; res: TODO; };
 	'admin/update-meta': { req: TODO; res: TODO; };
@@ -321,7 +324,10 @@ export type Endpoints = {
 	'federation/users': { req: { host: string; limit?: number; sinceId?: User['id']; untilId?: User['id']; }; res: UserDetailed[]; };
 
 	// following
-	'following/create': { req: { userId: User['id'] }; res: User; };
+	'following/create': { req: {
+		userId: User['id'],
+		withReplies?: boolean,
+	}; res: User; };
 	'following/delete': { req: { userId: User['id'] }; res: User; };
 	'following/requests/accept': { req: { userId: User['id'] }; res: null; };
 	'following/requests/cancel': { req: { userId: User['id'] }; res: User; };

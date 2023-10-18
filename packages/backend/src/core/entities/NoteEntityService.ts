@@ -314,7 +314,7 @@ export class NoteEntityService implements OnModuleInit {
 
 		const packed: Packed<'Note'> = await awaitAll({
 			id: note.id,
-			createdAt: note.createdAt.toISOString(),
+			createdAt: this.idService.parse(note.id).date.toISOString(),
 			updatedAt: note.updatedAt ? note.updatedAt.toISOString() : undefined,
 			userId: note.userId,
 			user: this.userEntityService.pack(note.user ?? note.userId, me, {
@@ -323,7 +323,7 @@ export class NoteEntityService implements OnModuleInit {
 			text: text,
 			cw: note.cw,
 			visibility: note.visibility,
-			localOnly: note.localOnly ?? undefined,
+			localOnly: note.localOnly,
 			reactionAcceptance: note.reactionAcceptance,
 			visibleUserIds: note.visibility === 'specified' ? note.visibleUserIds : undefined,
 			renoteCount: note.renoteCount,
@@ -389,7 +389,8 @@ export class NoteEntityService implements OnModuleInit {
 		if (meId) {
 			const renoteIds = notes.filter(n => n.renoteId != null).map(n => n.renoteId!);
 			// パフォーマンスのためノートが作成されてから2秒以上経っていない場合はリアクションを取得しない
-			const targets = [...notes.filter(n => n.createdAt.getTime() + 2000 < Date.now()).map(n => n.id), ...renoteIds];
+			const oldId = this.idService.gen(Date.now() - 2000);
+			const targets = [...notes.filter(n => n.id < oldId).map(n => n.id), ...renoteIds];
 			const myReactions = await this.noteReactionsRepository.findBy({
 				userId: meId,
 				noteId: In(targets),

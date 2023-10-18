@@ -21,6 +21,7 @@ import { IdService } from '@/core/IdService.js';
 import { bindThis } from '@/decorators.js';
 import { WebAuthnService } from '@/core/WebAuthnService.js';
 import { UserAuthService } from '@/core/UserAuthService.js';
+import { MetaService } from '@/core/MetaService.js';
 import { RateLimiterService } from './RateLimiterService.js';
 import { SigninService } from './SigninService.js';
 import type { AuthenticationResponseJSON } from '@simplewebauthn/typescript-types';
@@ -46,6 +47,7 @@ export class SigninApiService {
 		private signinService: SigninService,
 		private userAuthService: UserAuthService,
 		private webAuthnService: WebAuthnService,
+		private metaService: MetaService,
 	) {
 	}
 
@@ -63,6 +65,8 @@ export class SigninApiService {
 	) {
 		reply.header('Access-Control-Allow-Origin', this.config.url);
 		reply.header('Access-Control-Allow-Credentials', 'true');
+
+		const instance = await this.metaService.fetch(true);
 
 		const body = request.body;
 		const username = body['username'];
@@ -123,14 +127,24 @@ export class SigninApiService {
 
 		const profile = await this.userProfilesRepository.findOneByOrFail({ userId: user.id });
 
+		if (!user.approved && instance.approvalRequiredForSignup) {
+			reply.code(403);
+			return {
+				error: {
+					message: 'The account has not been approved by an admin yet. Try again later.',
+					code: 'NOT_APPROVED',
+					id: '22d05606-fbcf-421a-a2db-b32241faft1b',
+				},
+			};
+		}
+
 		// Compare password
 		const same = await argon2.verify(profile.password!, password) || bcrypt.compareSync(password, profile.password!);
 
 		const fail = async (status?: number, failure?: { id: string }) => {
 			// Append signin history
 			await this.signinsRepository.insert({
-				id: this.idService.genId(),
-				createdAt: new Date(),
+				id: this.idService.gen(),
 				userId: user.id,
 				ip: request.ip,
 				headers: request.headers as any,
@@ -148,6 +162,8 @@ export class SigninApiService {
 						password: newHash
 					});
 				}
+				if (!instance.approvalRequiredForSignup && !user.approved) this.usersRepository.update(user.id, { approved: true });
+
 				return this.signinService.signin(request, reply, user);
 			} else {
 				return await fail(403, {
@@ -177,6 +193,8 @@ export class SigninApiService {
 				});
 			}
 
+			if (!instance.approvalRequiredForSignup && !user.approved) this.usersRepository.update(user.id, { approved: true });
+
 			return this.signinService.signin(request, reply, user);
 		} else if (body.credential) {
 			if (!same && !profile.usePasswordLessLogin) {
@@ -188,6 +206,7 @@ export class SigninApiService {
 			const authorized = await this.webAuthnService.verifyAuthentication(user.id, body.credential);
 
 			if (authorized) {
+				if (!instance.approvalRequiredForSignup && !user.approved) this.usersRepository.update(user.id, { approved: true });
 				return this.signinService.signin(request, reply, user);
 			} else {
 				return await fail(403, {

@@ -11,9 +11,6 @@ export class MiUserPending {
 	@PrimaryColumn(id())
 	public id: string;
 
-	@Column('timestamp with time zone')
-	public createdAt: Date;
-
 	@Index({ unique: true })
 	@Column('varchar', {
 		length: 128,
@@ -34,4 +31,9 @@ export class MiUserPending {
 		length: 128,
 	})
 	public password: string;
+
+	@Column('varchar', {
+		length: 1000,
+	})
+	public reason: string;
 }

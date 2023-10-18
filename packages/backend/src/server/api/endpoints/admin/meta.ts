@@ -32,6 +32,10 @@ export const meta = {
 				type: 'boolean',
 				optional: false, nullable: false,
 			},
+			approvalRequiredForSignup: {
+				type: 'boolean',
+				optional: false, nullable: false,
+			},
 			enableHcaptcha: {
 				type: 'boolean',
 				optional: false, nullable: false,
@@ -105,6 +109,16 @@ export const meta = {
 				type: 'boolean',
 				optional: false, nullable: false,
 			},
+			silencedHosts: {
+				type: "array",
+				optional: true,
+				nullable: false,
+				items: {
+					type: "string",
+					optional: false,
+					nullable: false,
+				},
+			},
 			pinnedUsers: {
 				type: 'array',
 				optional: false, nullable: false,
@@ -165,6 +179,10 @@ export const meta = {
 				optional: false, nullable: false,
 			},
 			enableSensitiveMediaDetectionForVideos: {
+				type: 'boolean',
+				optional: false, nullable: false,
+			},
+			enableBotTrending: {
 				type: 'boolean',
 				optional: false, nullable: false,
 			},
@@ -343,6 +361,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				privacyPolicyUrl: instance.privacyPolicyUrl,
 				disableRegistration: instance.disableRegistration,
 				emailRequiredForSignup: instance.emailRequiredForSignup,
+				approvalRequiredForSignup: instance.approvalRequiredForSignup,
 				enableHcaptcha: instance.enableHcaptcha,
 				hcaptchaSiteKey: instance.hcaptchaSiteKey,
 				enableRecaptcha: instance.enableRecaptcha,
@@ -371,6 +390,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				pinnedUsers: instance.pinnedUsers,
 				hiddenTags: instance.hiddenTags,
 				blockedHosts: instance.blockedHosts,
+				silencedHosts: instance.silencedHosts,
 				sensitiveWords: instance.sensitiveWords,
 				preservedUsernames: instance.preservedUsernames,
 				hcaptchaSecretKey: instance.hcaptchaSecretKey,
@@ -380,6 +400,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				sensitiveMediaDetectionSensitivity: instance.sensitiveMediaDetectionSensitivity,
 				setSensitiveFlagAutomatically: instance.setSensitiveFlagAutomatically,
 				enableSensitiveMediaDetectionForVideos: instance.enableSensitiveMediaDetectionForVideos,
+				enableBotTrending: instance.enableBotTrending,
 				proxyAccountId: instance.proxyAccountId,
 				summalyProxy: instance.summalyProxy,
 				email: instance.email,

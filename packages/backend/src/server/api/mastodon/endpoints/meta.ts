@@ -13,7 +13,7 @@ export async function getInstance(
 		uri: config.url,
 		title: meta.name || 'Sharkey',
 		short_description:
-			meta.description?.substring(0, 50) || 'See real server website',
+			meta.description || 'This is a vanilla Sharkey Instance. It doesn\'t seem to have a description.',
 		description:
 			meta.description ||
 			'This is a vanilla Sharkey Instance. It doesn\'t seem to have a description.',
@@ -28,7 +28,7 @@ export async function getInstance(
 		thumbnail: meta.backgroundImageUrl || '/static-assets/transparent.png',
 		languages: meta.langs,
 		registrations: !meta.disableRegistration || response.registrations,
-		approval_required: !response.registrations,
+		approval_required: meta.approvalRequiredForSignup,
 		invites_enabled: response.registrations,
 		configuration: {
 			accounts: {

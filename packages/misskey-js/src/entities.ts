@@ -348,6 +348,7 @@ export type LiteInstanceMetadata = {
 	driveCapacityPerLocalUserMb: number;
 	driveCapacityPerRemoteUserMb: number;
 	emailRequiredForSignup: boolean;
+	approvalRequiredForSignup: boolean;
 	enableHcaptcha: boolean;
 	hcaptchaSiteKey: string | null;
 	enableRecaptcha: boolean;
@@ -401,9 +402,11 @@ export type InstanceMetadata = LiteInstanceMetadata | DetailedInstanceMetadata;
 export type AdminInstanceMetadata = DetailedInstanceMetadata & {
 	// TODO: There are more fields.
 	blockedHosts: string[];
+	silencedHosts: string[];
 	app192IconUrl: string | null;
 	app512IconUrl: string | null;
 	manifestJsonOverride: string;
+	enableBotTrending: boolean;
 };
 
 export type ServerInfo = {
@@ -486,6 +489,7 @@ export type Antenna = {
 	userGroupId: ID | null; // TODO
 	users: string[]; // TODO
 	caseSensitive: boolean;
+	localOnly: boolean;
 	notify: boolean;
 	withReplies: boolean;
 	withFile: boolean;
@@ -560,6 +564,7 @@ export type Instance = {
 	lastCommunicatedAt: DateString;
 	isNotResponding: boolean;
 	isSuspended: boolean;
+	isSilenced: boolean;
 	isBlocked: boolean;
 	softwareName: string | null;
 	softwareVersion: string | null;
@@ -614,6 +619,9 @@ export type ModerationLog = {
 } & ({
 	type: 'updateServerSettings';
 	info: ModerationLogPayloads['updateServerSettings'];
+} | {
+	type: 'approve';
+	info: ModerationLogPayloads['approve'];
 } | {
 	type: 'suspend';
 	info: ModerationLogPayloads['suspend'];

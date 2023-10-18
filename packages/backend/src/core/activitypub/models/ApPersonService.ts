@@ -296,19 +296,18 @@ export class ApPersonService implements OnModuleInit {
 
 		//#region resolve counts
 		const _resolver = resolver ?? this.apResolverService.createResolver();
-		const outboxcollection = await _resolver.resolveCollection(person.outbox);
-		const followerscollection = await _resolver.resolveCollection(person.followers!);
-		const followingcollection = await _resolver.resolveCollection(person.following!);
+		const outboxcollection = await _resolver.resolveCollection(person.outbox).catch(() => { return null; });
+		const followerscollection = await _resolver.resolveCollection(person.followers!).catch(() => { return null; });
+		const followingcollection = await _resolver.resolveCollection(person.following!).catch(() => { return null; });
 
 		try {
 			// Start transaction
 			await this.db.transaction(async transactionalEntityManager => {
 				user = await transactionalEntityManager.save(new MiUser({
-					id: this.idService.genId(),
+					id: this.idService.gen(),
 					avatarId: null,
 					bannerId: null,
 					backgroundId: null,
-					createdAt: new Date(),
 					lastFetchedAt: new Date(),
 					name: truncate(person.name, nameLength),
 					isLocked: person.manuallyApprovesFollowers,
@@ -317,13 +316,14 @@ export class ApPersonService implements OnModuleInit {
 					alsoKnownAs: person.alsoKnownAs,
 					isExplorable: person.discoverable,
 					username: person.preferredUsername,
+					approved: true,
 					usernameLower: person.preferredUsername?.toLowerCase(),
 					host,
 					inbox: person.inbox,
 					sharedInbox: person.sharedInbox ?? person.endpoints?.sharedInbox,
-					notesCount: outboxcollection.totalItems ?? 0,
-					followersCount: followerscollection.totalItems ?? 0,
-					followingCount: followingcollection.totalItems ?? 0,
+					notesCount: outboxcollection?.totalItems ?? 0,
+					followersCount: followerscollection?.totalItems ?? 0,
+					followingCount: followingcollection?.totalItems ?? 0,
 					followersUri: person.followers ? getApId(person.followers) : undefined,
 					featured: person.featured ? getApId(person.featured) : undefined,
 					uri: person.id,
@@ -464,6 +464,7 @@ export class ApPersonService implements OnModuleInit {
 			emojis: emojiNames,
 			name: truncate(person.name, nameLength),
 			tags,
+			approved: true,
 			isBot: getApType(object) === 'Service',
 			isCat: (person as any).isCat === true,
 			speakAsCat: (person as any).speakAsCat != null ? (person as any).speakAsCat === true : (person as any).isCat === true,
@@ -624,8 +625,7 @@ export class ApPersonService implements OnModuleInit {
 			for (const note of featuredNotes.filter((note): note is MiNote => note != null)) {
 				td -= 1000;
 				transactionalEntityManager.insert(MiUserNotePining, {
-					id: this.idService.genId(new Date(Date.now() + td)),
-					createdAt: new Date(),
+					id: this.idService.gen(Date.now() + td),
 					userId: user.id,
 					noteId: note.id,
 				});

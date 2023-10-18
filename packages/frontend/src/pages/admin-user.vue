@@ -15,6 +15,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<span class="name"><MkUserName class="name" :user="user"/></span>
 						<span class="sub"><span class="acct _monospace">@{{ acct(user) }}</span></span>
 						<span class="state">
+							<span v-if="!approved" class="silenced">{{ i18n.ts.notApproved }}</span>
+							<span v-if="approved" class="moderator">{{ i18n.ts.approved }}</span>
 							<span v-if="suspended" class="suspended">Suspended</span>
 							<span v-if="silenced" class="silenced">Silenced</span>
 							<span v-if="moderator" class="moderator">Moderator</span>
@@ -76,7 +78,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 				<FormSection>
 					<div class="_gaps">
+						<MkSwitch v-model="silenced" @update:modelValue="toggleSilence">{{ i18n.ts.silence }}</MkSwitch>
 						<MkSwitch v-model="suspended" @update:modelValue="toggleSuspend">{{ i18n.ts.suspend }}</MkSwitch>
+						<MkSwitch v-model="markedAsNSFW" @update:modelValue="toggleNSFW">{{ i18n.ts.markAsNSFW }}</MkSwitch>
 
 						<div>
 							<MkButton v-if="user.host == null" inline style="margin-right: 8px;" @click="resetPassword"><i class="ph-key ph-bold ph-lg"></i> {{ i18n.ts.resetPassword }}</MkButton>
@@ -176,6 +180,20 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<MkObjectView tall :value="user">
 				</MkObjectView>
 			</div>
+
+			<div v-else-if="tab === 'approval'" class="_gaps_m">
+				<MkKeyValue oneline>
+					<template #key>{{ i18n.ts.approvalStatus }}</template>
+					<template #value><span class="_monospace">{{ approved ? i18n.ts.approved : i18n.ts.notApproved }}</span></template>
+				</MkKeyValue>
+
+				<MkTextarea v-model="signupReason" readonly>
+					<template #label>Reason</template>
+				</MkTextarea>
+
+				<MkButton v-if="$i.isAdmin" inline success @click="approveAccount">{{ i18n.ts.approveAccount }}</MkButton>
+				<MkButton v-if="$i.isAdmin" inline danger @click="deleteAccount">{{ i18n.ts.denyAccount }}</MkButton>
+			</div>
 		</FormSuspense>
 	</MkSpacer>
 </MkStickyContainer>
@@ -222,8 +240,12 @@ let ips = $ref(null);
 let ap = $ref(null);
 let moderator = $ref(false);
 let silenced = $ref(false);
+let approved = $ref(false);
 let suspended = $ref(false);
+let markedAsNSFW = $ref(false);
 let moderationNote = $ref('');
+let signupReason = $ref('');
+
 const filesPagination = {
 	endpoint: 'admin/drive/files' as const,
 	limit: 10,
@@ -253,8 +275,11 @@ function createFetcher() {
 		ips = _ips;
 		moderator = info.isModerator;
 		silenced = info.isSilenced;
+		approved = info.approved;
 		suspended = info.isSuspended;
 		moderationNote = info.moderationNote;
+		signupReason = info.signupReason;
+		markedAsNSFW = info.alwaysMarkNsfw;
 
 		watch($$(moderationNote), async () => {
 			await os.api('admin/update-user-note', { userId: user.id, text: moderationNote });
@@ -287,6 +312,32 @@ async function resetPassword() {
 			type: 'success',
 			text: i18n.t('newPasswordIs', { password }),
 		});
+	}
+}
+
+async function toggleNSFW(v) {
+	const confirm = await os.confirm({
+		type: 'warning',
+		text: v ? i18n.ts.nsfwConfirm : i18n.ts.unNsfwConfirm,
+	});
+	if (confirm.canceled) {
+		markedAsNSFW = !v;
+	} else {
+		await os.api(v ? 'admin/nsfw-user' : 'admin/unnsfw-user', { userId: user.id });
+		await refreshUser();
+	}
+}
+
+async function toggleSilence(v) {
+	const confirm = await os.confirm({
+		type: 'warning',
+		text: v ? i18n.ts.silenceConfirm : i18n.ts.unsilenceConfirm,
+	});
+	if (confirm.canceled) {
+		silenced = !v;
+	} else {
+		await os.api(v ? 'admin/silence-user' : 'admin/unsilence-user', { userId: user.id });
+		await refreshUser();
 	}
 }
 
@@ -344,6 +395,16 @@ async function deleteAccount() {
 			text: 'input not match',
 		});
 	}
+}
+
+async function approveAccount() {
+	const confirm = await os.confirm({
+		type: 'warning',
+		text: i18n.ts.approveConfirm,
+	});
+	if (confirm.canceled) return;
+	await os.api('admin/approve-user', { userId: user.id });
+	await refreshUser();
 }
 
 async function assignRole() {
@@ -432,31 +493,60 @@ watch($$(user), () => {
 
 const headerActions = $computed(() => []);
 
-const headerTabs = $computed(() => [{
-	key: 'overview',
-	title: i18n.ts.overview,
-	icon: 'ph-info ph-bold ph-lg',
-}, {
-	key: 'roles',
-	title: i18n.ts.roles,
-	icon: 'ph-seal-check ph-bold pg-lg',
-}, {
-	key: 'announcements',
-	title: i18n.ts.announcements,
-	icon: 'ph-megaphone ph-bold ph-lg',
-}, {
-	key: 'drive',
-	title: i18n.ts.drive,
-	icon: 'ph-cloud ph-bold ph-lg',
-}, {
-	key: 'chart',
-	title: i18n.ts.charts,
-	icon: 'ph-chart-line ph-bold pg-lg',
-}, {
-	key: 'raw',
-	title: 'Raw',
-	icon: 'ph-code ph-bold pg-lg',
-}]);
+const headerTabs = $computed(() => iAmAdmin && !approved ?
+	[{
+		key: 'overview',
+		title: i18n.ts.overview,
+		icon: 'ph-info ph-bold ph-lg',
+	}, {
+		key: 'roles',
+		title: i18n.ts.roles,
+		icon: 'ph-seal-check ph-bold pg-lg',
+	}, {
+		key: 'announcements',
+		title: i18n.ts.announcements,
+		icon: 'ph-megaphone ph-bold ph-lg',
+	}, {
+		key: 'drive',
+		title: i18n.ts.drive,
+		icon: 'ph-cloud ph-bold ph-lg',
+	}, {
+		key: 'chart',
+		title: i18n.ts.charts,
+		icon: 'ph-chart-line ph-bold pg-lg',
+	}, {
+		key: 'raw',
+		title: 'Raw',
+		icon: 'ph-code ph-bold pg-lg',
+	}, {
+		key: 'approval',
+		title: 'Approval',
+		icon: 'ph-eye ph-bold pg-lg',
+	}] : [{
+		key: 'overview',
+		title: i18n.ts.overview,
+		icon: 'ph-info ph-bold ph-lg',
+	}, {
+		key: 'roles',
+		title: i18n.ts.roles,
+		icon: 'ph-seal-check ph-bold pg-lg',
+	}, {
+		key: 'announcements',
+		title: i18n.ts.announcements,
+		icon: 'ph-megaphone ph-bold ph-lg',
+	}, {
+		key: 'drive',
+		title: i18n.ts.drive,
+		icon: 'ph-cloud ph-bold ph-lg',
+	}, {
+		key: 'chart',
+		title: i18n.ts.charts,
+		icon: 'ph-chart-line ph-bold pg-lg',
+	}, {
+		key: 'raw',
+		title: 'Raw',
+		icon: 'ph-code ph-bold pg-lg',
+	}]);
 
 definePageMetadata(computed(() => ({
 	title: user ? acct(user) : i18n.ts.userInfo,
@@ -545,6 +635,18 @@ definePageMetadata(computed(() => ({
 			margin-bottom: 12px;
 			font-weight: bold;
 		}
+	}
+}
+
+.casdwq {
+	.silenced {
+		color: var(--warn);
+		border-color: var(--warn);
+	}
+
+	.moderator {
+		color: var(--success);
+		border-color: var(--success);
 	}
 }
 </style>

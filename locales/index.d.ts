@@ -140,11 +140,15 @@ export interface Locale {
     "renoteUnmute": string;
     "block": string;
     "unblock": string;
+    "markAsNSFW": string;
     "suspend": string;
     "unsuspend": string;
     "blockConfirm": string;
     "unblockConfirm": string;
+    "nsfwConfirm": string;
+    "unNsfwConfirm": string;
     "suspendConfirm": string;
+    "approveConfirm": string;
     "unsuspendConfirm": string;
     "selectList": string;
     "editList": string;
@@ -203,6 +207,7 @@ export interface Locale {
     "perDay": string;
     "stopActivityDelivery": string;
     "blockThisInstance": string;
+    "silenceThisInstance": string;
     "operations": string;
     "software": string;
     "version": string;
@@ -222,6 +227,8 @@ export interface Locale {
     "clearCachedFilesConfirm": string;
     "blockedInstances": string;
     "blockedInstancesDescription": string;
+    "silencedInstances": string;
+    "silencedInstancesDescription": string;
     "muteAndBlock": string;
     "mutedUsers": string;
     "blockedUsers": string;
@@ -459,6 +466,8 @@ export interface Locale {
     "next": string;
     "retype": string;
     "noteOf": string;
+    "expandAllCws": string;
+    "collapseAllCws": string;
     "quoteAttached": string;
     "quoteQuestion": string;
     "noMessagesYet": string;
@@ -540,6 +549,7 @@ export interface Locale {
     "deleteAll": string;
     "showFixedPostForm": string;
     "showFixedPostFormInChannel": string;
+    "withRepliesByDefaultForNewlyFollowed": string;
     "newNoteRecived": string;
     "sounds": string;
     "sound": string;
@@ -864,6 +874,7 @@ export interface Locale {
     "on": string;
     "off": string;
     "emailRequiredForSignup": string;
+    "approvalRequiredForSignup": string;
     "unread": string;
     "filter": string;
     "controlPanel": string;
@@ -922,6 +933,11 @@ export interface Locale {
     "isSystemAccount": string;
     "typeToConfirm": string;
     "deleteAccount": string;
+    "approveAccount": string;
+    "denyAccount": string;
+    "approved": string;
+    "notApproved": string;
+    "approvalStatus": string;
     "document": string;
     "numberOfPageCache": string;
     "numberOfPageCacheDescription": string;
@@ -1013,6 +1029,7 @@ export interface Locale {
     "disableFederationConfirmWarn": string;
     "disableFederationOk": string;
     "invitationRequiredToRegister": string;
+    "approvalRequiredToRegister": string;
     "emailNotSupported": string;
     "postToTheChannel": string;
     "cannotBeChangedLater": string;
@@ -1091,6 +1108,10 @@ export interface Locale {
     "installed": string;
     "branding": string;
     "enableServerMachineStats": string;
+    "enableAchievements": string;
+    "turnOffAchievements": string;
+    "enableBotTrending": string;
+    "turnOffBotTrending": string;
     "enableIdenticonGeneration": string;
     "turnOffToImprovePerformance": string;
     "createInviteCode": string;
@@ -1127,6 +1148,7 @@ export interface Locale {
     "pinnedList": string;
     "keepScreenOn": string;
     "clickToOpen": string;
+    "showBots": string;
     "verifiedLink": string;
     "notifyNotes": string;
     "unnotifyNotes": string;
@@ -1622,6 +1644,8 @@ export interface Locale {
         "almostThere": string;
         "emailAddressInfo": string;
         "emailSent": string;
+        "approvalPending": string;
+        "reasonInfo": string;
     };
     "_accountDelete": {
         "accountDelete": string;
@@ -2061,6 +2085,7 @@ export interface Locale {
         "userLists": string;
         "excludeMutingUsers": string;
         "excludeInactiveUsers": string;
+        "withReplies": string;
     };
     "_charts": {
         "federation": string;
@@ -2275,6 +2300,7 @@ export interface Locale {
         "updateRole": string;
         "assignRole": string;
         "unassignRole": string;
+        "approve": string;
         "suspend": string;
         "unsuspend": string;
         "addCustomEmoji": string;

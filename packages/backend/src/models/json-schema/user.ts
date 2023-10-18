@@ -47,6 +47,10 @@ export const packedUserLiteSchema = {
 			nullable: false, optional: true,
 			default: false,
 		},
+		isSilenced: {
+			type: 'boolean',
+			nullable: false, optional: false,
+		},
 		isBot: {
 			type: 'boolean',
 			nullable: false, optional: true,
@@ -132,10 +136,6 @@ export const packedUserDetailedNotMeOnlySchema = {
 			nullable: true, optional: false,
 		},
 		isLocked: {
-			type: 'boolean',
-			nullable: false, optional: false,
-		},
-		isSilenced: {
 			type: 'boolean',
 			nullable: false, optional: false,
 		},
