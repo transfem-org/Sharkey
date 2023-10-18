@@ -78,6 +78,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 				<FormSection>
 					<div class="_gaps">
+						<MkSwitch v-model="silenced" @update:modelValue="toggleSilence">{{ i18n.ts.silence }}</MkSwitch>
 						<MkSwitch v-model="suspended" @update:modelValue="toggleSuspend">{{ i18n.ts.suspend }}</MkSwitch>
 						<MkSwitch v-model="markedAsNSFW" @update:modelValue="toggleNSFW">{{ i18n.ts.markAsNSFW }}</MkSwitch>
 
@@ -323,6 +324,19 @@ async function toggleNSFW(v) {
 		markedAsNSFW = !v;
 	} else {
 		await os.api(v ? 'admin/nsfw-user' : 'admin/unnsfw-user', { userId: user.id });
+		await refreshUser();
+	}
+}
+
+async function toggleSilence(v) {
+	const confirm = await os.confirm({
+		type: 'warning',
+		text: v ? i18n.ts.silenceConfirm : i18n.ts.unsilenceConfirm,
+	});
+	if (confirm.canceled) {
+		silenced = !v;
+	} else {
+		await os.api(v ? 'admin/silence-user' : 'admin/unsilence-user', { userId: user.id });
 		await refreshUser();
 	}
 }

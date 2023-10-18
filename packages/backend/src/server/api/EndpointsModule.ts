@@ -63,6 +63,8 @@ import * as ep___admin_showUser from './endpoints/admin/show-user.js';
 import * as ep___admin_showUsers from './endpoints/admin/show-users.js';
 import * as ep___admin_nsfwUser from './endpoints/admin/nsfw-user.js';
 import * as ep___admin_unnsfwUser from './endpoints/admin/unnsfw-user.js';
+import * as ep___admin_silenceUser from './endpoints/admin/silence-user.js';
+import * as ep___admin_unsilenceUser from './endpoints/admin/unsilence-user.js';
 import * as ep___admin_suspendUser from './endpoints/admin/suspend-user.js';
 import * as ep___admin_approveUser from './endpoints/admin/approve-user.js';
 import * as ep___admin_unsuspendUser from './endpoints/admin/unsuspend-user.js';
@@ -419,6 +421,8 @@ const $admin_showUser: Provider = { provide: 'ep:admin/show-user', useClass: ep_
 const $admin_showUsers: Provider = { provide: 'ep:admin/show-users', useClass: ep___admin_showUsers.default };
 const $admin_nsfwUser: Provider = { provide: 'ep:admin/nsfw-user', useClass: ep___admin_nsfwUser.default };
 const $admin_unnsfwUser: Provider = { provide: 'ep:admin/unnsfw-user', useClass: ep___admin_unnsfwUser.default };
+const $admin_silenceUser: Provider = { provide: 'ep:admin/silence-user', useClass: ep___admin_silenceUser.default };
+const $admin_unsilenceUser: Provider = { provide: 'ep:admin/unsilence-user', useClass: ep___admin_unsilenceUser.default };
 const $admin_suspendUser: Provider = { provide: 'ep:admin/suspend-user', useClass: ep___admin_suspendUser.default };
 const $admin_approveUser: Provider = { provide: 'ep:admin/approve-user', useClass: ep___admin_approveUser.default };
 const $admin_unsuspendUser: Provider = { provide: 'ep:admin/unsuspend-user', useClass: ep___admin_unsuspendUser.default };
@@ -779,6 +783,8 @@ const $sponsors: Provider = { provide: 'ep:sponsors', useClass: ep___sponsors.de
 		$admin_showUsers,
 		$admin_nsfwUser,
 		$admin_unnsfwUser,
+		$admin_silenceUser,
+		$admin_unsilenceUser,
 		$admin_suspendUser,
 		$admin_approveUser,
 		$admin_unsuspendUser,
@@ -1133,6 +1139,8 @@ const $sponsors: Provider = { provide: 'ep:sponsors', useClass: ep___sponsors.de
 		$admin_showUsers,
 		$admin_nsfwUser,
 		$admin_unnsfwUser,
+		$admin_silenceUser,
+		$admin_unsilenceUser,
 		$admin_suspendUser,
 		$admin_approveUser,
 		$admin_unsuspendUser,

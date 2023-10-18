@@ -19,6 +19,7 @@ class LocalTimelineChannel extends Channel {
 	public static requireCredential = false;
 	private withRenotes: boolean;
 	private withReplies: boolean;
+	private withBots: boolean;
 	private withFiles: boolean;
 
 	constructor(
@@ -40,6 +41,7 @@ class LocalTimelineChannel extends Channel {
 
 		this.withRenotes = params.withRenotes ?? true;
 		this.withReplies = params.withReplies ?? false;
+		this.withBots = params.withBots ?? true;
 		this.withFiles = params.withFiles ?? false;
 
 		// Subscribe events
@@ -49,6 +51,7 @@ class LocalTimelineChannel extends Channel {
 	@bindThis
 	private async onNote(note: Packed<'Note'>) {
 		if (this.withFiles && (note.fileIds == null || note.fileIds.length === 0)) return;
+		if (!this.withBots && note.user.isBot) return;
 
 		if (note.user.host !== null) return;
 		if (note.visibility !== 'public') return;
@@ -60,6 +63,8 @@ class LocalTimelineChannel extends Channel {
 			// 「チャンネル接続主への返信」でもなければ、「チャンネル接続主が行った返信」でもなければ、「投稿者の投稿者自身への返信」でもない場合
 			if (reply.userId !== this.user.id && note.userId !== this.user.id && reply.userId !== note.userId) return;
 		}
+
+		if (note.user.isSilenced && !this.following[note.userId] && note.userId !== this.user!.id) return;
 
 		if (note.renote && note.text == null && (note.fileIds == null || note.fileIds.length === 0) && !this.withRenotes) return;
 

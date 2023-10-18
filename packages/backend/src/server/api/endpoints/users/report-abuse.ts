@@ -5,7 +5,7 @@
 
 import sanitizeHtml from 'sanitize-html';
 import { Inject, Injectable } from '@nestjs/common';
-import type { AbuseUserReportsRepository } from '@/models/_.js';
+import type { AbuseUserReportsRepository, UserProfilesRepository } from '@/models/_.js';
 import { IdService } from '@/core/IdService.js';
 import { Endpoint } from '@/server/api/endpoint-base.js';
 import { GlobalEventService } from '@/core/GlobalEventService.js';
@@ -59,6 +59,9 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 		@Inject(DI.abuseUserReportsRepository)
 		private abuseUserReportsRepository: AbuseUserReportsRepository,
 
+		@Inject(DI.userProfilesRepository)
+		private userProfilesRepository: UserProfilesRepository,
+
 		private idService: IdService,
 		private metaService: MetaService,
 		private emailService: EmailService,
@@ -101,11 +104,19 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 						reporterId: report.reporterId,
 						comment: report.comment,
 					});
+
+					const profile = await this.userProfilesRepository.findOneBy({ userId: moderator.id });
+
+					if (profile?.email) {
+						this.emailService.sendEmail(profile.email, 'New abuse report',
+							sanitizeHtml(ps.comment),
+							sanitizeHtml(ps.comment));
+					}
 				}
 
 				const meta = await this.metaService.fetch();
-				if (meta.email) {
-					this.emailService.sendEmail(meta.email, 'New abuse report',
+				if (meta.maintainerEmail) {
+					this.emailService.sendEmail(meta.maintainerEmail, 'New abuse report',
 						sanitizeHtml(ps.comment),
 						sanitizeHtml(ps.comment));
 				}

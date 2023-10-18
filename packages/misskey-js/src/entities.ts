@@ -406,6 +406,7 @@ export type AdminInstanceMetadata = DetailedInstanceMetadata & {
 	app192IconUrl: string | null;
 	app512IconUrl: string | null;
 	manifestJsonOverride: string;
+	enableBotTrending: boolean;
 };
 
 export type ServerInfo = {
