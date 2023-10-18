@@ -248,7 +248,7 @@ export class MiMeta {
 	public enableSensitiveMediaDetectionForVideos: boolean;
 
 	@Column('boolean', {
-		default: false,
+		default: true,
 	})
 	public enableBotTrending: boolean;
 
