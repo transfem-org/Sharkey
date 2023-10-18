@@ -88,6 +88,7 @@ COPY --chown=sharkey:sharkey . ./
 
 ENV LD_PRELOAD=/usr/local/lib/libjemalloc.so
 ENV NODE_ENV=production
+VOLUME "/sharkey/files"
 HEALTHCHECK --interval=5s --retries=20 CMD ["/bin/bash", "/sharkey/healthcheck.sh"]
 ENTRYPOINT ["/usr/bin/tini", "--"]
 CMD ["pnpm", "run", "migrateandstart"]

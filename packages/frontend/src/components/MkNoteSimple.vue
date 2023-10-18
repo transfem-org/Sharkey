@@ -22,7 +22,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { } from 'vue';
+import { watch } from 'vue';
 import * as Misskey from 'misskey-js';
 import MkNoteHeader from '@/components/MkNoteHeader.vue';
 import MkSubNoteContent from '@/components/MkSubNoteContent.vue';
@@ -31,9 +31,14 @@ import { $i } from '@/account.js';
 
 const props = defineProps<{
 	note: Misskey.entities.Note;
+	expandAllCws?: boolean;
 }>();
 
-const showContent = $ref(false);
+let showContent = $ref(false);
+
+watch(() => props.expandAllCws, (expandAllCws) => {
+	if (expandAllCws !== showContent) showContent = expandAllCws;
+});
 </script>
 
 <style lang="scss" module>

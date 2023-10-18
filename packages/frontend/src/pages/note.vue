@@ -18,7 +18,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<MkButton v-if="!showNext" :class="$style.loadNext" @click="showNext = true"><i class="ph-caret-up ph-bold ph-lg"></i></MkButton>
 						<div class="_margin _gaps_s">
 							<MkRemoteCaution v-if="note.user.host != null" :href="note.url ?? note.uri"/>
-							<MkNoteDetailed :key="note.id" v-model:note="note" :class="$style.note"/>
+							<MkNoteDetailed :key="note.id" v-model:note="note" :class="$style.note" :expandAllCws="expandAllCws"/>
 						</div>
 						<div v-if="clips && clips.length > 0" class="_margin">
 							<div style="font-weight: bold; padding: 12px;">{{ i18n.ts.clip }}</div>
@@ -65,6 +65,7 @@ let note = $ref<null | Misskey.entities.Note>();
 let clips = $ref();
 let showPrev = $ref(false);
 let showNext = $ref(false);
+let expandAllCws = $ref(false);
 let error = $ref();
 
 const prevPagination = {
@@ -111,7 +112,13 @@ watch(() => props.noteId, fetchNote, {
 	immediate: true,
 });
 
-const headerActions = $computed(() => []);
+const headerActions = $computed(() => note ? [
+	{
+		icon: `${expandAllCws ? 'ph-eye' : 'ph-eye-slash'} ph-bold ph-lg`,
+		text: expandAllCws ? i18n.ts.collapseAllCws : i18n.ts.expandAllCws,
+		handler: () => { expandAllCws = !expandAllCws; },
+	},
+] : []);
 
 const headerTabs = $computed(() => []);
 

@@ -15,9 +15,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<div v-if="!conversationLoaded" style="padding: 16px">
 			<MkButton style="margin: 0 auto;" primary rounded @click="loadConversation">{{ i18n.ts.loadConversation }}</MkButton>
 		</div>
-		<MkNoteSub v-for="note in conversation" :key="note.id" :class="$style.replyToMore" :note="note"/>
+		<MkNoteSub v-for="note in conversation" :key="note.id" :class="$style.replyToMore" :note="note" :expandAllCws="props.expandAllCws"/>
 	</div>
-	<MkNoteSub v-if="appearNote.reply" :note="appearNote.reply" :class="$style.replyTo"/>
+	<MkNoteSub v-if="appearNote.reply" :note="appearNote.reply" :class="$style.replyTo" :expandAllCws="props.expandAllCws"/>
 	<div v-if="isRenote" :class="$style.renote">
 		<MkAvatar :class="$style.renoteAvatar" :user="note.user" link preview/>
 		<i class="ph-rocket-launch ph-bold ph-lg" style="margin-right: 4px;"></i>
@@ -88,7 +88,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</div>
 				<MkPoll v-if="appearNote.poll" ref="pollViewer" :note="appearNote" :class="$style.poll"/>
 				<MkUrlPreview v-for="url in urls" :key="url" :url="url" :compact="true" :detail="true" style="margin-top: 6px;"/>
-				<div v-if="appearNote.renote" :class="$style.quote"><MkNoteSimple :note="appearNote.renote" :class="$style.quoteNote"/></div>
+				<div v-if="appearNote.renote" :class="$style.quote"><MkNoteSimple :note="appearNote.renote" :class="$style.quoteNote" :expandAllCws="props.expandAllCws"/></div>
 			</div>
 			<MkA v-if="appearNote.channel && !inChannel" :class="$style.channel" :to="`/channels/${appearNote.channel.id}`"><i class="ph-television ph-bold ph-lg"></i> {{ appearNote.channel.name }}</MkA>
 		</div>
@@ -159,7 +159,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<div v-if="!repliesLoaded" style="padding: 16px">
 				<MkButton style="margin: 0 auto;" primary rounded @click="loadReplies">{{ i18n.ts.loadReplies }}</MkButton>
 			</div>
-			<MkNoteSub v-for="note in replies" :key="note.id" :note="note" :class="$style.reply" :detail="true"/>
+			<MkNoteSub v-for="note in replies" :key="note.id" :note="note" :class="$style.reply" :detail="true" :expandAllCws="props.expandAllCws"/>
 		</div>
 		<div v-else-if="tab === 'renotes'" :class="$style.tab_renotes">
 			<MkPagination :pagination="renotesPagination" :disableAutoLoad="true">
@@ -176,7 +176,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<div v-if="!quotesLoaded" style="padding: 16px">
 				<MkButton style="margin: 0 auto;" primary rounded @click="loadQuotes">{{ i18n.ts.loadReplies }}</MkButton>
 			</div>
-			<MkNoteSub v-for="note in quotes" :key="note.id" :note="note" :class="$style.reply" :detail="true"/>
+			<MkNoteSub v-for="note in quotes" :key="note.id" :note="note" :class="$style.reply" :detail="true" :expandAllCws="props.expandAllCws"/>
 		</div>
 		<div v-else-if="tab === 'reactions'" :class="$style.tab_reactions">
 			<div :class="$style.reactionTabs">
@@ -209,7 +209,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, inject, onMounted, ref, shallowRef } from 'vue';
+import { computed, inject, onMounted, ref, shallowRef, watch } from 'vue';
 import * as mfm from 'mfm-js';
 import * as Misskey from 'misskey-js';
 import MkNoteSub from '@/components/MkNoteSub.vue';
@@ -246,6 +246,7 @@ import MkButton from '@/components/MkButton.vue';
 
 const props = defineProps<{
 	note: Misskey.entities.Note;
+	expandAllCws?: boolean;
 }>();
 
 const inChannel = inject('inChannel', null);
@@ -297,6 +298,10 @@ const replies = ref<Misskey.entities.Note[]>([]);
 const quotes = ref<Misskey.entities.Note[]>([]);
 const canRenote = computed(() => ['public', 'home'].includes(appearNote.visibility) || appearNote.userId === $i.id);
 
+watch(() => props.expandAllCws, (expandAllCws) => {
+	if (expandAllCws !== showContent.value) showContent.value = expandAllCws;
+});
+
 if ($i) {
 	os.api("notes/renotes", {
 		noteId: appearNote.id,
@@ -305,7 +310,7 @@ if ($i) {
 	}).then((res) => {
 		renoted.value = res.length > 0;
 	});
-	
+
 	os.api("notes/renotes", {
 		noteId: appearNote.id,
 		userId: $i.id,

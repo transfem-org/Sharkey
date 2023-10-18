@@ -66,7 +66,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</div>
 	</div>
 	<template v-if="depth < 5">
-		<MkNoteSub v-for="reply in replies" :key="reply.id" :note="reply" :class="$style.reply" :detail="true" :depth="depth + 1"/>
+		<MkNoteSub v-for="reply in replies" :key="reply.id" :note="reply" :class="$style.reply" :detail="true" :depth="depth + 1" :expandAllCws="props.expandAllCws"/>
 	</template>
 	<div v-else :class="$style.more">
 		<MkA class="_link" :to="notePage(note)">{{ i18n.ts.continueThread }} <i class="ph-caret-double-right ph-bold ph-lg"></i></MkA>
@@ -84,7 +84,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, ref, shallowRef } from 'vue';
+import { computed, ref, shallowRef, watch } from 'vue';
 import * as Misskey from 'misskey-js';
 import MkNoteHeader from '@/components/MkNoteHeader.vue';
 import MkReactionsViewer from '@/components/MkReactionsViewer.vue';
@@ -111,6 +111,7 @@ const canRenote = computed(() => ['public', 'home'].includes(props.note.visibili
 const props = withDefaults(defineProps<{
 	note: Misskey.entities.Note;
 	detail?: boolean;
+	expandAllCws?: boolean;
 
 	// how many notes are in between this one and the note being viewed in detail
 	depth?: number;
@@ -271,6 +272,11 @@ function undoQuote() : void {
 }
 
 let showContent = $ref(false);
+
+watch(() => props.expandAllCws, (expandAllCws) => {
+	if (expandAllCws !== showContent) showContent = expandAllCws;
+});
+
 let replies: Misskey.entities.Note[] = $ref([]);
 
 function renote() {
@@ -448,7 +454,7 @@ if (props.detail) {
 		color: var(--fgHighlighted);
 	}
 }
-	
+
 @container (max-width: 400px) {
 	.noteFooterButton {
 		&:not(:last-child) {

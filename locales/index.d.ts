@@ -140,10 +140,13 @@ export interface Locale {
     "renoteUnmute": string;
     "block": string;
     "unblock": string;
+    "markAsNSFW": string;
     "suspend": string;
     "unsuspend": string;
     "blockConfirm": string;
     "unblockConfirm": string;
+    "nsfwConfirm": string;
+    "unNsfwConfirm": string;
     "suspendConfirm": string;
     "unsuspendConfirm": string;
     "selectList": string;
@@ -203,6 +206,7 @@ export interface Locale {
     "perDay": string;
     "stopActivityDelivery": string;
     "blockThisInstance": string;
+    "silenceThisInstance": string;
     "operations": string;
     "software": string;
     "version": string;
@@ -222,6 +226,8 @@ export interface Locale {
     "clearCachedFilesConfirm": string;
     "blockedInstances": string;
     "blockedInstancesDescription": string;
+    "silencedInstances": string;
+    "silencedInstancesDescription": string;
     "muteAndBlock": string;
     "mutedUsers": string;
     "blockedUsers": string;
@@ -459,6 +465,8 @@ export interface Locale {
     "next": string;
     "retype": string;
     "noteOf": string;
+    "expandAllCws": string;
+    "collapseAllCws": string;
     "quoteAttached": string;
     "quoteQuestion": string;
     "noMessagesYet": string;
