@@ -140,10 +140,13 @@ export interface Locale {
     "renoteUnmute": string;
     "block": string;
     "unblock": string;
+    "markAsNSFW": string;
     "suspend": string;
     "unsuspend": string;
     "blockConfirm": string;
     "unblockConfirm": string;
+    "nsfwConfirm": string;
+    "unNsfwConfirm": string;
     "suspendConfirm": string;
     "approveConfirm": string;
     "unsuspendConfirm": string;
