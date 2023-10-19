@@ -28,7 +28,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<template #prefix><i class="ph-map-pin ph-bold ph-lg"></i></template>
 	</MkInput>
 
-	<MkInput v-model="profile.birthday" type="date" manualSave>
+	<MkInput v-model="profile.birthday" :max="setMaxBirthDate()" type="date" manualSave>
 		<template #label>{{ i18n.ts.birthday }}</template>
 		<template #prefix><i class="ph-cake ph-bold ph-lg"></i></template>
 	</MkInput>
@@ -134,6 +134,14 @@ const Sortable = defineAsyncComponent(() => import('vuedraggable').then(x => x.d
 
 const reactionAcceptance = computed(defaultStore.makeGetterSetter('reactionAcceptance'));
 
+const now = new Date();
+
+const setMaxBirthDate = () => {
+	const y = now.getFullYear();
+
+	return `${y}-12-31`;
+};
+
 const profile = reactive({
 	name: $i.name,
 	description: $i.description,
@@ -178,6 +186,13 @@ function saveFields() {
 }
 
 function save() {
+	if (profile.birthday && profile.birthday > setMaxBirthDate()) {
+		os.alert({
+			type: 'warning',
+			text: 'You can\'t set your birthday to the future',
+		});
+		return undefined;
+	}
 	os.apiWithDialog('i/update', {
 		// 空文字列をnullにしたいので??は使うな
 		// eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing

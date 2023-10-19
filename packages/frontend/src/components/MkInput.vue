@@ -62,7 +62,7 @@ const props = defineProps<{
 	step?: any;
 	datalist?: string[];
 	min?: number;
-	max?: number;
+	max?: number | string;
 	inline?: boolean;
 	debounce?: boolean;
 	manualSave?: boolean;
