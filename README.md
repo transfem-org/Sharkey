@@ -16,16 +16,14 @@
 ## ✨ Features
 - **ActivityPub support**\
 Not on Sharkey? No problem! Not only can Sharkey instances talk to each other, but you can make friends with people on other networks like Mastodon and Pixelfed!
-- **Reactions**\
-You can add emoji reactions to any post! No longer are you bound by a like button, show everyone exactly how you feel with the tap of a button.
-- **Post Editing**\
-In Sharkey you can edit your post, this is not possible in normal Misskey
+- **Federated Backgrounds and Music status**\
+You can add a background to your profile as well as a music status via ListenBrainz, show everyone what music you are currently listening too
 - **Mastodon API**\
 Sharkey implements the Mastodon API unlike normal Misskey
 - **UI/UX Improvements**\
 Sharkey makes some UI/UX improvements to make it easier to navigate
-- **Drive**\
-With Sharkey's built in drive, you get cloud storage right in your social media, where you can upload any files, make folders, and find media from posts you've made!
+- **Sign-Up Approval**\
+With Sharkey, you can enable sign-ups, subject to manual moderator approval and mandatory user-provided reasons for joining.
 - **Rich Web UI**\
 	Sharkey has a rich and easy to use Web UI!
 	It is highly customizable, from changing the layout and adding widgets to making custom themes.
