@@ -268,7 +268,6 @@ hr {
 
 ._panel {
 	background: color-mix(in srgb, var(--panel) 65%, transparent);
-	backdrop-filter: blur(16px);
 	border-radius: var(--radius);
 	overflow: clip;
 }
