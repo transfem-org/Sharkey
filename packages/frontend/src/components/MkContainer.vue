@@ -172,7 +172,6 @@ onUnmounted(() => {
 	z-index: 2;
 	line-height: 1.4em;
 	background: color-mix(in srgb, var(--panelHeaderBg) 35%, transparent);
-	backdrop-filter: var(--blur, blur(15px));
 }
 
 .title {
