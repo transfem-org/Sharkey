@@ -16,7 +16,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<MkCwButton v-model="showContent" :note="note"/>
 				</p>
 				<div v-show="note.cw == null || showContent">
-					<MkSubNoteContent :class="$style.text" :note="note"/>
+					<MkSubNoteContent :class="$style.text" :note="note" :translating="translating" :translation="translation"/>
 				</div>
 			</div>
 			<footer :class="$style.footer">
@@ -121,7 +121,7 @@ const props = withDefaults(defineProps<{
 
 const el = shallowRef<HTMLElement>();
 const muted = ref($i ? checkWordMute(props.note, $i, $i.mutedWords) : false);
-const translation = ref(null);
+const translation = ref<any>(null);
 const translating = ref(false);
 const isDeleted = ref(false);
 const renoted = ref(false);
