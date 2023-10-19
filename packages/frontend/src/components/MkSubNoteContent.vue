@@ -19,7 +19,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</div>
 		<MkA v-if="note.renoteId" :class="$style.rp" :to="`/notes/${note.renoteId}`" v-on:click.stop>RN: ...</MkA>
 	</div>
-	<details v-if="note.files.length > 0" :open="!defaultStore.state.collapseFiles">
+	<details v-if="note.files.length > 0" :open="!defaultStore.state.collapseFiles && !hideFiles">
 		<summary>({{ i18n.t('withNFiles', { n: note.files.length }) }})</summary>
 		<MkMediaList :mediaList="note.files"/>
 	</details>
@@ -51,6 +51,7 @@ const props = defineProps<{
 	note: Misskey.entities.Note;
 	translating?: boolean;
 	translation?: any;
+	hideFiles?: boolean;
 }>();
 
 const router = useRouter();
