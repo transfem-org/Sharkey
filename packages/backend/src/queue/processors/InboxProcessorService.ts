@@ -108,15 +108,14 @@ export class InboxProcessorService {
 
 		// また、signatureのsignerは、activity.actorと一致する必要がある
 		if (!httpSignatureValidated || authUser.user.uri !== activity.actor) {
-			let renewKeyFailed = authUser.user.uri !== activity.actor ? true : false;
+			let renewKeyFailed = true;
 			
 			if (!httpSignatureValidated) {
 				authUser.key = await this.apDbResolverService.refetchPublicKeyForApId(authUser.user);
 
 				if (authUser.key != null) {
 					httpSignatureValidated = httpSignature.verifySignature(signature, authUser.key.keyPem);
-				} else {
-					renewKeyFailed = true;
+					renewKeyFailed = false;
 				}
 			}
 
