@@ -504,7 +504,11 @@ export class NoteCreateService implements OnApplicationShutdown {
 		// Register host
 		if (this.userEntityService.isRemoteUser(user)) {
 			this.federatedInstanceService.fetch(user.host).then(async i => {
-				this.instancesRepository.increment({ id: i.id }, 'notesCount', 1);
+				if (note.renote && note.text) {
+					this.instancesRepository.increment({ id: i.id }, 'notesCount', 1);
+				} else if (!note.renote) {
+					this.instancesRepository.increment({ id: i.id }, 'notesCount', 1);
+				}
 				if ((await this.metaService.fetch()).enableChartsForFederatedInstances) {
 					this.instanceChart.updateNote(i.host, note, true);
 				}
@@ -520,8 +524,13 @@ export class NoteCreateService implements OnApplicationShutdown {
 			}
 		}
 
-		// Increment notes count (user)
-		this.incNotesCountOfUser(user);
+		if (data.renote && data.text) {
+			// Increment notes count (user)
+			this.incNotesCountOfUser(user);
+		} else if (!data.renote) {
+			// Increment notes count (user)
+			this.incNotesCountOfUser(user);
+		}
 
 		this.pushToTl(note, user);
 
