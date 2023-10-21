@@ -29,6 +29,7 @@ type Q =
 	{ op: 'is not null', k: K} |
 	{ op: 'and', qs: Q[] } |
 	{ op: 'or', qs: Q[] } |
+	{ op: 'likefile', k: K, v: V } |
 	{ op: 'not', q: Q };
 
 function compileValue(value: V): string {
@@ -54,6 +55,7 @@ function compileQuery(q: Q): string {
 		case 'or': return q.qs.length === 0 ? '' : `(${ q.qs.map(_q => compileQuery(_q)).join(' OR ') })`;
 		case 'is null': return `(${q.k} IS NULL)`;
 		case 'is not null': return `(${q.k} IS NOT NULL)`;
+		case 'likefile': return `(${q.k}::varchar LIKE ${compileValue(q.v)}))`;
 		case 'not': return `(NOT ${compileQuery(q.q)})`;
 		default: throw new Error('unrecognized query operator');
 	}
@@ -93,6 +95,7 @@ export class SearchService {
 					'userHost',
 					'channelId',
 					'tags',
+					'attachedFileTypes',
 				],
 				typoTolerance: {
 					enabled: false,
@@ -158,6 +161,8 @@ export class SearchService {
 		userId?: MiNote['userId'] | null;
 		channelId?: MiNote['channelId'] | null;
 		host?: string | null;
+		filetype?: string | null;
+		order?: string | null;
 	}, pagination: {
 		untilId?: MiNote['id'];
 		sinceId?: MiNote['id'];
@@ -172,6 +177,7 @@ export class SearchService {
 			if (pagination.sinceId) filter.qs.push({ op: '>', k: 'createdAt', v: this.idService.parse(pagination.sinceId).date.getTime() });
 			if (opts.userId) filter.qs.push({ op: '=', k: 'userId', v: opts.userId });
 			if (opts.channelId) filter.qs.push({ op: '=', k: 'channelId', v: opts.channelId });
+			if (opts.filetype) filter.qs.push({ op: 'likefile', k: 'attachedFileTypes', v: `%${opts.filetype}%` });
 			if (opts.host) {
 				if (opts.host === '.') {
 					filter.qs.push({ op: 'is null', k: 'userHost' });
@@ -180,7 +186,7 @@ export class SearchService {
 				}
 			}
 			const res = await this.meilisearchNoteIndex!.search(q, {
-				sort: ['createdAt:desc'],
+				sort: [`createdAt:${opts.order}`],
 				matchingStrategy: 'all',
 				attributesToRetrieve: ['id', 'createdAt'],
 				filter: compileQuery(filter),
