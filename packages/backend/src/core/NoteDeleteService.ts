@@ -115,19 +115,19 @@ export class NoteDeleteService {
 				this.perUserNotesChart.update(user, note, false);
 			}
 
-			if (note.renote && note.text) {
+			if (note.renoteId && note.text) {
 				// Decrement notes count (user)
 				this.decNotesCountOfUser(user);
-			} else if (!note.renote) {
+			} else if (!note.renoteId) {
 				// Decrement notes count (user)
 				this.decNotesCountOfUser(user);
 			}
 
 			if (this.userEntityService.isRemoteUser(user)) {
 				this.federatedInstanceService.fetch(user.host).then(async i => {
-					if (note.renote && note.text) {
+					if (note.renoteId && note.text) {
 						this.instancesRepository.decrement({ id: i.id }, 'notesCount', 1);
-					} else if (!note.renote) {
+					} else if (!note.renoteId) {
 						this.instancesRepository.decrement({ id: i.id }, 'notesCount', 1);
 					}
 					if ((await this.metaService.fetch()).enableChartsForFederatedInstances) {
