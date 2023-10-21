@@ -29,7 +29,6 @@ type Q =
 	{ op: 'is not null', k: K} |
 	{ op: 'and', qs: Q[] } |
 	{ op: 'or', qs: Q[] } |
-	{ op: 'likefile', k: K, v: V } |
 	{ op: 'not', q: Q };
 
 function compileValue(value: V): string {
@@ -55,7 +54,6 @@ function compileQuery(q: Q): string {
 		case 'or': return q.qs.length === 0 ? '' : `(${ q.qs.map(_q => compileQuery(_q)).join(' OR ') })`;
 		case 'is null': return `(${q.k} IS NULL)`;
 		case 'is not null': return `(${q.k} IS NOT NULL)`;
-		case 'likefile': return `(${q.k}::varchar LIKE ${compileValue(q.v)}))`;
 		case 'not': return `(NOT ${compileQuery(q.q)})`;
 		default: throw new Error('unrecognized query operator');
 	}
@@ -95,7 +93,6 @@ export class SearchService {
 					'userHost',
 					'channelId',
 					'tags',
-					'attachedFileTypes',
 				],
 				typoTolerance: {
 					enabled: false,
@@ -163,12 +160,13 @@ export class SearchService {
 		host?: string | null;
 		filetype?: string | null;
 		order?: string | null;
+		disableMeili?: boolean | null;
 	}, pagination: {
 		untilId?: MiNote['id'];
 		sinceId?: MiNote['id'];
 		limit?: number;
 	}): Promise<MiNote[]> {
-		if (this.meilisearch) {
+		if (this.meilisearch && !opts.disableMeili) {
 			const filter: Q = {
 				op: 'and',
 				qs: [],
@@ -177,7 +175,6 @@ export class SearchService {
 			if (pagination.sinceId) filter.qs.push({ op: '>', k: 'createdAt', v: this.idService.parse(pagination.sinceId).date.getTime() });
 			if (opts.userId) filter.qs.push({ op: '=', k: 'userId', v: opts.userId });
 			if (opts.channelId) filter.qs.push({ op: '=', k: 'channelId', v: opts.channelId });
-			if (opts.filetype) filter.qs.push({ op: 'likefile', k: 'attachedFileTypes', v: `%${opts.filetype}%` });
 			if (opts.host) {
 				if (opts.host === '.') {
 					filter.qs.push({ op: 'is null', k: 'userHost' });
@@ -220,6 +217,10 @@ export class SearchService {
 				} else {
 					query.andWhere('user.host = :host', { host: opts.host });
 				}
+			}
+
+			if (opts.filetype) {
+				query.andWhere(`note."attachedFileTypes"::varchar LIKE '%${opts.filetype}%'`);
 			}
 
 			this.queryService.generateVisibilityQuery(query, me);

@@ -74,7 +74,7 @@ let searchOrigin = $ref('combined');
 let notePagination = $ref();
 let user = $ref(null);
 let isLocalOnly = $ref(false);
-let order = $ref(false);
+let order = $ref(true);
 let filetype = $ref(null);
 
 function selectUser() {
@@ -112,7 +112,7 @@ async function search() {
 		params: {
 			query: searchQuery,
 			userId: user ? user.id : null,
-			order: !order ? 'desc' : 'asc',
+			order: order ? 'desc' : 'asc',
 			filetype: filetype,
 		},
 	};
