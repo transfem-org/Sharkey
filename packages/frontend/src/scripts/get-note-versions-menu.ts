@@ -1,4 +1,4 @@
-import { Ref } from 'vue';
+import { Ref, defineAsyncComponent } from 'vue';
 import * as Misskey from 'misskey-js';
 import { i18n } from '@/i18n.js';
 import * as os from '@/os.js';
@@ -20,7 +20,12 @@ export async function getNoteVersionsMenu(props: {
 	const cleanups = [] as (() => void)[];
 
 	function openVersion(info): void {
-		os.alert({ type: 'info', title: `Edits from ${info.updatedAt}`, text: info.text });
+		os.popup(defineAsyncComponent(() => import('@/components/SkOldNoteWindow.vue')), {
+			note: appearNote,
+			oldText: info.text,
+			updatedAt: info.updatedAt,
+		}, {
+		}, 'closed');
 	}
 
 	const menu: MenuItem[] = [];

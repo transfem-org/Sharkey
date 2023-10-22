@@ -387,104 +387,109 @@ export class NoteEditService implements OnApplicationShutdown {
 			update.hasPoll = !!data.poll;
 		}
 
-		await this.noteEditRepository.insert({
-			id: this.idService.gen(),
-			noteId: oldnote.id,
-			text: data.text || undefined,
-			cw: data.cw,
-			fileIds: undefined,
-			updatedAt: new Date(),
-		});
-
-		const note = new MiNote({
-			id: oldnote.id,
-			updatedAt: data.updatedAt ? data.updatedAt : new Date(),
-			fileIds: data.files ? data.files.map(file => file.id) : [],
-			replyId: data.reply ? data.reply.id : null,
-			renoteId: data.renote ? data.renote.id : null,
-			channelId: data.channel ? data.channel.id : null,
-			threadId: data.reply
-				? data.reply.threadId
-					? data.reply.threadId
-					: data.reply.id
-				: null,
-			name: data.name,
-			text: data.text,
-			hasPoll: data.poll != null,
-			cw: data.cw ?? null,
-			tags: tags.map(tag => normalizeForSearch(tag)),
-			emojis,
-			reactions: oldnote.reactions,
-			userId: user.id,
-			localOnly: data.localOnly!,
-			reactionAcceptance: data.reactionAcceptance,
-			visibility: data.visibility as any,
-			visibleUserIds: data.visibility === 'specified'
-				? data.visibleUsers
-					? data.visibleUsers.map(u => u.id)
-					: []
-				: [],
-
-			attachedFileTypes: data.files ? data.files.map(file => file.type) : [],
-
-			// 以下非正規化データ
-			replyUserId: data.reply ? data.reply.userId : null,
-			replyUserHost: data.reply ? data.reply.userHost : null,
-			renoteUserId: data.renote ? data.renote.userId : null,
-			renoteUserHost: data.renote ? data.renote.userHost : null,
-			userHost: user.host,
-		});
-
-		if (data.uri != null) note.uri = data.uri;
-		if (data.url != null) note.url = data.url;
-
-		if (mentionedUsers.length > 0) {
-			note.mentions = mentionedUsers.map(u => u.id);
-			const profiles = await this.userProfilesRepository.findBy({ userId: In(note.mentions) });
-			note.mentionedRemoteUsers = JSON.stringify(mentionedUsers.filter(u => this.userEntityService.isRemoteUser(u)).map(u => {
-				const profile = profiles.find(p => p.userId === u.id);
-				const url = profile != null ? profile.url : null;
-				return {
-					uri: u.uri,
-					url: url ?? undefined,
-					username: u.username,
-					host: u.host,
-				} as IMentionedRemoteUsers[0];
-			}));
-		}
-
-		if (data.poll != null) {
-			// Start transaction
-			await this.db.transaction(async transactionalEntityManager => {
-				await transactionalEntityManager.update(MiNote, oldnote.id, note);
-
-				const poll = new MiPoll({
-					noteId: note.id,
-					choices: data.poll!.choices,
-					expiresAt: data.poll!.expiresAt,
-					multiple: data.poll!.multiple,
-					votes: new Array(data.poll!.choices.length).fill(0),
-					noteVisibility: note.visibility,
-					userId: user.id,
-					userHost: user.host,
-				});
-
-				if (!oldnote.hasPoll) {
-					await transactionalEntityManager.insert(MiPoll, poll);
-				} else {
-					await transactionalEntityManager.update(MiPoll, oldnote.id, poll);
-				}
+		if (Object.keys(update).length > 0) {
+			await this.noteEditRepository.insert({
+				id: this.idService.gen(),
+				noteId: oldnote.id,
+				oldText: update.text ? oldnote.text : undefined,
+				newText: update.text || undefined,
+				cw: update.cw || undefined,
+				fileIds: undefined,
+				updatedAt: new Date(),
 			});
+
+			const note = new MiNote({
+				id: oldnote.id,
+				updatedAt: data.updatedAt ? data.updatedAt : new Date(),
+				fileIds: data.files ? data.files.map(file => file.id) : [],
+				replyId: data.reply ? data.reply.id : null,
+				renoteId: data.renote ? data.renote.id : null,
+				channelId: data.channel ? data.channel.id : null,
+				threadId: data.reply
+					? data.reply.threadId
+						? data.reply.threadId
+						: data.reply.id
+					: null,
+				name: data.name,
+				text: data.text,
+				hasPoll: data.poll != null,
+				cw: data.cw ?? null,
+				tags: tags.map(tag => normalizeForSearch(tag)),
+				emojis,
+				reactions: oldnote.reactions,
+				userId: user.id,
+				localOnly: data.localOnly!,
+				reactionAcceptance: data.reactionAcceptance,
+				visibility: data.visibility as any,
+				visibleUserIds: data.visibility === 'specified'
+					? data.visibleUsers
+						? data.visibleUsers.map(u => u.id)
+						: []
+					: [],
+
+				attachedFileTypes: data.files ? data.files.map(file => file.type) : [],
+
+				// 以下非正規化データ
+				replyUserId: data.reply ? data.reply.userId : null,
+				replyUserHost: data.reply ? data.reply.userHost : null,
+				renoteUserId: data.renote ? data.renote.userId : null,
+				renoteUserHost: data.renote ? data.renote.userHost : null,
+				userHost: user.host,
+			});
+
+			if (data.uri != null) note.uri = data.uri;
+			if (data.url != null) note.url = data.url;
+
+			if (mentionedUsers.length > 0) {
+				note.mentions = mentionedUsers.map(u => u.id);
+				const profiles = await this.userProfilesRepository.findBy({ userId: In(note.mentions) });
+				note.mentionedRemoteUsers = JSON.stringify(mentionedUsers.filter(u => this.userEntityService.isRemoteUser(u)).map(u => {
+					const profile = profiles.find(p => p.userId === u.id);
+					const url = profile != null ? profile.url : null;
+					return {
+						uri: u.uri,
+						url: url ?? undefined,
+						username: u.username,
+						host: u.host,
+					} as IMentionedRemoteUsers[0];
+				}));
+			}
+
+			if (data.poll != null) {
+				// Start transaction
+				await this.db.transaction(async transactionalEntityManager => {
+					await transactionalEntityManager.update(MiNote, oldnote.id, note);
+
+					const poll = new MiPoll({
+						noteId: note.id,
+						choices: data.poll!.choices,
+						expiresAt: data.poll!.expiresAt,
+						multiple: data.poll!.multiple,
+						votes: new Array(data.poll!.choices.length).fill(0),
+						noteVisibility: note.visibility,
+						userId: user.id,
+						userHost: user.host,
+					});
+
+					if (!oldnote.hasPoll) {
+						await transactionalEntityManager.insert(MiPoll, poll);
+					} else {
+						await transactionalEntityManager.update(MiPoll, oldnote.id, poll);
+					}
+				});
+			} else {
+				await this.notesRepository.update(oldnote.id, note);
+			}
+
+			setImmediate('post edited', { signal: this.#shutdownController.signal }).then(
+				() => this.postNoteEdited(note, user, data, silent, tags!, mentionedUsers!),
+				() => { /* aborted, ignore this */ },
+			);
+
+			return note;
 		} else {
-			await this.notesRepository.update(oldnote.id, note);
+			return oldnote;
 		}
-
-		setImmediate('post edited', { signal: this.#shutdownController.signal }).then(
-			() => this.postNoteEdited(note, user, data, silent, tags!, mentionedUsers!),
-			() => { /* aborted, ignore this */ },
-		);
-
-		return note;
 	}
 
 	@bindThis

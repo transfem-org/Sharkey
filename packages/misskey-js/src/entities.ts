@@ -230,7 +230,8 @@ export type NoteReaction = {
 export type NoteEdit = {
 	noteId: Note['id'];
 	note: Note;
-	text: string;
+	newText: string;
+	oldText: string;
 	cw: string;
 	fileIds: DriveFile['id'][];
 	updatedAt?: DateString;

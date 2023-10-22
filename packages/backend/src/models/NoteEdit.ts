@@ -24,7 +24,12 @@ export class NoteEdit {
 	@Column("text", {
 		nullable: true,
 	})
-	public text: string | null;
+	public oldText: string | null;
+
+	@Column("text", {
+		nullable: true,
+	})
+	public newText: string | null;
 
 	@Column("varchar", {
 		length: 512,

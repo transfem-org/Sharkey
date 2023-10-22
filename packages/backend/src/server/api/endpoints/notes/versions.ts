@@ -51,7 +51,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 			for (const edit of edits) {
 				editArray.push({
 					updatedAt: new Date(edit.updatedAt).toLocaleString('UTC', { hour: 'numeric', minute: 'numeric', second: 'numeric', year: 'numeric', month: 'short', day: 'numeric' }),
-					text: edit.text,
+					text: edit.oldText,
 				});
 			}
 

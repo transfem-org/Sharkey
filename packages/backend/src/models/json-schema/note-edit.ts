@@ -26,7 +26,12 @@ export const packedNoteEdit = {
 			nullable: false,
 			format: "id",
 		},
-		text: {
+		oldText: {
+			type: "string",
+			optional: true,
+			nullable: true,
+		},
+		newText: {
 			type: "string",
 			optional: true,
 			nullable: true,
