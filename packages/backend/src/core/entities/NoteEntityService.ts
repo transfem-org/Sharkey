@@ -110,16 +110,29 @@ export class NoteEntityService implements OnModuleInit {
 			} else if (packedNote.mentions && packedNote.mentions.some(id => meId === id)) {
 				// 自分へのメンション
 				hide = false;
+			} else if (packedNote.renote && (meId === packedNote.renote.userId)) {
+				hide = false;
 			} else {
-				// フォロワーかどうか
-				const isFollowing = await this.followingsRepository.exist({
-					where: {
-						followeeId: packedNote.userId,
-						followerId: meId,
-					},
-				});
+				if (packedNote.renote) {
+					const isFollowing = await this.followingsRepository.exist({
+						where: {
+							followeeId: packedNote.renote.userId,
+							followerId: meId,
+						},
+					});
+					
+					hide = !isFollowing;
+				} else {
+					// フォロワーかどうか
+					const isFollowing = await this.followingsRepository.exist({
+						where: {
+							followeeId: packedNote.userId,
+							followerId: meId,
+						},
+					});
 
-				hide = !isFollowing;
+					hide = !isFollowing;
+				}
 			}
 		}
 
