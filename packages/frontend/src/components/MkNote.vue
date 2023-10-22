@@ -903,6 +903,7 @@ function readPromo() {
 
 .text {
 	overflow-wrap: break-word;
+	overflow: hidden;
 }
 
 .replyIcon {

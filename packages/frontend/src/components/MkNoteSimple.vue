@@ -69,6 +69,7 @@ watch(() => props.expandAllCws, (expandAllCws) => {
 
 .header {
 	margin-bottom: 2px;
+	z-index: 2;
 }
 
 .cw {
@@ -77,12 +78,14 @@ watch(() => props.expandAllCws, (expandAllCws) => {
 	margin: 0;
 	padding: 0;
 	overflow-wrap: break-word;
+	overflow: hidden;
 }
 
 .text {
 	cursor: default;
 	margin: 0;
 	padding: 0;
+	overflow: hidden;
 }
 
 @container (min-width: 250px) {

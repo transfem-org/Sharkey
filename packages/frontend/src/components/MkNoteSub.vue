@@ -10,7 +10,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<MkAvatar :class="$style.avatar" :user="note.user" link preview/>
 		<div :class="$style.body">
 			<MkNoteHeader :class="$style.header" :note="note" :mini="true"/>
-			<div>
+			<div :class="$style.content">
 				<p v-if="note.cw != null" :class="$style.cw">
 					<Mfm v-if="note.cw != ''" style="margin-right: 8px;" :text="note.cw" :author="note.user" :i="$i"/>
 					<MkCwButton v-model="showContent" :note="note"/>
@@ -434,6 +434,10 @@ if (props.detail) {
 .body {
 	flex: 1;
 	min-width: 0;
+}
+
+.content {
+	overflow: hidden;
 }
 
 .header {

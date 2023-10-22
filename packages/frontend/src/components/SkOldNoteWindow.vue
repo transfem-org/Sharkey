@@ -164,6 +164,7 @@ const showTicker = (defaultStore.state.instanceTicker === 'always') || (defaultS
 .note {
 	padding: 32px;
 	font-size: 1.2em;
+	overflow: hidden;
 }
 
 .noteHeader {
@@ -171,6 +172,7 @@ const showTicker = (defaultStore.state.instanceTicker === 'always') || (defaultS
 	position: relative;
 	margin-bottom: 16px;
 	align-items: center;
+	z-index: 2;
 }
 
 .noteHeaderAvatar {

@@ -760,6 +760,7 @@ if (appearNote.reply && appearNote.reply.replyId && defaultStore.state.autoloadC
 .note {
 	padding: 32px;
 	font-size: 1.2em;
+	overflow: hidden;
 
 	&:hover > .main > .footer > .button {
 		opacity: 1;
@@ -771,6 +772,7 @@ if (appearNote.reply && appearNote.reply.replyId && defaultStore.state.autoloadC
 	position: relative;
 	margin-bottom: 16px;
 	align-items: center;
+	z-index: 2;
 }
 
 .noteHeaderAvatar {
@@ -817,6 +819,7 @@ if (appearNote.reply && appearNote.reply.replyId && defaultStore.state.autoloadC
 .noteContent {
 	container-type: inline-size;
 	overflow-wrap: break-word;
+	z-index: 1;
 }
 
 .cw {
