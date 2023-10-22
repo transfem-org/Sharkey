@@ -278,6 +278,7 @@ import * as ep___notes_reactions_delete from './endpoints/notes/reactions/delete
 import * as ep___notes_renotes from './endpoints/notes/renotes.js';
 import * as ep___notes_replies from './endpoints/notes/replies.js';
 import * as ep___notes_edit from './endpoints/notes/edit.js';
+import * as ep___notes_versions from './endpoints/notes/versions.js';
 import * as ep___notes_searchByTag from './endpoints/notes/search-by-tag.js';
 import * as ep___notes_search from './endpoints/notes/search.js';
 import * as ep___notes_show from './endpoints/notes/show.js';
@@ -646,6 +647,7 @@ const $notes_translate: Provider = { provide: 'ep:notes/translate', useClass: ep
 const $notes_unrenote: Provider = { provide: 'ep:notes/unrenote', useClass: ep___notes_unrenote.default };
 const $notes_userListTimeline: Provider = { provide: 'ep:notes/user-list-timeline', useClass: ep___notes_userListTimeline.default };
 const $notes_edit: Provider = { provide: 'ep:notes/edit', useClass: ep___notes_edit.default };
+const $notes_versions: Provider = { provide: 'ep:notes/versions', useClass: ep___notes_versions.default };
 const $notifications_create: Provider = { provide: 'ep:notifications/create', useClass: ep___notifications_create.default };
 const $notifications_markAllAsRead: Provider = { provide: 'ep:notifications/mark-all-as-read', useClass: ep___notifications_markAllAsRead.default };
 const $notifications_testNotification: Provider = { provide: 'ep:notifications/test-notification', useClass: ep___notifications_testNotification.default };
@@ -1008,6 +1010,7 @@ const $sponsors: Provider = { provide: 'ep:sponsors', useClass: ep___sponsors.de
 		$notes_unrenote,
 		$notes_userListTimeline,
 		$notes_edit,
+		$notes_versions,
 		$notifications_create,
 		$notifications_markAllAsRead,
 		$notifications_testNotification,
@@ -1364,6 +1367,7 @@ const $sponsors: Provider = { provide: 'ep:sponsors', useClass: ep___sponsors.de
 		$notes_unrenote,
 		$notes_userListTimeline,
 		$notes_edit,
+		$notes_versions,
 		$notifications_create,
 		$notifications_markAllAsRead,
 		$pagePush,
