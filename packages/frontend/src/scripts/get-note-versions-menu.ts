@@ -3,6 +3,7 @@ import * as Misskey from 'misskey-js';
 import { i18n } from '@/i18n.js';
 import * as os from '@/os.js';
 import { MenuItem } from '@/types/menu.js';
+import { dateTimeFormat } from './intl-const.js';
 
 export async function getNoteVersionsMenu(props: {
 	note: Misskey.entities.Note;
@@ -35,9 +36,13 @@ export async function getNoteVersionsMenu(props: {
 
 	await statePromise.then((versions) => {
 		for (const edit of versions) {
+			const _time = edit.updatedAt == null ? NaN :
+				typeof edit.updatedAt === 'number' ? edit.updatedAt :
+				(edit.updatedAt instanceof Date ? edit.updatedAt : new Date(edit.updatedAt)).getTime();
+			
 			menu.push({
 				icon: 'ph-pencil ph-bold ph-lg',
-				text: `${edit.updatedAt}`,
+				text: dateTimeFormat.format(_time),
 				action: () => openVersion(edit),
 			});
 		}

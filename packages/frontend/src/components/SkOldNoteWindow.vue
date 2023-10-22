@@ -2,7 +2,7 @@
 <MkWindow ref="window" :initialWidth="500" :initialHeight="300" :canResize="true" @closed="emit('closed')">
 	<template #header>
 		<i class="ph-warning-circle ph-bold ph-lg" style="margin-right: 0.5em;"></i>
-		<b>Previous Version from {{ appearNote.createdAt }}</b>
+		<b>Previous Version from {{ dateTimeFormat.format(new Date(appearNote.createdAt)) }}</b>
 	</template>
 	<div ref="el" :class="$style.root">
 		<article :class="$style.note">
@@ -92,6 +92,7 @@ import { extractUrlFromMfm } from '@/scripts/extract-url-from-mfm.js';
 import { $i } from '@/account.js';
 import { i18n } from '@/i18n.js';
 import { deepClone } from '@/scripts/clone.js';
+import { dateTimeFormat } from '@/scripts/intl-const.js';
 
 const props = defineProps<{
 	note: Misskey.entities.Note;
