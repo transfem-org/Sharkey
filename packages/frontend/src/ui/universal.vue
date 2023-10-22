@@ -240,6 +240,7 @@ body {
 	position: fixed;
 	top: 0;
 	left: 0;
+	overscroll-behavior: none;
 }
 
 #misskey_app {
