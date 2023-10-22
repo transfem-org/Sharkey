@@ -220,17 +220,17 @@ export class SearchService {
 			}
 
 			if (opts.filetype) {
-				// this is very ugly, but the "correct" solution would
-				// be `and exists (select 1 from
-				// unnest(note."attachedFileTypes") x(t) where t like
-				// :type)` and I can't find a way to get TypeORM to
-				// generate that; this hack works because `~*` is
-				// "regexp match, ignoring case" and the stringified
-				// version of an array of varchars (which is what
-				// `attachedFileTypes` is) looks like `{foo,bar}`, so
-				// we're looking for opts.filetype as the first half
-				// of a MIME type, either at start of the array (after
-				// the `{`) or later (after a `,`)
+				/* this is very ugly, but the "correct" solution would
+				  be `and exists (select 1 from
+				  unnest(note."attachedFileTypes") x(t) where t like
+				  :type)` and I can't find a way to get TypeORM to
+				  generate that; this hack works because `~*` is
+				  "regexp match, ignoring case" and the stringified
+				  version of an array of varchars (which is what
+				  `attachedFileTypes` is) looks like `{foo,bar}`, so
+				  we're looking for opts.filetype as the first half of
+				  a MIME type, either at start of the array (after the
+				  `{`) or later (after a `,`) */
 				query.andWhere(`note."attachedFileTypes"::varchar ~* :type`, { type: `[{,]${opts.filetype}/` });
 			}
 
