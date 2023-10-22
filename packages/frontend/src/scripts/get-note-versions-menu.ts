@@ -37,7 +37,6 @@ export async function getNoteVersionsMenu(props: {
 			});
 		}
 	});
-	console.log(menu);
 
 	const cleanup = () => {
 		if (_DEV_) console.log('note menu cleanup', cleanups);
