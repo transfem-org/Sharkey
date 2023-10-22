@@ -388,6 +388,8 @@ export class NoteEditService implements OnApplicationShutdown {
 		}
 
 		if (Object.keys(update).length > 0) {
+			const exists = await this.noteEditRepository.findOneBy({ noteId: oldnote.id });
+
 			await this.noteEditRepository.insert({
 				id: this.idService.gen(),
 				noteId: oldnote.id,
@@ -395,6 +397,7 @@ export class NoteEditService implements OnApplicationShutdown {
 				newText: update.text || undefined,
 				cw: update.cw || undefined,
 				fileIds: undefined,
+				oldDate: exists ? oldnote.updatedAt as Date : this.idService.parse(oldnote.id).date,
 				updatedAt: new Date(),
 			});
 

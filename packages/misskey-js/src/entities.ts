@@ -235,6 +235,7 @@ export type NoteEdit = {
 	cw: string;
 	fileIds: DriveFile['id'][];
 	updatedAt?: DateString;
+	oldDate: DateString;
 }
 
 export type Notification = {

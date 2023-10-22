@@ -50,12 +50,13 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 
 			for (const edit of edits) {
 				editArray.push({
+					oldDate: edit.oldDate,
 					updatedAt: edit.updatedAt,
 					text: edit.oldText,
 				});
 			}
 
-			editArray = editArray.sort((a, b) => { return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime(); });
+			editArray = editArray.sort((a, b) => { return new Date(b.oldDate).getTime() - new Date(a.oldDate).getTime(); });
 
 			return editArray;
 		});

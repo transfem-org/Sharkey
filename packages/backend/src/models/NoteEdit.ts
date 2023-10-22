@@ -48,4 +48,9 @@ export class NoteEdit {
 		comment: "The updated date of the Note.",
 	})
 	public updatedAt: Date;
+
+	@Column("timestamp with time zone", {
+		comment: "The old date from before the edit",
+	})
+	public oldDate: Date;
 }

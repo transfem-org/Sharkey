@@ -24,7 +24,7 @@ export async function getNoteVersionsMenu(props: {
 		os.popup(defineAsyncComponent(() => import('@/components/SkOldNoteWindow.vue')), {
 			note: appearNote,
 			oldText: info.text,
-			updatedAt: info.updatedAt,
+			updatedAt: info.oldDate ? info.oldDate : info.updatedAt,
 		}, {
 		}, 'closed');
 	}
@@ -36,13 +36,13 @@ export async function getNoteVersionsMenu(props: {
 
 	await statePromise.then((versions) => {
 		for (const edit of versions) {
-			const _time = edit.updatedAt == null ? NaN :
-				typeof edit.updatedAt === 'number' ? edit.updatedAt :
-				(edit.updatedAt instanceof Date ? edit.updatedAt : new Date(edit.updatedAt)).getTime();
+			const _time = edit.oldDate == null ? NaN :
+				typeof edit.oldDate === 'number' ? edit.oldDate :
+				(edit.oldDate instanceof Date ? edit.oldDate : new Date(edit.oldDate)).getTime();
 			
 			menu.push({
 				icon: 'ph-pencil ph-bold ph-lg',
-				text: dateTimeFormat.format(_time),
+				text: _time ? dateTimeFormat.format(_time) : dateTimeFormat.format(new Date(edit.updatedAt)),
 				action: () => openVersion(edit),
 			});
 		}
