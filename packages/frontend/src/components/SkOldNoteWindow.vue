@@ -120,7 +120,7 @@ if (noteViewInterruptors.length > 0) {
 }
 
 const replaceContent = () => {
-	note.text = props.oldText;
+	props.oldText ? note.text = props.oldText : undefined;
 	note.createdAt = props.updatedAt;
 };
 replaceContent();
