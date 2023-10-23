@@ -3,7 +3,7 @@ import megalodon, { Entity, MegalodonInterface } from 'megalodon';
 import querystring from 'querystring';
 import { IsNull } from 'typeorm';
 import multer from 'fastify-multer';
-import type { NotesRepository, UserProfilesRepository, UsersRepository } from '@/models/_.js';
+import type { NoteEditRepository, NotesRepository, UserProfilesRepository, UsersRepository } from '@/models/_.js';
 import { DI } from '@/di-symbols.js';
 import { bindThis } from '@/decorators.js';
 import type { Config } from '@/config.js';
@@ -31,6 +31,8 @@ export class MastodonApiServerService {
         private notesRepository: NotesRepository,
 		@Inject(DI.userProfilesRepository)
 		private userProfilesRepository: UserProfilesRepository,
+		@Inject(DI.noteEditRepository)
+		private noteEditRepository: NoteEditRepository,
         @Inject(DI.config)
         private config: Config,
         private metaService: MetaService,
@@ -754,7 +756,7 @@ export class MastodonApiServerService {
 		//#endregion
 
 		//#region Timelines
-		const TLEndpoint = new ApiTimelineMastodon(fastify, this.config, this.usersRepository, this.notesRepository, this.userEntityService);
+		const TLEndpoint = new ApiTimelineMastodon(fastify, this.config, this.usersRepository, this.notesRepository, this.noteEditRepository, this.userEntityService);
 
 		// GET Endpoints
 		TLEndpoint.getTL();
@@ -779,7 +781,7 @@ export class MastodonApiServerService {
 		//#endregion
 
 		//#region Status
-		const NoteEndpoint = new ApiStatusMastodon(fastify, this.config, this.usersRepository, this.notesRepository, this.userEntityService);
+		const NoteEndpoint = new ApiStatusMastodon(fastify, this.config, this.usersRepository, this.notesRepository, this.noteEditRepository, this.userEntityService);
 
 		// GET Endpoints
 		NoteEndpoint.getStatus();

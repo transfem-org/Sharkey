@@ -63,7 +63,10 @@ import * as ep___admin_showUser from './endpoints/admin/show-user.js';
 import * as ep___admin_showUsers from './endpoints/admin/show-users.js';
 import * as ep___admin_nsfwUser from './endpoints/admin/nsfw-user.js';
 import * as ep___admin_unnsfwUser from './endpoints/admin/unnsfw-user.js';
+import * as ep___admin_silenceUser from './endpoints/admin/silence-user.js';
+import * as ep___admin_unsilenceUser from './endpoints/admin/unsilence-user.js';
 import * as ep___admin_suspendUser from './endpoints/admin/suspend-user.js';
+import * as ep___admin_approveUser from './endpoints/admin/approve-user.js';
 import * as ep___admin_unsuspendUser from './endpoints/admin/unsuspend-user.js';
 import * as ep___admin_updateMeta from './endpoints/admin/update-meta.js';
 import * as ep___admin_deleteAccount from './endpoints/admin/delete-account.js';
@@ -285,6 +288,7 @@ import * as ep___notes_translate from './endpoints/notes/translate.js';
 import * as ep___notes_unrenote from './endpoints/notes/unrenote.js';
 import * as ep___notes_userListTimeline from './endpoints/notes/user-list-timeline.js';
 import * as ep___notes_edit from './endpoints/notes/edit.js';
+import * as ep___notes_versions from './endpoints/notes/versions.js';
 import * as ep___notifications_create from './endpoints/notifications/create.js';
 import * as ep___notifications_markAllAsRead from './endpoints/notifications/mark-all-as-read.js';
 import * as ep___notifications_testNotification from './endpoints/notifications/test-notification.js';
@@ -416,7 +420,10 @@ const eps = [
 	['admin/show-users', ep___admin_showUsers],
 	['admin/nsfw-user', ep___admin_nsfwUser],
 	['admin/unnsfw-user', ep___admin_unnsfwUser],
+	['admin/silence-user', ep___admin_silenceUser],
+	['admin/unsilence-user', ep___admin_unsilenceUser],
 	['admin/suspend-user', ep___admin_suspendUser],
+	['admin/approve-user', ep___admin_approveUser],
 	['admin/unsuspend-user', ep___admin_unsuspendUser],
 	['admin/update-meta', ep___admin_updateMeta],
 	['admin/delete-account', ep___admin_deleteAccount],
@@ -638,6 +645,7 @@ const eps = [
 	['notes/unrenote', ep___notes_unrenote],
 	['notes/user-list-timeline', ep___notes_userListTimeline],
 	['notes/edit', ep___notes_edit],
+	['notes/versions', ep___notes_versions],
 	['notifications/create', ep___notifications_create],
 	['notifications/mark-all-as-read', ep___notifications_markAllAsRead],
 	['notifications/test-notification', ep___notifications_testNotification],

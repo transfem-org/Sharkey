@@ -7,9 +7,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 <MkSpacer :contentMax="narrow ? 800 : 1100" :style="background">
 	<div ref="rootEl" class="ftskorzw" :class="{ wide: !narrow }" style="container-type: inline-size;">
 		<div class="main _gaps">
-			<!-- TODO -->
-			<!-- <div class="punished" v-if="user.isSuspended"><i class="ph-warning ph-bold ph-lg" style="margin-right: 8px;"></i> {{ i18n.ts.userSuspended }}</div> -->
-			<!-- <div class="punished" v-if="user.isSilenced"><i class="ph-warning ph-bold ph-lg" style="margin-right: 8px;"></i> {{ i18n.ts.userSilenced }}</div> -->
+			<MkInfo v-if="user.isSuspended" :warn="true">{{ i18n.ts.userSuspended }}</MkInfo>
+			<MkInfo v-if="user.isSilenced" :warn="true">{{ i18n.ts.userSilenced }}</MkInfo>
 
 			<div class="profile _gaps">
 				<MkAccountMoved v-if="user.movedTo" :movedTo="user.movedTo"/>
@@ -34,7 +33,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<span v-if="$i && $i.id != user.id && user.isFollowed" class="followed">{{ i18n.ts.followsYou }}</span>
 						<div v-if="$i" class="actions">
 							<button class="menu _button" @click="menu"><i class="ph-dots-three ph-bold ph-lg"></i></button>
-							<MkFollowButton v-if="$i.id != user.id" :user="user" :inline="true" :transparent="false" :full="true" class="koudoku"/>
+							<MkFollowButton v-if="$i.id != user.id" v-model:user="user" :inline="true" :transparent="false" :full="true" class="koudoku"/>
 						</div>
 					</div>
 					<MkAvatar class="avatar" :user="user" indicator/>
@@ -140,7 +139,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<template #header>
 						<MkTab v-model="noteview" :class="$style.tab">
 							<option :value="null">{{ i18n.ts.notes }}</option>
-							<option value="replies">{{ i18n.ts.all }}</option>
+							<option value="all">{{ i18n.ts.all }}</option>
 							<option value="files">{{ i18n.ts.withFiles }}</option>
 						</MkTab>
 					</template>
@@ -213,6 +212,7 @@ const props = withDefaults(defineProps<{
 
 const router = useRouter();
 
+let user = $ref(props.user);
 let parallaxAnimationId = $ref<null | number>(null);
 let narrow = $ref<null | boolean>(null);
 let rootEl = $ref<null | HTMLElement>(null);
@@ -285,7 +285,7 @@ const age = $computed(() => {
 });
 
 function menu(ev) {
-	const { menu, cleanup } = getUserMenu(props.user, router);
+	const { menu, cleanup } = getUserMenu(user, router);
 	os.popupMenu(menu, ev.currentTarget ?? ev.target).finally(cleanup);
 }
 
@@ -367,7 +367,7 @@ onUnmounted(() => {
 	background-size: cover;
 	background-position: center;
 	pointer-events: none;
-	filter: blur(8px) opacity(0.6);
+	filter: var(--blur, blur(10px)) opacity(0.6);
 	// Funny CSS schenanigans to make background escape container
 	left: -100%;
 	top: -5%;
@@ -391,7 +391,6 @@ onUnmounted(() => {
 				position: relative;
 				overflow: clip;
 				background: color-mix(in srgb, var(--panel) 65%, transparent);
-				backdrop-filter: blur(16px);
 
 				> .banner-container {
 					position: relative;
@@ -755,7 +754,7 @@ onUnmounted(() => {
 	margin: calc(var(--margin) / 2) 0;
 	padding: calc(var(--margin) / 2) 0;
 	background: color-mix(in srgb, var(--bg) 65%, transparent);
-	backdrop-filter: blur(16px);
+	backdrop-filter: var(--blur, blur(15px));
 	border-radius: 5px;
 	> button {
 		border-radius: 8px;

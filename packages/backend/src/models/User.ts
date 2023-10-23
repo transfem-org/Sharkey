@@ -175,6 +175,12 @@ export class MiUser {
 
 	@Column('boolean', {
 		default: false,
+		comment: 'Whether the User is silenced.',
+	})
+	public isSilenced: boolean;
+
+	@Column('boolean', {
+		default: false,
 		comment: 'Whether the User is locked.',
 	})
 	public isLocked: boolean;
@@ -271,6 +277,16 @@ export class MiUser {
 		comment: 'The native access token of the User. It will be null if the origin of the user is local.',
 	})
 	public token: string | null;
+
+	@Column('boolean', {
+		default: false,
+	})
+	public approved: boolean;
+
+	@Column('varchar', {
+		length: 1000, nullable: true,
+	})
+	public signupReason: string | null;
 
 	constructor(data: Partial<MiUser>) {
 		if (data == null) return;

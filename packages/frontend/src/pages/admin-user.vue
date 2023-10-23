@@ -15,6 +15,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<span class="name"><MkUserName class="name" :user="user"/></span>
 						<span class="sub"><span class="acct _monospace">@{{ acct(user) }}</span></span>
 						<span class="state">
+							<span v-if="!approved" class="silenced">{{ i18n.ts.notApproved }}</span>
+							<span v-if="approved && !user.host" class="moderator">{{ i18n.ts.approved }}</span>
 							<span v-if="suspended" class="suspended">Suspended</span>
 							<span v-if="silenced" class="silenced">Silenced</span>
 							<span v-if="moderator" class="moderator">Moderator</span>
@@ -76,6 +78,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 				<FormSection>
 					<div class="_gaps">
+						<MkSwitch v-model="silenced" @update:modelValue="toggleSilence">{{ i18n.ts.silence }}</MkSwitch>
 						<MkSwitch v-model="suspended" @update:modelValue="toggleSuspend">{{ i18n.ts.suspend }}</MkSwitch>
 						<MkSwitch v-model="markedAsNSFW" @update:modelValue="toggleNSFW">{{ i18n.ts.markAsNSFW }}</MkSwitch>
 
@@ -223,9 +226,11 @@ let ips = $ref(null);
 let ap = $ref(null);
 let moderator = $ref(false);
 let silenced = $ref(false);
+let approved = $ref(false);
 let suspended = $ref(false);
 let markedAsNSFW = $ref(false);
 let moderationNote = $ref('');
+
 const filesPagination = {
 	endpoint: 'admin/drive/files' as const,
 	limit: 10,
@@ -255,6 +260,7 @@ function createFetcher() {
 		ips = _ips;
 		moderator = info.isModerator;
 		silenced = info.isSilenced;
+		approved = info.approved;
 		suspended = info.isSuspended;
 		moderationNote = info.moderationNote;
 		markedAsNSFW = info.alwaysMarkNsfw;
@@ -302,6 +308,19 @@ async function toggleNSFW(v) {
 		markedAsNSFW = !v;
 	} else {
 		await os.api(v ? 'admin/nsfw-user' : 'admin/unnsfw-user', { userId: user.id });
+		await refreshUser();
+	}
+}
+
+async function toggleSilence(v) {
+	const confirm = await os.confirm({
+		type: 'warning',
+		text: v ? i18n.ts.silenceConfirm : i18n.ts.unsilenceConfirm,
+	});
+	if (confirm.canceled) {
+		silenced = !v;
+	} else {
+		await os.api(v ? 'admin/silence-user' : 'admin/unsilence-user', { userId: user.id });
 		await refreshUser();
 	}
 }
@@ -561,6 +580,18 @@ definePageMetadata(computed(() => ({
 			margin-bottom: 12px;
 			font-weight: bold;
 		}
+	}
+}
+
+.casdwq {
+	.silenced {
+		color: var(--warn);
+		border-color: var(--warn);
+	}
+
+	.moderator {
+		color: var(--success);
+		border-color: var(--success);
 	}
 }
 </style>

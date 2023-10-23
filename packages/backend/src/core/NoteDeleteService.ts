@@ -115,9 +115,21 @@ export class NoteDeleteService {
 				this.perUserNotesChart.update(user, note, false);
 			}
 
+			if (note.renoteId && note.text) {
+				// Decrement notes count (user)
+				this.decNotesCountOfUser(user);
+			} else if (!note.renoteId) {
+				// Decrement notes count (user)
+				this.decNotesCountOfUser(user);
+			}
+
 			if (this.userEntityService.isRemoteUser(user)) {
 				this.federatedInstanceService.fetch(user.host).then(async i => {
-					this.instancesRepository.decrement({ id: i.id }, 'notesCount', 1);
+					if (note.renoteId && note.text) {
+						this.instancesRepository.decrement({ id: i.id }, 'notesCount', 1);
+					} else if (!note.renoteId) {
+						this.instancesRepository.decrement({ id: i.id }, 'notesCount', 1);
+					}
 					if ((await this.metaService.fetch()).enableChartsForFederatedInstances) {
 						this.instanceChart.updateNote(i.host, note, false);
 					}
@@ -145,6 +157,17 @@ export class NoteDeleteService {
 				note: note,
 			});
 		}
+	}
+
+	@bindThis
+	private decNotesCountOfUser(user: { id: MiUser['id']; }) {
+		this.usersRepository.createQueryBuilder().update()
+			.set({
+				updatedAt: new Date(),
+				notesCount: () => '"notesCount" - 1',
+			})
+			.where('id = :id', { id: user.id })
+			.execute();
 	}
 
 	@bindThis

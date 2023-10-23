@@ -7,7 +7,7 @@ import { parse } from 'mfm-js';
 import { GetterService } from '../GetterService.js';
 import type { IMentionedRemoteUsers } from '@/models/Note.js';
 import type { MiUser } from '@/models/User.js';
-import type { NotesRepository, UsersRepository } from '@/models/_.js';
+import type { NoteEditRepository, NotesRepository, UsersRepository } from '@/models/_.js';
 import { UserEntityService } from '@/core/entities/UserEntityService.js';
 
 const CHAR_COLLECTION = '0123456789abcdefghijklmnopqrstuvwxyz';
@@ -39,11 +39,14 @@ export class MastoConverters {
 
 		@Inject(DI.notesRepository)
 		private notesRepository: NotesRepository,
+
+		@Inject(DI.noteEditRepository)
+		private noteEditRepository: NoteEditRepository,
 		
 		private userEntityService: UserEntityService
 	) {
 		this.MfmService = new MfmService(this.config);
-		this.GetterService = new GetterService(this.usersRepository, this.notesRepository, this.userEntityService);
+		this.GetterService = new GetterService(this.usersRepository, this.notesRepository, this.noteEditRepository, this.userEntityService);
 	}
 
 	private encode(u: MiUser, m: IMentionedRemoteUsers): MastodonEntity.Mention {

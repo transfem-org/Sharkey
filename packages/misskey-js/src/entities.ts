@@ -16,6 +16,7 @@ export type UserLite = {
 	onlineStatus: 'online' | 'active' | 'offline' | 'unknown';
 	avatarUrl: string;
 	avatarBlurhash: string;
+	approved: boolean;
 	emojis: {
 		name: string;
 		url: string;
@@ -229,10 +230,12 @@ export type NoteReaction = {
 export type NoteEdit = {
 	noteId: Note['id'];
 	note: Note;
-	text: string;
+	newText: string;
+	oldText: string;
 	cw: string;
 	fileIds: DriveFile['id'][];
 	updatedAt?: DateString;
+	oldDate: DateString;
 }
 
 export type Notification = {
@@ -348,6 +351,7 @@ export type LiteInstanceMetadata = {
 	driveCapacityPerLocalUserMb: number;
 	driveCapacityPerRemoteUserMb: number;
 	emailRequiredForSignup: boolean;
+	approvalRequiredForSignup: boolean;
 	enableHcaptcha: boolean;
 	hcaptchaSiteKey: string | null;
 	enableRecaptcha: boolean;
@@ -405,6 +409,7 @@ export type AdminInstanceMetadata = DetailedInstanceMetadata & {
 	app192IconUrl: string | null;
 	app512IconUrl: string | null;
 	manifestJsonOverride: string;
+	enableBotTrending: boolean;
 };
 
 export type ServerInfo = {
@@ -617,6 +622,9 @@ export type ModerationLog = {
 } & ({
 	type: 'updateServerSettings';
 	info: ModerationLogPayloads['updateServerSettings'];
+} | {
+	type: 'approve';
+	info: ModerationLogPayloads['approve'];
 } | {
 	type: 'suspend';
 	info: ModerationLogPayloads['suspend'];

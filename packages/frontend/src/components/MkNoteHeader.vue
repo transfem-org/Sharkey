@@ -22,7 +22,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<i v-else-if="note.visibility === 'followers'" class="ph-lock ph-bold ph-lg"></i>
 			<i v-else-if="note.visibility === 'specified'" ref="specified" class="ph-envelope ph-bold ph-lg"></i>
 		</span>
-		<span v-if="note.updatedAt" style="margin-left: 0.5em;" title="Edited"><i class="ph-pencil ph-bold ph-lg"></i></span>
+		<span v-if="note.updatedAt" ref="menuVersionsButton" style="margin-left: 0.5em;" title="Edited" @mousedown="menuVersions()"><i class="ph-pencil ph-bold ph-lg"></i></span>
 		<span v-if="note.localOnly" style="margin-left: 0.5em;" :title="i18n.ts._visibility['disableFederation']"><i class="ph-rocket ph-bold pg-lg"></i></span>
 		<span v-if="note.channel" style="margin-left: 0.5em;" :title="note.channel.name"><i class="ph-television ph-bold ph-lg"></i></span>
 	</div>
@@ -30,15 +30,25 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { } from 'vue';
+import { shallowRef } from 'vue';
 import * as Misskey from 'misskey-js';
 import { i18n } from '@/i18n.js';
 import { notePage } from '@/filters/note.js';
 import { userPage } from '@/filters/user.js';
+import { getNoteVersionsMenu } from '@/scripts/get-note-versions-menu.js';
+import { popupMenu } from '@/os.js';
 
-defineProps<{
+const props = defineProps<{
 	note: Misskey.entities.Note;
 }>();
+const menuVersionsButton = shallowRef<HTMLElement>();
+
+async function menuVersions(viaKeyboard = false): Promise<void> {
+	const { menu, cleanup } = await getNoteVersionsMenu({ note: props.note, menuVersionsButton });
+	popupMenu(menu, menuVersionsButton.value, {
+		viaKeyboard,
+	}).then(focus).finally(cleanup);
+}
 </script>
 
 <style lang="scss" module>

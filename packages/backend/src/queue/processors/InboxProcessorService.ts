@@ -88,7 +88,7 @@ export class InboxProcessorService {
 					if (err.isClientError) {
 						throw new Bull.UnrecoverableError(`skip: Ignored deleted actors on both ends ${activity.actor} - ${err.statusCode}`);
 					}
-					throw new Error(`Error in actor ${activity.actor} - ${err.statusCode ?? err}`);
+					throw new Error(`Error in actor ${activity.actor} - ${err.statusCode}`);
 				}
 			}
 		}
@@ -104,12 +104,23 @@ export class InboxProcessorService {
 		}
 
 		// HTTP-Signatureの検証
-		const httpSignatureValidated = httpSignature.verifySignature(signature, authUser.key.keyPem);
+		let httpSignatureValidated = httpSignature.verifySignature(signature, authUser.key.keyPem);
 
 		// また、signatureのsignerは、activity.actorと一致する必要がある
 		if (!httpSignatureValidated || authUser.user.uri !== activity.actor) {
+			let renewKeyFailed = true;
+			
+			if (!httpSignatureValidated) {
+				authUser.key = await this.apDbResolverService.refetchPublicKeyForApId(authUser.user);
+
+				if (authUser.key != null) {
+					httpSignatureValidated = httpSignature.verifySignature(signature, authUser.key.keyPem);
+					renewKeyFailed = false;
+				}
+			}
+
 			// 一致しなくても、でもLD-Signatureがありそうならそっちも見る
-			if (activity.signature) {
+			if (activity.signature && renewKeyFailed) {
 				if (activity.signature.type !== 'RsaSignature2017') {
 					throw new Bull.UnrecoverableError(`skip: unsupported LD-signature type ${activity.signature.type}`);
 				}

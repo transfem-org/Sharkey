@@ -19,7 +19,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<i v-else-if="metadata.icon" :class="[$style.titleIcon, metadata.icon]"></i>
 
 				<div :class="$style.title">
-					<MkUserName v-if="metadata.userName" :user="metadata.userName" :nowrap="true"/>
+					<MkUserName v-if="metadata.userName" :user="metadata.userName" :nowrap="false"/>
 					<div v-else-if="metadata.title">{{ metadata.title }}</div>
 					<div v-if="metadata.subtitle" :class="$style.subtitle">
 						{{ metadata.subtitle }}

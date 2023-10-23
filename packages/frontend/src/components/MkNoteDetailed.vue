@@ -58,7 +58,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 							<i v-else-if="appearNote.visibility === 'followers'" class="ph-lock ph-bold ph-lg"></i>
 							<i v-else-if="appearNote.visibility === 'specified'" ref="specified" class="ph-envelope ph-bold ph-lg"></i>
 						</span>
-						<span v-if="appearNote.updatedAt" style="margin-left: 0.5em;" title="Edited"><i class="ph-pencil ph-bold ph-lg"></i></span>
+						<span v-if="appearNote.updatedAt" ref="menuVersionsButton" style="margin-left: 0.5em;" title="Edited" @mousedown="menuVersions()"><i class="ph-pencil ph-bold ph-lg"></i></span>
 						<span v-if="appearNote.localOnly" style="margin-left: 0.5em;" :title="i18n.ts._visibility['disableFederation']"><i class="ph-rocket ph-bold pg-lg"></i></span>
 					</div>
 				</div>
@@ -232,6 +232,7 @@ import { extractUrlFromMfm } from '@/scripts/extract-url-from-mfm.js';
 import { $i } from '@/account.js';
 import { i18n } from '@/i18n.js';
 import { getNoteClipMenu, getNoteMenu } from '@/scripts/get-note-menu.js';
+import { getNoteVersionsMenu } from '@/scripts/get-note-versions-menu.js';
 import { useNoteCapture } from '@/scripts/use-note-capture.js';
 import { deepClone } from '@/scripts/clone.js';
 import { useTooltip } from '@/scripts/use-tooltip.js';
@@ -273,6 +274,7 @@ const isRenote = (
 
 const el = shallowRef<HTMLElement>();
 const menuButton = shallowRef<HTMLElement>();
+const menuVersionsButton = shallowRef<HTMLElement>();
 const renoteButton = shallowRef<HTMLElement>();
 const renoteTime = shallowRef<HTMLElement>();
 const reactButton = shallowRef<HTMLElement>();
@@ -612,6 +614,13 @@ function menu(viaKeyboard = false): void {
 	}).then(focus).finally(cleanup);
 }
 
+async function menuVersions(viaKeyboard = false): Promise<void> {
+	const { menu, cleanup } = await getNoteVersionsMenu({ note: note, menuVersionsButton });
+	os.popupMenu(menu, menuVersionsButton.value, {
+		viaKeyboard,
+	}).then(focus).finally(cleanup);
+}
+
 async function clip() {
 	os.popupMenu(await getNoteClipMenu({ note: note, isDeleted }), clipButton.value).then(focus);
 }
@@ -751,6 +760,7 @@ if (appearNote.reply && appearNote.reply.replyId && defaultStore.state.autoloadC
 .note {
 	padding: 32px;
 	font-size: 1.2em;
+	overflow: hidden;
 
 	&:hover > .main > .footer > .button {
 		opacity: 1;
@@ -762,6 +772,7 @@ if (appearNote.reply && appearNote.reply.replyId && defaultStore.state.autoloadC
 	position: relative;
 	margin-bottom: 16px;
 	align-items: center;
+	z-index: 2;
 }
 
 .noteHeaderAvatar {
@@ -808,6 +819,7 @@ if (appearNote.reply && appearNote.reply.replyId && defaultStore.state.autoloadC
 .noteContent {
 	container-type: inline-size;
 	overflow-wrap: break-word;
+	z-index: 1;
 }
 
 .cw {

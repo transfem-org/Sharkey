@@ -10,9 +10,16 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<span v-if="note.deletedAt" style="opacity: 0.5">({{ i18n.ts.deleted }})</span>
 		<MkA v-if="note.replyId" :class="$style.reply" :to="`/notes/${note.replyId}`" v-on:click.stop><i class="ph-arrow-bend-left-up ph-bold pg-lg"></i></MkA>
 		<Mfm v-if="note.text" :text="note.text" :author="note.user" :i="$i" :emojiUrls="note.emojis"/>
+		<div v-if="note.text && translating || note.text && translation" :class="$style.translation">
+			<MkLoading v-if="translating" mini/>
+			<div v-else>
+				<b>{{ i18n.t('translatedFrom', { x: translation.sourceLang }) }}: </b>
+				<Mfm :text="translation.text" :author="note.user" :i="$i" :emojiUrls="note.emojis"/>
+			</div>
+		</div>
 		<MkA v-if="note.renoteId" :class="$style.rp" :to="`/notes/${note.renoteId}`" v-on:click.stop>RN: ...</MkA>
 	</div>
-	<details v-if="note.files.length > 0" :open="!defaultStore.state.collapseFiles">
+	<details v-if="note.files.length > 0" :open="!defaultStore.state.collapseFiles && !hideFiles">
 		<summary>({{ i18n.t('withNFiles', { n: note.files.length }) }})</summary>
 		<MkMediaList :mediaList="note.files"/>
 	</details>
@@ -42,6 +49,9 @@ import { useRouter } from '@/router.js';
 
 const props = defineProps<{
 	note: Misskey.entities.Note;
+	translating?: boolean;
+	translation?: any;
+	hideFiles?: boolean;
 }>();
 
 const router = useRouter();
@@ -100,6 +110,13 @@ const collapsed = $ref(isLong);
 	margin-left: 4px;
 	font-style: oblique;
 	color: var(--renote);
+}
+
+.translation {
+	border: solid 0.5px var(--divider);
+	border-radius: var(--radius);
+	padding: 12px;
+	margin-top: 8px;
 }
 
 .showLess {

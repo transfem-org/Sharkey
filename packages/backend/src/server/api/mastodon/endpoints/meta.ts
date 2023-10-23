@@ -28,7 +28,7 @@ export async function getInstance(
 		thumbnail: meta.backgroundImageUrl || '/static-assets/transparent.png',
 		languages: meta.langs,
 		registrations: !meta.disableRegistration || response.registrations,
-		approval_required: !response.registrations,
+		approval_required: meta.approvalRequiredForSignup,
 		invites_enabled: response.registrations,
 		configuration: {
 			accounts: {

@@ -59,6 +59,7 @@ export const paramDef = {
 		cacheRemoteFiles: { type: 'boolean' },
 		cacheRemoteSensitiveFiles: { type: 'boolean' },
 		emailRequiredForSignup: { type: 'boolean' },
+		approvalRequiredForSignup: { type: 'boolean' },
 		enableHcaptcha: { type: 'boolean' },
 		hcaptchaSiteKey: { type: 'string', nullable: true },
 		hcaptchaSecretKey: { type: 'string', nullable: true },
@@ -72,6 +73,7 @@ export const paramDef = {
 		sensitiveMediaDetectionSensitivity: { type: 'string', enum: ['medium', 'low', 'high', 'veryLow', 'veryHigh'] },
 		setSensitiveFlagAutomatically: { type: 'boolean' },
 		enableSensitiveMediaDetectionForVideos: { type: 'boolean' },
+		enableBotTrending: { type: 'boolean' },
 		proxyAccountId: { type: 'string', format: 'misskey:id', nullable: true },
 		maintainerName: { type: 'string', nullable: true },
 		maintainerEmail: { type: 'string', nullable: true },
@@ -249,6 +251,10 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				set.emailRequiredForSignup = ps.emailRequiredForSignup;
 			}
 
+			if (ps.approvalRequiredForSignup !== undefined) {
+				set.approvalRequiredForSignup = ps.approvalRequiredForSignup;
+			}
+
 			if (ps.enableHcaptcha !== undefined) {
 				set.enableHcaptcha = ps.enableHcaptcha;
 			}
@@ -299,6 +305,10 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 
 			if (ps.enableSensitiveMediaDetectionForVideos !== undefined) {
 				set.enableSensitiveMediaDetectionForVideos = ps.enableSensitiveMediaDetectionForVideos;
+			}
+
+			if (ps.enableBotTrending !== undefined) {
+				set.enableBotTrending = ps.enableBotTrending;
 			}
 
 			if (ps.proxyAccountId !== undefined) {

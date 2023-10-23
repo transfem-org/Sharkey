@@ -21,6 +21,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					:withRenotes="withRenotes"
 					:withReplies="withReplies"
 					:onlyFiles="onlyFiles"
+					:withBots="withBots"
 					:sound="true"
 					@queue="queueUpdated"
 				/>
@@ -63,6 +64,7 @@ let srcWhenNotSignin = $ref(isLocalTimelineAvailable ? 'local' : 'global');
 const src = $computed({ get: () => ($i ? defaultStore.reactiveState.tl.value.src : srcWhenNotSignin), set: (x) => saveSrc(x) });
 const withRenotes = $ref(true);
 const withReplies = $ref($i ? defaultStore.state.tlWithReplies : false);
+const withBots = $ref($i ? defaultStore.state.tlWithBots : true);
 const onlyFiles = $ref(false);
 
 watch($$(src), () => queue = 0);

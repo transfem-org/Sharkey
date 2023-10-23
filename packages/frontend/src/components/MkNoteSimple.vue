@@ -14,7 +14,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<MkCwButton v-model="showContent" :note="note"/>
 			</p>
 			<div v-show="note.cw == null || showContent">
-				<MkSubNoteContent :class="$style.text" :note="note"/>
+				<MkSubNoteContent :hideFiles="hideFiles" :class="$style.text" :note="note"/>
 			</div>
 		</div>
 	</div>
@@ -32,6 +32,7 @@ import { $i } from '@/account.js';
 const props = defineProps<{
 	note: Misskey.entities.Note;
 	expandAllCws?: boolean;
+	hideFiles?: boolean;
 }>();
 
 let showContent = $ref(false);
@@ -68,6 +69,7 @@ watch(() => props.expandAllCws, (expandAllCws) => {
 
 .header {
 	margin-bottom: 2px;
+	z-index: 2;
 }
 
 .cw {
@@ -76,12 +78,14 @@ watch(() => props.expandAllCws, (expandAllCws) => {
 	margin: 0;
 	padding: 0;
 	overflow-wrap: break-word;
+	overflow: hidden;
 }
 
 .text {
 	cursor: default;
 	margin: 0;
 	padding: 0;
+	overflow: hidden;
 }
 
 @container (min-width: 250px) {

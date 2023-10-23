@@ -204,11 +204,19 @@ export async function common(createVue: () => App<Element>) {
 
 	if (defaultStore.state.keepScreenOn) {
 		if ('wakeLock' in navigator) {
-			navigator.wakeLock.request('screen');
+			try {
+				navigator.wakeLock.request('screen');
+			} catch (err) {
+				return;
+			}
 
 			document.addEventListener('visibilitychange', async () => {
 				if (document.visibilityState === 'visible') {
-					navigator.wakeLock.request('screen');
+					try {
+						navigator.wakeLock.request('screen');
+					} catch (err) {
+						return;
+					}
 				}
 			});
 		}
