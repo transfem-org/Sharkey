@@ -402,7 +402,7 @@ antennaKeywordsDescription: "Separate with spaces for an AND condition or with l
 notifyAntenna: "Notify about new notes"
 withFileAntenna: "Only notes with files"
 enableServiceworker: "Enable Push-Notifications for your Browser"
-antennaUsersDescription: "List one username per line"
+antennaUsersDescription: "List one username per line. Use \"*@instance.com\" to specify all users of an instance"
 caseSensitive: "Case sensitive"
 withReplies: "Include replies"
 connectedTo: "Following account(s) are connected"

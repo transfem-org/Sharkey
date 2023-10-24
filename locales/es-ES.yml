@@ -391,7 +391,7 @@ antennaKeywordsDescription: "Separar con espacios es una declaración AND, separ
 notifyAntenna: "Notificar nueva nota"
 withFileAntenna: "Sólo notas con archivos adjuntados"
 enableServiceworker: "Activar ServiceWorker"
-antennaUsersDescription: "Elegir nombres de usuarios separados por una linea nueva"
+antennaUsersDescription: "Elegir nombres de usuarios separados por una linea nueva. Utilice \"*@instance.com\" para especificar todos los usuarios de una instancia."
 caseSensitive: "Distinguir mayúsculas de minúsculas"
 withReplies: "Incluir respuestas"
 connectedTo: "Estas cuentas están conectadas"
