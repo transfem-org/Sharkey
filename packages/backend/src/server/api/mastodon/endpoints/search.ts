@@ -1,6 +1,6 @@
 import { Converter } from 'megalodon';
 import { convertAccount, convertStatus } from '../converters.js';
-import { convertTimelinesArgsId, limitToInt } from './timeline.js';
+import { limitToInt } from './timeline.js';
 import type { MegalodonInterface } from 'megalodon';
 import type { FastifyRequest } from 'fastify';
 
@@ -71,7 +71,7 @@ export class ApiSearchMastodon {
 
 	public async SearchV1() {
 		try {
-			const query: any = convertTimelinesArgsId(limitToInt(this.request.query as any));
+			const query: any = limitToInt(this.request.query as any);
 			const type = query.type || '';
 			const data = await this.client.search(query.q, { type: type, ...query });
 			return data.data;
@@ -83,7 +83,7 @@ export class ApiSearchMastodon {
 
 	public async SearchV2() {
 		try {
-			const query: any = convertTimelinesArgsId(limitToInt(this.request.query as any));
+			const query: any = limitToInt(this.request.query as any);
 			const type = query.type;
 			const acct = !type || type === 'accounts' ? await this.client.search(query.q, { type: 'accounts', ...query }) : null;
 			const stat = !type || type === 'statuses' ? await this.client.search(query.q, { type: 'statuses', ...query }) : null;

@@ -1,5 +1,4 @@
-import { IdConvertType as IdType, convertId, convertNotification } from '../converters.js';
-import { convertTimelinesArgsId } from './timeline.js';
+import { convertNotification } from '../converters.js';
 import type { MegalodonInterface, Entity } from 'megalodon';
 import type { FastifyRequest } from 'fastify';
 
@@ -19,7 +18,7 @@ export class ApiNotifyMastodon {
 
 	public async getNotifications() {
 		try {
-			const data = await this.client.getNotifications( convertTimelinesArgsId(toLimitToInt(this.request.query)) );
+			const data = await this.client.getNotifications( toLimitToInt(this.request.query) );
 			const notifs = data.data;
 			const processed = notifs.map((n: Entity.Notification) => {
 				const convertedn = convertNotification(n);
@@ -39,7 +38,7 @@ export class ApiNotifyMastodon {
 
 	public async getNotification() {
 		try {
-			const data = await this.client.getNotification( convertId((this.request.params as any).id, IdType.SharkeyId) );
+			const data = await this.client.getNotification( (this.request.params as any).id );
 			const notif = convertNotification(data.data);
 			if (notif.type !== 'follow' && notif.type !== 'follow_request' && notif.type === 'reaction') notif.type = 'favourite';
 			return notif;
@@ -51,7 +50,7 @@ export class ApiNotifyMastodon {
 
 	public async rmNotification() {
 		try {
-			const data = await this.client.dismissNotification( convertId((this.request.params as any).id, IdType.SharkeyId) );
+			const data = await this.client.dismissNotification( (this.request.params as any).id );
 			return data.data;
 		} catch (e: any) {
 			console.error(e);

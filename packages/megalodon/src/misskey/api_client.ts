@@ -78,8 +78,10 @@ namespace MisskeyAPI {
 				acct = `${u.username}@${u.host}`;
 				acctUrl = `https://${u.host}/@${u.username}`;
 			}
+      const fqn = `${u.username}@${u.host ?? host}`;
       return {
         id: u.id,
+        fqn: fqn,
         username: u.username,
         acct: acct,
         display_name: u.name ? u.name : '',
@@ -465,8 +467,8 @@ namespace MisskeyAPI {
 
     export const stats = (s: Entity.Stats): MegalodonEntity.Stats => {
       return {
-        user_count: s.usersCount,
-        status_count: s.notesCount,
+        user_count: s.originalUsersCount,
+        status_count: s.originalNotesCount,
         domain_count: s.instances
       }
     }

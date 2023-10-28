@@ -64,15 +64,15 @@
     "socks-proxy-agent": "^8.0.2",
     "typescript": "5.1.6",
     "uuid": "^9.0.1",
-    "ws": "8.14.2"
-  },
-  "devDependencies": {
+    "ws": "8.14.2",
     "@types/core-js": "^2.5.6",
     "@types/form-data": "^2.5.0",
     "@types/jest": "^29.5.5",
     "@types/object-assign-deep": "^0.4.1",
     "@types/parse-link-header": "^2.0.1",
-    "@types/uuid": "^9.0.4",
+    "@types/uuid": "^9.0.4"
+  },
+  "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^6.7.2",
     "@typescript-eslint/parser": "^6.7.2",
     "eslint": "^8.49.0",

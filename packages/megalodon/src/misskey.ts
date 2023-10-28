@@ -2017,7 +2017,7 @@ export default class Misskey implements MegalodonInterface {
       }
       if (options.exclude_type) {
         params = Object.assign(params, {
-          excludeType: options.exclude_type.map(e => MisskeyAPI.Converter.encodeNotificationType(e))
+          excludeTypes: options.exclude_type.map(e => MisskeyAPI.Converter.encodeNotificationType(e))
         })
       }
     }

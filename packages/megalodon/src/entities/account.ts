@@ -5,15 +5,16 @@
 namespace Entity {
   export type Account = {
     id: string
+    fqn?: string
     username: string
     acct: string
     display_name: string
     locked: boolean
     discoverable?: boolean
-    group: boolean | null
-    noindex: boolean | null
-    suspended: boolean | null
-    limited: boolean | null
+    group?: boolean | null
+    noindex?: boolean | null
+    suspended?: boolean | null
+    limited?: boolean | null
     created_at: string
     followers_count: number
     following_count: number
