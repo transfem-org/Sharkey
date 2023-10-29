@@ -112,7 +112,7 @@ export class ApiAccountMastodon {
 				(this.request.params as any).id, 
 				limitToInt(this.request.query as any),
 			);
-			return data.data.map((account) => this.mastoconverter.convertAccount(account));
+			return await Promise.all(data.data.map(async (account) => await this.mastoconverter.convertAccount(account)));
 		} catch (e: any) {
 			console.error(e);
 			console.error(e.response.data);
@@ -126,7 +126,7 @@ export class ApiAccountMastodon {
 				(this.request.params as any).id, 
 				limitToInt(this.request.query as any),
 			);
-			return data.data.map((account) => this.mastoconverter.convertAccount(account));
+			return await Promise.all(data.data.map(async (account) => await this.mastoconverter.convertAccount(account)));
 		} catch (e: any) {
 			console.error(e);
 			console.error(e.response.data);
