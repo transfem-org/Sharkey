@@ -238,6 +238,16 @@ export default class Misskey implements MegalodonInterface {
           description: options.note
         })
       }
+      if (options.avatar) {
+        params = Object.assign(params, {
+          avatarId: options.avatar
+        })
+      }
+      if (options.header) {
+        params = Object.assign(params, {
+          bannerId: options.header
+        })
+      }
       if (options.locked !== undefined) {
         params = Object.assign(params, {
           isLocked: options.locked.toString() === 'true' ? true : false
