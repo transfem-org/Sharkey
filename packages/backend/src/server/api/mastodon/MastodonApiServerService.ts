@@ -258,14 +258,19 @@ export class MastodonApiServerService {
 			try {
 				if (_request.files.length > 0 && accessTokens) {
 					const tokeninfo = await this.accessTokensRepository.findOneBy({ token: accessTokens.replace('Bearer ', '') });
-					console.error(_request.files);
-					if (tokeninfo && (_request.files as any)['avatar']) {
+					const avatar = (_request.files as any).find((obj: any) => {
+						return obj.fieldname === 'avatar';
+					});
+					const header = (_request.files as any).find((obj: any) => {
+						return obj.fieldname === 'header';
+					});
+
+					if (tokeninfo && avatar) {
 						console.error('avatar');
-						const file = toSingleLast((_request.files as any)['avatar']);
 						const upload = await this.driveService.addFile({
 							user: { id: tokeninfo.userId, host: null },
-							path: file.path,
-							name: file.originalname !== null && file.originalname !== 'file' ? file.originalname : undefined,
+							path: avatar.path,
+							name: avatar.originalname !== null && avatar.originalname !== 'file' ? avatar.originalname : undefined,
 							sensitive: false,				
 						});
 						console.error(upload);
@@ -273,12 +278,11 @@ export class MastodonApiServerService {
 							(_request.body as any).avatar = upload.id;
 						}
 					}
-					if (tokeninfo && (_request.files as any)['header']) {
-						const file = toSingleLast((_request.files as any)['header']);				
+					if (tokeninfo && (_request.files as any)['header']) {			
 						const upload = await this.driveService.addFile({
 							user: { id: tokeninfo.userId, host: null },
-							path: file.path,
-							name: file.originalname !== null && file.originalname !== 'file' ? file.originalname : undefined,
+							path: header.path,
+							name: header.originalname !== null && header.originalname !== 'file' ? header.originalname : undefined,
 							sensitive: false,				
 						});
 						if (upload.type.startsWith('image/')) {
