@@ -123,11 +123,7 @@ export class MastoConverters {
 		const note = await this.getterService.getNote(status.id);
 		const noteUser = await this.getUser(status.account.id);
 
-		const reactionEmojiNames = Object.keys(note.reactions)
-			.filter(x => x.startsWith(':') && x.includes('@') && !x.includes('@.'))
-			.map(x => this.reactionService.decodeReaction(x).reaction.replaceAll(':', ''));
-
-		const emojis = await this.customEmojiService.populateEmojis(reactionEmojiNames, noteUser.host ? noteUser.host : this.config.host);
+		const emojis = await this.customEmojiService.populateEmojis(note.emojis, noteUser.host ? noteUser.host : this.config.host);
 		const emoji: Entity.Emoji[] = [];
 		Object.entries(emojis).forEach(entry => {
 			const [key, value] = entry;
