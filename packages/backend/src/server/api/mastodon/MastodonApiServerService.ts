@@ -258,8 +258,9 @@ export class MastodonApiServerService {
 			try {
 				if (_request.files.length > 0 && accessTokens) {
 					const tokeninfo = await this.accessTokensRepository.findOneBy({ token: accessTokens.replace('Bearer ', '') });
-					console.error(tokeninfo);
+					console.error(_request.files);
 					if (tokeninfo && (_request.files as any)['avatar']) {
+						console.error('avatar');
 						const file = toSingleLast((_request.files as any)['avatar']);
 						const upload = await this.driveService.addFile({
 							user: { id: tokeninfo.userId, host: null },
@@ -267,6 +268,7 @@ export class MastodonApiServerService {
 							name: file.originalname !== null && file.originalname !== 'file' ? file.originalname : undefined,
 							sensitive: false,				
 						});
+						console.error(upload);
 						if (upload.type.startsWith('image/')) {
 							(_request.body as any).avatar = upload.id;
 						}
