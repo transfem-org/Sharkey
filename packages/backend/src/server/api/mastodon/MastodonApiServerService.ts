@@ -256,8 +256,8 @@ export class MastodonApiServerService {
 			const client = getClient(BASE_URL, accessTokens); // we are using this here, because in private mode some info isnt
 			// displayed without being logged in
 			try {
-				if (_request.files.length > 0) {
-					const tokeninfo = await this.accessTokensRepository.findOneBy({ token: accessTokens });
+				if (_request.files.length > 0 && accessTokens) {
+					const tokeninfo = await this.accessTokensRepository.findOneBy({ token: accessTokens.replace('Bearer ', '') });
 					console.error(tokeninfo);
 					if (tokeninfo && (_request.files as any)['avatar']) {
 						const file = toSingleLast((_request.files as any)['avatar']);
