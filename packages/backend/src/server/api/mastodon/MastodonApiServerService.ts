@@ -282,7 +282,7 @@ export class MastodonApiServerService {
 			// displayed without being logged in
 			let users;
 			try {
-				let ids = _request.query ? (_request.query as any)['id[]'] : null;
+				let ids = _request.query ? (_request.query as any)['id[]'] ?? (_request.query as any)['id'] : null;
 				if (typeof ids === 'string') {
 					ids = [ids];
 				}
