@@ -1,5 +1,5 @@
 import { Converter } from 'megalodon';
-import { convertAccount, convertStatus } from '../converters.js';
+import { MastoConverters, convertAccount, convertStatus } from '../converters.js';
 import { limitToInt } from './timeline.js';
 import type { MegalodonInterface } from 'megalodon';
 import type { FastifyRequest } from 'fastify';
@@ -63,7 +63,7 @@ export class ApiSearchMastodon {
 	private client: MegalodonInterface;
 	private BASE_URL: string;
 
-	constructor(request: FastifyRequest, client: MegalodonInterface, BASE_URL: string) {
+	constructor(request: FastifyRequest, client: MegalodonInterface, BASE_URL: string, private mastoConverter: MastoConverters) {
 		this.request = request;
 		this.client = client;
 		this.BASE_URL = BASE_URL;
@@ -89,8 +89,8 @@ export class ApiSearchMastodon {
 			const stat = !type || type === 'statuses' ? await this.client.search(query.q, { type: 'statuses', ...query }) : null;
 			const tags = !type || type === 'hashtags' ? await this.client.search(query.q, { type: 'hashtags', ...query }) : null;
 			const data = {
-				accounts: acct?.data.accounts.map((account) => convertAccount(account)) ?? [],
-				statuses: stat?.data.statuses.map((status) => convertStatus(status)) ?? [],
+				accounts: await Promise.all(acct?.data.accounts.map(async (account) => await this.mastoConverter.convertAccount(account)) ?? []),
+				statuses: await Promise.all(stat?.data.statuses.map(async (status) => await this.mastoConverter.convertStatus(status)) ?? []),
 				hashtags: tags?.data.hashtags ?? [],
 			};
 			return data;
