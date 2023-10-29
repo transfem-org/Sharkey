@@ -1148,6 +1148,7 @@ export default class Misskey implements MegalodonInterface {
       media_ids?: Array<string> | null
       poll?: { options?: Array<string>; expires_in?: number; multiple?: boolean; hide_totals?: boolean }
       visibility?: "public" | "unlisted" | "private" | "direct"
+      in_reply_to_id?: string
     }
   ): Promise<Response<Entity.Status>> {
     let params = {
@@ -1158,6 +1159,11 @@ export default class Misskey implements MegalodonInterface {
       if (_options.media_ids) {
         params = Object.assign(params, {
           fileIds: _options.media_ids
+        })
+      }
+      if (_options.in_reply_to_id) {
+        params = Object.assign(params, {
+          replyId: _options.in_reply_to_id
         })
       }
       if (_options.poll) {
