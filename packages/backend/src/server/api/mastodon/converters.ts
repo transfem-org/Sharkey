@@ -9,8 +9,9 @@ import type { MiUser } from '@/models/User.js';
 import type { NoteEditRepository, NotesRepository, UserProfilesRepository, UsersRepository } from '@/models/_.js';
 import { UserEntityService } from '@/core/entities/UserEntityService.js';
 import { awaitAll } from '@/misc/prelude/await-all.js';
-import { GetterService } from '../GetterService.js';
 import { CustomEmojiService } from '@/core/CustomEmojiService.js';
+import { GetterService } from '../GetterService.js';
+import { ReactionService } from '@/core/ReactionService.js';
 
 export enum IdConvertType {
     MastodonId,
@@ -41,6 +42,7 @@ export class MastoConverters {
 		private mfmService: MfmService,
 		private getterService: GetterService,
 		private customEmojiService: CustomEmojiService,
+		private reactionService: ReactionService,
 	) {
 	}
 
@@ -119,6 +121,24 @@ export class MastoConverters {
 	public async convertStatus(status: Entity.Status) {
 		const convertedAccount = this.convertAccount(status.account);
 		const note = await this.getterService.getNote(status.id);
+		const noteUser = await this.getUser(status.account.id);
+
+		const reactionEmojiNames = Object.keys(note.reactions)
+			.filter(x => x.startsWith(':') && x.includes('@') && !x.includes('@.'))
+			.map(x => this.reactionService.decodeReaction(x).reaction.replaceAll(':', ''));
+
+		const emojis = await this.customEmojiService.populateEmojis(reactionEmojiNames, noteUser.host ? noteUser.host : this.config.host);
+		const emoji: Entity.Emoji[] = [];
+		Object.entries(emojis).forEach(entry => {
+			const [key, value] = entry;
+			emoji.push({
+				shortcode: key,
+				static_url: value,
+				url: value,
+				visible_in_picker: true,
+				category: undefined,
+			});
+		});
 
 		const mentions = Promise.all(note.mentions.map(p =>
 			this.getUser(p)
@@ -151,7 +171,7 @@ export class MastoConverters {
 			content_type: 'text/x.misskeymarkdown',
 			text: note.text,
 			created_at: status.created_at,
-			emojis: status.emojis,
+			emojis: emoji,
 			replies_count: note.repliesCount,
 			reblogs_count: note.renoteCount,
 			favourites_count: status.favourites_count,
