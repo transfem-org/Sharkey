@@ -98,9 +98,7 @@ export class ApiAccountMastodon {
 	public async getStatuses() {
 		try {
 			const data = await this.client.getAccountStatuses((this.request.params as any).id, argsToBools(limitToInt(this.request.query as any)));
-			const a = await Promise.all(data.data.map(async (status) => await this.mastoconverter.convertStatus(status)));
-			console.error(a);
-			return a;
+			return await Promise.all(data.data.map(async (status) => await this.mastoconverter.convertStatus(status)));
 		} catch (e: any) {
 			console.error(e);
 			console.error(e.response.data);
