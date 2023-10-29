@@ -305,9 +305,8 @@ export class MastodonApiServerService {
 			try {
 				const sharkId = _request.params.id;
 				const data = await client.getAccount(sharkId);
-				const profile = await this.userProfilesRepository.findOneBy({ userId: sharkId });
-				data.data.fields = profile?.fields.map(f => ({ ...f, verified_at: null })) || [];
-				reply.send(convertAccount(data.data));
+				const account = await this.mastoConverter.convertAccount(data.data);
+				reply.send(account);
 			} catch (e: any) {
 				/* console.error(e);
 				console.error(e.response.data); */

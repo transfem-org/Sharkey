@@ -1,15 +1,16 @@
-import type { Config } from '@/config.js';
-import { MfmService } from '@/core/MfmService.js';
-import { DI } from '@/di-symbols.js';
 import { Inject, Injectable } from '@nestjs/common';
 import { Entity } from 'megalodon';
 import mfm from 'mfm-js';
-import { GetterService } from '../GetterService.js';
+import { DI } from '@/di-symbols.js';
+import { MfmService } from '@/core/MfmService.js';
+import type { Config } from '@/config.js';
 import type { IMentionedRemoteUsers } from '@/models/Note.js';
 import type { MiUser } from '@/models/User.js';
-import type { NoteEditRepository, NotesRepository, UsersRepository } from '@/models/_.js';
+import type { NoteEditRepository, NotesRepository, UserProfilesRepository, UsersRepository } from '@/models/_.js';
 import { UserEntityService } from '@/core/entities/UserEntityService.js';
 import { awaitAll } from '@/misc/prelude/await-all.js';
+import { GetterService } from '../GetterService.js';
+import { CustomEmojiService } from '@/core/CustomEmojiService.js';
 
 export enum IdConvertType {
     MastodonId,
@@ -17,13 +18,13 @@ export enum IdConvertType {
 }
 
 export const escapeMFM = (text: string): string => text
-	.replace(/&/g, "&amp;")
-	.replace(/</g, "&lt;")
-	.replace(/>/g, "&gt;")
-	.replace(/"/g, "&quot;")
-	.replace(/'/g, "&#39;")
-	.replace(/`/g, "&#x60;")
-	.replace(/\r?\n/g, "<br>");
+	.replace(/&/g, '&amp;')
+	.replace(/</g, '&lt;')
+	.replace(/>/g, '&gt;')
+	.replace(/"/g, '&quot;')
+	.replace(/'/g, '&#39;')
+	.replace(/`/g, '&#x60;')
+	.replace(/\r?\n/g, '<br>');
 
 @Injectable()
 export class MastoConverters {
@@ -31,8 +32,15 @@ export class MastoConverters {
 		@Inject(DI.config)
 		private config: Config,
 
+		@Inject(DI.usersRepository)
+		private usersRepository: UsersRepository,
+
+		@Inject(DI.userProfilesRepository)
+		private userProfilesRepository: UserProfilesRepository,
+
 		private mfmService: MfmService,
 		private getterService: GetterService,
+		private customEmojiService: CustomEmojiService,
 	) {
 	}
 
@@ -60,29 +68,51 @@ export class MastoConverters {
 		});
 	}
 
+	private async encodeField(f: Entity.Field): Promise<Entity.Field> {
+		return {
+			name: f.name,
+			value: await this.mfmService.toMastoHtml(mfm.parse(f.value), [], true) ?? escapeMFM(f.value),
+			verified_at: null,
+		};
+	}
+
 	public async convertAccount(account: Entity.Account) {
+		const user = await this.getUser(account.id);
+		const profile = await this.userProfilesRepository.findOneBy({ userId: user.id });
+		const emojis = await this.customEmojiService.populateEmojis(user.emojis, user.host ? user.host : this.config.host);
+		const emoji: Entity.Emoji[] = [];
+		Object.entries(emojis).forEach(entry => {
+			const [key, value] = entry;
+			emoji.push({
+				shortcode: key,
+				static_url: value,
+				url: value,
+				visible_in_picker: true,
+				category: undefined,
+			});
+		});
 		return awaitAll({
 			id: account.id,
 			username: account.username,
 			acct: account.acct,
 			fqn: account.fqn,
 			display_name: account.display_name || account.username,
-			locked: account.locked,
+			locked: user.isLocked,
 			created_at: account.created_at,
-			followers_count: account.followers_count,
-			following_count: account.following_count,
-			statuses_count: account.statuses_count,
-			note: account.note,
+			followers_count: user.followersCount,
+			following_count: user.followingCount,
+			statuses_count: user.notesCount,
+			note: profile?.description ?? account.note,
 			url: account.url,
-			avatar: account.avatar,
-			avatar_static: account.avatar,
-			header: account.header,
-			header_static: account.header,
-			emojis: account.emojis,
+			avatar: user.avatarUrl ? user.avatarUrl : 'https://dev.joinsharkey.org/static-assets/avatar.png',
+			avatar_static: user.avatarUrl ? user.avatarUrl : 'https://dev.joinsharkey.org/static-assets/avatar.png',
+			header: user.bannerUrl ? user.bannerUrl : 'https://dev.joinsharkey.org/static-assets/transparent.png',
+			header_static: user.bannerUrl ? user.bannerUrl : 'https://dev.joinsharkey.org/static-assets/transparent.png',
+			emojis: emoji,
 			moved: null, //FIXME
-			fields: [],
-			bot: false,
-			discoverable: true,
+			fields: Promise.all(profile?.fields.map(async p => this.encodeField(p)) ?? []),
+			bot: user.isBot,
+			discoverable: user.isExplorable,
 		});
 	}
 
