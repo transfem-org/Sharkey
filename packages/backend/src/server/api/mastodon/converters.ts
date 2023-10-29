@@ -1,7 +1,7 @@
 import type { Config } from '@/config.js';
 import { MfmService } from '@/core/MfmService.js';
 import { DI } from '@/di-symbols.js';
-import { Inject } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { Entity } from 'megalodon';
 import mfm from 'mfm-js';
 import { GetterService } from '../GetterService.js';
@@ -25,27 +25,15 @@ export const escapeMFM = (text: string): string => text
 	.replace(/`/g, "&#x60;")
 	.replace(/\r?\n/g, "<br>");
 
+@Injectable()
 export class MastoConverters {
-	private MfmService: MfmService;
-	private GetterService: GetterService;
-
 	constructor(
 		@Inject(DI.config)
 		private config: Config,
 
-		@Inject(DI.usersRepository)
-		private usersRepository: UsersRepository,
-
-		@Inject(DI.notesRepository)
-		private notesRepository: NotesRepository,
-
-		@Inject(DI.noteEditRepository)
-		private noteEditRepository: NoteEditRepository,
-		
-		private userEntityService: UserEntityService
+		private mfmService: MfmService,
+		private getterService: GetterService,
 	) {
-		this.MfmService = new MfmService(this.config);
-		this.GetterService = new GetterService(this.usersRepository, this.notesRepository, this.noteEditRepository, this.userEntityService);
 	}
 
 	private encode(u: MiUser, m: IMentionedRemoteUsers): Entity.Mention {
@@ -67,7 +55,7 @@ export class MastoConverters {
 	}
 
 	public async getUser(id: string): Promise<MiUser> {
-		return this.GetterService.getUser(id).then(p => {
+		return this.getterService.getUser(id).then(p => {
 			return p;
 		});
 	}
@@ -100,7 +88,7 @@ export class MastoConverters {
 
 	public async convertStatus(status: Entity.Status) {
 		const convertedAccount = this.convertAccount(status.account);
-		const note = await this.GetterService.getNote(status.id);
+		const note = await this.getterService.getNote(status.id);
 
 		const mentions = Promise.all(note.mentions.map(p =>
 			this.getUser(p)
@@ -109,7 +97,7 @@ export class MastoConverters {
 			.then(p => p.filter(m => m)) as Promise<Entity.Mention[]>;
 
 		const content = note.text !== null
-			? this.MfmService.toMastoHtml(mfm.parse(note.text!), JSON.parse(note.mentionedRemoteUsers), false, null)
+			? this.mfmService.toMastoHtml(mfm.parse(note.text!), JSON.parse(note.mentionedRemoteUsers), false, null)
 				.then(p => p ?? escapeMFM(note.text!))
 			: '';
 

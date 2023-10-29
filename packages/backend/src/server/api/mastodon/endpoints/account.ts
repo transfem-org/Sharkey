@@ -5,6 +5,7 @@ import type { FastifyRequest } from 'fastify';
 import { NoteEditRepository, NotesRepository, UsersRepository } from '@/models/_.js';
 import { UserEntityService } from '@/core/entities/UserEntityService.js';
 import type { Config } from '@/config.js';
+import { Injectable } from '@nestjs/common';
 
 const relationshipModel = {
 	id: '',
@@ -23,23 +24,16 @@ const relationshipModel = {
 	note: '',
 };
 
+@Injectable()
 export class ApiAccountMastodon {
 	private request: FastifyRequest;
 	private client: MegalodonInterface;
 	private BASE_URL: string;
-	private mastoconverter: MastoConverters;
 
-	constructor(request: FastifyRequest, client: MegalodonInterface, BASE_URL: string,
-		config: Config,
-		usersrepo: UsersRepository,
-		notesrepo: NotesRepository,
-		noteeditrepo: NoteEditRepository,
-		userentity: UserEntityService,
-	) {
+	constructor(request: FastifyRequest, client: MegalodonInterface, BASE_URL: string, private mastoconverter: MastoConverters) {
 		this.request = request;
 		this.client = client;
 		this.BASE_URL = BASE_URL;
-		this.mastoconverter = new MastoConverters(config, usersrepo, notesrepo, noteeditrepo, userentity);
 	}
 
 	public async verifyCredentials() {
@@ -104,7 +98,9 @@ export class ApiAccountMastodon {
 	public async getStatuses() {
 		try {
 			const data = await this.client.getAccountStatuses((this.request.params as any).id, argsToBools(limitToInt(this.request.query as any)));
-			return data.data.map((status) => this.mastoconverter.convertStatus(status));
+			const a = await Promise.all(data.data.map(async (status) => await this.mastoconverter.convertStatus(status)));
+			console.error(a);
+			return a;
 		} catch (e: any) {
 			console.error(e);
 			console.error(e.response.data);
