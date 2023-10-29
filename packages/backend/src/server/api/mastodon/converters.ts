@@ -192,6 +192,11 @@ export class MastoConverters {
 		return await Promise.all(history);
 	}
 
+	private async convertReblog(status: Entity.Status | null): Promise<any> {
+		if (!status) return null;
+		return await this.convertStatus(status);
+	}
+
 	public async convertStatus(status: Entity.Status) {
 		const convertedAccount = this.convertAccount(status.account);
 		const note = await this.getterService.getNote(status.id);
@@ -216,17 +221,26 @@ export class MastoConverters {
 				.catch(() => null)))
 			.then(p => p.filter(m => m)) as Promise<Entity.Mention[]>;
 
-		const content = note.text !== null
-			? this.mfmService.toMastoHtml(mfm.parse(note.text!), JSON.parse(note.mentionedRemoteUsers), false, null)
-				.then(p => p ?? escapeMFM(note.text!))
-			: '';
-
 		const tags = note.tags.map(tag => {
 			return {
 				name: tag,
 				url: `${this.config.url}/tags/${tag}`,
 			} as Entity.Tag;
 		});
+
+		const isQuote = note.renoteId && note.text ? true : false;
+
+		const renote = note.renoteId ? this.getterService.getNote(note.renoteId) : null;
+
+		const quoteUri = Promise.resolve(renote).then(renote => {
+			if (!renote || !isQuote) return null;
+			return renote.url ?? renote.uri ?? `${this.config.url}/notes/${renote.id}`;
+		});
+
+		const content = note.text !== null
+			? quoteUri.then(quoteUri => this.mfmService.toMastoHtml(mfm.parse(note.text!), JSON.parse(note.mentionedRemoteUsers), false, quoteUri))
+				.then(p => p ?? escapeMFM(note.text!))
+			: '';
 
 		// noinspection ES6MissingAwait
 		return await awaitAll({
@@ -236,7 +250,7 @@ export class MastoConverters {
 			account: convertedAccount,
 			in_reply_to_id: note.replyId,
 			in_reply_to_account_id: note.replyUserId,
-			reblog: status.reblog,
+			reblog: !isQuote ? await this.convertReblog(status.reblog) : null,
 			content: content,
 			content_type: 'text/x.misskeymarkdown',
 			text: note.text,
@@ -262,7 +276,7 @@ export class MastoConverters {
 			reactions: status.emoji_reactions,
 			emoji_reactions: status.emoji_reactions,
 			bookmarked: false,
-			quote: false,
+			quote: isQuote ? await this.convertReblog(status.reblog) : null,
 			edited_at: note.updatedAt?.toISOString(),
 		});
 	}
