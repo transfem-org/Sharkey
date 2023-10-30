@@ -151,8 +151,7 @@ export class ApiTimelineMastodon {
 				const BASE_URL = `${_request.protocol}://${_request.hostname}`;
 				const accessTokens = _request.headers.authorization;
 				const client = getClient(BASE_URL, accessTokens);
-				const account = await client.verifyAccountCredentials();
-				const data = await client.getLists(account.data.id);
+				const data = await client.getLists();
 				reply.send(data.data.map((list: Entity.List) => convertList(list)));
 			} catch (e: any) {
 				console.error(e);

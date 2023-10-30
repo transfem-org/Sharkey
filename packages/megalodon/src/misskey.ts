@@ -1892,9 +1892,15 @@ export default class Misskey implements MegalodonInterface {
   /**
    * POST /api/users/lists/list
    */
-  public async getLists(id: string): Promise<Response<Array<Entity.List>>> {
+  public async getLists(id?: string): Promise<Response<Array<Entity.List>>> {
+    if (id) {
+      return this.client
+        .post<Array<MisskeyAPI.Entity.List>>('/api/users/lists/list', { userId: id })
+        .then(res => ({ ...res, data: res.data.map(l => MisskeyAPI.Converter.list(l)) }))
+    }
+
     return this.client
-      .post<Array<MisskeyAPI.Entity.List>>('/api/users/lists/list', { userId: id })
+      .post<Array<MisskeyAPI.Entity.List>>('/api/users/lists/list', {})
       .then(res => ({ ...res, data: res.data.map(l => MisskeyAPI.Converter.list(l)) }))
   }
 
