@@ -39,22 +39,18 @@ export class ApiAccountMastodon {
 	public async verifyCredentials() {
 		try {
 			const data = await this.client.verifyAccountCredentials();
-			const acct = data.data;
-			acct.display_name = acct.display_name || acct.username;
-			acct.url = `${this.BASE_URL}/@${acct.url}`;
-			acct.note = acct.note || '';
-			acct.avatar_static = acct.avatar;
-			acct.header = acct.header || '/static-assets/transparent.png';
-			acct.header_static = acct.header || '/static-assets/transparent.png';
-			acct.source = {
-				note: acct.note,
-				fields: acct.fields,
-				privacy: '',
-				sensitive: false,
-				language: '',
-			};
-			console.log(acct);
-			return acct;
+			const acct = await this.mastoconverter.convertAccount(data.data);
+			const newAcct = Object.assign({}, acct, {
+				source: {
+					note: acct.note,
+					fields: acct.fields,
+					privacy: '',
+					sensitive: false,
+					language: '',
+				},
+			});
+			console.log(newAcct);
+			return newAcct;
 		} catch (e: any) {
 			/* console.error(e);
 			console.error(e.response.data); */

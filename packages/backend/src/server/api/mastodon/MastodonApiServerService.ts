@@ -14,7 +14,6 @@ import { ApiAuthMastodon, ApiAccountMastodon, ApiFilterMastodon, ApiNotifyMastod
 import type { FastifyInstance, FastifyPluginOptions } from 'fastify';
 import { UserEntityService } from '@/core/entities/UserEntityService.js';
 import { DriveService } from '@/core/DriveService.js';
-import { toSingleLast } from '@/misc/prelude/array.js';
 
 export function getClient(BASE_URL: string, authorization: string | undefined): MegalodonInterface {
 	const accessTokenArr = authorization?.split(' ') ?? [null];
@@ -256,6 +255,7 @@ export class MastodonApiServerService {
 			const client = getClient(BASE_URL, accessTokens); // we are using this here, because in private mode some info isnt
 			// displayed without being logged in
 			try {
+				// Check if there is an Header or Avatar being uploaded, if there is proceed to upload it to the drive of the user and then set it.
 				if (_request.files.length > 0 && accessTokens) {
 					const tokeninfo = await this.accessTokensRepository.findOneBy({ token: accessTokens.replace('Bearer ', '') });
 					// eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -291,6 +291,20 @@ export class MastodonApiServerService {
 						}
 					}
 				}
+
+				if ((_request.body as any).fields_attributes) {
+					const fields = (_request.body as any).fields_attributes.map((field: any) => {
+						if (!(field.name.trim() === '' && field.value.trim() === '')) {
+							if (field.name.trim() === '') return reply.code(400).send('Field name can not be empty');
+							if (field.value.trim() === '') return reply.code(400).send('Field value can not be empty');
+						}
+						return {
+							...field,
+						};
+					});
+					(_request.body as any).fields_attributes = fields.filter((field: any) => field.name.trim().length > 0 && field.value.length > 0);		
+				}
+				
 				const data = await client.updateCredentials(_request.body!);
 				reply.send(await this.mastoConverter.convertAccount(data.data));
 			} catch (e: any) {
