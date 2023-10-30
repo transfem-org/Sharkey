@@ -178,6 +178,8 @@ export default defineComponent({
 }
 
 .date-separated-list-nogap {
+	border-radius: var(--radius);
+
 	> * {
 		margin: 0 !important;
 		border: none;
