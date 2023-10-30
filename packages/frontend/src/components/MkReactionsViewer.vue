@@ -86,6 +86,7 @@ watch([() => props.note.reactions, () => props.maxNumber], ([newSource, maxNumbe
 
 .root {
 	margin: 4px -2px 0 -2px;
+	cursor: auto; /* not clickToOpen-able */
 
 	&:empty {
 		display: none;

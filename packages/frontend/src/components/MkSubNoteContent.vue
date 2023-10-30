@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <div :class="[$style.root, { [$style.collapsed]: collapsed }]">
-	<div @click="defaultStore.state.clickToOpen ? noteclick(note.id) : undefined">
+	<div :class="{ [$style.clickToOpen]: defaultStore.state.clickToOpen }" @click="defaultStore.state.clickToOpen ? noteclick(note.id) : undefined">
 		<span v-if="note.isHidden" style="opacity: 0.5">({{ i18n.ts.private }})</span>
 		<span v-if="note.deletedAt" style="opacity: 0.5">({{ i18n.ts.deleted }})</span>
 		<MkA v-if="note.replyId" :class="$style.reply" :to="`/notes/${note.replyId}`" v-on:click.stop><i class="ph-arrow-bend-left-up ph-bold pg-lg"></i></MkA>
@@ -133,5 +133,9 @@ const collapsed = $ref(isLong);
 	font-size: 0.8em;
 	border-radius: var(--radius-ellipse);
 	box-shadow: 0 2px 6px rgb(0 0 0 / 20%);
+}
+
+.clickToOpen {
+	cursor: pointer;
 }
 </style>

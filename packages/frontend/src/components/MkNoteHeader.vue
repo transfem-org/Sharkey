@@ -56,6 +56,7 @@ async function menuVersions(viaKeyboard = false): Promise<void> {
 	display: flex;
 	align-items: baseline;
 	white-space: nowrap;
+	cursor: auto; /* not clickToOpen-able */
 }
 
 .name {
