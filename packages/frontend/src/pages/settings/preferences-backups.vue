@@ -114,6 +114,7 @@ type Profile = {
 		hot: Record<keyof typeof defaultStoreSaveKeys, unknown>;
 		cold: Record<keyof typeof coldDeviceStorageSaveKeys, unknown>;
 		fontSize: string | null;
+		cornerRadius: string | null;
 		useSystemFont: 't' | null;
 		wallpaper: string | null;
 	};
@@ -171,6 +172,7 @@ function getSettings(): Profile['settings'] {
 		hot,
 		cold,
 		fontSize: miLocalStorage.getItem('fontSize'),
+		cornerRadius: miLocalStorage.getItem('cornerRadius'),
 		useSystemFont: miLocalStorage.getItem('useSystemFont') as 't' | null,
 		wallpaper: miLocalStorage.getItem('wallpaper'),
 	};
@@ -282,6 +284,13 @@ async function applyProfile(id: string): Promise<void> {
 		miLocalStorage.setItem('fontSize', settings.fontSize);
 	} else {
 		miLocalStorage.removeItem('fontSize');
+	}
+
+	// cornerRadius
+	if (settings.cornerRadius) {
+		miLocalStorage.setItem('cornerRadius', settings.cornerRadius);
+	} else {
+		miLocalStorage.removeItem('cornerRadius');
 	}
 
 	// useSystemFont

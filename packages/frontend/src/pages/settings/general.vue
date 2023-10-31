@@ -142,6 +142,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<option value="2"><span style="font-size: 16px;">Aa</span></option>
 				<option value="3"><span style="font-size: 17px;">Aa</span></option>
 			</MkRadios>
+
+			<MkRadios v-model="cornerRadius">
+				<template #label>{{ i18n.ts.cornerRadius }}</template>
+				<option :value="null">Sharkey</option>
+				<option value="misskey">Misskey</option>
+			</MkRadios>
 		</div>
 	</FormSection>
 
@@ -212,6 +218,7 @@ import { claimAchievement } from '@/scripts/achievements.js';
 
 const lang = ref(miLocalStorage.getItem('lang'));
 const fontSize = ref(miLocalStorage.getItem('fontSize'));
+const cornerRadius = ref(miLocalStorage.getItem('cornerRadius'));
 const useSystemFont = ref(miLocalStorage.getItem('useSystemFont') != null);
 
 async function reloadAsk() {
@@ -277,6 +284,14 @@ watch(fontSize, () => {
 	}
 });
 
+watch(cornerRadius, () => {
+	if (cornerRadius.value == null) {
+		miLocalStorage.removeItem('cornerRadius');
+	} else {
+		miLocalStorage.setItem('cornerRadius', cornerRadius.value);
+	}
+});
+
 watch(useSystemFont, () => {
 	if (useSystemFont.value) {
 		miLocalStorage.setItem('useSystemFont', 't');
@@ -288,6 +303,7 @@ watch(useSystemFont, () => {
 watch([
 	lang,
 	fontSize,
+	cornerRadius,
 	useSystemFont,
 	enableInfiniteScroll,
 	squareAvatars,

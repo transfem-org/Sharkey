@@ -510,6 +510,7 @@ export interface Locale {
     "existingAccount": string;
     "regenerate": string;
     "fontSize": string;
+    "cornerRadius": string;
     "mediaListWithOneImageAppearance": string;
     "limitTo": string;
     "noFollowRequests": string;

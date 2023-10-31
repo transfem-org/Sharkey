@@ -132,6 +132,11 @@
 		document.documentElement.classList.add('f-' + fontSize);
 	}
 
+	const cornerRadius = localStorage.getItem('cornerRadius');
+	if (cornerRadius) {
+		document.documentElement.classList.add(`radius-${cornerRadius}`);
+	}
+
 	const useSystemFont = localStorage.getItem('useSystemFont');
 	if (useSystemFont) {
 		document.documentElement.classList.add('useSystemFont');
