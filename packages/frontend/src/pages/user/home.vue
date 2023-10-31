@@ -520,7 +520,7 @@ onUnmounted(() => {
 					z-index: 2;
 					width: 120px;
 					height: 120px;
-					box-shadow: 1px 1px 3px rgba(#000, 0.2);
+					filter: drop-shadow(1px 1px 3px rgba(#000, 0.2));
 				}
 
 				> .roles {
