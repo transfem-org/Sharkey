@@ -74,7 +74,7 @@ export class ApiSearchMastodon {
 						'Accept': 'application/json',
 						'Content-Type': 'application/json',
 					},
-					body: JSON.stringify({ limit: (this.request.query as any).limit || 20, origin: 'local', sort: '+follower', state: 'alive' }),
+					body: JSON.stringify({ i: this.request.headers.authorization?.replace('Bearer ', ''), limit: parseInt((this.request.query as any).limit) || 20, origin: 'local', sort: '+follower', state: 'alive' }),
 				}).then((res) => res.json()).then(data => data.map(((entry: any) => { return { source: 'global', account: entry }; })));
 			return Promise.all(data.map(async (suggestion: any) => { suggestion.account = await this.mastoConverter.convertAccount(suggestion.account); return suggestion; }));
 		} catch (e: any) {
