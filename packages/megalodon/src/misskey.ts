@@ -238,6 +238,21 @@ export default class Misskey implements MegalodonInterface {
           description: options.note
         })
       }
+      if (options.avatar) {
+        params = Object.assign(params, {
+          avatarId: options.avatar
+        })
+      }
+      if (options.header) {
+        params = Object.assign(params, {
+          bannerId: options.header
+        })
+      }
+      if (options.fields_attributes) {
+        params = Object.assign(params, {
+          fields: options.fields_attributes
+        })
+      }
       if (options.locked !== undefined) {
         params = Object.assign(params, {
           isLocked: options.locked.toString() === 'true' ? true : false
@@ -1148,6 +1163,7 @@ export default class Misskey implements MegalodonInterface {
       media_ids?: Array<string> | null
       poll?: { options?: Array<string>; expires_in?: number; multiple?: boolean; hide_totals?: boolean }
       visibility?: "public" | "unlisted" | "private" | "direct"
+      in_reply_to_id?: string
     }
   ): Promise<Response<Entity.Status>> {
     let params = {
@@ -1158,6 +1174,11 @@ export default class Misskey implements MegalodonInterface {
       if (_options.media_ids) {
         params = Object.assign(params, {
           fileIds: _options.media_ids
+        })
+      }
+      if (_options.in_reply_to_id) {
+        params = Object.assign(params, {
+          replyId: _options.in_reply_to_id
         })
       }
       if (_options.poll) {
@@ -1871,9 +1892,15 @@ export default class Misskey implements MegalodonInterface {
   /**
    * POST /api/users/lists/list
    */
-  public async getLists(id: string): Promise<Response<Array<Entity.List>>> {
+  public async getLists(id?: string): Promise<Response<Array<Entity.List>>> {
+    if (id) {
+      return this.client
+        .post<Array<MisskeyAPI.Entity.List>>('/api/users/lists/list', { userId: id })
+        .then(res => ({ ...res, data: res.data.map(l => MisskeyAPI.Converter.list(l)) }))
+    }
+
     return this.client
-      .post<Array<MisskeyAPI.Entity.List>>('/api/users/lists/list', { userId: id })
+      .post<Array<MisskeyAPI.Entity.List>>('/api/users/lists/list', {})
       .then(res => ({ ...res, data: res.data.map(l => MisskeyAPI.Converter.list(l)) }))
   }
 
@@ -2017,7 +2044,7 @@ export default class Misskey implements MegalodonInterface {
       }
       if (options.exclude_type) {
         params = Object.assign(params, {
-          excludeType: options.exclude_type.map(e => MisskeyAPI.Converter.encodeNotificationType(e))
+          excludeTypes: options.exclude_type.map(e => MisskeyAPI.Converter.encodeNotificationType(e))
         })
       }
     }

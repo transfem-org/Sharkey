@@ -183,7 +183,7 @@ export class SearchService {
 				}
 			}
 			const res = await this.meilisearchNoteIndex!.search(q, {
-				sort: [`createdAt:${opts.order}`],
+				sort: [`createdAt:${opts.order ? opts.order : 'desc'}`],
 				matchingStrategy: 'all',
 				attributesToRetrieve: ['id', 'createdAt'],
 				filter: compileQuery(filter),
