@@ -84,7 +84,7 @@ function resolve() {
 			box-sizing: border-box;
 			align-items: center;
 			padding: 14px;
-			border-radius: 8px;
+			border-radius: var(--radius-sm);
 			--c: rgb(255 196 0 / 15%);
 			background-image: linear-gradient(45deg, var(--c) 16.67%, transparent 16.67%, transparent 50%, var(--c) 50%, var(--c) 66.67%, transparent 66.67%, transparent 100%);
 			background-size: 16px 16px;

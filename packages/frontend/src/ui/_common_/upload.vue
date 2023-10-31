@@ -40,7 +40,7 @@ const zIndex = os.claimZIndex('high');
 	padding: 16px 20px;
 	pointer-events: none;
 	box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
-	border-radius: 8px;
+	border-radius: var(--radius-sm);
 }
 .mk-uploader:empty {
   display: none;
@@ -116,7 +116,7 @@ const zIndex = os.claimZIndex('high');
   display: block;
   background: transparent;
   border: none;
-  border-radius: 4px;
+  border-radius: var(--radius-xs);
   overflow: hidden;
   grid-column: 2/3;
   grid-row: 2/3;

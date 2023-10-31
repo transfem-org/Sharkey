@@ -433,7 +433,7 @@ onBeforeUnmount(() => {
 	max-width: 28px;
 	max-height: 28px;
 	margin: 0 8px 0 0;
-	border-radius: 100%;
+	border-radius: var(--radius-full);
 }
 
 .userName {

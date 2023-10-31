@@ -739,7 +739,7 @@ if (appearNote.reply && appearNote.reply.replyId && defaultStore.state.autoloadC
 	width: 28px;
 	height: 28px;
 	margin: 0 8px 0 0;
-	border-radius: 6px;
+	border-radius: var(--radius-sm);
 }
 
 .renoteText {
@@ -813,7 +813,7 @@ if (appearNote.reply && appearNote.reply.replyId && defaultStore.state.autoloadC
 	font-size: 80%;
 	line-height: 1;
 	border: solid 0.5px var(--divider);
-	border-radius: 4px;
+	border-radius: var(--radius-xs);
 }
 
 .noteHeaderInfo {
@@ -869,7 +869,7 @@ if (appearNote.reply && appearNote.reply.replyId && defaultStore.state.autoloadC
 .quoteNote {
 	padding: 16px;
 	border: dashed 1px var(--renote);
-	border-radius: 8px;
+	border-radius: var(--radius-sm);
 	overflow: clip;
 }
 
@@ -947,7 +947,7 @@ if (appearNote.reply && appearNote.reply.replyId && defaultStore.state.autoloadC
 .reactionTab {
 	padding: 4px 6px;
 	border: solid 1px var(--divider);
-	border-radius: 6px;
+	border-radius: var(--radius-sm);
 }
 
 .reactionTabActive {

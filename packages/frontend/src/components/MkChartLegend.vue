@@ -55,7 +55,7 @@ defineExpose({
 			font-size: 85%;
 			padding: 4px 12px 4px 8px;
 			border: solid 1px var(--divider);
-			border-radius: 999px;
+			border-radius: var(--radius-ellipse);
 
 			&:hover {
 				border-color: var(--inputBorderHover);
@@ -70,7 +70,7 @@ defineExpose({
 				display: inline-block;
 				width: 12px;
 				height: 12px;
-				border-radius: 100%;
+				border-radius: var(--radius-full);
 				vertical-align: -10%;
 			}
 		}

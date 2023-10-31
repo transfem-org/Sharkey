@@ -186,7 +186,7 @@ const onMousedown = (ev: MouseEvent | TouchEvent) => {
 		padding: 7px 12px;
 		background: var(--panel);
 		border: solid 1px var(--panel);
-		border-radius: 6px;
+		border-radius: var(--radius-sm);
 
 		> .container {
 			position: relative;
@@ -202,7 +202,7 @@ const onMousedown = (ev: MouseEvent | TouchEvent) => {
 				width: calc(100% - #{$thumbWidth});
 				height: 3px;
 				background: rgba(0, 0, 0, 0.1);
-				border-radius: 999px;
+				border-radius: var(--radius-ellipse);
 				overflow: clip;
 
 				> .highlight {
@@ -233,7 +233,7 @@ const onMousedown = (ev: MouseEvent | TouchEvent) => {
 					height: 3px;
 					margin-left: - math.div($tickWidth, 2);
 					background: var(--divider);
-					border-radius: 999px;
+					border-radius: var(--radius-ellipse);
 				}
 			}
 
@@ -243,7 +243,7 @@ const onMousedown = (ev: MouseEvent | TouchEvent) => {
 				height: $thumbHeight;
 				cursor: grab;
 				background: var(--accent);
-				border-radius: 999px;
+				border-radius: var(--radius-ellipse);
 
 				&:hover {
 					background: var(--accentLighten);

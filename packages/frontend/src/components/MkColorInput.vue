@@ -102,7 +102,7 @@ const onInput = (ev: KeyboardEvent) => {
 	color: var(--fg);
 	background: var(--panel);
 	border: solid 1px var(--panel);
-	border-radius: 6px;
+	border-radius: var(--radius-sm);
 	outline: none;
 	box-shadow: none;
 	box-sizing: border-box;

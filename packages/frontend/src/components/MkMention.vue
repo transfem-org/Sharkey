@@ -49,7 +49,7 @@ const avatarUrl = computed(() => defaultStore.state.disableShowingAnimatedImages
 .root {
 	display: inline-block;
 	padding: 4px 8px 4px 4px;
-	border-radius: 999px;
+	border-radius: var(--radius-ellipse);
 	color: var(--mention);
 
 	&.isMe {
@@ -63,7 +63,7 @@ const avatarUrl = computed(() => defaultStore.state.disableShowingAnimatedImages
 	object-fit: cover;
 	margin: 0 0.2em 0 0;
 	vertical-align: bottom;
-	border-radius: 100%;
+	border-radius: var(--radius-full);
 }
 
 .host {

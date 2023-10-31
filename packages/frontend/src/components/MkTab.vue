@@ -39,7 +39,7 @@ export default defineComponent({
 	> button {
 		flex: 1;
 		padding: 10px 8px;
-		border-radius: 999px;
+		border-radius: var(--radius-ellipse);
 
 		&:disabled {
 			opacity: 1 !important;

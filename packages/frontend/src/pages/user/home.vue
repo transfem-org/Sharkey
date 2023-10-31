@@ -425,7 +425,7 @@ onUnmounted(() => {
 						color: #fff;
 						background: rgba(0, 0, 0, 0.7);
 						font-size: 0.7em;
-						border-radius: 6px;
+						border-radius: var(--radius-sm);
 					}
 
 					> .actions {
@@ -436,7 +436,7 @@ onUnmounted(() => {
 						backdrop-filter: var(--blur, blur(8px));
 						background: rgba(0, 0, 0, 0.2);
 						padding: 8px;
-						border-radius: 24px;
+						border-radius: var(--radius-lg);
 
 						> .menu {
 							vertical-align: bottom;
@@ -488,7 +488,7 @@ onUnmounted(() => {
 								color: #fff;
 								-webkit-backdrop-filter: var(--blur, blur(8px));
 								backdrop-filter: var(--blur, blur(8px));
-								border-radius: 24px;
+								border-radius: var(--radius-lg);
 								padding: 4px 8px;
 								font-size: 80%;
 							}
@@ -532,7 +532,7 @@ onUnmounted(() => {
 
 					> .role {
 						border: solid 1px var(--color, var(--divider));
-						border-radius: 999px;
+						border-radius: var(--radius-ellipse);
 						margin-right: 4px;
 						padding: 3px 8px;
 					}
@@ -547,7 +547,7 @@ onUnmounted(() => {
 					background: transparent;
 					color: var(--fg);
 					border: 1px solid var(--divider);
-					border-radius: 8px;
+					border-radius: var(--radius-sm);
 					padding: 8px;
 					line-height: 0;
 
@@ -755,10 +755,10 @@ onUnmounted(() => {
 	padding: calc(var(--margin) / 2) 0;
 	background: color-mix(in srgb, var(--bg) 65%, transparent);
 	backdrop-filter: var(--blur, blur(15px));
-	border-radius: 8px;
+	border-radius: var(--radius-sm);
 
 	> button {
-		border-radius: 8px;
+		border-radius: var(--radius-sm);
 		margin-left: 0.4rem;
 		margin-right: 0.4rem;
 	}

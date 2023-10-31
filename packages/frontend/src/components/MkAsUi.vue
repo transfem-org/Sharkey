@@ -125,6 +125,6 @@ function openPostForm() {
 
 .postForm {
 	background: var(--bg);
-	border-radius: 8px;
+	border-radius: var(--radius-sm);
 }
 </style>

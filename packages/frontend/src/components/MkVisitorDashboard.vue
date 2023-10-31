@@ -172,7 +172,7 @@ function exploreOtherServers() {
 	right: 16px;
 	width: 32px;
 	height: 32px;
-	border-radius: 8px;
+	border-radius: var(--radius-sm);
 	font-size: 18px;
 }
 

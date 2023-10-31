@@ -40,7 +40,7 @@ const search = () => {
 	height: 40px;
 	font-size: 16px;
 	border: solid 1px var(--divider);
-	border-radius: 4px 0 0 4px;
+	border-radius: var(--radius-xs) 0 0 var(--radius-xs);
 	-webkit-appearance: textfield;
 }
 
@@ -50,7 +50,7 @@ const search = () => {
 	padding: 0 16px;
 	border: solid 1px var(--divider);
 	border-left: none;
-	border-radius: 0 4px 4px 0;
+	border-radius: 0 var(--radius-xs) var(--radius-xs) 0;
 
 	&:active {
 		box-shadow: 0 2px 4px rgba(#000, 0.15) inset;

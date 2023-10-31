@@ -289,7 +289,7 @@ function onContextmenu(ev: MouseEvent) {
 	padding: 8px;
 	height: 64px;
 	background: var(--driveFolderBg);
-	border-radius: 4px;
+	border-radius: var(--radius-xs);
 	cursor: pointer;
 
 	&.draghover {
@@ -302,7 +302,7 @@ function onContextmenu(ev: MouseEvent) {
 			bottom: -4px;
 			left: -4px;
 			border: 2px dashed var(--focus);
-			border-radius: 4px;
+			border-radius: var(--radius-xs);
 		}
 	}
 }

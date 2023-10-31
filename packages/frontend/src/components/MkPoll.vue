@@ -116,7 +116,7 @@ async function refresh() {
 	padding: 4px;
 	//border: solid 0.5px var(--divider);
 	background: var(--accentedBg);
-	border-radius: 4px;
+	border-radius: var(--radius-xs);
 	overflow: clip;
 	cursor: pointer;
 }
@@ -136,7 +136,7 @@ async function refresh() {
 	display: inline-block;
 	padding: 3px 5px;
 	background: var(--panel);
-	border-radius: 3px;
+	border-radius: var(--radius-xs);
 }
 
 .info {

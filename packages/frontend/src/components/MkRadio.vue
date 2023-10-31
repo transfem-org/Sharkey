@@ -55,7 +55,7 @@ function toggle(): void {
 	background-color: var(--panel);
 	background-clip: padding-box !important;
 	border: solid 1px var(--panel);
-	border-radius: 6px;
+	border-radius: var(--radius-sm);
 	font-size: 90%;
 	transition: all 0.2s;
 	user-select: none;
@@ -101,7 +101,7 @@ function toggle(): void {
 	height: 14px;
 	background: none;
 	border: solid 2px var(--inputBorder);
-	border-radius: 100%;
+	border-radius: var(--radius-full);
 	transition: inherit;
 
 	&:after {
@@ -112,7 +112,7 @@ function toggle(): void {
 		right: 3px;
 		bottom: 3px;
 		left: 3px;
-		border-radius: 100%;
+		border-radius: var(--radius-full);
 		opacity: 0;
 		transform: scale(0);
 		transition: 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);

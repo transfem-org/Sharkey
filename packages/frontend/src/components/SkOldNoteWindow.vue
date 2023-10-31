@@ -203,7 +203,7 @@ const showTicker = (defaultStore.state.instanceTicker === 'always') || (defaultS
 	font-size: 80%;
 	line-height: 1;
 	border: solid 0.5px var(--divider);
-	border-radius: 4px;
+	border-radius: var(--radius-xs);
 }
 
 .noteHeaderInfo {
@@ -264,7 +264,7 @@ const showTicker = (defaultStore.state.instanceTicker === 'always') || (defaultS
 .quoteNote {
 	padding: 16px;
 	border: dashed 1px var(--renote);
-	border-radius: 5px;
+	border-radius: var(--radius-xs);
 	overflow: clip;
 }
 

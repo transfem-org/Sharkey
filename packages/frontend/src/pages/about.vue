@@ -168,7 +168,7 @@ definePageMetadata(computed(() => ({
 <style lang="scss" module>
 .banner {
 	text-align: center;
-	border-radius: 10px;
+	border-radius: var(--radius);
 	overflow: clip;
 	background-size: cover;
 	background-position: center center;
@@ -178,7 +178,7 @@ definePageMetadata(computed(() => ({
 	display: block;
 	margin: 16px auto 0 auto;
 	height: 64px;
-	border-radius: 8px;
+	border-radius: var(--radius-sm);
 }
 
 .bannerName {
@@ -217,7 +217,7 @@ definePageMetadata(computed(() => ({
 		font-weight: bold;
 		align-items: center;
 		justify-content: center;
-		border-radius: 999px;
+		border-radius: var(--radius-ellipse);
 	}
 }
 
