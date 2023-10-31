@@ -221,6 +221,11 @@ export class MastodonApiServerService {
 			}
 		});
 
+		fastify.get('/v1/trends/links', async (_request, reply) => {
+			// As we do not have any system for news/links this will just return empty
+			reply.send([]);
+		});
+
 		fastify.post('/v1/apps', async (_request, reply) => {
 			const BASE_URL = `${_request.protocol}://${_request.hostname}`;
 			const client = getClient(BASE_URL, ''); // we are using this here, because in private mode some info isnt
