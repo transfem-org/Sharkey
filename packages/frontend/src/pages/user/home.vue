@@ -436,7 +436,7 @@ onUnmounted(() => {
 						backdrop-filter: var(--blur, blur(8px));
 						background: rgba(0, 0, 0, 0.2);
 						padding: 8px;
-						border-radius: 5px;
+						border-radius: 24px;
 
 						> .menu {
 							vertical-align: bottom;
@@ -488,7 +488,7 @@ onUnmounted(() => {
 								color: #fff;
 								-webkit-backdrop-filter: var(--blur, blur(8px));
 								backdrop-filter: var(--blur, blur(8px));
-								border-radius: 5px;
+								border-radius: 24px;
 								padding: 4px 8px;
 								font-size: 80%;
 							}
