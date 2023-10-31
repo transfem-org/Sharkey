@@ -49,7 +49,6 @@ export class ApiAccountMastodon {
 					language: '',
 				},
 			});
-			console.log(newAcct);
 			return newAcct;
 		} catch (e: any) {
 			/* console.error(e);
