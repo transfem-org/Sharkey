@@ -666,9 +666,11 @@ function loadReplies() {
 		replies.value = res;
 	});
 }
+
 loadReplies();
 
 const quotesLoaded = ref(false);
+
 function loadQuotes() {
 	quotesLoaded.value = true;
 	os.api('notes/renotes', {
@@ -679,6 +681,7 @@ function loadQuotes() {
 		quotes.value = res;
 	});
 }
+
 loadQuotes();
 
 const conversationLoaded = ref(false);
