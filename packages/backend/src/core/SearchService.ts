@@ -113,6 +113,8 @@ export class SearchService {
 		if (note.text == null && note.cw == null) return;
 		if (!['home', 'public'].includes(note.visibility)) return;
 
+		console.error('indexNote');
+
 		if (this.meilisearch) {
 			switch (this.meilisearchIndexScope) {
 				case 'global':
@@ -128,6 +130,8 @@ export class SearchService {
 					return;
 				}
 			}
+
+			console.error('meilisearchFound');
 
 			await this.meilisearchNoteIndex?.addDocuments([{
 				id: note.id,
