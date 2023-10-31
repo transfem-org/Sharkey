@@ -129,8 +129,6 @@ export class SearchService {
 				}
 			}
 
-			console.error('meilisearchFound');
-
 			await this.meilisearchNoteIndex?.addDocuments([{
 				id: note.id,
 				createdAt: this.idService.parse(note.id).date.getTime(),

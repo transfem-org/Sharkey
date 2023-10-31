@@ -124,7 +124,7 @@ redis:
 #  apiKey: ''
 #  ssl: true
 #  index: ''
-#  scope: local
+#  scope: global
 
 #   ┌───────────────┐
 #───┘ ID generation └───────────────────────────────────────────
