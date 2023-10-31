@@ -21,9 +21,10 @@ import { RoleService } from '@/core/RoleService.js';
 import { ApPersonService } from '@/core/activitypub/models/ApPersonService.js';
 import { FederatedInstanceService } from '@/core/FederatedInstanceService.js';
 import { IdService } from '@/core/IdService.js';
+import type { AnnouncementService } from '@/core/AnnouncementService.js';
+import type { CustomEmojiService } from '@/core/CustomEmojiService.js';
+import { AvatarDecorationService } from '@/core/AvatarDecorationService.js';
 import type { OnModuleInit } from '@nestjs/common';
-import type { AnnouncementService } from '../AnnouncementService.js';
-import type { CustomEmojiService } from '../CustomEmojiService.js';
 import type { NoteEntityService } from './NoteEntityService.js';
 import type { DriveFileEntityService } from './DriveFileEntityService.js';
 import type { PageEntityService } from './PageEntityService.js';
@@ -62,6 +63,7 @@ export class UserEntityService implements OnModuleInit {
 	private roleService: RoleService;
 	private federatedInstanceService: FederatedInstanceService;
 	private idService: IdService;
+	private avatarDecorationService: AvatarDecorationService;
 
 	constructor(
 		private moduleRef: ModuleRef,
@@ -126,6 +128,7 @@ export class UserEntityService implements OnModuleInit {
 		this.roleService = this.moduleRef.get('RoleService');
 		this.federatedInstanceService = this.moduleRef.get('FederatedInstanceService');
 		this.idService = this.moduleRef.get('IdService');
+		this.avatarDecorationService = this.moduleRef.get('AvatarDecorationService');
 	}
 
 	//#region Validators
@@ -351,9 +354,11 @@ export class UserEntityService implements OnModuleInit {
 
 		const isModerator = isMe && opts.detail ? this.roleService.isModerator(user) : null;
 		const isAdmin = isMe && opts.detail ? this.roleService.isAdministrator(user) : null;
-		const unreadAnnouncements = isMe && opts.detail ? await this.announcementService.getUnreadAnnouncements(user) : null;
-
-		const falsy = opts.detail ? false : undefined;
+		const unreadAnnouncements = isMe && opts.detail ?
+			(await this.announcementService.getUnreadAnnouncements(user)).map((announcement) => ({
+				createdAt: this.idService.parse(announcement.id).date.toISOString(),
+				...announcement,
+			})) : null;
 
 		const checkHost = user.host == null ? this.config.host : user.host;
 
@@ -366,10 +371,16 @@ export class UserEntityService implements OnModuleInit {
 			avatarBlurhash: user.avatarBlurhash,
 			description: mastoapi ? mastoapi.description : profile ? profile.description : '',
 			createdAt: this.idService.parse(user.id).date.toISOString(),
+			avatarDecorations: user.avatarDecorations.length > 0 ? this.avatarDecorationService.getAll().then(decorations => user.avatarDecorations.filter(ud => decorations.some(d => d.id === ud.id)).map(ud => ({
+				id: ud.id,
+				angle: ud.angle || undefined,
+				flipH: ud.flipH || undefined,
+				url: decorations.find(d => d.id === ud.id)!.url,
+			}))) : [],
 			isBot: user.isBot,
 			isCat: user.isCat,
 			isSilenced: user.isSilenced || this.roleService.getUserPolicies(user.id).then(r => !r.canPublicNote),
-			speakAsCat: user.speakAsCat ?? falsy,
+			speakAsCat: user.speakAsCat ?? false,
 			approved: user.approved,
 			instance: user.host ? this.federatedInstanceService.federatedInstanceCache.fetch(user.host).then(instance => instance ? {
 				name: instance.name,

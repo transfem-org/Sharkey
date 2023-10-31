@@ -160,6 +160,15 @@ export class MiUser {
 		length: 128, nullable: true,
 	})
 	public backgroundBlurhash: string | null;
+	
+	@Column('jsonb', {
+		default: [],
+	})
+	public avatarDecorations: {
+		id: string;
+		angle: number;
+		flipH: boolean;
+	}[];
 
 	@Index()
 	@Column('varchar', {

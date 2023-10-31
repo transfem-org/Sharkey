@@ -42,7 +42,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					</div>
 				</FormSection>
 				<FormSection>
-					<template #label>{{ i18n.ts._aboutMisskey.contributors }}</template>
+					<template #label>{{ i18n.ts._aboutMisskey.projectMembers }}</template>
 					<div :class="$style.contributors">
 						<a href="https://github.com/Mar0xy" target="_blank" :class="$style.contributor">
 							<img src="https://avatars.githubusercontent.com/u/8841466?v=4" :class="$style.contributorAvatar">
@@ -70,22 +70,18 @@ SPDX-License-Identifier: AGPL-3.0-only
 							<img src="https://avatars.githubusercontent.com/u/20679825?v=4" :class="$style.contributorAvatar">
 							<span :class="$style.contributorUsername">@acid-chicken</span>
 						</a>
-						<a href="https://github.com/rinsuki" target="_blank" :class="$style.contributor">
-							<img src="https://avatars.githubusercontent.com/u/6533808?v=4" :class="$style.contributorAvatar">
-							<span :class="$style.contributorUsername">@rinsuki</span>
+						<a href="https://github.com/kakkokari-gtyih" target="_blank" :class="$style.contributor">
+							<img src="https://avatars.githubusercontent.com/u/67428053?v=4" :class="$style.contributorAvatar">
+							<span :class="$style.contributorUsername">@kakkokari-gtyih</span>
 						</a>
-						<a href="https://github.com/mei23" target="_blank" :class="$style.contributor">
-							<img src="https://avatars.githubusercontent.com/u/30769358?v=4" :class="$style.contributorAvatar">
-							<span :class="$style.contributorUsername">@mei23</span>
-						</a>
-						<a href="https://github.com/robflop" target="_blank" :class="$style.contributor">
-							<img src="https://avatars.githubusercontent.com/u/8159402?v=4" :class="$style.contributorAvatar">
-							<span :class="$style.contributorUsername">@robflop</span>
+						<a href="https://github.com/taichanNE30" target="_blank" :class="$style.contributor">
+							<img src="https://avatars.githubusercontent.com/u/40626578?v=4" :class="$style.contributorAvatar">
+							<span :class="$style.contributorUsername">@taichanNE30</span>
 						</a>
 					</div>
 				</FormSection>
 				<FormSection>
-					<template #label>Our lovely GitHub Sponsors</template>
+					<template #label>Our lovely Sponsors</template>
 					<div :class="$style.contributors">
 						<span
 							v-for="sponsor in sponsors[0]"

@@ -314,6 +314,10 @@ export const routes = [{
 	path: '/custom-emojis-manager',
 	component: page(() => import('./pages/custom-emojis-manager.vue')),
 }, {
+	path: '/avatar-decorations',
+	name: 'avatarDecorations',
+	component: page(() => import('./pages/avatar-decorations.vue')),
+}, {
 	path: '/registry/keys/system/:path(*)?',
 	component: page(() => import('./pages/registry.keys.vue')),
 }, {
@@ -322,6 +326,10 @@ export const routes = [{
 }, {
 	path: '/registry',
 	component: page(() => import('./pages/registry.vue')),
+}, {
+	path: '/install-extentions',
+	component: page(() => import('./pages/install-extentions.vue')),
+	loginRequired: true,
 }, {
 	path: '/admin/user/:userId',
 	component: iAmModerator ? page(() => import('./pages/admin-user.vue')) : page(() => import('./pages/not-found.vue')),
@@ -343,6 +351,10 @@ export const routes = [{
 		path: '/emojis',
 		name: 'emojis',
 		component: page(() => import('./pages/custom-emojis-manager.vue')),
+	}, {
+		path: '/avatar-decorations',
+		name: 'avatarDecorations',
+		component: page(() => import('./pages/avatar-decorations.vue')),
 	}, {
 		path: '/queue',
 		name: 'queue',
