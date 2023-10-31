@@ -819,8 +819,6 @@ export class NoteCreateService implements OnApplicationShutdown {
 	private index(note: MiNote) {
 		if (note.text == null && note.cw == null) return;
 
-		console.error('createIndex');
-
 		this.searchService.indexNote(note);
 	}
 

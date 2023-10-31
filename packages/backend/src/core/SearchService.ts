@@ -113,7 +113,7 @@ export class SearchService {
 		if (note.text == null && note.cw == null) return;
 		if (!['home', 'public'].includes(note.visibility)) return;
 
-		console.error('indexNote');
+		console.error(note);
 
 		if (this.meilisearch) {
 			switch (this.meilisearchIndexScope) {
