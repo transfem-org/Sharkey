@@ -389,6 +389,8 @@ export class MfmService {
 		return `<p>${doc.body.innerHTML}</p>`;
 	}
 
+	// the toMastoHtml function was taken from Iceshrimp and written by zotan and modified by marie to work with the current MK version
+
 	@bindThis
 	public async toMastoHtml(nodes: mfm.MfmNode[] | null, mentionedRemoteUsers: IMentionedRemoteUsers = [], inline = false, quoteUri: string | null = null) {
 		if (nodes == null) {
