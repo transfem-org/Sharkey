@@ -40,7 +40,7 @@ const zIndex = os.claimZIndex('high');
 	padding: 16px 20px;
 	pointer-events: none;
 	box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
-	border-radius: 5px;
+	border-radius: 8px;
 }
 .mk-uploader:empty {
   display: none;

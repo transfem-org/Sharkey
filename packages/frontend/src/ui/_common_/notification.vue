@@ -22,7 +22,7 @@ defineProps<{
 <style lang="scss" module>
 .root {
 	box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
-	border-radius: 5px;
+	border-radius: 8px;
 	overflow: clip;
 	contain: content;
 }

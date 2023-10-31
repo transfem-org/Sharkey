@@ -93,7 +93,7 @@ definePageMetadata({
 	margin: 0 12px 0 0;
 	width: 50px;
 	height: 50px;
-	border-radius: 5px;
+	border-radius: 8px;
 }
 
 .appBody {

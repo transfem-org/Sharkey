@@ -369,7 +369,7 @@ defineExpose({
 					display: block;
 					margin: auto;
 					height: 42px;
-					border-radius: 5px;
+					border-radius: 8px;
 				}
 			}
 		}
