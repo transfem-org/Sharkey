@@ -207,6 +207,20 @@ export class MastodonApiServerService {
 			}
 		});
 
+		fastify.get('/v1/trends/tags', async (_request, reply) => {
+			const BASE_URL = `${_request.protocol}://${_request.hostname}`;
+			const accessTokens = _request.headers.authorization;
+			const client = getClient(BASE_URL, accessTokens); // we are using this here, because in private mode some info isnt
+			// displayed without being logged in
+			try {
+				const data = await client.getInstanceTrends();
+				reply.send(data.data);
+			} catch (e: any) {
+				/* console.error(e); */
+				reply.code(401).send(e.response.data);
+			}
+		});
+
 		fastify.post('/v1/apps', async (_request, reply) => {
 			const BASE_URL = `${_request.protocol}://${_request.hostname}`;
 			const client = getClient(BASE_URL, ''); // we are using this here, because in private mode some info isnt
