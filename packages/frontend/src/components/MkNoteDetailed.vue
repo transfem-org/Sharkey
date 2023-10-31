@@ -68,19 +68,19 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</header>
 		<div :class="$style.noteContent">
 			<p v-if="appearNote.cw != null" :class="$style.cw">
-				<Mfm v-if="appearNote.cw != ''" style="margin-right: 8px;" :text="appearNote.cw" :author="appearNote.user" :i="$i"/>
+				<Mfm v-if="appearNote.cw != ''" style="margin-right: 8px;" :text="appearNote.cw" :author="appearNote.user" :nyaize="'account'" :i="$i"/>
 				<MkCwButton v-model="showContent" :note="appearNote"/>
 			</p>
 			<div v-show="appearNote.cw == null || showContent">
 				<span v-if="appearNote.isHidden" style="opacity: 0.5">({{ i18n.ts.private }})</span>
 				<MkA v-if="appearNote.replyId" :class="$style.noteReplyTarget" :to="`/notes/${appearNote.replyId}`"><i class="ph-arrow-bend-left-up ph-bold pg-lg"></i></MkA>
-				<Mfm v-if="appearNote.text" :text="appearNote.text" :author="appearNote.user" :i="$i" :emojiUrls="appearNote.emojis"/>
+				<Mfm v-if="appearNote.text" :text="appearNote.text" :author="appearNote.user" :nyaize="'account'" :i="$i" :emojiUrls="appearNote.emojis"/>
 				<a v-if="appearNote.renote != null" :class="$style.rn">RN:</a>
 				<div v-if="translating || translation" :class="$style.translation">
 					<MkLoading v-if="translating" mini/>
 					<div v-else>
 						<b>{{ i18n.t('translatedFrom', { x: translation.sourceLang }) }}: </b>
-						<Mfm :text="translation.text" :author="appearNote.user" :i="$i" :emojiUrls="appearNote.emojis"/>
+						<Mfm :text="translation.text" :author="appearNote.user" :nyaize="'account'" :i="$i" :emojiUrls="appearNote.emojis"/>
 					</div>
 				</div>
 				<div v-if="appearNote.files.length > 0">
@@ -98,7 +98,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					{{ i18n.ts.edited }}: <MkTime :time="appearNote.updatedAt" mode="detail"/>
 				</div>
 				<MkA :to="notePage(appearNote)">
-					<MkTime :time="appearNote.createdAt" mode="detail"/>
+					<MkTime :time="appearNote.createdAt" mode="detail" colored/>
 				</MkA>
 			</div>
 			<MkReactionsViewer ref="reactionsViewer" :note="appearNote"/>
@@ -257,9 +257,11 @@ let note = $ref(deepClone(props.note));
 // plugin
 if (noteViewInterruptors.length > 0) {
 	onMounted(async () => {
-		let result = deepClone(note);
+		let result:Misskey.entities.Note | null = deepClone(note);
 		for (const interruptor of noteViewInterruptors) {
 			result = await interruptor.handler(result);
+
+			if (result === null) return isDeleted.value = true;
 		}
 		note = result;
 	});
@@ -355,6 +357,7 @@ const reactionsPagination = $computed(() => ({
 useNoteCapture({
 	rootEl: el,
 	note: $$(appearNote),
+	pureNote: $$(note),
 	isDeletedRef: isDeleted,
 });
 
@@ -652,6 +655,7 @@ function blur() {
 }
 
 const repliesLoaded = ref(false);
+
 function loadReplies() {
 	repliesLoaded.value = true;
 	os.api('notes/children', {
@@ -662,9 +666,11 @@ function loadReplies() {
 		replies.value = res;
 	});
 }
+
 loadReplies();
 
 const quotesLoaded = ref(false);
+
 function loadQuotes() {
 	quotesLoaded.value = true;
 	os.api('notes/renotes', {
@@ -675,9 +681,11 @@ function loadQuotes() {
 		quotes.value = res;
 	});
 }
+
 loadQuotes();
 
 const conversationLoaded = ref(false);
+
 function loadConversation() {
 	conversationLoaded.value = true;
 	os.api('notes/conversation', {
@@ -686,6 +694,7 @@ function loadConversation() {
 		conversation.value = res.reverse();
 	});
 }
+
 if (appearNote.reply && appearNote.reply.replyId && defaultStore.state.autoloadConversation) loadConversation();
 </script>
 

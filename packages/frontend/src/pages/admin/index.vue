@@ -130,6 +130,11 @@ const menuDef = $computed(() => [{
 		to: '/admin/emojis',
 		active: currentPage?.route.name === 'emojis',
 	}, {
+		icon: 'ph-sparkle ph-bold ph-lg',
+		text: i18n.ts.avatarDecorations,
+		to: '/avatar-decorations',
+		active: currentPage?.route.name === 'avatarDecorations',
+	}, {
 		icon: 'ph-globe-hemisphere-west ph-bold ph-lg',
 		text: i18n.ts.federation,
 		to: '/admin/federation',

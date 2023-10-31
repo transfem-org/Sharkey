@@ -20,7 +20,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</MkSelect>
 
 	<div class="_buttons">
-		<MkButton inline primary @click="save"><i class="ti ti-check"></i> {{ i18n.ts.save }}</MkButton>
+		<MkButton inline primary @click="save"><i class="ph-check ph-bold ph-lg"></i> {{ i18n.ts.save }}</MkButton>
 	</div>
 </div>
 </template>

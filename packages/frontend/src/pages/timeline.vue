@@ -45,6 +45,7 @@ import { $i } from '@/account.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 import { miLocalStorage } from '@/local-storage.js';
 import { antennasCache, userListsCache } from '@/cache.js';
+import { deviceKind } from '@/scripts/device-kind.js';
 
 provide('shouldOmitHeaderTitle', true);
 
@@ -141,27 +142,42 @@ function focus(): void {
 	tlComponent.focus();
 }
 
-const headerActions = $computed(() => [{
-	icon: 'ph-dots-three ph-bold ph-lg',
-	text: i18n.ts.options,
-	handler: (ev) => {
-		os.popupMenu([{
-			type: 'switch',
-			text: i18n.ts.showRenotes,
-			icon: 'ph-rocket-launch ph-bold ph-lg',
-			ref: $$(withRenotes),
-		}, src === 'local' || src === 'social' ? {
-			type: 'switch',
-			text: i18n.ts.showRepliesToOthersInTimeline,
-			ref: $$(withReplies),
-		} : undefined, {
-			type: 'switch',
-			text: i18n.ts.fileAttachedOnly,
-			icon: 'ph-image ph-bold pg-lg',
-			ref: $$(onlyFiles),
-		}], ev.currentTarget ?? ev.target);
-	},
-}]);
+const headerActions = $computed(() => {
+	const tmp = [
+		{
+			icon: 'ph-dots-three ph-bold ph-lg',
+			text: i18n.ts.options,
+			handler: (ev) => {
+				os.popupMenu([{
+					type: 'switch',
+					text: i18n.ts.showRenotes,
+					icon: 'ph-rocket-launch ph-bold ph-lg',
+					ref: $$(withRenotes),
+				}, src === 'local' || src === 'social' ? {
+					type: 'switch',
+					text: i18n.ts.showRepliesToOthersInTimeline,
+					ref: $$(withReplies),
+				} : undefined, {
+					type: 'switch',
+					text: i18n.ts.fileAttachedOnly,
+					icon: 'ph-image ph-bold pg-lg',
+					ref: $$(onlyFiles),
+				}], ev.currentTarget ?? ev.target);
+			},
+		},
+	];
+	if (deviceKind === 'desktop') {
+		tmp.unshift({
+			icon: 'ph-arrows-counter-clockwise ph-bold pg-lg',
+			text: i18n.ts.reload,
+			handler: (ev: Event) => {
+				console.log('called');
+				tlComponent.reloadTimeline();
+			},
+		});
+	}
+	return tmp;
+});
 
 const headerTabs = $computed(() => [...(defaultStore.reactiveState.pinnedUserLists.value.map(l => ({
 	key: 'list:' + l.id,

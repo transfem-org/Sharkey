@@ -6,7 +6,7 @@
 import { computed, reactive } from 'vue';
 import { $i } from '@/account.js';
 import { miLocalStorage } from '@/local-storage.js';
-import { openInstanceMenu } from '@/ui/_common_/common.js';
+import { openInstanceMenu, openToolsMenu } from '@/ui/_common_/common.js';
 import { lookup } from '@/scripts/lookup.js';
 import * as os from '@/os.js';
 import { i18n } from '@/i18n.js';
@@ -141,6 +141,13 @@ export const navbarItemDef = reactive({
 		icon: 'ph-info ph-bold ph-lg',
 		action: (ev) => {
 			openInstanceMenu(ev);
+		},
+	},
+	tools: {
+		title: i18n.ts.tools,
+		icon: 'ph-toolbox ph-bold ph-lg',
+		action: (ev) => {
+			openToolsMenu(ev);
 		},
 	},
 	reload: {

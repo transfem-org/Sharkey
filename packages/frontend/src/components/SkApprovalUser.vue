@@ -48,6 +48,7 @@ function getReason() {
 		email = info?.email;
 	});
 }
+
 getReason();
 
 const emits = defineEmits<{

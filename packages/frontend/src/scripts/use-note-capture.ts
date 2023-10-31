@@ -12,15 +12,17 @@ import * as os from '@/os.js';
 export function useNoteCapture(props: {
 	rootEl: Ref<HTMLElement>;
 	note: Ref<Misskey.entities.Note>;
+	pureNote: Ref<Misskey.entities.Note>;
 	isDeletedRef: Ref<boolean>;
 }) {
 	const note = props.note;
+	const pureNote = props.pureNote !== undefined ? props.pureNote : props.note;
 	const connection = $i ? useStream() : null;
 
 	async function onStreamNoteUpdated(noteData): void {
 		const { type, id, body } = noteData;
 
-		if (id !== note.value.id) return;
+		if ((id !== note.value.id) && (id !== pureNote.value.id)) return;
 
 		switch (type) {
 			case 'reacted': {
@@ -98,6 +100,7 @@ export function useNoteCapture(props: {
 		if (connection) {
 			// TODO: このノートがストリーミング経由で流れてきた場合のみ sr する
 			connection.send(document.body.contains(props.rootEl.value) ? 'sr' : 's', { id: note.value.id });
+			if (pureNote.value.id !== note.value.id) connection.send('s', { id: pureNote.value.id });
 			if (withHandler) connection.on('noteUpdated', onStreamNoteUpdated);
 		}
 	}
@@ -107,6 +110,11 @@ export function useNoteCapture(props: {
 			connection.send('un', {
 				id: note.value.id,
 			});
+			if (pureNote.value.id !== note.value.id) {
+				connection.send('un', {
+					id: pureNote.value.id,
+				});
+			}
 			if (withHandler) connection.off('noteUpdated', onStreamNoteUpdated);
 		}
 	}
