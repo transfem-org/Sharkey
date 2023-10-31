@@ -47,8 +47,7 @@ export class ApiSearchMastodon {
 
 	public async getStatusTrends() {
 		try {
-			let map;
-			await fetch(`${this.BASE_URL}/api/notes/featured`,
+			const data = await fetch(`${this.BASE_URL}/api/notes/featured`,
 				{
 					method: 'POST',
 					headers: {
@@ -58,10 +57,8 @@ export class ApiSearchMastodon {
 					body: JSON.stringify({}),
 				})
 				.then(res => res.json())
-				.then((data) => {
-					map = data.map((status: any) => this.mastoConverter.convertStatus(status));
-				});
-			return map;
+				.then(data => data.map((status: any) => this.mastoConverter.convertStatus(status)));
+			return data;
 		} catch (e: any) {
 			console.error(e);
 			return [];
@@ -82,7 +79,7 @@ export class ApiSearchMastodon {
 			return Promise.all(data.map(async (suggestion: any) => { suggestion.account = await this.mastoConverter.convertAccount(suggestion.account); return suggestion; }));
 		} catch (e: any) {
 			console.error(e);
-			return e.response.data;
+			return [];
 		}
 	}
 }
