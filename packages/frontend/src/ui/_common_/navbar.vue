@@ -29,7 +29,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					v-on="navbarItemDef[item].action ? { click: navbarItemDef[item].action } : {}"
 				>
 					<i class="ti-fw" :class="[$style.itemIcon, navbarItemDef[item].icon]"></i><span :class="$style.itemText">{{ navbarItemDef[item].title }}</span>
-					<span v-if="navbarItemDef[item].indicated" :class="$style.itemIndicator">
+					<span v-if="navbarItemDef[item].indicated" :class="[$style.itemIndicator, { [$style.hasItemIndicateValueIcon]: navbarItemDef[item].indicateValue }]">
 						<span v-if="navbarItemDef[item].indicateValue" class="_indicateCounter" :class="$style.itemIndicateValueIcon">{{ navbarItemDef[item].indicateValue }}</span>
 						<i v-else class="_indicatorCircle"></i>
 					</span>
@@ -311,12 +311,12 @@ function more(ev: MouseEvent) {
 	.itemIndicator {
 		position: absolute;
 		top: 0;
-		right: 20px;
+		left: 20px;
 		color: var(--navIndicator);
 		font-size: 8px;
 		animation: blink 1s infinite;
 
-		&:has(.itemIndicateValueIcon) {
+		&.hasItemIndicateValueIcon {
 			animation: none;
 			left: auto;
 			right: 40px;
