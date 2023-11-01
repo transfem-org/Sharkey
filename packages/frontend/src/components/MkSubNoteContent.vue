@@ -60,7 +60,7 @@ function noteclick(id: string) {
 	router.push(`/notes/${id}`);
 }
 
-const isLong = shouldCollapsed(props.note);
+const isLong = shouldCollapsed(props.note, []);
 
 const collapsed = $ref(isLong);
 </script>
