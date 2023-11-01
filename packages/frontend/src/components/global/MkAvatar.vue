@@ -169,7 +169,7 @@ watch(() => props.user.avatarBlurhash, () => {
 	left: 0;
 	right: 0;
 	top: 0;
-	border-radius: var(--radius-full);
+	border-radius: 100%;
 	z-index: 1;
 	overflow: clip;
 	object-fit: cover;
