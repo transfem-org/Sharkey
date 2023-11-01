@@ -49,7 +49,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<article v-else :class="$style.article" @contextmenu.stop="onContextmenu">
 		<div v-if="appearNote.channel" :class="$style.colorBar" :style="{ background: appearNote.channel.color }"></div>
 		<MkAvatar :class="$style.avatar" :user="appearNote.user" link preview/>
-		<div :class="$style.main" @click="defaultStore.state.clickToOpen ? noteclick(appearNote.id) : undefined">
+		<div :class="[$style.main, { [$style.clickToOpen]: defaultStore.state.clickToOpen }]" @click="defaultStore.state.clickToOpen ? noteclick(appearNote.id) : undefined">
 			<MkNoteHeader :note="appearNote" :mini="true" v-on:click.stop/>
 			<MkInstanceTicker v-if="showTicker" :instance="appearNote.user.instance"/>
 			<div style="container-type: inline-size;">
@@ -852,7 +852,6 @@ function readPromo() {
 }
 
 .cw {
-	cursor: default;
 	display: block;
 	margin: 0;
 	padding: 0;
@@ -1095,5 +1094,9 @@ function readPromo() {
 	margin: 2px;
 	padding: 0 6px;
 	opacity: .8;
+}
+
+.clickToOpen {
+	cursor: pointer;
 }
 </style>

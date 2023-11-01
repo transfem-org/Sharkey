@@ -4,7 +4,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<div ref="root">
+<div ref="root" :class="$style.root">
 	<XBanner v-for="media in mediaList.filter(media => !previewable(media))" :key="media.id" :media="media"/>
 	<div v-if="mediaList.filter(media => previewable(media)).length > 0" :class="$style.container">
 		<div
@@ -260,6 +260,10 @@ const previewable = (file: Misskey.entities.DriveFile): boolean => {
 </script>
 
 <style lang="scss" module>
+.root {
+	cursor: auto; /* not clickToOpen-able */
+}
+
 .container {
 	position: relative;
 	width: 100%;

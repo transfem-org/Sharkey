@@ -478,7 +478,6 @@ if (props.detail) {
 }
 
 .cw {
-	cursor: default;
 	display: block;
 	margin: 0;
 	padding: 0;

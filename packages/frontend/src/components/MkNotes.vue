@@ -55,6 +55,8 @@ defineExpose({
 <style lang="scss" module>
 .root {
 	&.noGap {
+		border-radius: var(--radius);
+
 		> .notes {
 			background: color-mix(in srgb, var(--panel) 65%, transparent);
 		}
