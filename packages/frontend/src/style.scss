@@ -188,10 +188,10 @@ hr {
 	font-weight: 700;
 	background: var(--indicator);
 	height: 1.5em;
-	min-width: 1.5em;
+	min-width: 1em;
 	align-items: center;
 	justify-content: center;
-	border-radius: 99rem;
+	border-radius: var(--radius-ellipse);
 	padding: 0.3em 0.5em;
 }
 
