@@ -311,7 +311,7 @@ function more(ev: MouseEvent) {
 	.itemIndicator {
 		position: absolute;
 		top: 0;
-		left: 20px;
+		right: 20px;
 		color: var(--navIndicator);
 		font-size: 8px;
 		animation: blink 1s infinite;
