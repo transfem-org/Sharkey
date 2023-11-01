@@ -675,6 +675,10 @@ export class ApRendererService {
 
 		const files = await getPromisedFiles(note.fileIds);
 
+		if (note.fileIds.length > 0) {
+			files.map(x => this.renderUpdate(this.renderDocument(x), { id: note.userId }));
+		}
+
 		const text = note.text ?? '';
 		let poll: MiPoll | null = null;
 
