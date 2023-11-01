@@ -153,7 +153,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, inject, onMounted, ref, shallowRef, Ref, defineAsyncComponent, watch } from 'vue';
+import { computed, inject, onMounted, ref, shallowRef, Ref, defineAsyncComponent } from 'vue';
 import * as mfm from 'mfm-js';
 import * as Misskey from 'misskey-js';
 import MkNoteSub from '@/components/MkNoteSub.vue';
@@ -240,7 +240,7 @@ const renoteUri = appearNote.renote ? appearNote.renote.uri : null;
 
 const isMyRenote = $i && ($i.id === note.userId);
 const showContent = ref(false);
-let parsed = appearNote.text ? mfm.parse(appearNote.text) : null;
+const parsed = $computed(() => appearNote.text ? mfm.parse(appearNote.text) : null);
 const urls = parsed ? extractUrlFromMfm(parsed) : null;
 const isLong = shouldCollapsed(appearNote, urls ?? []);
 const collapsed = ref(appearNote.cw == null && isLong);
@@ -270,12 +270,6 @@ useNoteCapture({
 	note: $$(appearNote),
 	pureNote: $$(note),
 	isDeletedRef: isDeleted,
-});
-
-watch(() => appearNote.text, () => {
-	if (appearNote.text && mfm.parse(appearNote.text) !== parsed) {
-		parsed = mfm.parse(appearNote.text);
-	}
 });
 
 useTooltip(renoteButton, async (showing) => {
