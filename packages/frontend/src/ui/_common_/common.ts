@@ -33,7 +33,7 @@ function toolsMenuItems(): MenuItem[] {
 		icon: 'ph-smiley ph-bold pg-lg',
 	} : undefined, ($i && ($i.isAdmin || $i.policies.canManageAvatarDecorations)) ? {
 		type: 'link',
-		to: '/avatar-decorations',
+		to: '/admin/avatar-decorations',
 		text: i18n.ts.manageAvatarDecorations,
 		icon: 'ph-sparkle ph-bold pg-lg',
 	} : undefined];

@@ -133,7 +133,7 @@ const menuDef = $computed(() => [{
 	}, {
 		icon: 'ph-sparkle ph-bold ph-lg',
 		text: i18n.ts.avatarDecorations,
-		to: '/avatar-decorations',
+		to: '/admin/avatar-decorations',
 		active: currentPage?.route.name === 'avatarDecorations',
 	}, {
 		icon: 'ph-globe-hemisphere-west ph-bold ph-lg',
