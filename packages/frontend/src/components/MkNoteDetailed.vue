@@ -295,7 +295,7 @@ const quoted = ref(false);
 const muted = ref($i ? checkWordMute(appearNote, $i, $i.mutedWords) : false);
 const translation = ref(null);
 const translating = ref(false);
-const parsed = appearNote.text ? mfm.parse(appearNote.text) : null;
+let parsed = appearNote.text ? mfm.parse(appearNote.text) : null;
 const urls = parsed ? extractUrlFromMfm(parsed) : null;
 const showTicker = (defaultStore.state.instanceTicker === 'always') || (defaultStore.state.instanceTicker === 'remote' && appearNote.user.instance);
 const conversation = ref<Misskey.entities.Note[]>([]);
@@ -305,6 +305,12 @@ const canRenote = computed(() => ['public', 'home'].includes(appearNote.visibili
 
 watch(() => props.expandAllCws, (expandAllCws) => {
 	if (expandAllCws !== showContent.value) showContent.value = expandAllCws;
+});
+
+watch(() => appearNote.text, () => {
+	if (appearNote.text && mfm.parse(appearNote.text) !== parsed) {
+		parsed = mfm.parse(appearNote.text);
+	}
 });
 
 if ($i) {
