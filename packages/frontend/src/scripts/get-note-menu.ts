@@ -190,6 +190,7 @@ export function getNoteMenu(props: {
 			reply: appearNote.reply,
 			channel: appearNote.channel,
 			editId: appearNote.id,
+			initialFiles: appearNote.files,
 		});
 	}
 
