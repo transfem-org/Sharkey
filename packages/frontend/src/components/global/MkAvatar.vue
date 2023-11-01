@@ -159,7 +159,7 @@ watch(() => props.user.avatarBlurhash, () => {
 	display: inline-block;
 	vertical-align: bottom;
 	flex-shrink: 0;
-	border-radius: var(--radius-full);
+	border-radius: 100%;
 	line-height: 16px;
 }
 
