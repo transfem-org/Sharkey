@@ -236,6 +236,6 @@ function resetPassword(): void {
 	background: #ddd;
 	background-position: center;
 	background-size: cover;
-	border-radius: 5px;
+	border-radius: var(--radius-full);
 }
 </style>

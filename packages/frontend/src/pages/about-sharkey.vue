@@ -220,7 +220,7 @@ definePageMetadata({
 				display: block;
 				width: 80px;
 				margin: 0 auto;
-				border-radius: 4px;
+				border-radius: var(--radius-md);
 				position: relative;
 				z-index: 1;
 				transform: translateX(-10%);
@@ -271,7 +271,7 @@ definePageMetadata({
 	align-items: center;
 	padding: 12px;
 	background: var(--buttonBg);
-	border-radius: 5px;
+	border-radius: var(--radius-sm);
 
 	&:hover {
 		text-decoration: none;
@@ -286,7 +286,7 @@ definePageMetadata({
 
 .contributorAvatar {
 	width: 30px;
-	border-radius: 100%;
+	border-radius: var(--radius-full);
 }
 
 .contributorUsername {
@@ -304,12 +304,12 @@ definePageMetadata({
 	align-items: center;
 	padding: 12px;
 	background: var(--buttonBg);
-	border-radius: 5px;
+	border-radius: var(--radius-sm);
 }
 
 .patronIcon {
 	width: 24px;
-	border-radius: 100%;
+	border-radius: var(--radius-full);
 }
 
 .patronName {

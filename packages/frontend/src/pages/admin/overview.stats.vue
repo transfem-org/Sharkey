@@ -115,7 +115,7 @@ onMounted(async () => {
 				margin-right: 12px;
 				background: var(--accentedBg);
 				color: var(--accent);
-				border-radius: 5px;
+				border-radius: var(--radius);
 			}
 
 			&.users {

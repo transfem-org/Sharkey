@@ -44,6 +44,6 @@ const emit = defineEmits<{
   width: 128px;
 	height: 128px;
 	margin-bottom: 16px;
-	border-radius: 4px;
+	border-radius: var(--radius-md);
 }
 </style>

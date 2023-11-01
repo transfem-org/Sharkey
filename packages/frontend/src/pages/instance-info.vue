@@ -254,7 +254,7 @@ definePageMetadata({
 		display: block;
 		margin: 0 16px 0 0;
 		height: 64px;
-		border-radius: 5px;
+		border-radius: var(--radius-sm);
 	}
 
 	> .name {

@@ -202,7 +202,7 @@ function more(ev: MouseEvent) {
 			left: 0;
 			right: 0;
 			bottom: 0;
-			border-radius: 4px;
+			border-radius: var(--radius-ellipse);
 			background: linear-gradient(90deg, var(--buttonGradateA), var(--buttonGradateB));
 		}
 
@@ -296,7 +296,7 @@ function more(ev: MouseEvent) {
 				left: 0;
 				right: 0;
 				bottom: 0;
-				border-radius: 4px;
+				border-radius: var(--radius-ellipse);
 				background: var(--accentedBg);
 			}
 		}
@@ -388,7 +388,7 @@ function more(ev: MouseEvent) {
 			margin: auto;
 			width: 52px;
 			aspect-ratio: 1/1;
-			border-radius: 100%;
+			border-radius: var(--radius-full);
 			background: linear-gradient(90deg, var(--buttonGradateA), var(--buttonGradateB));
 		}
 
@@ -457,7 +457,7 @@ function more(ev: MouseEvent) {
 				left: 0;
 				right: 0;
 				bottom: 0;
-				border-radius: 4px;
+				border-radius: var(--radius-ellipse);
 				background: var(--accentedBg);
 			}
 

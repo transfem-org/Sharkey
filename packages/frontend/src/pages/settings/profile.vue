@@ -340,7 +340,7 @@ definePageMetadata({
 	background-size: cover;
 	background-position: center;
 	border: solid 1px var(--divider);
-	border-radius: 5px;
+	border-radius: var(--radius);
 	overflow: clip;
 }
 
@@ -428,7 +428,7 @@ definePageMetadata({
 	cursor: pointer;
 	padding: 16px 16px 28px 16px;
 	border: solid 2px var(--divider);
-	border-radius: 8px;
+	border-radius: var(--radius-sm);
 	text-align: center;
 	font-size: 90%;
 	overflow: clip;

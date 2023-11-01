@@ -132,6 +132,11 @@
 		document.documentElement.classList.add('f-' + fontSize);
 	}
 
+	const cornerRadius = localStorage.getItem('cornerRadius');
+	if (cornerRadius) {
+		document.documentElement.classList.add(`radius-${cornerRadius}`);
+	}
+
 	const useSystemFont = localStorage.getItem('useSystemFont');
 	if (useSystemFont) {
 		document.documentElement.classList.add('useSystemFont');
@@ -228,7 +233,7 @@
 		}
 
 		button {
-			border-radius: 4px;
+			border-radius: 999px;
 			padding: 0px 12px 0px 12px;
 			border: none;
 			cursor: pointer;
@@ -296,7 +301,7 @@
 			margin-bottom: 2rem;
 			padding: 0.5rem 1rem;
 			width: 40rem;
-			border-radius: 5px;
+			border-radius: 10px;
 			justify-content: center;
 			margin: auto;
 		}

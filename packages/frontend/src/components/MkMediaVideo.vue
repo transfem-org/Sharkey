@@ -77,7 +77,7 @@ watch(videoEl, () => {
 .hide {
 	display: block;
 	position: absolute;
-	border-radius: 5px;
+	border-radius: var(--radius-sm);
 	background-color: black;
 	color: var(--accentLighten);
 	font-size: 14px;
@@ -127,7 +127,7 @@ watch(videoEl, () => {
 .indicator {
 	/* Hardcode to black because either --bg or --fg makes it hard to read in dark/light mode */
 	background-color: black;
-	border-radius: 5px;
+	border-radius: var(--radius-sm);
 	color: var(--accentLighten);
 	display: inline-block;
 	font-weight: bold;

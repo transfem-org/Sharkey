@@ -182,7 +182,7 @@ async function updateAgreeNote(v: boolean) {
 		font-weight: bold;
 		align-items: center;
 		justify-content: center;
-		border-radius: 4px;
+		border-radius: var(--radius-ellipse);
 	}
 }
 

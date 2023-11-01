@@ -155,7 +155,7 @@ os.apiGet('federation/instances', {
 		background: var(--acrylicPanel);
 		-webkit-backdrop-filter: var(--blur, blur(15px));
 		backdrop-filter: var(--blur, blur(15px));
-		border-radius: 4px;
+		border-radius: var(--radius-ellipse);
 		overflow: clip;
 		width: 800px;
 		padding: 8px 0;
@@ -175,14 +175,14 @@ os.apiGet('federation/instances', {
 	padding: 6px 12px 6px 6px;
 	margin: 0 10px 0 0;
 	background: var(--panel);
-	border-radius: 4px;
+	border-radius: var(--radius-ellipse);
 
 	> :global(.icon) {
 		display: inline-block;
 		width: 20px;
 		height: 20px;
 		margin-right: 5px;
-		border-radius: 4px;
+		border-radius: var(--radius-ellipse);
 	}
 }
 </style>

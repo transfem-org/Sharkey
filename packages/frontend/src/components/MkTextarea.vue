@@ -153,7 +153,7 @@ onMounted(() => {
 	color: var(--fg);
 	background: var(--panel);
 	border: solid 1px var(--panel);
-	border-radius: 5px;
+	border-radius: var(--radius-sm);
 	outline: none;
 	box-shadow: none;
 	box-sizing: border-box;

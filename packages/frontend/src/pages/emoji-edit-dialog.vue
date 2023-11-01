@@ -206,7 +206,7 @@ async function del() {
 
 .imgContainer {
 	padding: 8px;
-	border-radius: 5px;
+	border-radius: var(--radius-sm);
 }
 
 .img {

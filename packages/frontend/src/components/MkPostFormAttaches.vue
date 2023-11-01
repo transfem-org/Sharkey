@@ -143,7 +143,7 @@ function showFileMenu(file: Misskey.entities.DriveFile, ev: MouseEvent): void {
 	width: 64px;
 	height: 64px;
 	margin-right: 4px;
-	border-radius: 4px;
+	border-radius: var(--radius-xs);
 	overflow: hidden;
 	cursor: move;
 }

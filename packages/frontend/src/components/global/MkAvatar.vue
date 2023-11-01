@@ -169,7 +169,7 @@ watch(() => props.user.avatarBlurhash, () => {
 	left: 0;
 	right: 0;
 	top: 0;
-	border-radius: 100%;
+	border-radius: var(--radius-full);
 	z-index: 1;
 	overflow: clip;
 	object-fit: cover;
@@ -187,10 +187,10 @@ watch(() => props.user.avatarBlurhash, () => {
 }
 
 .square {
-	border-radius: 5px;
+	border-radius: 20%;
 
 	> .inner {
-		border-radius: 5px;
+		border-radius: 20%;
 	}
 }
 

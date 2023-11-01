@@ -61,7 +61,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<MkAcct :user="u"/>
 				<button class="_button" style="padding: 4px 8px;" @click="removeVisibleUser(u)"><i class="ph-x ph-bold ph-lg"></i></button>
 			</span>
-			<button class="_buttonPrimary" style="padding: 4px; border-radius: 5px;" @click="addVisibleUser"><i class="ph-plus ph-bold ph-lg ti-fw"></i></button>
+			<button class="_buttonPrimary" style="padding: 4px; border-radius: var(--radius-sm);" @click="addVisibleUser"><i class="ph-plus ph-bold ph-lg ti-fw"></i></button>
 		</div>
 	</div>
 	<MkInfo v-if="hasNotSpecifiedMentions" warn :class="$style.hasNotSpecifiedMentions">{{ i18n.ts.notSpecifiedMentionWarning }} - <button class="_textButton" @click="addMissingMention()">{{ i18n.ts.add }}</button></MkInfo>
@@ -998,7 +998,7 @@ defineExpose({
 	padding: 0 12px;
 	line-height: 34px;
 	font-weight: bold;
-	border-radius: 5px;
+	border-radius: var(--radius-sm);
 	min-width: 90px;
 	box-sizing: border-box;
 	color: var(--fgOnAccent);
@@ -1008,7 +1008,7 @@ defineExpose({
 .headerRightItem {
 	margin: 0;
 	padding: 8px;
-	border-radius: 5px;
+	border-radius: var(--radius-sm);
 
 	&:hover {
 		background: var(--X5);
@@ -1071,7 +1071,7 @@ defineExpose({
 .visibleUser {
 	margin-right: 14px;
 	padding: 8px 0 8px 8px;
-	border-radius: 5px;
+	border-radius: var(--radius-sm);
 	background: var(--X4);
 }
 
@@ -1140,7 +1140,7 @@ defineExpose({
 	padding: 4px 6px;
 	font-size: .9em;
 	color: var(--warn);
-	border-radius: 5px;
+	border-radius: var(--radius-sm);
 	min-width: 1.6em;
 	text-align: center;
 
@@ -1180,7 +1180,7 @@ defineExpose({
 	font-size: 1em;
 	width: auto;
 	height: 100%;
-	border-radius: 5px;
+	border-radius: var(--radius-sm);
 
 	&:hover {
 		background: var(--X5);

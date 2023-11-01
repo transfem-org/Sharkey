@@ -55,7 +55,7 @@ watch(audioEl, () => {
 <style lang="scss" module>
 .root {
 	width: 100%;
-	border-radius: 4px;
+	border-radius: var(--radius-xs);
 	margin-top: 4px;
 	overflow: clip;
 }
@@ -79,7 +79,7 @@ watch(audioEl, () => {
 }
 
 .audio {
-	border-radius: 5px;
+	border-radius: var(--radius-sm);
 	overflow: clip;
 }
 </style>

@@ -88,7 +88,7 @@ const collapsed = $ref(isLong);
 				background: var(--panel);
 				padding: 6px 10px;
 				font-size: 0.8em;
-				border-radius: 4px;
+				border-radius: var(--radius-ellipse);
 				box-shadow: 0 2px 6px rgb(0 0 0 / 20%);
 			}
 
@@ -131,7 +131,7 @@ const collapsed = $ref(isLong);
 	background: var(--popup);
 	padding: 6px 10px;
 	font-size: 0.8em;
-	border-radius: 4px;
+	border-radius: var(--radius-ellipse);
 	box-shadow: 0 2px 6px rgb(0 0 0 / 20%);
 }
 </style>

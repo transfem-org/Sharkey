@@ -350,7 +350,7 @@ $widgets-hide-threshold: 1090px;
 	right: 32px;
 	width: 64px;
 	height: 64px;
-	border-radius: 100%;
+	border-radius: var(--radius-full);
 	box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12);
 	font-size: 22px;
 	background: var(--panel);
@@ -410,7 +410,7 @@ $widgets-hide-threshold: 1090px;
 	width: 100%;
 	max-width: 60px;
 	margin: auto;
-	border-radius: 5px;
+	border-radius: var(--radius-full);
 	background: var(--panel);
 	color: var(--fg);
 
