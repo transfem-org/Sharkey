@@ -77,7 +77,7 @@ watch(() => props.lang, (to) => {
 	& :deep(.shiki) {
 		padding: 12px;
 		margin: 0;
-		border-radius: 6px;
+		border-radius: var(--radius-sm);
 		min-height: 130px;
 		pointer-events: none;
 		min-width: calc(100% - 24px);

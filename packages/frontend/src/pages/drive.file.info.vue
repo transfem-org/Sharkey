@@ -221,7 +221,7 @@ onMounted(async () => {
 
 	.fileQuickActionsOthersButton {
 		padding: .5rem;
-		border-radius: 99rem;
+		border-radius: var(--radius-ellipse);
 
 		&:hover,
 		&:focus-visible {

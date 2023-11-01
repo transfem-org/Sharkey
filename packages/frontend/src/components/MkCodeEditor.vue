@@ -129,7 +129,7 @@ watch(v, () => {
 
 .focused.codeEditorRoot {
 	border-color: var(--accent) !important;
-	border-radius: 6px;
+	border-radius: var(--radius-sm);
 }
 
 .codeEditorScroller {
