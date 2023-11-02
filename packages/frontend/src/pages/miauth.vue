@@ -50,6 +50,7 @@ import * as os from '@/os.js';
 import { $i, login } from '@/account.js';
 import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
+import { appendQuery, query } from '@/scripts/url.js';
 
 const props = defineProps<{
 	session: string;
@@ -76,8 +77,7 @@ async function accept(): Promise<void> {
 	if (props.callback) {
 		const cbUrl = new URL(props.callback);
 		if (['javascript:', 'file:', 'data:', 'mailto:', 'tel:'].includes(cbUrl.protocol)) throw new Error('invalid url');
-		cbUrl.searchParams.set('session', props.session);
-		location.href = cbUrl.href;
+		location.href = appendQuery(props.callback, query({ session: props.session }));
 	}
 }
 
