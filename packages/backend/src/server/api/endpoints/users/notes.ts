@@ -124,6 +124,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 						}
 
 						if (ps.withFiles && note.fileIds.length === 0) return false;
+						if (!ps.withReplies && note.replyId) return false;
 
 						if (note.channel?.isSensitive && !isSelf) return false;
 						if (note.visibility === 'specified' && (!me || (me.id !== note.userId && !note.visibleUserIds.some(v => v === me.id)))) return false;
