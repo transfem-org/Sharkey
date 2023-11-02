@@ -1,7 +1,7 @@
 <template>
 <div v-if="hide" class="mod-player-disabled" @click="toggleVisible()">
 	<div>
-		<b><i class="fas fa-exlamation-triangle"></i> {{ i18n.ts.sensitive }}</b>
+		<b><i class="ph-eye ph-bold ph-lg"></i> {{ i18n.ts.sensitive }}</b>
 		<span>{{ i18n.ts.clickToShow }}</span>
 	</div>
 </div>
