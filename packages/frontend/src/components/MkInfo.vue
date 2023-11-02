@@ -24,7 +24,6 @@ const props = defineProps<{
 	padding: 12px 14px;
 	font-size: 90%;
 	background: color-mix(in srgb, var(--infoBg) 65%, transparent);
-	backdrop-filter: blur(16px);
 	color: var(--infoFg);
 	border-radius: var(--radius);
 	white-space: pre-wrap;
