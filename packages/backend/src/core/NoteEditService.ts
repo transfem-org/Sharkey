@@ -393,7 +393,7 @@ export class NoteEditService implements OnApplicationShutdown {
 			await this.noteEditRepository.insert({
 				id: this.idService.gen(),
 				noteId: oldnote.id,
-				oldText: update.text ? oldnote.text : undefined,
+				oldText: oldnote.text || undefined,
 				newText: update.text || undefined,
 				cw: update.cw || undefined,
 				fileIds: undefined,
