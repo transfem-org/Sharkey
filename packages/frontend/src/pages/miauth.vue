@@ -60,7 +60,7 @@ const props = defineProps<{
 	permission: string; // コンマ区切り
 }>();
 
-const _permissions = props.permission ? props.permission.split(',') : [];
+const _permissions = $computed(() => props.permission ? props.permission.split(',') : []);
 
 let state = $ref<string | null>(null);
 
@@ -77,6 +77,7 @@ async function accept(): Promise<void> {
 	if (props.callback) {
 		const cbUrl = new URL(props.callback);
 		if (['javascript:', 'file:', 'data:', 'mailto:', 'tel:'].includes(cbUrl.protocol)) throw new Error('invalid url');
+		console.log(props.callback, props.session);
 		location.href = appendQuery(props.callback, query({ session: props.session }));
 	}
 }
