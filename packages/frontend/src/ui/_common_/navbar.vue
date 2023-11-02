@@ -243,6 +243,7 @@ function more(ev: MouseEvent) {
 		width: 32px;
 		aspect-ratio: 1;
 		margin-right: 8px;
+		margin-top: 18px;
 	}
 
 	.acct {
