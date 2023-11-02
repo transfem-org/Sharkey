@@ -1,4 +1,5 @@
 /* global libopenmpt UTF8ToString writeAsciiToMemory */
+/* eslint-disable */
 
 const ChiptuneAudioContext = window.AudioContext || window.webkitAudioContext;
 

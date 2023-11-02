@@ -90,8 +90,8 @@ player.value.load(url).then((result) => {
 		player.value.play(buffer);
 		progress.value!.max = player.value.duration();
 		display();
-	} catch (e) {
-		console.warn(e);
+	} catch (err) {
+		console.warn(err);
 	}
 	player.value.stop();
 }).catch((error) => {
@@ -128,8 +128,8 @@ function stop(noDisplayUpdate = false) {
 		try {
 			player.value.play(buffer);
 			display();
-		} catch (e) {
-			console.warn(e);
+		} catch (err) {
+			console.warn(err);
 		}
 	}
 	player.value.stop();
