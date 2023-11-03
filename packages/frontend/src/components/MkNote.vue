@@ -288,23 +288,62 @@ if (props.mock) {
 	});
 }
 
-if ($i && !props.mock) {
-	os.api("notes/renotes", {
-		noteId: appearNote.id,
-		userId: $i.id,
-		limit: 1,
-	}).then((res) => {
-		renoted.value = res.length > 0;
+if (!props.mock) {
+	useTooltip(renoteButton, async (showing) => {
+		const renotes = await os.api('notes/renotes', {
+			noteId: appearNote.id,
+			limit: 11,
+		});
+
+		const users = renotes.map(x => x.user);
+
+		if (users.length < 1) return;
+
+		os.popup(MkUsersTooltip, {
+			showing,
+			users,
+			count: appearNote.renoteCount,
+			targetElement: renoteButton.value,
+		}, {}, 'closed');
 	});
 
-	os.api("notes/renotes", {
-		noteId: appearNote.id,
-		userId: $i.id,
-		limit: 1,
-		quote: true,
-	}).then((res) => {
-		quoted.value = res.length > 0;
+	useTooltip(quoteButton, async (showing) => {
+		const renotes = await os.api('notes/renotes', {
+			noteId: appearNote.id,
+			limit: 11,
+			quote: true,
+		});
+
+		const users = renotes.map(x => x.user);
+
+		if (users.length < 1) return;
+
+		os.popup(MkUsersTooltip, {
+			showing,
+			users,
+			count: appearNote.renoteCount,
+			targetElement: quoteButton.value,
+		}, {}, 'closed');
 	});
+
+	if ($i) {
+		os.api("notes/renotes", {
+			noteId: appearNote.id,
+			userId: $i.id,
+			limit: 1,
+		}).then((res) => {
+			renoted.value = res.length > 0;
+		});
+
+		os.api("notes/renotes", {
+			noteId: appearNote.id,
+			userId: $i.id,
+			limit: 1,
+			quote: true,
+		}).then((res) => {
+			quoted.value = res.length > 0;
+		});
+	}
 }
 
 type Visibility = 'public' | 'home' | 'followers' | 'specified';
