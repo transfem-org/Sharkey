@@ -205,6 +205,8 @@ export type Note = {
 	fileIds: DriveFile['id'][];
 	visibility: 'public' | 'home' | 'followers' | 'specified';
 	visibleUserIds?: User['id'][];
+	channel?: Channel;
+	channelId?: Channel['id'];
 	localOnly?: boolean;
 	myReaction?: string;
 	reactions: Record<string, number>;
@@ -535,7 +537,20 @@ export type FollowRequest = {
 
 export type Channel = {
 	id: ID;
-	// TODO
+	lastNotedAt: Date | null;
+	userId: User['id'] | null;
+	user: User | null;
+	name: string;
+	description: string | null;
+	bannerId: DriveFile['id'] | null;
+	banner: DriveFile | null;
+	pinnedNoteIds: string[];
+	color: string;
+	isArchived: boolean;
+	notesCount: number;
+	usersCount: number;
+	isSensitive: boolean;
+	allowRenoteToExternal: boolean;
 };
 
 export type Following = {

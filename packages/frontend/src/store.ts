@@ -49,9 +49,14 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'account',
 		default: 0,
 	},
-	timelineTutorial: {
+	timelineTutorials: {
 		where: 'account',
-		default: 0,
+		default: {
+			home: false,
+			local: false,
+			social: false,
+			global: false,
+		},
 	},
 	keepCw: {
 		where: 'account',
@@ -388,6 +393,10 @@ export const defaultStore = markRaw(new Storage('base', {
 	disableStreamingTimeline: {
 		where: 'device',
 		default: false,
+	},
+	useGroupedNotifications: {
+		where: 'device',
+		default: true,
 	},
 }));
 

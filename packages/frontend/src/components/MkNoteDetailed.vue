@@ -399,6 +399,16 @@ useTooltip(quoteButton, async (showing) => {
 	}, {}, 'closed');
 });
 
+type Visibility = 'public' | 'home' | 'followers' | 'specified';
+
+function smallerVisibility(a: Visibility | string, b: Visibility | string): Visibility {
+	if (a === 'specified' || b === 'specified') return 'specified';
+	if (a === 'followers' || b === 'followers') return 'followers';
+	if (a === 'home' || b === 'home') return 'home';
+	// if (a === 'public' || b === 'public')
+	return 'public';
+}
+
 function renote() {
 	pleaseLogin();
 	showMovedDialog();
@@ -419,7 +429,7 @@ function renote() {
 			os.toast(i18n.ts.renoted);
 			renoted.value = true;
 		});
-	} else {
+	} else if (!appearNote.channel || appearNote.channel?.allowRenoteToExternal) {
 		const el = renoteButton.value as HTMLElement | null | undefined;
 		if (el) {
 			const rect = el.getBoundingClientRect();
@@ -428,7 +438,18 @@ function renote() {
 			os.popup(MkRippleEffect, { x, y }, {}, 'end');
 		}
 
+		const configuredVisibility = defaultStore.state.rememberNoteVisibility ? defaultStore.state.visibility : defaultStore.state.defaultNoteVisibility;
+		const localOnly = defaultStore.state.rememberNoteVisibility ? defaultStore.state.localOnly : defaultStore.state.defaultNoteLocalOnly;
+
+		let visibility = appearNote.visibility;
+		visibility = smallerVisibility(visibility, configuredVisibility);
+		if (appearNote.channel?.isSensitive) {
+			visibility = smallerVisibility(visibility, 'home');
+		}
+		
 		os.api('notes/create', {
+			localOnly,
+			visibility,
 			renoteId: appearNote.id,
 		}).then(() => {
 			os.toast(i18n.ts.renoted);

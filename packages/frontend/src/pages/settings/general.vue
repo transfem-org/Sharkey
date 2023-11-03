@@ -90,6 +90,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<template #label>{{ i18n.ts.notificationDisplay }}</template>
 
 		<div class="_gaps_m">
+			<MkSwitch v-model="useGroupedNotifications">{{ i18n.ts.useGroupedNotifications }}</MkSwitch>
+
 			<MkRadios v-model="notificationPosition">
 				<template #label>{{ i18n.ts.position }}</template>
 				<option value="leftTop"><i class="ph-arrow-up-left ph-bold ph-lg"></i> {{ i18n.ts.leftTop }}</option>
@@ -270,6 +272,7 @@ const notificationStackAxis = computed(defaultStore.makeGetterSetter('notificati
 const keepScreenOn = computed(defaultStore.makeGetterSetter('keepScreenOn'));
 const defaultWithReplies = computed(defaultStore.makeGetterSetter('defaultWithReplies'));
 const disableStreamingTimeline = computed(defaultStore.makeGetterSetter('disableStreamingTimeline'));
+const useGroupedNotifications = computed(defaultStore.makeGetterSetter('useGroupedNotifications'));
 
 watch(lang, () => {
 	miLocalStorage.setItem('lang', lang.value as string);
