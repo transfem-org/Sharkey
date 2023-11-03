@@ -1224,10 +1224,10 @@ _initialTutorial:
   skipAreYouSure: "チュートリアルを終了しますか？"
   _landing:
     title: "チュートリアルへようこそ"
-    description: "ここでは、Misskeyの基本的な使い方や機能を確認できます。"
+    description: "ここでは、Sharkeyの基本的な使い方や機能を確認できます。"
   _note:
     title: "ノートって何？"
-    description: "Misskeyでの投稿は「ノート」と呼びます。ノートはタイムラインに時系列で並んでいて、リアルタイムで更新されていきます。"
+    description: "Sharkeyでの投稿は「ノート」と呼びます。ノートはタイムラインに時系列で並んでいて、リアルタイムで更新されていきます。"
     reply: "返信することができます。返信に対しての返信も可能で、スレッドのように会話を続けることもできます。"
     renote: "そのノートを自分のタイムラインに流して共有することができます。テキストを追加して引用することも可能です。"
     reaction: "リアクションをつけることができます。詳しくは次のページで解説します。"
@@ -1241,7 +1241,7 @@ _initialTutorial:
     reactDone: "「ー」ボタンを押すとリアクションを取り消すことができます。"
   _timeline:
     title: "タイムラインのしくみ"
-    description1: "Misskeyには、使い方に応じて複数のタイムラインが用意されています（サーバーによってはいずれかが無効になっていることがあります）。"
+    description1: "Sharkeyには、使い方に応じて複数のタイムラインが用意されています（サーバーによってはいずれかが無効になっていることがあります）。"
     home: "あなたがフォローしているアカウントの投稿を見られます。"
     local: "このサーバーにいるユーザー全員の投稿を見られます。"
     social: "ホームタイムラインとローカルタイムラインの投稿が両方表示されます。"
@@ -1250,7 +1250,7 @@ _initialTutorial:
     description3: "その他にも、リストタイムラインやチャンネルタイムラインなどがあります。詳しくは{link}をご覧ください。"
   _postNote:
     title: "ノートの投稿設定"
-    description1: "Misskeyにノートを投稿する際には、様々なオプションの設定が可能です。投稿フォームはこのようになっています。"
+    description1: "Sharkeyにノートを投稿する際には、様々なオプションの設定が可能です。投稿フォームはこのようになっています。"
     _visibility:
       description: "ノートを表示できる相手を制限できます。"
       public: "すべてのユーザーに公開。"
@@ -1278,7 +1278,7 @@ _initialTutorial:
     doItToContinue: "画像をセンシティブに設定すると先に進めるようになります。"
   _done:
     title: "チュートリアルは終了です🎉"
-    description: "ここで紹介した機能はほんの一部にすぎません。Misskeyの使い方をより詳しく知るには、{link}をご覧ください。"
+    description: "ここで紹介した機能はほんの一部にすぎません。Sharkeyの使い方をより詳しく知るには、{link}をご覧ください。"
 
 _timelineDescription:
   home: "ホームタイムラインでは、あなたがフォローしているアカウントの投稿を見られます。"
@@ -1320,7 +1320,7 @@ _achievements:
   earnedAt: "獲得日時"
   _types:
     _notes1:
-      title: "just setting up my msky"
+      title: "just setting up my shonk"
       description: "初めてノートを投稿した"
       flavor: "良いSharkeyライフを！"
     _notes10:

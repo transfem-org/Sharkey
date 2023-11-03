@@ -1101,7 +1101,7 @@ _accountMigration:
 _achievements:
   _types:
     _notes1:
-      title: "Je viens tout juste de configurer mon msky"
+      title: "Je viens tout juste de configurer mon shonk"
       description: "Publiez votre première note"
       flavor: "Passez un bon moment avec Misskey !"
     _notes10:
