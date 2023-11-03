@@ -50,7 +50,7 @@ const headerTabs = $computed(() => []);
 
 definePageMetadata(computed(() => ({
 	title: i18n.ts.approvals,
-	icon: 'ph-chalkboard-teacher ph-bold pg-lg',
+	icon: 'ph-chalkboard-teacher ph-bold ph-lg',
 })));
 </script>
 

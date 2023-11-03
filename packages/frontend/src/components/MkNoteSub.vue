@@ -22,7 +22,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<footer :class="$style.footer">
 				<MkReactionsViewer ref="reactionsViewer" :note="note"/>
 				<button class="_button" :class="$style.noteFooterButton" @click="reply()">
-					<i class="ph-arrow-u-up-left ph-bold pg-lg"></i>
+					<i class="ph-arrow-u-up-left ph-bold ph-lg"></i>
 					<p v-if="note.repliesCount > 0" :class="$style.noteFooterButtonCount">{{ note.repliesCount }}</p>
 				</button>
 				<button

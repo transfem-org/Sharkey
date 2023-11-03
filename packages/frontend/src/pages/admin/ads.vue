@@ -65,7 +65,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<div class="buttons">
 					<MkButton class="button" inline primary style="margin-right: 12px;" @click="save(ad)">
 						<i
-							class="ph-floppy-disk ph-bold pg-lg"
+							class="ph-floppy-disk ph-bold ph-lg"
 						></i> {{ i18n.ts.save }}
 					</MkButton>
 					<MkButton class="button" inline danger @click="remove(ad)">

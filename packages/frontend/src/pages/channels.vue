@@ -138,7 +138,7 @@ const headerTabs = $computed(() => [{
 }, {
 	key: 'favorites',
 	title: i18n.ts.favorites,
-	icon: 'ph-star ph-bold pg-lg',
+	icon: 'ph-star ph-bold ph-lg',
 }, {
 	key: 'following',
 	title: i18n.ts._channel.following,
@@ -146,7 +146,7 @@ const headerTabs = $computed(() => [{
 }, {
 	key: 'owned',
 	title: i18n.ts._channel.owned,
-	icon: 'ph-pencil-line ph-bold pg-lg',
+	icon: 'ph-pencil-line ph-bold ph-lg',
 }]);
 
 definePageMetadata(computed(() => ({

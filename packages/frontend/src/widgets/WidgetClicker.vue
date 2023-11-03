@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <MkContainer :showHeader="widgetProps.showHeader" class="mkw-clicker">
-	<template #icon><i class="ph-cookie ph-bold pg-lg"></i></template>
+	<template #icon><i class="ph-cookie ph-bold ph-lg"></i></template>
 	<template #header>Clicker</template>
 	<MkClickerGame/>
 </MkContainer>

@@ -39,6 +39,6 @@ function onAntennaCreated() {
 
 definePageMetadata({
 	title: i18n.ts.manageAntennas,
-	icon: 'ph-flying-saucer ph-bold pg-lg',
+	icon: 'ph-flying-saucer ph-bold ph-lg',
 });
 </script>

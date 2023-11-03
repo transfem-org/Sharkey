@@ -29,7 +29,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 							<div class="other">
 								<button v-if="$i && $i.id === post.user.id" v-tooltip="i18n.ts.edit" v-click-anime class="_button" @click="edit"><i class="ph-pencil ph-bold ph-lg ti-fw"></i></button>
 								<button v-tooltip="i18n.ts.shareWithNote" v-click-anime class="_button" @click="shareWithNote"><i class="ph-repeat ph-bold ph-lg ti-fw"></i></button>
-								<button v-tooltip="i18n.ts.share" v-click-anime class="_button" @click="share"><i class="ph-share-network ph-bold pg-lg ti-fw"></i></button>
+								<button v-tooltip="i18n.ts.share" v-click-anime class="_button" @click="share"><i class="ph-share-network ph-bold ph-lg ti-fw"></i></button>
 							</div>
 						</div>
 						<div class="user">

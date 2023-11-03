@@ -20,7 +20,7 @@
 								<i v-else-if="appearNote.visibility === 'followers'" class="ph-lock ph-bold ph-lg"></i>
 								<i v-else-if="appearNote.visibility === 'specified'" ref="specified" class="ph-envelope ph-bold ph-lg"></i>
 							</span>
-							<span v-if="appearNote.localOnly" style="margin-left: 0.5em;" :title="i18n.ts._visibility['disableFederation']"><i class="ph-rocket ph-bold pg-lg"></i></span>
+							<span v-if="appearNote.localOnly" style="margin-left: 0.5em;" :title="i18n.ts._visibility['disableFederation']"><i class="ph-rocket ph-bold ph-lg"></i></span>
 						</div>
 					</div>
 					<div :class="$style.noteHeaderUsername"><MkAcct :user="appearNote.user"/></div>
@@ -34,7 +34,7 @@
 				</p>
 				<div v-show="appearNote.cw == null || showContent">
 					<span v-if="appearNote.isHidden" style="opacity: 0.5">({{ i18n.ts.private }})</span>
-					<MkA v-if="appearNote.replyId" :class="$style.noteReplyTarget" :to="`/notes/${appearNote.replyId}`"><i class="ph-arrow-bend-left-up ph-bold pg-lg"></i></MkA>
+					<MkA v-if="appearNote.replyId" :class="$style.noteReplyTarget" :to="`/notes/${appearNote.replyId}`"><i class="ph-arrow-bend-left-up ph-bold ph-lg"></i></MkA>
 					<Mfm v-if="appearNote.text" :text="appearNote.text" :author="appearNote.user" :nyaize="'account'" :i="$i" :emojiUrls="appearNote.emojis"/>
 					<a v-if="appearNote.renote != null" :class="$style.rn">RN:</a>
 					<div v-if="translating || translation" :class="$style.translation">
@@ -58,7 +58,7 @@
 					<MkTime :time="appearNote.createdAt" mode="detail"/>
 				</div>
 				<button class="_button" :class="$style.noteFooterButton">
-					<i class="ph-arrow-u-up-left ph-bold pg-lg"></i>
+					<i class="ph-arrow-u-up-left ph-bold ph-lg"></i>
 				</button>
 				<button class="_button" :class="$style.noteFooterButton">
 					<i class="ph-rocket-launch ph-bold ph-lg"></i>

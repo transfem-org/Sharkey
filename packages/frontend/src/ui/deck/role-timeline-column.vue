@@ -6,7 +6,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <XColumn :menu="menu" :column="column" :isStacked="isStacked">
 	<template #header>
-		<i class="ph-seal-check ph-bold pg-lg"></i><span style="margin-left: 8px;">{{ column.name }}</span>
+		<i class="ph-seal-check ph-bold ph-lg"></i><span style="margin-left: 8px;">{{ column.name }}</span>
 	</template>
 
 	<MkTimeline v-if="column.roleId" ref="timeline" src="role" :role="column.roleId"/>

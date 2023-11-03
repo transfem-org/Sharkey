@@ -6,7 +6,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <XColumn :menu="menu" :column="column" :isStacked="isStacked">
 	<template #header>
-		<i class="ph-list ph-bold pg-lg"></i><span style="margin-left: 8px;">{{ column.name }}</span>
+		<i class="ph-list ph-bold ph-lg"></i><span style="margin-left: 8px;">{{ column.name }}</span>
 	</template>
 
 	<MkTimeline v-if="column.listId" ref="timeline" src="list" :list="column.listId" :withRenotes="withRenotes"/>
@@ -65,7 +65,7 @@ const menu = [
 		action: setList,
 	},
 	{
-		icon: 'ph-gear ph-bold pg-lg',
+		icon: 'ph-gear ph-bold ph-lg',
 		text: i18n.ts.editList,
 		action: editList,
 	},

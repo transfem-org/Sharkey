@@ -109,19 +109,19 @@ function showMenu(ev) {
 		},
 	}, null, (instance.impressumUrl) ? {
 		text: i18n.ts.impressum,
-		icon: 'ph-newspaper-clipping ph-bold pg-lg',
+		icon: 'ph-newspaper-clipping ph-bold ph-lg',
 		action: () => {
 			window.open(instance.impressumUrl, '_blank');
 		},
 	} : undefined, (instance.tosUrl) ? {
 		text: i18n.ts.termsOfService,
-		icon: 'ph-notebook ph-bold pg-lg',
+		icon: 'ph-notebook ph-bold ph-lg',
 		action: () => {
 			window.open(instance.tosUrl, '_blank');
 		},
 	} : undefined, (instance.privacyPolicyUrl) ? {
 		text: i18n.ts.privacyPolicy,
-		icon: 'ph-shield ph-bold pg-lg',
+		icon: 'ph-shield ph-bold ph-lg',
 		action: () => {
 			window.open(instance.privacyPolicyUrl, '_blank');
 		},

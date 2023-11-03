@@ -316,7 +316,7 @@ const headerTabs = $computed(() => [{
 
 definePageMetadata(computed(() => ({
 	title: i18n.ts.customEmojis,
-	icon: 'ph-smiley ph-bold pg-lg',
+	icon: 'ph-smiley ph-bold ph-lg',
 })));
 </script>
 

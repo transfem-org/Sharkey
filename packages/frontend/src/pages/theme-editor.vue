@@ -47,7 +47,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</MkFolder>
 
 			<MkFolder :defaultOpen="false">
-				<template #icon><i class="ph-code ph-bold pg-lg"></i></template>
+				<template #icon><i class="ph-code ph-bold ph-lg"></i></template>
 				<template #label>{{ i18n.ts.editCode }}</template>
 
 				<div class="_gaps_m">

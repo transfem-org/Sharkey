@@ -80,7 +80,7 @@ const headerActions = $computed(() => [tab === 'all' ? {
 const headerTabs = $computed(() => [{
 	key: 'all',
 	title: i18n.ts.all,
-	icon: 'ph-circle ph-bold pg-lg',
+	icon: 'ph-circle ph-bold ph-lg',
 }, {
 	key: 'mentions',
 	title: i18n.ts.mentions,
@@ -93,6 +93,6 @@ const headerTabs = $computed(() => [{
 
 definePageMetadata(computed(() => ({
 	title: i18n.ts.notifications,
-	icon: 'ph-bell ph-bold pg-lg',
+	icon: 'ph-bell ph-bold ph-lg',
 })));
 </script>

@@ -62,7 +62,7 @@ function settings() {
 }
 
 const headerActions = $computed(() => list ? [{
-	icon: 'ph-gear ph-bold pg-lg',
+	icon: 'ph-gear ph-bold ph-lg',
 	text: i18n.ts.settings,
 	handler: settings,
 }] : []);
@@ -71,7 +71,7 @@ const headerTabs = $computed(() => []);
 
 definePageMetadata(computed(() => list ? {
 	title: list.name,
-	icon: 'ph-list ph-bold pg-lg',
+	icon: 'ph-list ph-bold ph-lg',
 } : null));
 </script>
 

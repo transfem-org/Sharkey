@@ -9,7 +9,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<div class="_gaps">
 			<div class="_buttons">
 				<MkButton primary @click="addAccount"><i class="ph-plus ph-bold ph-lg"></i> {{ i18n.ts.addAccount }}</MkButton>
-				<MkButton @click="init"><i class="ph-arrows-counter-clockwise ph-bold pg-lg"></i> {{ i18n.ts.reloadAccountsList }}</MkButton>
+				<MkButton @click="init"><i class="ph-arrows-counter-clockwise ph-bold ph-lg"></i> {{ i18n.ts.reloadAccountsList }}</MkButton>
 			</div>
 
 			<MkUserCardMini v-for="user in accounts" :key="user.id" :user="user" :class="$style.user" @click.prevent="menu(user, $event)"/>
@@ -107,7 +107,7 @@ const headerTabs = $computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.accounts,
-	icon: 'ph-users ph-bold pg-lg',
+	icon: 'ph-users ph-bold ph-lg',
 });
 </script>
 

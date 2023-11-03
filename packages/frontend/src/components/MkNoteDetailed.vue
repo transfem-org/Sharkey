@@ -40,7 +40,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<i v-else-if="note.visibility === 'followers'" class="ph-lock ph-bold ph-lg"></i>
 				<i v-else-if="note.visibility === 'specified'" ref="specified" class="ph-envelope ph-bold ph-lg"></i>
 			</span>
-			<span v-if="note.localOnly" style="margin-left: 0.5em;" :title="i18n.ts._visibility['disableFederation']"><i class="ph-rocket ph-bold pg-lg"></i></span>
+			<span v-if="note.localOnly" style="margin-left: 0.5em;" :title="i18n.ts._visibility['disableFederation']"><i class="ph-rocket ph-bold ph-lg"></i></span>
 		</div>
 	</div>
 	<article :class="$style.note" @contextmenu.stop="onContextmenu">
@@ -59,7 +59,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 							<i v-else-if="appearNote.visibility === 'specified'" ref="specified" class="ph-envelope ph-bold ph-lg"></i>
 						</span>
 						<span v-if="appearNote.updatedAt" ref="menuVersionsButton" style="margin-left: 0.5em;" title="Edited" @mousedown="menuVersions()"><i class="ph-pencil ph-bold ph-lg"></i></span>
-						<span v-if="appearNote.localOnly" style="margin-left: 0.5em;" :title="i18n.ts._visibility['disableFederation']"><i class="ph-rocket ph-bold pg-lg"></i></span>
+						<span v-if="appearNote.localOnly" style="margin-left: 0.5em;" :title="i18n.ts._visibility['disableFederation']"><i class="ph-rocket ph-bold ph-lg"></i></span>
 					</div>
 				</div>
 				<div :class="$style.noteHeaderUsername"><MkAcct :user="appearNote.user"/></div>
@@ -73,7 +73,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</p>
 			<div v-show="appearNote.cw == null || showContent">
 				<span v-if="appearNote.isHidden" style="opacity: 0.5">({{ i18n.ts.private }})</span>
-				<MkA v-if="appearNote.replyId" :class="$style.noteReplyTarget" :to="`/notes/${appearNote.replyId}`"><i class="ph-arrow-bend-left-up ph-bold pg-lg"></i></MkA>
+				<MkA v-if="appearNote.replyId" :class="$style.noteReplyTarget" :to="`/notes/${appearNote.replyId}`"><i class="ph-arrow-bend-left-up ph-bold ph-lg"></i></MkA>
 				<Mfm v-if="appearNote.text" :parsedNodes="parsed" :text="appearNote.text" :author="appearNote.user" :nyaize="'account'" :i="$i" :emojiUrls="appearNote.emojis"/>
 				<a v-if="appearNote.renote != null" :class="$style.rn">RN:</a>
 				<div v-if="translating || translation" :class="$style.translation">
@@ -103,7 +103,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</div>
 			<MkReactionsViewer ref="reactionsViewer" :note="appearNote"/>
 			<button class="_button" :class="$style.noteFooterButton" @click="reply()">
-				<i class="ph-arrow-u-up-left ph-bold pg-lg"></i>
+				<i class="ph-arrow-u-up-left ph-bold ph-lg"></i>
 				<p v-if="appearNote.repliesCount > 0" :class="$style.noteFooterButtonCount">{{ appearNote.repliesCount }}</p>
 			</button>
 			<button
@@ -149,10 +149,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</footer>
 	</article>
 	<div :class="$style.tabs">
-		<button class="_button" :class="[$style.tab, { [$style.tabActive]: tab === 'replies' }]" @click="tab = 'replies'"><i class="ph-arrow-u-up-left ph-bold pg-lg"></i> {{ i18n.ts.replies }}</button>
+		<button class="_button" :class="[$style.tab, { [$style.tabActive]: tab === 'replies' }]" @click="tab = 'replies'"><i class="ph-arrow-u-up-left ph-bold ph-lg"></i> {{ i18n.ts.replies }}</button>
 		<button class="_button" :class="[$style.tab, { [$style.tabActive]: tab === 'renotes' }]" @click="tab = 'renotes'"><i class="ph-rocket-launch ph-bold ph-lg"></i> {{ i18n.ts.renotes }}</button>
 		<button class="_button" :class="[$style.tab, { [$style.tabActive]: tab === 'quotes' }]" @click="tab = 'quotes'"><i class="ph-quotes ph-bold ph-lg"></i> {{ i18n.ts._notification._types.quote }}</button>
-		<button class="_button" :class="[$style.tab, { [$style.tabActive]: tab === 'reactions' }]" @click="tab = 'reactions'"><i class="ph-smiley ph-bold pg-lg"></i> {{ i18n.ts.reactions }}</button>
+		<button class="_button" :class="[$style.tab, { [$style.tabActive]: tab === 'reactions' }]" @click="tab = 'reactions'"><i class="ph-smiley ph-bold ph-lg"></i> {{ i18n.ts.reactions }}</button>
 	</div>
 	<div>
 		<div v-if="tab === 'replies'" :class="$style.tab_replies">

@@ -29,10 +29,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<i v-else-if="notification.type === 'receiveFollowRequest'" class="ph-clock ph-bold ph-lg"></i>
 			<i v-else-if="notification.type === 'followRequestAccepted'" class="ph-check ph-bold ph-lg"></i>
 			<i v-else-if="notification.type === 'renote'" class="ph-rocket-launch ph-bold ph-lg"></i>
-			<i v-else-if="notification.type === 'reply'" class="ph-arrow-u-up-left ph-bold pg-lg"></i>
+			<i v-else-if="notification.type === 'reply'" class="ph-arrow-u-up-left ph-bold ph-lg"></i>
 			<i v-else-if="notification.type === 'mention'" class="ph-at ph-bold ph-lg"></i>
 			<i v-else-if="notification.type === 'quote'" class="ph-quotes ph-bold ph-lg"></i>
-			<i v-else-if="notification.type === 'pollEnded'" class="ph-chart-bar-horizontal ph-bold pg-lg"></i>
+			<i v-else-if="notification.type === 'pollEnded'" class="ph-chart-bar-horizontal ph-bold ph-lg"></i>
 			<i v-else-if="notification.type === 'achievementEarned'" class="ph-trophy ph-bold ph-lg"></i>
 			<!-- notification.reaction が null になることはまずないが、ここでoptional chaining使うと一部ブラウザで刺さるので念の為 -->
 			<MkReactionIcon

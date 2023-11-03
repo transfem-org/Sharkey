@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <XColumn :column="column" :isStacked="isStacked" :menu="menu">
-	<template #header><i class="ph-bell ph-bold pg-lg" style="margin-right: 8px;"></i>{{ column.name }}</template>
+	<template #header><i class="ph-bell ph-bold ph-lg" style="margin-right: 8px;"></i>{{ column.name }}</template>
 
 	<XNotifications :excludeTypes="props.column.excludeTypes"/>
 </XColumn>

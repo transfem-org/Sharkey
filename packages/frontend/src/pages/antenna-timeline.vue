@@ -82,7 +82,7 @@ const headerActions = $computed(() => antenna ? [{
 	text: i18n.ts.jumpToSpecifiedDate,
 	handler: timetravel,
 }, {
-	icon: 'ph-gear ph-bold pg-lg',
+	icon: 'ph-gear ph-bold ph-lg',
 	text: i18n.ts.settings,
 	handler: settings,
 }] : []);
@@ -91,7 +91,7 @@ const headerTabs = $computed(() => []);
 
 definePageMetadata(computed(() => antenna ? {
 	title: antenna.name,
-	icon: 'ph-flying-saucer ph-bold pg-lg',
+	icon: 'ph-flying-saucer ph-bold ph-lg',
 } : null));
 </script>
 

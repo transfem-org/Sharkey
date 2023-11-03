@@ -15,7 +15,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<XNotes :user="user"/>
 		</MkFoldableSection>
 		<MkFoldableSection class="item">
-			<template #header><i class="ph-users ph-bold pg-lg"></i> Following</template>
+			<template #header><i class="ph-users ph-bold ph-lg"></i> Following</template>
 			<XFollowing :user="user"/>
 		</MkFoldableSection>
 		<MkFoldableSection class="item">

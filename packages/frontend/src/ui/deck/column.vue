@@ -104,7 +104,7 @@ function toggleActive() {
 
 function getMenu() {
 	let items = [{
-		icon: 'ph-gear ph-bold pg-lg',
+		icon: 'ph-gear ph-bold ph-lg',
 		text: i18n.ts._deck.configureColumn,
 		action: async () => {
 			const { canceled, result } = await os.form(props.column.name, {
@@ -133,13 +133,13 @@ function getMenu() {
 		text: i18n.ts.move + '...',
 		icon: 'ph-arrows-out-cardinal ph-bold ph-lg',
 		children: [{
-			icon: 'ph-arrow-left ph-bold pg-lg',
+			icon: 'ph-arrow-left ph-bold ph-lg',
 			text: i18n.ts._deck.swapLeft,
 			action: () => {
 				swapLeftColumn(props.column.id);
 			},
 		}, {
-			icon: 'ph-arrow-right ph-bold pg-lg',
+			icon: 'ph-arrow-right ph-bold ph-lg',
 			text: i18n.ts._deck.swapRight,
 			action: () => {
 				swapRightColumn(props.column.id);

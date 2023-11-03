@@ -72,6 +72,6 @@ const headerTabs = $computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.sounds,
-	icon: 'ph-music-notes ph-bold pg-lg',
+	icon: 'ph-music-notes ph-bold ph-lg',
 });
 </script>

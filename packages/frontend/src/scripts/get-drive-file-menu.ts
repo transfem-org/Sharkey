@@ -117,7 +117,7 @@ export function getDriveFileMenu(file: Misskey.entities.DriveFile, folder?: Miss
 		type: 'link',
 		to: `/my/drive/file/${file.id}`,
 		text: i18n.ts._fileViewer.title,
-		icon: 'ph-file-text ph-bold pg-lg',
+		icon: 'ph-file-text ph-bold ph-lg',
 	}, null, {
 		text: i18n.ts.delete,
 		icon: 'ph-trash ph-bold ph-lg',

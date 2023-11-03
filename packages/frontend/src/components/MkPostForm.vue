@@ -33,20 +33,20 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</button>
 			</template>
 			<button v-click-anime v-tooltip="i18n.ts._visibility.disableFederation" class="_button" :class="[$style.headerRightItem, { [$style.danger]: localOnly }]" :disabled="channel != null || visibility === 'specified'" @click="toggleLocalOnly">
-				<span v-if="!localOnly"><i class="ph-rocket-launch ph-bold pg-lg"></i></span>
-				<span v-else><i class="ph-rocket ph-bold pg-lg"></i></span>
+				<span v-if="!localOnly"><i class="ph-rocket-launch ph-bold ph-lg"></i></span>
+				<span v-else><i class="ph-rocket ph-bold ph-lg"></i></span>
 			</button>
 			<button v-click-anime v-tooltip="i18n.ts.reactionAcceptance" class="_button" :class="[$style.headerRightItem, { [$style.danger]: reactionAcceptance === 'likeOnly' }]" @click="toggleReactionAcceptance">
 				<span v-if="reactionAcceptance === 'likeOnly'"><i class="ph-heart ph-bold ph-lg"></i></span>
 				<span v-else-if="reactionAcceptance === 'likeOnlyForRemote'"><i class="ph-heart ph-bold ph-lg"></i></span>
-				<span v-else><i class="ph-smiley ph-bold pg-lg"></i></span>
+				<span v-else><i class="ph-smiley ph-bold ph-lg"></i></span>
 			</button>
 			<button v-click-anime class="_button" :class="$style.submit" :disabled="!canPost" data-cy-open-post-form-submit @click="post">
 				<div :class="$style.submitInner">
 					<template v-if="posted"></template>
 					<template v-else-if="posting"><MkEllipsis/></template>
 					<template v-else>{{ submitText }}</template>
-					<i style="margin-left: 6px;" :class="posted ? 'ph-check ph-bold ph-lg' : reply ? 'ph-arrow-u-up-left ph-bold pg-lg' : renote ? 'ph-quotes ph-bold ph-lg' : 'ph-paper-plane-tilt ph-bold ph-lg'"></i>
+					<i style="margin-left: 6px;" :class="posted ? 'ph-check ph-bold ph-lg' : reply ? 'ph-arrow-u-up-left ph-bold ph-lg' : renote ? 'ph-quotes ph-bold ph-lg' : 'ph-paper-plane-tilt ph-bold ph-lg'"></i>
 				</div>
 			</button>
 		</div>
@@ -79,7 +79,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<footer :class="$style.footer">
 		<div :class="$style.footerLeft">
 			<button v-tooltip="i18n.ts.attachFile" class="_button" :class="$style.footerButton" @click="chooseFileFrom"><i class="ph-image-square ph-bold ph-lg-plus"></i></button>
-			<button v-tooltip="i18n.ts.poll" class="_button" :class="[$style.footerButton, { [$style.footerButtonActive]: poll }]" @click="togglePoll"><i class="ph-chart-bar-horizontal ph-bold pg-lg"></i></button>
+			<button v-tooltip="i18n.ts.poll" class="_button" :class="[$style.footerButton, { [$style.footerButtonActive]: poll }]" @click="togglePoll"><i class="ph-chart-bar-horizontal ph-bold ph-lg"></i></button>
 			<button v-tooltip="i18n.ts.useCw" class="_button" :class="[$style.footerButton, { [$style.footerButtonActive]: useCw }]" @click="useCw = !useCw"><i class="ph-eye-slash ph-bold ph-lg"></i></button>
 			<button v-tooltip="i18n.ts.mention" class="_button" :class="$style.footerButton" @click="insertMention"><i class="ph-at ph-bold ph-lg"></i></button>
 			<button v-tooltip="i18n.ts.hashtags" class="_button" :class="[$style.footerButton, { [$style.footerButtonActive]: withHashtags }]" @click="withHashtags = !withHashtags"><i class="ph-hash ph-bold ph-lg"></i></button>
