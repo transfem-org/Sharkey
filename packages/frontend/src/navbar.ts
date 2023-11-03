@@ -81,7 +81,7 @@ export const navbarItemDef = reactive({
 	},
 	favorites: {
 		title: i18n.ts.favorites,
-		icon: 'ph-bookmark ph-bold ph-lg',
+		icon: 'ph-star ph-bold pg-lg',
 		show: computed(() => $i != null),
 		to: '/my/favorites',
 	},
