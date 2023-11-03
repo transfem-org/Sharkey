@@ -101,7 +101,7 @@ const headerTabs = $computed(() => []);
 
 definePageMetadata(computed(() => list ? {
 	title: list.name,
-	icon: 'ph-list ph-bold pg-lg',
+	icon: 'ph-list ph-bold ph-lg',
 } : null));
 </script>
 <style lang="scss" module>

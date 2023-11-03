@@ -92,12 +92,12 @@ export const SomeTabs = {
 			{
 				key: 'fairy',
 				title: 'Fairy',
-				icon: 'ph-snowflake ph-bold pg-lg',
+				icon: 'ph-snowflake ph-bold ph-lg',
 			},
 			{
 				key: 'angel',
 				title: 'Angel',
-				icon: 'ph-feather ph-bold pg-lg',
+				icon: 'ph-feather ph-bold ph-lg',
 			},
 		],
 	},

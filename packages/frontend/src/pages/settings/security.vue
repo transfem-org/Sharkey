@@ -32,7 +32,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 	<FormSection>
 		<FormSlot>
-			<MkButton danger @click="regenerateToken"><i class="ph-arrows-counter-clockwise ph-bold pg-lg"></i> {{ i18n.ts.regenerateLoginToken }}</MkButton>
+			<MkButton danger @click="regenerateToken"><i class="ph-arrows-counter-clockwise ph-bold ph-lg"></i> {{ i18n.ts.regenerateLoginToken }}</MkButton>
 			<template #caption>{{ i18n.ts.regenerateLoginTokenDescription }}</template>
 		</FormSlot>
 	</FormSection>

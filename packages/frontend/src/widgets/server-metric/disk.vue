@@ -7,7 +7,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <div class="zbwaqsat">
 	<XPie class="pie" :value="usage"/>
 	<div>
-		<p><i class="ph-database ph-bold pg-lg"></i>Disk</p>
+		<p><i class="ph-database ph-bold ph-lg"></i>Disk</p>
 		<p>Total: {{ bytes(total, 1) }}</p>
 		<p>Free: {{ bytes(available, 1) }}</p>
 		<p>Used: {{ bytes(used, 1) }}</p>

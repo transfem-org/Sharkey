@@ -74,11 +74,11 @@ const headerActions = $computed(() => [{
 const headerTabs = $computed(() => [{
 	key: 'featured',
 	title: i18n.ts._pages.featured,
-	icon: 'ph-fire ph-bold pg-lg',
+	icon: 'ph-fire ph-bold ph-lg',
 }, {
 	key: 'my',
 	title: i18n.ts._pages.my,
-	icon: 'ph-pencil-line ph-bold pg-lg',
+	icon: 'ph-pencil-line ph-bold ph-lg',
 }, {
 	key: 'liked',
 	title: i18n.ts._pages.liked,

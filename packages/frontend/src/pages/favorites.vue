@@ -40,7 +40,7 @@ const pagination = {
 
 definePageMetadata({
 	title: i18n.ts.favorites,
-	icon: 'ph-star ph-bold pg-lg',
+	icon: 'ph-star ph-bold ph-lg',
 });
 </script>
 

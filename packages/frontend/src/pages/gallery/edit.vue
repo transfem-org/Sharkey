@@ -27,8 +27,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<MkSwitch v-model="isSensitive">{{ i18n.ts.markAsSensitive }}</MkSwitch>
 
 			<div class="_buttons">
-				<MkButton v-if="postId" primary @click="save"><i class="ph-floppy-disk ph-bold pg-lg"></i> {{ i18n.ts.save }}</MkButton>
-				<MkButton v-else primary @click="save"><i class="ph-floppy-disk ph-bold pg-lg"></i> {{ i18n.ts.publish }}</MkButton>
+				<MkButton v-if="postId" primary @click="save"><i class="ph-floppy-disk ph-bold ph-lg"></i> {{ i18n.ts.save }}</MkButton>
+				<MkButton v-else primary @click="save"><i class="ph-floppy-disk ph-bold ph-lg"></i> {{ i18n.ts.publish }}</MkButton>
 
 				<MkButton v-if="postId" danger @click="del"><i class="ph-trash ph-bold ph-lg"></i> {{ i18n.ts.delete }}</MkButton>
 			</div>

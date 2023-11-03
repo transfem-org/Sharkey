@@ -41,7 +41,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<MkSwitch v-model="notify">{{ i18n.ts.notifyAntenna }}</MkSwitch>
 		</div>
 		<div :class="$style.actions">
-			<MkButton inline primary @click="saveAntenna()"><i class="ph-floppy-disk ph-bold pg-lg"></i> {{ i18n.ts.save }}</MkButton>
+			<MkButton inline primary @click="saveAntenna()"><i class="ph-floppy-disk ph-bold ph-lg"></i> {{ i18n.ts.save }}</MkButton>
 			<MkButton v-if="antenna.id != null" inline danger @click="deleteAntenna()"><i class="ph-trash ph-bold ph-lg"></i> {{ i18n.ts.delete }}</MkButton>
 		</div>
 	</div>

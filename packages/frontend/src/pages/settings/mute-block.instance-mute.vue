@@ -10,7 +10,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<template #label>{{ i18n.ts._instanceMute.heading }}</template>
 		<template #caption>{{ i18n.ts._instanceMute.instanceMuteDescription }}<br>{{ i18n.ts._instanceMute.instanceMuteDescription2 }}</template>
 	</MkTextarea>
-	<MkButton primary :disabled="!changed" @click="save()"><i class="ph-floppy-disk ph-bold pg-lg"></i> {{ i18n.ts.save }}</MkButton>
+	<MkButton primary :disabled="!changed" @click="save()"><i class="ph-floppy-disk ph-bold ph-lg"></i> {{ i18n.ts.save }}</MkButton>
 </div>
 </template>
 

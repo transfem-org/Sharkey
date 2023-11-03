@@ -83,7 +83,7 @@ const headerTabs = $computed(() => user ? [{
 }, {
 	key: 'activity',
 	title: i18n.ts.activity,
-	icon: 'ph-chart-line ph-bold pg-lg',
+	icon: 'ph-chart-line ph-bold ph-lg',
 }, ...(user.host == null ? [{
 	key: 'achievements',
 	title: i18n.ts.achievements,
@@ -99,7 +99,7 @@ const headerTabs = $computed(() => user ? [{
 }, {
 	key: 'lists',
 	title: i18n.ts.lists,
-	icon: 'ph-list ph-bold pg-lg',
+	icon: 'ph-list ph-bold ph-lg',
 }, {
 	key: 'pages',
 	title: i18n.ts.pages,
@@ -107,11 +107,11 @@ const headerTabs = $computed(() => user ? [{
 }, {
 	key: 'flashs',
 	title: 'Play',
-	icon: 'ph-play ph-bold pg-lg',
+	icon: 'ph-play ph-bold ph-lg',
 }, {
 	key: 'gallery',
 	title: i18n.ts.gallery,
-	icon: 'ph-images-square ph-bold pg-lg',
+	icon: 'ph-images-square ph-bold ph-lg',
 }] : []);
 
 definePageMetadata(computed(() => user ? {

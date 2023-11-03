@@ -25,17 +25,17 @@ function toolsMenuItems(): MenuItem[] {
 		type: 'link',
 		to: '/clicker',
 		text: '🍪👈',
-		icon: 'ph-cookie ph-bold pg-lg',
+		icon: 'ph-cookie ph-bold ph-lg',
 	}, ($i && ($i.isAdmin || $i.policies.canManageCustomEmojis)) ? {
 		type: 'link',
 		to: '/custom-emojis-manager',
 		text: i18n.ts.manageCustomEmojis,
-		icon: 'ph-smiley ph-bold pg-lg',
+		icon: 'ph-smiley ph-bold ph-lg',
 	} : undefined, ($i && ($i.isAdmin || $i.policies.canManageAvatarDecorations)) ? {
 		type: 'link',
 		to: '/admin/avatar-decorations',
 		text: i18n.ts.manageAvatarDecorations,
-		icon: 'ph-sparkle ph-bold pg-lg',
+		icon: 'ph-sparkle ph-bold ph-lg',
 	} : undefined];
 }
 
@@ -51,7 +51,7 @@ export function openInstanceMenu(ev: MouseEvent) {
 	}, {
 		type: 'link',
 		text: i18n.ts.customEmojis,
-		icon: 'ph-smiley ph-bold pg-lg',
+		icon: 'ph-smiley ph-bold ph-lg',
 		to: '/about#emojis',
 	}, {
 		type: 'link',
@@ -61,7 +61,7 @@ export function openInstanceMenu(ev: MouseEvent) {
 	}, {
 		type: 'link',
 		text: i18n.ts.charts,
-		icon: 'ph-chart-line ph-bold pg-lg',
+		icon: 'ph-chart-line ph-bold ph-lg',
 		to: '/about#charts',
 	}, null, {
 		type: 'link',
@@ -80,19 +80,19 @@ export function openInstanceMenu(ev: MouseEvent) {
 		children: toolsMenuItems(),
 	}, null, (instance.impressumUrl) ? {
 		text: i18n.ts.impressum,
-		icon: 'ph-newspaper-clipping ph-bold pg-lg',
+		icon: 'ph-newspaper-clipping ph-bold ph-lg',
 		action: () => {
 			window.open(instance.impressumUrl, '_blank');
 		},
 	} : undefined, (instance.tosUrl) ? {
 		text: i18n.ts.termsOfService,
-		icon: 'ph-notebook ph-bold pg-lg',
+		icon: 'ph-notebook ph-bold ph-lg',
 		action: () => {
 			window.open(instance.tosUrl, '_blank');
 		},
 	} : undefined, (instance.privacyPolicyUrl) ? {
 		text: i18n.ts.privacyPolicy,
-		icon: 'ph-shield ph-bold pg-lg',
+		icon: 'ph-shield ph-bold ph-lg',
 		action: () => {
 			window.open(instance.privacyPolicyUrl, '_blank');
 		},

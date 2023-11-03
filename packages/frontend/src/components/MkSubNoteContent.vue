@@ -8,7 +8,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<div :class="{ [$style.clickToOpen]: defaultStore.state.clickToOpen }" @click="defaultStore.state.clickToOpen ? noteclick(note.id) : undefined">
 		<span v-if="note.isHidden" style="opacity: 0.5">({{ i18n.ts.private }})</span>
 		<span v-if="note.deletedAt" style="opacity: 0.5">({{ i18n.ts.deleted }})</span>
-		<MkA v-if="note.replyId" :class="$style.reply" :to="`/notes/${note.replyId}`" v-on:click.stop><i class="ph-arrow-bend-left-up ph-bold pg-lg"></i></MkA>
+		<MkA v-if="note.replyId" :class="$style.reply" :to="`/notes/${note.replyId}`" v-on:click.stop><i class="ph-arrow-bend-left-up ph-bold ph-lg"></i></MkA>
 		<Mfm v-if="note.text" :text="note.text" :author="note.user" :nyaize="'account'" :i="$i" :emojiUrls="note.emojis"/>
 		<div v-if="note.text && translating || note.text && translation" :class="$style.translation">
 			<MkLoading v-if="translating" mini/>

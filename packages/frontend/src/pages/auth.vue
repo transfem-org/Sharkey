@@ -120,7 +120,7 @@ const headerTabs = $computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts._auth.shareAccessTitle,
-	icon: 'ph-squares-four ph-bold pg-lg',
+	icon: 'ph-squares-four ph-bold ph-lg',
 });
 </script>
 

@@ -62,6 +62,6 @@ const headerTabs = $computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.moderationLogs,
-	icon: 'ph-list ph-bold pg-lg-search',
+	icon: 'ph-list ph-bold ph-lg-search',
 });
 </script>

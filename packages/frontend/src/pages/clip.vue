@@ -118,7 +118,7 @@ const headerActions = $computed(() => clip && isOwned ? [{
 		clipsCache.delete();
 	},
 }, ...(clip.isPublic ? [{
-	icon: 'ph-share-network ph-bold pg-lg',
+	icon: 'ph-share-network ph-bold ph-lg',
 	text: i18n.ts.share,
 	handler: async (): Promise<void> => {
 		navigator.share({

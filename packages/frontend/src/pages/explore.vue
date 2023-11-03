@@ -47,15 +47,15 @@ const headerActions = $computed(() => []);
 
 const headerTabs = $computed(() => [{
 	key: 'featured',
-	icon: 'ph-lightning ph-bold pg-lg',
+	icon: 'ph-lightning ph-bold ph-lg',
 	title: i18n.ts.featured,
 }, {
 	key: 'users',
-	icon: 'ph-users ph-bold pg-lg',
+	icon: 'ph-users ph-bold ph-lg',
 	title: i18n.ts.users,
 }, {
 	key: 'roles',
-	icon: 'ph-seal-check ph-bold pg-lg',
+	icon: 'ph-seal-check ph-bold ph-lg',
 	title: i18n.ts.roles,
 }]);
 

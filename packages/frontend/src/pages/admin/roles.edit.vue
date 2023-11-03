@@ -87,10 +87,10 @@ const headerTabs = $computed(() => []);
 
 definePageMetadata(computed(() => role ? {
 	title: i18n.ts._role.edit + ': ' + role.name,
-	icon: 'ph-seal-check ph-bold pg-lg',
+	icon: 'ph-seal-check ph-bold ph-lg',
 } : {
 	title: i18n.ts._role.new,
-	icon: 'ph-seal-check ph-bold pg-lg',
+	icon: 'ph-seal-check ph-bold ph-lg',
 }));
 </script>
 

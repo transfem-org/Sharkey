@@ -7,11 +7,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 <MkContainer :showHeader="widgetProps.showHeader" :style="`height: ${widgetProps.height}px;`" :scrollable="true" data-cy-mkw-timeline class="mkw-timeline">
 	<template #icon>
 		<i v-if="widgetProps.src === 'home'" class="ph-house ph-bold ph-lg"></i>
-		<i v-else-if="widgetProps.src === 'local'" class="ph-planet ph-bold pg-lg"></i>
-		<i v-else-if="widgetProps.src === 'social'" class="ph-rocket-launch ph-bold pg-lg"></i>
+		<i v-else-if="widgetProps.src === 'local'" class="ph-planet ph-bold ph-lg"></i>
+		<i v-else-if="widgetProps.src === 'social'" class="ph-rocket-launch ph-bold ph-lg"></i>
 		<i v-else-if="widgetProps.src === 'global'" class="ph-globe-hemisphere-west ph-bold ph-lg"></i>
-		<i v-else-if="widgetProps.src === 'list'" class="ph-list ph-bold pg-lg"></i>
-		<i v-else-if="widgetProps.src === 'antenna'" class="ph-flying-saucer ph-bold pg-lg"></i>
+		<i v-else-if="widgetProps.src === 'list'" class="ph-list ph-bold ph-lg"></i>
+		<i v-else-if="widgetProps.src === 'antenna'" class="ph-flying-saucer ph-bold ph-lg"></i>
 	</template>
 	<template #header>
 		<button class="_button" @click="choose">
@@ -100,7 +100,7 @@ const choose = async (ev) => {
 	]);
 	const antennaItems = antennas.map(antenna => ({
 		text: antenna.name,
-		icon: 'ph-flying-saucer ph-bold pg-lg',
+		icon: 'ph-flying-saucer ph-bold ph-lg',
 		action: () => {
 			widgetProps.antenna = antenna;
 			setSrc('antenna');
@@ -108,7 +108,7 @@ const choose = async (ev) => {
 	}));
 	const listItems = lists.map(list => ({
 		text: list.name,
-		icon: 'ph-list ph-bold pg-lg',
+		icon: 'ph-list ph-bold ph-lg',
 		action: () => {
 			widgetProps.list = list;
 			setSrc('list');
@@ -120,11 +120,11 @@ const choose = async (ev) => {
 		action: () => { setSrc('home'); },
 	}, {
 		text: i18n.ts._timelines.local,
-		icon: 'ph-planet ph-bold pg-lg',
+		icon: 'ph-planet ph-bold ph-lg',
 		action: () => { setSrc('local'); },
 	}, {
 		text: i18n.ts._timelines.social,
-		icon: 'ph-rocket-launch ph-bold pg-lg',
+		icon: 'ph-rocket-launch ph-bold ph-lg',
 		action: () => { setSrc('social'); },
 	}, {
 		text: i18n.ts._timelines.global,
