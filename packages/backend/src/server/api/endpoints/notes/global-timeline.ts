@@ -98,6 +98,16 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 			}
 
 			if (!ps.withBots) query.andWhere('user.isBot = FALSE');
+			
+			if (ps.withRenotes === false) {
+				query.andWhere(new Brackets(qb => {
+					qb.where('note.renoteId IS NULL');
+					qb.orWhere(new Brackets(qb => {
+						qb.where('note.text IS NOT NULL');
+						qb.orWhere('note.fileIds != \'{}\'');
+					}));
+				}));
+			}
 			//#endregion
 
 			let timeline = await query.limit(ps.limit).getMany();

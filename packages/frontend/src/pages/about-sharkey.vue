@@ -43,7 +43,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</FormSection>
 				<FormSection>
 					<template #label>{{ i18n.ts._aboutMisskey.projectMembers }}</template>
-					<div :class="$style.contributors">
+					<div :class="$style.contributors" style="margin-bottom: 8px;">
 						<a href="https://github.com/Mar0xy" target="_blank" :class="$style.contributor">
 							<img src="https://avatars.githubusercontent.com/u/8841466?v=4" :class="$style.contributorAvatar">
 							<span :class="$style.contributorUsername">@Mar0xy</span>
@@ -57,7 +57,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</FormSection>
 				<FormSection>
 					<template #label>Misskey Contributors</template>
-					<div :class="$style.contributors">
+					<div :class="$style.contributors" style="margin-bottom: 8px;">
 						<a href="https://github.com/syuilo" target="_blank" :class="$style.contributor">
 							<img src="https://avatars.githubusercontent.com/u/4439005?v=4" :class="$style.contributorAvatar">
 							<span :class="$style.contributorUsername">@syuilo</span>
