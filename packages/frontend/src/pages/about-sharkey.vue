@@ -30,12 +30,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<FormSection>
 					<div class="_gaps_s">
 						<FormLink to="https://github.com/transfem-org/Sharkey" external>
-							<template #icon><i class="ph-code ph-bold pg-lg"></i></template>
+							<template #icon><i class="ph-code ph-bold ph-lg"></i></template>
 							{{ i18n.ts._aboutMisskey.source }}
 							<template #suffix>GitHub</template>
 						</FormLink>
 						<FormLink to="https://ko-fi.com/transfem" external>
-							<template #icon><i class="ph-piggy-bank ph-bold pg-lg"></i></template>
+							<template #icon><i class="ph-piggy-bank ph-bold ph-lg"></i></template>
 							{{ i18n.ts._aboutMisskey.donate }}
 							<template #suffix>Ko-Fi</template>
 						</FormLink>

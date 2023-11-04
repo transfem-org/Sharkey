@@ -47,7 +47,7 @@ const headerTabs = $computed(() => [{
 }, {
 	key: 'user',
 	title: i18n.ts.users,
-	icon: 'ph-users ph-bold pg-lg',
+	icon: 'ph-users ph-bold ph-lg',
 }]);
 
 definePageMetadata(computed(() => ({

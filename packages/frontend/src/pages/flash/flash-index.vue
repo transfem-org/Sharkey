@@ -76,11 +76,11 @@ const headerActions = $computed(() => [{
 const headerTabs = $computed(() => [{
 	key: 'featured',
 	title: i18n.ts._play.featured,
-	icon: 'ph-fire ph-bold pg-lg',
+	icon: 'ph-fire ph-bold ph-lg',
 }, {
 	key: 'my',
 	title: i18n.ts._play.my,
-	icon: 'ph-pencil-line ph-bold pg-lg',
+	icon: 'ph-pencil-line ph-bold ph-lg',
 }, {
 	key: 'liked',
 	title: i18n.ts._play.liked,
@@ -89,6 +89,6 @@ const headerTabs = $computed(() => [{
 
 definePageMetadata(computed(() => ({
 	title: 'Play',
-	icon: 'ph-play ph-bold pg-lg',
+	icon: 'ph-play ph-bold ph-lg',
 })));
 </script>

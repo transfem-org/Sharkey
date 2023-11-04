@@ -39,7 +39,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</MkSelect>
 
 	<MkSelect v-model="role.target" :readonly="readonly">
-		<template #label><i class="ph-users ph-bold pg-lg"></i> {{ i18n.ts._role.assignTarget }}</template>
+		<template #label><i class="ph-users ph-bold ph-lg"></i> {{ i18n.ts._role.assignTarget }}</template>
 		<template #caption><div v-html="i18n.ts._role.descriptionOfAssignTarget.replaceAll('\n', '<br>')"></div></template>
 		<option value="manual">{{ i18n.ts._role.manual }}</option>
 		<option value="conditional">{{ i18n.ts._role.conditional }}</option>
@@ -588,7 +588,7 @@ let q = $ref('');
 function getPriorityIcon(option) {
 	if (option.priority === 2) return 'ph-arrow-up ph-bold ph-lg';
 	if (option.priority === 1) return 'ph-arrow-up ph-bold ph-lg';
-	return 'ph-circle ph-bold pg-lg';
+	return 'ph-circle ph-bold ph-lg';
 }
 
 function matchQuery(keywords: string[]): boolean {

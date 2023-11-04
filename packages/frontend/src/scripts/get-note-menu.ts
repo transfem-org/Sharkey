@@ -306,7 +306,7 @@ export function getNoteMenu(props: {
 				},
 			} : undefined,
 			{
-				icon: 'ph-share-network ph-bold pg-lg',
+				icon: 'ph-share-network ph-bold ph-lg',
 				text: i18n.ts.share,
 				action: share,
 			},
@@ -317,11 +317,11 @@ export function getNoteMenu(props: {
 			} : undefined,
 			null,
 			statePromise.then(state => state.isFavorited ? {
-				icon: 'ph-star-half ph-bold pg-lg',
+				icon: 'ph-star-half ph-bold ph-lg',
 				text: i18n.ts.unfavorite,
 				action: () => toggleFavorite(false),
 			} : {
-				icon: 'ph-star ph-bold pg-lg',
+				icon: 'ph-star ph-bold ph-lg',
 				text: i18n.ts.favorite,
 				action: () => toggleFavorite(true),
 			}),
@@ -384,7 +384,7 @@ export function getNoteMenu(props: {
 					action: edit,
 				} : undefined,
 				{
-					icon: 'ph-pencil-line ph-bold pg-lg',
+					icon: 'ph-pencil-line ph-bold ph-lg',
 					text: i18n.ts.deleteAndEdit,
 					danger: true,
 					action: delEdit,

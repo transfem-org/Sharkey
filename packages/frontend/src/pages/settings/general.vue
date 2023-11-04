@@ -189,7 +189,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</div>
 			</MkFolder>
 			<FormLink to="/settings/deck">{{ i18n.ts.deck }}</FormLink>
-			<FormLink to="/settings/custom-css"><template #icon><i class="ph-code ph-bold pg-lg"></i></template>{{ i18n.ts.customCss }}</FormLink>
+			<FormLink to="/settings/custom-css"><template #icon><i class="ph-code ph-bold ph-lg"></i></template>{{ i18n.ts.customCss }}</FormLink>
 		</div>
 	</FormSection>
 </div>

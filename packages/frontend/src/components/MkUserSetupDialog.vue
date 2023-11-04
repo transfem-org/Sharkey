@@ -15,7 +15,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<template v-if="page === 1" #header><i class="ph-user-list ph-bold ph-lg"></i> {{ i18n.ts._initialAccountSetting.profileSetting }}</template>
 	<template v-else-if="page === 2" #header><i class="ph-lock ph-bold ph-lg"></i> {{ i18n.ts._initialAccountSetting.privacySetting }}</template>
 	<template v-else-if="page === 3" #header><i class="ph-user-plus ph-bold ph-lg"></i> {{ i18n.ts.follow }}</template>
-	<template v-else-if="page === 4" #header><i class="ph-bell-ringing ph-bold pg-lg"></i> {{ i18n.ts.pushNotification }}</template>
+	<template v-else-if="page === 4" #header><i class="ph-bell-ringing ph-bold ph-lg"></i> {{ i18n.ts.pushNotification }}</template>
 	<template v-else-if="page === 5" #header>{{ i18n.ts.done }}</template>
 	<template v-else #header>{{ i18n.ts.initialAccountSetting }}</template>
 
@@ -38,7 +38,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 							<i class="ph-confetti ph-bold ph-lg" style="display: block; margin: auto; font-size: 3em; color: var(--accent);"></i>
 							<div style="font-size: 120%;">{{ i18n.ts._initialAccountSetting.accountCreated }}</div>
 							<div>{{ i18n.ts._initialAccountSetting.letsStartAccountSetup }}</div>
-							<MkButton primary rounded gradate style="margin: 16px auto 0 auto;" data-cy-user-setup-continue @click="page++">{{ i18n.ts._initialAccountSetting.profileSetting }} <i class="ph-arrow-right ph-bold pg-lg"></i></MkButton>
+							<MkButton primary rounded gradate style="margin: 16px auto 0 auto;" data-cy-user-setup-continue @click="page++">{{ i18n.ts._initialAccountSetting.profileSetting }} <i class="ph-arrow-right ph-bold ph-lg"></i></MkButton>
 							<MkButton style="margin: 0 auto;" transparent rounded @click="later(true)">{{ i18n.ts.later }}</MkButton>
 						</div>
 					</MkSpacer>
@@ -52,8 +52,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 						</MkSpacer>
 						<div :class="$style.pageFooter">
 							<div class="_buttonsCenter">
-								<MkButton rounded data-cy-user-setup-back @click="page--"><i class="ph-arrow-left ph-bold pg-lg"></i> {{ i18n.ts.goBack }}</MkButton>
-								<MkButton primary rounded gradate data-cy-user-setup-continue @click="page++">{{ i18n.ts.continue }} <i class="ph-arrow-right ph-bold pg-lg"></i></MkButton>
+								<MkButton rounded data-cy-user-setup-back @click="page--"><i class="ph-arrow-left ph-bold ph-lg"></i> {{ i18n.ts.goBack }}</MkButton>
+								<MkButton primary rounded gradate data-cy-user-setup-continue @click="page++">{{ i18n.ts.continue }} <i class="ph-arrow-right ph-bold ph-lg"></i></MkButton>
 							</div>
 						</div>
 					</div>
@@ -67,8 +67,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 						</MkSpacer>
 						<div :class="$style.pageFooter">
 							<div class="_buttonsCenter">
-								<MkButton rounded data-cy-user-setup-back @click="page--"><i class="ph-arrow-left ph-bold pg-lg"></i> {{ i18n.ts.goBack }}</MkButton>
-								<MkButton primary rounded gradate data-cy-user-setup-continue @click="page++">{{ i18n.ts.continue }} <i class="ph-arrow-right ph-bold pg-lg"></i></MkButton>
+								<MkButton rounded data-cy-user-setup-back @click="page--"><i class="ph-arrow-left ph-bold ph-lg"></i> {{ i18n.ts.goBack }}</MkButton>
+								<MkButton primary rounded gradate data-cy-user-setup-continue @click="page++">{{ i18n.ts.continue }} <i class="ph-arrow-right ph-bold ph-lg"></i></MkButton>
 							</div>
 						</div>
 					</div>
@@ -81,8 +81,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 					</MkSpacer>
 					<div :class="$style.pageFooter">
 						<div class="_buttonsCenter">
-							<MkButton rounded data-cy-user-setup-back @click="page--"><i class="ph-arrow-left ph-bold pg-lg"></i> {{ i18n.ts.goBack }}</MkButton>
-							<MkButton primary rounded gradate style="" data-cy-user-setup-continue @click="page++">{{ i18n.ts.continue }} <i class="ph-arrow-right ph-bold pg-lg"></i></MkButton>
+							<MkButton rounded data-cy-user-setup-back @click="page--"><i class="ph-arrow-left ph-bold ph-lg"></i> {{ i18n.ts.goBack }}</MkButton>
+							<MkButton primary rounded gradate style="" data-cy-user-setup-continue @click="page++">{{ i18n.ts.continue }} <i class="ph-arrow-right ph-bold ph-lg"></i></MkButton>
 						</div>
 					</div>
 				</div>
@@ -91,13 +91,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<div :class="$style.centerPage">
 					<MkSpacer :marginMin="20" :marginMax="28">
 						<div class="_gaps" style="text-align: center;">
-							<i class="ph-bell-ringing ph-bold pg-lg" style="display: block; margin: auto; font-size: 3em; color: var(--accent);"></i>
+							<i class="ph-bell-ringing ph-bold ph-lg" style="display: block; margin: auto; font-size: 3em; color: var(--accent);"></i>
 							<div style="font-size: 120%;">{{ i18n.ts.pushNotification }}</div>
 							<div style="padding: 0 16px;">{{ i18n.t('_initialAccountSetting.pushNotificationDescription', { name: instance.name ?? host }) }}</div>
 							<MkPushNotificationAllowButton primary showOnlyToRegister style="margin: 0 auto;"/>
 							<div class="_buttonsCenter" style="margin-top: 16px;">
-								<MkButton rounded data-cy-user-setup-back @click="page--"><i class="ph-arrow-left ph-bold pg-lg"></i> {{ i18n.ts.goBack }}</MkButton>
-								<MkButton primary rounded gradate data-cy-user-setup-continue @click="page++">{{ i18n.ts.continue }} <i class="ph-arrow-right ph-bold pg-lg"></i></MkButton>
+								<MkButton rounded data-cy-user-setup-back @click="page--"><i class="ph-arrow-left ph-bold ph-lg"></i> {{ i18n.ts.goBack }}</MkButton>
+								<MkButton primary rounded gradate data-cy-user-setup-continue @click="page++">{{ i18n.ts.continue }} <i class="ph-arrow-right ph-bold ph-lg"></i></MkButton>
 							</div>
 						</div>
 					</MkSpacer>
@@ -112,10 +112,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 							<div style="font-size: 120%;">{{ i18n.ts._initialAccountSetting.initialAccountSettingCompleted }}</div>
 							<div>{{ i18n.t('_initialAccountSetting.youCanContinueTutorial', { name: instance.name ?? host }) }}</div>
 							<div class="_buttonsCenter" style="margin-top: 16px;">
-								<MkButton rounded primary gradate data-cy-user-setup-continue @click="launchTutorial()">{{ i18n.ts._initialAccountSetting.startTutorial }} <i class="ph-arrow-right ph-bold pg-lg"></i></MkButton>
+								<MkButton rounded primary gradate data-cy-user-setup-continue @click="launchTutorial()">{{ i18n.ts._initialAccountSetting.startTutorial }} <i class="ph-arrow-right ph-bold ph-lg"></i></MkButton>
 							</div>
 							<div class="_buttonsCenter">
-								<MkButton rounded data-cy-user-setup-back @click="page--"><i class="ph-arrow-left ph-bold pg-lg"></i> {{ i18n.ts.goBack }}</MkButton>
+								<MkButton rounded data-cy-user-setup-back @click="page--"><i class="ph-arrow-left ph-bold ph-lg"></i> {{ i18n.ts.goBack }}</MkButton>
 								<MkButton rounded primary data-cy-user-setup-continue @click="setupComplete()">{{ i18n.ts.close }}</MkButton>
 							</div>
 						</div>

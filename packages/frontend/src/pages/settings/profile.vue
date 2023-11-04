@@ -45,7 +45,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 	<FormSlot>
 		<MkFolder>
-			<template #icon><i class="ph-list ph-bold pg-lg"></i></template>
+			<template #icon><i class="ph-list ph-bold ph-lg"></i></template>
 			<template #label>{{ i18n.ts._profile.metadataEdit }}</template>
 
 			<div :class="$style.metadataRoot">
@@ -90,7 +90,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</FormSlot>
 
 	<MkFolder>
-		<template #icon><i class="ph-sparkle ph-bold pg-lg"></i></template>
+		<template #icon><i class="ph-sparkle ph-bold ph-lg"></i></template>
 		<template #label>{{ i18n.ts.avatarDecorations }}</template>
 
 		<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); grid-gap: 12px;">

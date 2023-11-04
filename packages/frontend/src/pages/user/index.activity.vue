@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <MkContainer>
-	<template #icon><i class="ph-chart-line ph-bold pg-lg"></i></template>
+	<template #icon><i class="ph-chart-line ph-bold ph-lg"></i></template>
 	<template #header>{{ i18n.ts.activity }}</template>
 	<template #func="{ buttonStyleClass }">
 		<button class="_button" :class="buttonStyleClass" @click="showMenu">

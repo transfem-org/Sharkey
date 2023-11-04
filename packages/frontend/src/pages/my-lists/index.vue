@@ -59,7 +59,7 @@ async function create() {
 
 const headerActions = $computed(() => [{
 	asFullButton: true,
-	icon: 'ph-arrows-counter-clockwise ph-bold pg-lg',
+	icon: 'ph-arrows-counter-clockwise ph-bold ph-lg',
 	text: i18n.ts.reload,
 	handler: () => {
 		userListsCache.delete();
@@ -71,7 +71,7 @@ const headerTabs = $computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.manageLists,
-	icon: 'ph-list ph-bold pg-lg',
+	icon: 'ph-list ph-bold ph-lg',
 });
 
 onActivated(() => {

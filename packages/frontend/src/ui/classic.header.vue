@@ -22,7 +22,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</template>
 			<div class="divider"></div>
 			<MkA v-if="$i.isAdmin || $i.isModerator" v-click-anime v-tooltip="i18n.ts.controlPanel" class="item" activeClass="active" to="/admin" :behavior="settingsWindowed ? 'window' : null">
-				<i class="ph-gauge ph-bold pg-lg ti-fw"></i>
+				<i class="ph-gauge ph-bold ph-lg ti-fw"></i>
 			</MkA>
 			<button v-click-anime class="item _button" @click="more">
 				<i class="ph-dots-three ph-bold ph-lg ti-fw"></i>
@@ -31,7 +31,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</div>
 		<div class="right">
 			<MkA v-click-anime v-tooltip="i18n.ts.settings" class="item" activeClass="active" to="/settings" :behavior="settingsWindowed ? 'window' : null">
-				<i class="ph-gear ph-bold pg-lg ti-fw"></i>
+				<i class="ph-gear ph-bold ph-lg ti-fw"></i>
 			</MkA>
 			<button v-click-anime class="item _button account" @click="openAccountMenu">
 				<MkAvatar :user="$i" class="avatar"/><MkAcct class="acct" :user="$i"/>

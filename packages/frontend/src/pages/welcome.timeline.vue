@@ -9,7 +9,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<div v-for="note in notes" :key="note.id" :class="$style.note">
 			<div class="_panel" :class="$style.content">
 				<div>
-					<MkA v-if="note.replyId" class="reply" :to="`/notes/${note.replyId}`"><i class="ph-arrow-u-up-left ph-bold pg-lg"></i></MkA>
+					<MkA v-if="note.replyId" class="reply" :to="`/notes/${note.replyId}`"><i class="ph-arrow-u-up-left ph-bold ph-lg"></i></MkA>
 					<Mfm v-if="note.text" :text="note.text" :author="note.user"/>
 					<MkA v-if="note.renoteId" class="rp" :to="`/notes/${note.renoteId}`">RN: ...</MkA>
 				</div>

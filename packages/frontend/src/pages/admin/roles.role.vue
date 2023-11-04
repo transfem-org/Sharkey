@@ -19,7 +19,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<XEditor :modelValue="role" readonly/>
 				</MkFolder>
 				<MkFolder v-if="role.target === 'manual'" defaultOpen>
-					<template #icon><i class="ph-users ph-bold pg-lg"></i></template>
+					<template #icon><i class="ph-users ph-bold ph-lg"></i></template>
 					<template #label>{{ i18n.ts.users }}</template>
 					<template #suffix>{{ role.usersCount }}</template>
 					<div class="_gaps">
@@ -173,7 +173,7 @@ const headerTabs = $computed(() => []);
 
 definePageMetadata(computed(() => ({
 	title: i18n.ts.role + ': ' + role.name,
-	icon: 'ph-seal-check ph-bold pg-lg',
+	icon: 'ph-seal-check ph-bold ph-lg',
 })));
 </script>
 

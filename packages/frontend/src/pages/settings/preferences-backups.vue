@@ -400,7 +400,7 @@ function menu(ev: MouseEvent, profileId: string) {
 		action: () => rename(profileId),
 	}, {
 		text: ts._preferencesBackups.save,
-		icon: 'ph-floppy-disk ph-bold pg-lg',
+		icon: 'ph-floppy-disk ph-bold ph-lg',
 		action: () => save(profileId),
 	}, null, {
 		text: ts.delete,
@@ -426,7 +426,7 @@ onUnmounted(() => {
 
 definePageMetadata(computed(() => ({
 	title: ts.preferencesBackups,
-	icon: 'ph-floppy-disk ph-bold pg-lg',
+	icon: 'ph-floppy-disk ph-bold ph-lg',
 })));
 </script>
 

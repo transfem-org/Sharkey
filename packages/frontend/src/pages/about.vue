@@ -148,7 +148,7 @@ const headerTabs = $computed(() => [{
 }, {
 	key: 'emojis',
 	title: i18n.ts.customEmojis,
-	icon: 'ph-smiley ph-bold pg-lg',
+	icon: 'ph-smiley ph-bold ph-lg',
 }, {
 	key: 'federation',
 	title: i18n.ts.federation,
@@ -156,7 +156,7 @@ const headerTabs = $computed(() => [{
 }, {
 	key: 'charts',
 	title: i18n.ts.charts,
-	icon: 'ph-chart-line ph-bold pg-lg',
+	icon: 'ph-chart-line ph-bold ph-lg',
 }]);
 
 definePageMetadata(computed(() => ({

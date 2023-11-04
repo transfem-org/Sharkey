@@ -14,7 +14,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</MkFolder>
 	</FormSection>
 	<FormSection>
-		<template #label><i class="ph-star ph-bold pg-lg"></i> {{ i18n.ts._exportOrImport.favoritedNotes }}</template>
+		<template #label><i class="ph-star ph-bold ph-lg"></i> {{ i18n.ts._exportOrImport.favoritedNotes }}</template>
 		<MkFolder>
 			<template #label>{{ i18n.ts.export }}</template>
 			<template #icon><i class="ph-download ph-bold ph-lg"></i></template>
@@ -22,7 +22,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</MkFolder>
 	</FormSection>
 	<FormSection>
-		<template #label><i class="ph-users ph-bold pg-lg"></i> {{ i18n.ts._exportOrImport.followingList }}</template>
+		<template #label><i class="ph-users ph-bold ph-lg"></i> {{ i18n.ts._exportOrImport.followingList }}</template>
 		<div class="_gaps_s">
 			<MkFolder>
 				<template #label>{{ i18n.ts.export }}</template>
@@ -48,7 +48,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</div>
 	</FormSection>
 	<FormSection>
-		<template #label><i class="ph-users ph-bold pg-lg"></i> {{ i18n.ts._exportOrImport.userLists }}</template>
+		<template #label><i class="ph-users ph-bold ph-lg"></i> {{ i18n.ts._exportOrImport.userLists }}</template>
 		<div class="_gaps_s">
 			<MkFolder>
 				<template #label>{{ i18n.ts.export }}</template>
@@ -93,7 +93,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</div>
 	</FormSection>
 	<FormSection>
-		<template #label><i class="ph-flying-saucer ph-bold pg-lg"></i> {{ i18n.ts.antennas }}</template>
+		<template #label><i class="ph-flying-saucer ph-bold ph-lg"></i> {{ i18n.ts.antennas }}</template>
 		<div class="_gaps_s">
 			<MkFolder>
 				<template #label>{{ i18n.ts.export }}</template>

@@ -60,7 +60,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</MkFolder>
 
 			<div class="_buttons">
-				<MkButton primary @click="save()"><i class="ph-floppy-disk ph-bold pg-lg"></i> {{ channelId ? i18n.ts.save : i18n.ts.create }}</MkButton>
+				<MkButton primary @click="save()"><i class="ph-floppy-disk ph-bold ph-lg"></i> {{ channelId ? i18n.ts.save : i18n.ts.create }}</MkButton>
 				<MkButton v-if="channelId" danger @click="archive()"><i class="ph-trash ph-bold ph-lg"></i> {{ i18n.ts.archive }}</MkButton>
 			</div>
 		</div>

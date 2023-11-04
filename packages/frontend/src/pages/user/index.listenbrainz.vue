@@ -19,7 +19,7 @@
 				</a>
 				<a :href="listenbrainz.listenbrainzurl">
 					<div class="playicon">
-						<i class="ph-play ph-bold pg-lg-filled"></i>
+						<i class="ph-play ph-bold ph-lg-filled"></i>
 					</div>
 				</a>
 			</div>

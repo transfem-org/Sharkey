@@ -264,7 +264,7 @@ const headerTabs = $computed(() => []);
 
 definePageMetadata(computed(() => ({
 	title: i18n.ts.roles,
-	icon: 'ph-seal-check ph-bold pg-lg',
+	icon: 'ph-seal-check ph-bold ph-lg',
 })));
 </script>
 

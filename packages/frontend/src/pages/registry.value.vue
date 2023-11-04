@@ -30,7 +30,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<template #label>{{ i18n.ts.value }} (JSON)</template>
 				</MkTextarea>
 
-				<MkButton primary @click="save"><i class="ph-floppy-disk ph-bold pg-lg"></i> {{ i18n.ts.save }}</MkButton>
+				<MkButton primary @click="save"><i class="ph-floppy-disk ph-bold ph-lg"></i> {{ i18n.ts.save }}</MkButton>
 
 				<MkKeyValue>
 					<template #key>{{ i18n.ts.updatedAt }}</template>
