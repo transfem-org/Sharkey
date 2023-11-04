@@ -1560,7 +1560,7 @@ _achievements:
       title: "テスト過剰"
       description: "通知のテストをごく短時間のうちに連続して行った"
     _tutorialCompleted:
-      title: "Misskey初心者講座 修了証"
+      title: "Sharkey初心者講座 修了証"
       description: "チュートリアルを完了した"
 
 _role:

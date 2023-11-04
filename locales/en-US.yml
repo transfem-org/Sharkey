@@ -169,7 +169,7 @@ youCanCleanRemoteFilesCache: "You can clear the cache by clicking the 🗑️ bu
 cacheRemoteSensitiveFiles: "Cache sensitive remote files"
 cacheRemoteSensitiveFilesDescription: "When this setting is disabled, sensitive remote files are loaded directly from the remote instance without caching."
 flagAsBot: "Mark this account as a bot"
-flagAsBotDescription: "Enable this option if this account is controlled by a program. If enabled, it will act as a flag for other developers to prevent endless interaction chains with other bots and adjust Misskey's internal systems to treat this account as a bot."
+flagAsBotDescription: "Enable this option if this account is controlled by a program. If enabled, it will act as a flag for other developers to prevent endless interaction chains with other bots and adjust Sharkey's internal systems to treat this account as a bot."
 flagAsCat: "Mark this account as a cat"
 flagAsCatDescription: "Enable this option to mark this account as a cat."
 flagSpeakAsCat: "Speak as a cat"
@@ -573,7 +573,7 @@ sort: "Sorting order"
 ascendingOrder: "Ascending"
 descendingOrder: "Descending"
 scratchpad: "Scratchpad"
-scratchpadDescription: "The Scratchpad provides an environment for AiScript experiments. You can write, execute, and check the results of it interacting with Misskey in it."
+scratchpadDescription: "The Scratchpad provides an environment for AiScript experiments. You can write, execute, and check the results of it interacting with Sharkey in it."
 output: "Output"
 script: "Script"
 disablePagesScript: "Disable AiScript on Pages"
@@ -705,7 +705,7 @@ unclip: "Unclip"
 confirmToUnclipAlreadyClippedNote: "This note is already part of the \"{name}\" clip. Do you want to remove it from this clip instead?"
 public: "Public"
 private: "Private"
-i18nInfo: "Misskey is being translated into various languages by volunteers. You can help at {link}."
+i18nInfo: "Sharkey is being translated into various languages by volunteers. You can help at {link}."
 manageAccessTokens: "Manage access tokens"
 accountInfo: "Account Info"
 notesCount: "Number of notes"
@@ -1211,7 +1211,7 @@ _initialAccountSetting:
   pushNotificationDescription: "Enabling push notifications will allow you to receive notifications from {name} directly on your device."
   initialAccountSettingCompleted: "Profile setup complete!"
   haveFun: "Enjoy {name}!"
-  youCanContinueTutorial: "You can proceed to a tutorial on how to use {name} (Misskey) or you can exit the setup here and start using it immediately."
+  youCanContinueTutorial: "You can proceed to a tutorial on how to use {name} (Sharkey) or you can exit the setup here and start using it immediately."
   startTutorial: "Start Tutorial"
   skipAreYouSure: "Really skip profile setup?"
   laterAreYouSure: "Really do profile setup later?"
@@ -1222,10 +1222,10 @@ _initialTutorial:
   skipAreYouSure: "Quit Tutorial?"
   _landing:
     title: "Welcome to the Tutorial"
-    description: "Here, you can learn the basics of using Misskey and its features."
+    description: "Here, you can learn the basics of using Sharkey and its features."
   _note:
     title: "What is a Note?"
-    description: "Posts on Misskey are called 'Notes.' Notes are arranged chronologically on the timeline and are updated in real-time."
+    description: "Posts on Sharkey are called 'Notes.' Notes are arranged chronologically on the timeline and are updated in real-time."
     reply: "Click on this button to reply to a message. It's also possible to reply to replies, continuing the conversation like a thread."
     renote: "You can share that note to your own timeline. You can also quote them with your comments."
     reaction: "You can add reactions to the Note. More details will be explained on the next page."
@@ -1239,7 +1239,7 @@ _initialTutorial:
     reactDone: "You can undo a reaction by pressing the '-' button."
   _timeline:
     title: "The Concept of Timelines"
-    description1: "Misskey provides multiple timelines based on usage (some may not be available depending on the server's policies)."
+    description1: "Sharkey provides multiple timelines based on usage (some may not be available depending on the server's policies)."
     home: "You can view notes from accounts you follow."
     local: "You can view notes from all users on this server."
     social: "Notes from the Home and Local timelines will be displayed."
@@ -1248,7 +1248,7 @@ _initialTutorial:
     description3: "Additionally, there are list timelines and channel timelines. For more details, please refer to {link}."
   _postNote:
     title: "Note Posting Settings"
-    description1: "When posting a note on Misskey, various options are available. The posting form looks like this."
+    description1: "When posting a note on Sharkey, various options are available. The posting form looks like this."
     _visibility:
       description: "You can limit who can view your note."
       public: "Your note will be visible for all users."
@@ -1276,7 +1276,7 @@ _initialTutorial:
     doItToContinue: "Mark the attachment file as sensitive to proceed."
   _done:
     title: "The tutorial is complete! 🎉"
-    description: "The functions introduced here are just a small part. For a more detailed understanding of using Misskey, please refer to {link}."
+    description: "The functions introduced here are just a small part. For a more detailed understanding of using Sharkey, please refer to {link}."
 _timelineDescription:
   home: "In the Home timeline, you can see notes from accounts you follow."
   local: "In the Local timeline, you can see notes from all users on this server."
@@ -1547,12 +1547,12 @@ _achievements:
     _brainDiver:
       title: "Brain Diver"
       description: "Post the link to Brain Diver"
-      flavor: "Misskey-Misskey La-Tu-Ma"
+      flavor: "Sharkey-Sharkey La-Tu-Ma"
     _smashTestNotificationButton:
       title: "Test overflow"
       description: "Trigger the notification test repeatedly within an extremely short time"
     _tutorialCompleted:
-      title: "Misskey Elementary Course Diploma"
+      title: "Sharkey Elementary Course Diploma"
       description: "Tutorial completed"
 _role:
   new: "New role"
