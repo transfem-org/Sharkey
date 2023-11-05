@@ -1202,6 +1202,8 @@ export interface Locale {
         "readConfirmText": string;
         "shouldNotBeUsedToPresentPermanentInfo": string;
         "dialogAnnouncementUxWarn": string;
+        "silence": string;
+        "silenceDescription": string;
     };
     "_initialAccountSetting": {
         "accountCreated": string;
