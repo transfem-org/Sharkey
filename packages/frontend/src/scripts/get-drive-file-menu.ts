@@ -78,6 +78,11 @@ export function getDriveFileMenu(file: Misskey.entities.DriveFile, folder?: Miss
 	const isImage = file.type.startsWith('image/');
 	let menu;
 	menu = [{
+		type: 'link',
+		to: `/my/drive/file/${file.id}`,
+		text: i18n.ts._fileViewer.title,
+		icon: 'ph-file-text ph-bold ph-lg',
+	}, null, {
 		text: i18n.ts.rename,
 		icon: 'ph-textbox ph-bold ph-lg',
 		action: () => rename(file),
@@ -113,11 +118,6 @@ export function getDriveFileMenu(file: Misskey.entities.DriveFile, folder?: Miss
 		text: i18n.ts.download,
 		icon: 'ph-download ph-bold ph-lg',
 		download: file.name,
-	}, null, {
-		type: 'link',
-		to: `/my/drive/file/${file.id}`,
-		text: i18n.ts._fileViewer.title,
-		icon: 'ph-file-text ph-bold ph-lg',
 	}, null, {
 		text: i18n.ts.delete,
 		icon: 'ph-trash ph-bold ph-lg',

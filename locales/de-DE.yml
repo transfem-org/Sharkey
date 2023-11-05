@@ -1154,6 +1154,8 @@ releaseToRefresh: "Zum Aktualisieren loslassen"
 refreshing: "Wird aktualisiert..."
 pullDownToRefresh: "Zum Aktualisieren ziehen"
 disableStreamingTimeline: "Echtzeitaktualisierung der Chronik deaktivieren"
+useGroupedNotifications: "Benachrichtigungen gruppieren"
+cwNotationRequired: "Ist \"Inhaltswarnung verwenden\" aktiviert, muss eine Beschreibung gegeben werden."
 _announcement:
   forExistingUsers: "Nur für existierende Nutzer"
   forExistingUsersDescription: "Ist diese Option aktiviert, wird diese Ankündigung nur Nutzern angezeigt, die zum Zeitpunkt der Ankündigung bereits registriert sind. Ist sie deaktiviert, wird sie auch Nutzern, die sich nach dessen Veröffentlichung registrieren, angezeigt."
@@ -1175,7 +1177,6 @@ _initialAccountSetting:
   pushNotificationDescription: "Durch die Aktivierung von Push-Benachrichtigungen kannst du von {name} Benachrichtigungen direkt auf dein Gerät erhalten."
   initialAccountSettingCompleted: "Kontoeinrichtung abgeschlossen!"
   haveFun: "Viel Spaß mit {name}!"
-  ifYouNeedLearnMore: "Besuche {link}, falls du mehr über {name} (Sharkey) lernen möchtest."
   skipAreYouSure: "Die Kontoeinrichtung wirklich überspringen?"
   laterAreYouSure: "Die Kontoeinrichtung wirklich später erledigen?"
 _serverRules:
@@ -1443,7 +1444,7 @@ _achievements:
     _brainDiver:
       title: "Brain Diver"
       description: "Sende den Link zu Brain Diver"
-      flavor: "Misskey-Misskey La-Tu-Ma"
+      flavor: "Sharkey-Sharkey La-Tu-Ma"
     _smashTestNotificationButton:
       title: "Testüberfluss"
       description: "Betätige den Benachrichtigungstest mehrfach innerhalb einer extrem kurzen Zeitspanne"
@@ -1742,16 +1743,6 @@ _time:
   minute: "Minute(n)"
   hour: "Stunde(n)"
   day: "Tag(en)"
-_timelineTutorial:
-  title: "Wie du Sharkey verwendest"
-  step1_1: "Dieser Bildschirm ist die \"Chronik\". Hier werden alle \"Notizen\" von {name} angezeigt."
-  step1_2: "Es gibt einige verschiedene Chroniken. Beispielsweise werden in der \"Startseite\" alle Notizen von Nutzern, denen du folgst, angezeigt, und in der \"Lokalen Chronik\" werden Notizen aller Nutzer auf {name} angezeigt."
-  step2_1: "Lass uns als nächstes versuchen, eine Notiz zu schreiben. Dies kannst du tun, indem du auf den Knopf mit dem Stift-Icon drückst."
-  step2_2: "Stell dich den anderen vor oder schreibe einfach \"Hallo {name}!\", wenn du darauf keine Lust hast oder dir nichts einfällt."
-  step3_1: "Fertig mit dem Senden deiner ersten Notiz?"
-  step3_2: "Falls deine Notiz nun in deiner Chronik auftaucht, hast du alles richtig gemacht."
-  step4_1: "Notizen können zusätzlich mit \"Reaktionen\" ausgestattet werden."
-  step4_2: "Um eine Reaktion anzufügen, klicke auf das „+“-Symbol einer Notiz und wähle ein Emoji aus, mit dem du reagieren möchtest."
 _2fa:
   alreadyRegistered: "Du hast bereits ein Gerät für Zwei-Faktor-Authentifizierung registriert."
   registerTOTP: "Authentifizierungs-App registrieren"
@@ -2061,6 +2052,9 @@ _notification:
   checkNotificationBehavior: "Aussehen von Benachrichtigungen überprüfen"
   sendTestNotification: "Testbenachrichtigung senden"
   notificationWillBeDisplayedLikeThis: "Benachrichtigungen sehen so aus"
+  reactedBySomeUsers: "{n} Benutzer haben eine Reaktion geschickt"
+  renotedBySomeUsers: "Renote von {n} Benutzern"
+  followedBySomeUsers: "Von {n} Benutzern gefolgt"
   _types:
     all: "Alle"
     note: "Neue Notizen"

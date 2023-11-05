@@ -48,25 +48,34 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</div>
 	<article v-else :class="$style.article" @contextmenu.stop="onContextmenu">
 		<div v-if="appearNote.channel" :class="$style.colorBar" :style="{ background: appearNote.channel.color }"></div>
-		<MkAvatar :class="$style.avatar" :user="appearNote.user" link preview/>
+		<MkAvatar :class="$style.avatar" :user="appearNote.user" :link="!mock" :preview="!mock"/>
 		<div :class="[$style.main, { [$style.clickToOpen]: defaultStore.state.clickToOpen }]" @click="defaultStore.state.clickToOpen ? noteclick(appearNote.id) : undefined">
 			<MkNoteHeader :note="appearNote" :mini="true" v-on:click.stop/>
 			<MkInstanceTicker v-if="showTicker" :instance="appearNote.user.instance"/>
 			<div style="container-type: inline-size;">
 				<p v-if="appearNote.cw != null" :class="$style.cw">
-					<Mfm v-if="appearNote.cw != ''" style="margin-right: 8px;" :text="appearNote.cw" :author="appearNote.user" :nyaize="'account'" :i="$i"/>
+					<Mfm v-if="appearNote.cw != ''" style="margin-right: 8px;" :text="appearNote.cw" :author="appearNote.user" :nyaize="'account'"/>
 					<MkCwButton v-model="showContent" :note="appearNote" style="margin: 4px 0;" v-on:click.stop/>
 				</p>
 				<div v-show="appearNote.cw == null || showContent" :class="[{ [$style.contentCollapsed]: collapsed }]" >
 					<div :class="$style.text">
 						<span v-if="appearNote.isHidden" style="opacity: 0.5">({{ i18n.ts.private }})</span>
 						<MkA v-if="appearNote.replyId" :class="$style.replyIcon" :to="`/notes/${appearNote.replyId}`"><i class="ph-arrow-bend-left-up ph-bold ph-lg"></i></MkA>
-						<Mfm v-if="appearNote.text" :parsedNodes="parsed" :text="appearNote.text" :author="appearNote.user" :nyaize="'account'" :i="$i" :emojiUrls="appearNote.emojis"/>
+						<Mfm
+							v-if="appearNote.text"
+							:parsedNodes="parsed"
+							:text="appearNote.text"
+							:author="appearNote.user"
+							:nyaize="'account'"
+							:emojiUrls="appearNote.emojis"
+							:enableEmojiMenu="true"
+							:enableEmojiMenuReaction="true"
+						/>
 						<div v-if="translating || translation" :class="$style.translation">
 							<MkLoading v-if="translating" mini/>
 							<div v-else>
 								<b>{{ i18n.t('translatedFrom', { x: translation.sourceLang }) }}: </b>
-								<Mfm :text="translation.text" :author="appearNote.user" :nyaize="'account'" :i="$i" :emojiUrls="appearNote.emojis"/>
+								<Mfm :text="translation.text" :author="appearNote.user" :nyaize="'account'" :emojiUrls="appearNote.emojis"/>
 							</div>
 						</div>
 					</div>
@@ -85,7 +94,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</div>
 				<MkA v-if="appearNote.channel && !inChannel" :class="$style.channel" :to="`/channels/${appearNote.channel.id}`"><i class="ph-television ph-bold ph-lg"></i> {{ appearNote.channel.name }}</MkA>
 			</div>
-			<MkReactionsViewer v-show="appearNote.cw == null || showContent" :note="appearNote" :maxNumber="16" v-on:click.stop>
+			<MkReactionsViewer :note="appearNote" :maxNumber="16" v-on:click.stop @mockUpdateMyReaction="emitUpdReaction">
 				<template #more>
 					<div :class="$style.reactionOmitted">{{ i18n.ts.more }}</div>
 				</template>
@@ -111,7 +120,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<i class="ph-prohibit ph-bold ph-lg"></i>
 				</button>
 				<button
-					v-if="canRenote"
+					v-if="canRenote && !props.mock"
 					ref="quoteButton"
 					:class="$style.footerButton"
 					class="_button"
@@ -153,7 +162,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, inject, onMounted, ref, shallowRef, Ref, defineAsyncComponent } from 'vue';
+import { computed, inject, onMounted, ref, shallowRef, Ref, defineAsyncComponent, watch, provide } from 'vue';
 import * as mfm from 'mfm-js';
 import * as Misskey from 'misskey-js';
 import MkNoteSub from '@/components/MkNoteSub.vue';
@@ -176,7 +185,7 @@ import { reactionPicker } from '@/scripts/reaction-picker.js';
 import { extractUrlFromMfm } from '@/scripts/extract-url-from-mfm.js';
 import { $i } from '@/account.js';
 import { i18n } from '@/i18n.js';
-import { getAbuseNoteMenu, getCopyNoteLinkMenu, getNoteClipMenu, getNoteMenu } from '@/scripts/get-note-menu.js';
+import { getAbuseNoteMenu, getCopyNoteLinkMenu, getNoteClipMenu, getNoteMenu, getRenoteMenu } from '@/scripts/get-note-menu.js';
 import { getNoteVersionsMenu } from '@/scripts/get-note-versions-menu.js';
 import { useNoteCapture } from '@/scripts/use-note-capture.js';
 import { deepClone } from '@/scripts/clone.js';
@@ -189,9 +198,19 @@ import { showMovedDialog } from '@/scripts/show-moved-dialog.js';
 import { shouldCollapsed } from '@/scripts/collapsed.js';
 import { useRouter } from '@/router.js';
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
 	note: Misskey.entities.Note;
 	pinned?: boolean;
+	mock?: boolean;
+}>(), {
+	mock: false,
+});
+
+provide('mock', props.mock);
+
+const emit = defineEmits<{
+	(ev: 'reaction', emoji: string): void;
+	(ev: 'removeReaction', emoji: string): void;
 }>();
 
 const router = useRouter();
@@ -265,67 +284,82 @@ const keymap = {
 	's': () => showContent.value !== showContent.value,
 };
 
-useNoteCapture({
-	rootEl: el,
-	note: $$(appearNote),
-	pureNote: $$(note),
-	isDeletedRef: isDeleted,
+provide('react', (reaction: string) => {
+	os.api('notes/reactions/create', {
+		noteId: appearNote.id,
+		reaction: reaction,
+	});
 });
 
-useTooltip(renoteButton, async (showing) => {
-	const renotes = await os.api('notes/renotes', {
-		noteId: appearNote.id,
-		limit: 11,
+if (props.mock) {
+	watch(() => props.note, (to) => {
+		note = deepClone(to);
+	}, { deep: true });
+} else {
+	useNoteCapture({
+		rootEl: el,
+		note: $$(appearNote),
+		pureNote: $$(note),
+		isDeletedRef: isDeleted,
+	});
+}
+
+if (!props.mock) {
+	useTooltip(renoteButton, async (showing) => {
+		const renotes = await os.api('notes/renotes', {
+			noteId: appearNote.id,
+			limit: 11,
+		});
+
+		const users = renotes.map(x => x.user);
+
+		if (users.length < 1) return;
+
+		os.popup(MkUsersTooltip, {
+			showing,
+			users,
+			count: appearNote.renoteCount,
+			targetElement: renoteButton.value,
+		}, {}, 'closed');
 	});
 
-	const users = renotes.map(x => x.user);
+	useTooltip(quoteButton, async (showing) => {
+		const renotes = await os.api('notes/renotes', {
+			noteId: appearNote.id,
+			limit: 11,
+			quote: true,
+		});
 
-	if (users.length < 1) return;
+		const users = renotes.map(x => x.user);
 
-	os.popup(MkUsersTooltip, {
-		showing,
-		users,
-		count: appearNote.renoteCount,
-		targetElement: renoteButton.value,
-	}, {}, 'closed');
-});
+		if (users.length < 1) return;
 
-useTooltip(quoteButton, async (showing) => {
-	const renotes = await os.api('notes/renotes', {
-		noteId: appearNote.id,
-		limit: 11,
-		quote: true,
+		os.popup(MkUsersTooltip, {
+			showing,
+			users,
+			count: appearNote.renoteCount,
+			targetElement: quoteButton.value,
+		}, {}, 'closed');
 	});
 
-	const users = renotes.map(x => x.user);
+	if ($i) {
+		os.api("notes/renotes", {
+			noteId: appearNote.id,
+			userId: $i.id,
+			limit: 1,
+		}).then((res) => {
+			renoted.value = res.length > 0;
+		});
 
-	if (users.length < 1) return;
-
-	os.popup(MkUsersTooltip, {
-		showing,
-		users,
-		count: appearNote.renoteCount,
-		targetElement: quoteButton.value,
-	}, {}, 'closed');
-});
-
-if ($i) {
-	os.api("notes/renotes", {
-		noteId: appearNote.id,
-		userId: $i.id,
-		limit: 1,
-	}).then((res) => {
-		renoted.value = res.length > 0;
-	});
-
-	os.api("notes/renotes", {
-		noteId: appearNote.id,
-		userId: $i.id,
-		limit: 1,
-		quote: true,
-	}).then((res) => {
-		quoted.value = res.length > 0;
-	});
+		os.api("notes/renotes", {
+			noteId: appearNote.id,
+			userId: $i.id,
+			limit: 1,
+			quote: true,
+		}).then((res) => {
+			quoted.value = res.length > 0;
+		});
+	}
 }
 
 type Visibility = 'public' | 'home' | 'followers' | 'specified';
@@ -352,14 +386,16 @@ function renote() {
 			os.popup(MkRippleEffect, { x, y }, {}, 'end');
 		}
 
-		os.api('notes/create', {
-			renoteId: appearNote.id,
-			channelId: appearNote.channelId,
-		}).then(() => {
-			os.toast(i18n.ts.renoted);
-			renoted.value = true;
-		});
-	} else {
+		if (!props.mock) {
+			os.api('notes/create', {
+				renoteId: appearNote.id,
+				channelId: appearNote.channelId,
+			}).then(() => {
+				os.toast(i18n.ts.renoted);
+				renoted.value = true;
+			});
+		}
+	} else if (!appearNote.channel || appearNote.channel?.allowRenoteToExternal) {
 		const el = renoteButton.value as HTMLElement | null | undefined;
 		if (el) {
 			const rect = el.getBoundingClientRect();
@@ -377,20 +413,25 @@ function renote() {
 			visibility = smallerVisibility(visibility, 'home');
 		}
 
-		os.api('notes/create', {
-			localOnly,
-			visibility,
-			renoteId: appearNote.id,
-		}).then(() => {
-			os.toast(i18n.ts.renoted);
-			renoted.value = true;
-		});
+		if (!props.mock) {
+			os.api('notes/create', {
+				localOnly,
+				visibility,
+				renoteId: appearNote.id,
+			}).then(() => {
+				os.toast(i18n.ts.renoted);
+				renoted.value = true;
+			});
+		}
 	}
 }
 
 function quote() {
 	pleaseLogin();
 	showMovedDialog();
+	if (props.mock) {
+		return;
+	}
 
 	if (appearNote.channel) {
 		os.post({
@@ -444,6 +485,9 @@ function quote() {
 
 function reply(viaKeyboard = false): void {
 	pleaseLogin();
+	if (props.mock) {
+		return;
+	}
 	os.post({
 		reply: appearNote,
 		channel: appearNote.channel,
@@ -456,6 +500,9 @@ function reply(viaKeyboard = false): void {
 function like(): void {
 	pleaseLogin();
 	showMovedDialog();
+	if (props.mock) {
+		return;
+	}
 	os.api('notes/reactions/create', {
 		noteId: appearNote.id,
 		reaction: '❤️',
@@ -473,6 +520,10 @@ function react(viaKeyboard = false): void {
 	pleaseLogin();
 	showMovedDialog();
 	if (appearNote.reactionAcceptance === 'likeOnly') {
+		if (props.mock) {
+			return;
+		}
+
 		os.api('notes/reactions/create', {
 			noteId: appearNote.id,
 			reaction: '❤️',
@@ -487,6 +538,11 @@ function react(viaKeyboard = false): void {
 	} else {
 		blur();
 		reactionPicker.show(reactButton.value, reaction => {
+			if (props.mock) {
+				emit('reaction', reaction);
+				return;
+			}
+
 			os.api('notes/reactions/create', {
 				noteId: appearNote.id,
 				reaction: reaction,
@@ -503,12 +559,21 @@ function react(viaKeyboard = false): void {
 function undoReact(note): void {
 	const oldReaction = note.myReaction;
 	if (!oldReaction) return;
+
+	if (props.mock) {
+		emit('removeReaction', oldReaction);
+		return;
+	}
+
 	os.api('notes/reactions/delete', {
 		noteId: note.id,
 	});
 }
 
 function undoRenote(note) : void {
+	if (props.mock) {
+		return;
+	}
 	os.api("notes/unrenote", {
 		noteId: note.id
 	});
@@ -525,6 +590,9 @@ function undoRenote(note) : void {
 }
 
 function undoQuote(note) : void {
+	if (props.mock) {
+		return;
+	}
 	os.api("notes/unrenote", {
 		noteId: note.id,
 		quote: true
@@ -542,6 +610,10 @@ function undoQuote(note) : void {
 }
 
 function onContextmenu(ev: MouseEvent): void {
+	if (props.mock) {
+		return;
+	}
+
 	const isLink = (el: HTMLElement) => {
 		if (el.tagName === 'A') return true;
 		// 再生速度の選択などのために、Audio要素のコンテキストメニューはブラウザデフォルトとする。
@@ -563,6 +635,10 @@ function onContextmenu(ev: MouseEvent): void {
 }
 
 function menu(viaKeyboard = false): void {
+	if (props.mock) {
+		return;
+	}
+
 	const { menu, cleanup } = getNoteMenu({ note: note, translating, translation, menuButton, isDeleted, currentClip: currentClip?.value });
 	os.popupMenu(menu, menuButton.value, {
 		viaKeyboard,
@@ -577,10 +653,18 @@ async function menuVersions(viaKeyboard = false): Promise<void> {
 }
 
 async function clip() {
+	if (props.mock) {
+		return;
+	}
+
 	os.popupMenu(await getNoteClipMenu({ note: note, isDeleted, currentClip: currentClip?.value }), clipButton.value).then(focus);
 }
 
 function showRenoteMenu(viaKeyboard = false): void {
+	if (props.mock) {
+		return;
+	}
+
 	function getUnrenote(): MenuItem {
 		return {
 			text: i18n.ts.unrenote,
@@ -637,6 +721,14 @@ function readPromo() {
 		noteId: appearNote.id,
 	});
 	isDeleted.value = true;
+}
+
+function emitUpdReaction(emoji: string, delta: number) {
+	if (delta < 0) {
+		emit('removeReaction', emoji);
+	} else if (delta > 0) {
+		emit('reaction', emoji);
+	}
 }
 </script>
 

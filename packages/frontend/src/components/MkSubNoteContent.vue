@@ -9,12 +9,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<span v-if="note.isHidden" style="opacity: 0.5">({{ i18n.ts.private }})</span>
 		<span v-if="note.deletedAt" style="opacity: 0.5">({{ i18n.ts.deleted }})</span>
 		<MkA v-if="note.replyId" :class="$style.reply" :to="`/notes/${note.replyId}`" v-on:click.stop><i class="ph-arrow-bend-left-up ph-bold ph-lg"></i></MkA>
-		<Mfm v-if="note.text" :text="note.text" :author="note.user" :nyaize="'account'" :i="$i" :emojiUrls="note.emojis"/>
+		<Mfm v-if="note.text" :text="note.text" :author="note.user" :nyaize="'account'" :emojiUrls="note.emojis"/>
 		<div v-if="note.text && translating || note.text && translation" :class="$style.translation">
 			<MkLoading v-if="translating" mini/>
 			<div v-else>
 				<b>{{ i18n.t('translatedFrom', { x: translation.sourceLang }) }}: </b>
-				<Mfm :text="translation.text" :author="note.user" :nyaize="'account'" :i="$i" :emojiUrls="note.emojis"/>
+				<Mfm :text="translation.text" :author="note.user" :nyaize="'account'" :emojiUrls="note.emojis"/>
 			</div>
 		</div>
 		<MkA v-if="note.renoteId" :class="$style.rp" :to="`/notes/${note.renoteId}`" v-on:click.stop>RN: ...</MkA>

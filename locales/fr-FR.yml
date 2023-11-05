@@ -1081,14 +1081,33 @@ releaseToRefresh: "Relâcher pour rafraîchir"
 refreshing: "Rafraîchissement..."
 pullDownToRefresh: "Tirer vers le bas pour rafraîchir"
 disableStreamingTimeline: "Désactiver les mises à jour en temps réel de la ligne du temps"
+useGroupedNotifications: "Grouper les notifications"
 _announcement:
   readConfirmTitle: "Marquer comme lu ?"
 _initialAccountSetting:
   profileSetting: "Paramètres du profil"
   privacySetting: "Paramètres de confidentialité"
   initialAccountSettingCompleted: "Configuration du profil terminée avec succès !"
-  ifYouNeedLearnMore: "Si vous voulez en savoir plus comment utiliser {name}(Misskey), veuillez visiter {link}."
+  startTutorial: "Démarrer le tutoriel"
   skipAreYouSure: "Désirez-vous ignorer la configuration du profil ?"
+_initialTutorial:
+  title: "Tutoriel"
+  wellDone: "Bien joué !"
+  skipAreYouSure: "Quitter le tutoriel ?"
+  _landing:
+    title: "Bienvenue dans le tutoriel"
+    description: "Ici, vous pouvez apprendre l'utilisation de base de Misskey et ses fonctionnalités."
+  _note:
+    title: "Qu'est-ce que les notes ?"
+    description: "Les messages sur Misskey sont appelés des « notes » . Les notes sont classées par ordre chronologique sur le fil et sont mises à jour en temps réel."
+    reply: "Vous pouvez répondre aux messages. Vous pouvez également répondre aux réponses et poursuivre la conversation comme un fil de discussion."
+    renote: "Vous pouvez partager cette note sur votre propre fil. Vous pouvez aussi ajouter du texte en citant."
+    reaction: "Vous pouvez ajouter des réactions. Les détails sont expliqués à la page suivante."
+    menu: "Vous pouvez afficher les détails de la note, copier le lien et effectuer d'autres actions."
+  _reaction:
+    title: "Qu'est-ce que les réactions ?"
+    description: "Vous pouvez ajouter des « réactions » aux notes. Les réactions vous permettent d'exprimer à l'aise des nuances qui ne peuvent pas être exprimées par des mentions j'aime."
+    letsTryReacting: "Des réactions peuvent être ajoutées en cliquant sur le bouton « + » de la note. Essayez d'ajouter une réaction à cet exemple de note !"
 _serverSettings:
   iconUrl: "URL de l’icône"
   fanoutTimelineDescription: "Si activée, la performance de la récupération de la chronologie augmentera considérablement et la charge sur la base de données sera réduite. En revanche, l'utilisation de la mémoire de Redis augmentera. Considérez désactiver cette option si le serveur est bas en mémoire ou instable."
@@ -1101,7 +1120,7 @@ _accountMigration:
 _achievements:
   _types:
     _notes1:
-      title: "Je viens tout juste de configurer mon msky"
+      title: "Je viens tout juste de configurer mon shonk"
       description: "Publiez votre première note"
       flavor: "Passez un bon moment avec Misskey !"
     _notes10:
@@ -1468,9 +1487,6 @@ _time:
   minute: "min"
   hour: "h"
   day: "j"
-_timelineTutorial:
-  title: "Comment utiliser Misskey"
-  step3_1: "Avez-vous publié votre première note ?"
 _2fa:
   alreadyRegistered: "Configuration déjà achevée."
   step1: "Tout d'abord, installez une application d'authentification, telle que {a} ou {b}, sur votre appareil."
@@ -1738,6 +1754,9 @@ _notification:
   unreadAntennaNote: "Antenne {name}"
   emptyPushNotificationMessage: "Les notifications push ont été mises à jour"
   achievementEarned: "Accomplissement"
+  reactedBySomeUsers: "{n} utilisateur·rice·s ont réagi"
+  renotedBySomeUsers: "{n} utilisateur·rice·s ont renoté"
+  followedBySomeUsers: "{n} utilisateur·rice·s se sont abonné·e·s à vous"
   _types:
     all: "Toutes"
     follow: "Nouvel·le abonné·e"

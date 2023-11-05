@@ -7,7 +7,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 <div :class="[$style.root, { [$style.warn]: warn }]">
 	<i v-if="warn" class="ph-warning ph-bold ph-lg" :class="$style.i"></i>
 	<i v-else class="ph-info ph-bold ph-lg" :class="$style.i"></i>
-	<slot></slot>
+	<div><slot></slot></div>
+	<button v-if="closable" :class="$style.button" class="_button" @click="close()"><i class="ph-x ph-bold ph-lg"></i></button>
 </div>
 </template>
 
@@ -16,11 +17,23 @@ import { } from 'vue';
 
 const props = defineProps<{
 	warn?: boolean;
+	closable?: boolean;
 }>();
+
+const emit = defineEmits<{
+	(ev: 'close'): void;
+}>();
+
+function close() {
+	// こいつの中では非表示動作は行わない
+	emit('close');
+}
 </script>
 
 <style lang="scss" module>
 .root {
+	display: flex;
+  align-items: center;
 	padding: 12px 14px;
 	font-size: 90%;
 	background: color-mix(in srgb, var(--infoBg) 65%, transparent);
@@ -37,5 +50,10 @@ const props = defineProps<{
 
 .i {
 	margin-right: 4px;
+}
+
+.button {
+	margin-left: auto;
+	padding: 4px;
 }
 </style>
