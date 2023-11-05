@@ -53,7 +53,7 @@ function onClick(ev: MouseEvent) {
 			},
 		}, ...(props.menuReaction && react ? [{
 			text: i18n.ts.doReaction,
-			icon: 'ph-plus ph-bold ph-lg',
+			icon: 'ph-smiley ph-bold ph-lg',
 			action: () => {
 				react(props.emoji);
 			},
