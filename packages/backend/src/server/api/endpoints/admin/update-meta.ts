@@ -292,22 +292,6 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				set.turnstileSecretKey = ps.turnstileSecretKey;
 			}
 
-			if (ps.sensitiveMediaDetection !== undefined) {
-				set.sensitiveMediaDetection = ps.sensitiveMediaDetection;
-			}
-
-			if (ps.sensitiveMediaDetectionSensitivity !== undefined) {
-				set.sensitiveMediaDetectionSensitivity = ps.sensitiveMediaDetectionSensitivity;
-			}
-
-			if (ps.setSensitiveFlagAutomatically !== undefined) {
-				set.setSensitiveFlagAutomatically = ps.setSensitiveFlagAutomatically;
-			}
-
-			if (ps.enableSensitiveMediaDetectionForVideos !== undefined) {
-				set.enableSensitiveMediaDetectionForVideos = ps.enableSensitiveMediaDetectionForVideos;
-			}
-
 			if (ps.enableBotTrending !== undefined) {
 				set.enableBotTrending = ps.enableBotTrending;
 			}
