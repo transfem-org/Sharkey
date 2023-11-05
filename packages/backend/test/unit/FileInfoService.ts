@@ -56,7 +56,7 @@ describe('FileInfoService', () => {
 
 	test('Empty file', async () => {
 		const path = `${resources}/emptyfile`;
-		const info = await fileInfoService.getFileInfo(path, { skipSensitiveDetection: true }) as any;
+		const info = await fileInfoService.getFileInfo(path) as any;
 		delete info.warnings;
 		delete info.blurhash;
 		delete info.sensitive;
@@ -77,7 +77,7 @@ describe('FileInfoService', () => {
 	describe('IMAGE', () => {
 		test('Generic JPEG', async () => {
 			const path = `${resources}/Lenna.jpg`;
-			const info = await fileInfoService.getFileInfo(path, { skipSensitiveDetection: true }) as any;
+			const info = await fileInfoService.getFileInfo(path) as any;
 			delete info.warnings;
 			delete info.blurhash;
 			delete info.sensitive;
@@ -97,7 +97,7 @@ describe('FileInfoService', () => {
 
 		test('Generic APNG', async () => {
 			const path = `${resources}/anime.png`;
-			const info = await fileInfoService.getFileInfo(path, { skipSensitiveDetection: true }) as any;
+			const info = await fileInfoService.getFileInfo(path) as any;
 			delete info.warnings;
 			delete info.blurhash;
 			delete info.sensitive;
@@ -117,7 +117,7 @@ describe('FileInfoService', () => {
 
 		test('Generic AGIF', async () => {
 			const path = `${resources}/anime.gif`;
-			const info = await fileInfoService.getFileInfo(path, { skipSensitiveDetection: true }) as any;
+			const info = await fileInfoService.getFileInfo(path) as any;
 			delete info.warnings;
 			delete info.blurhash;
 			delete info.sensitive;
@@ -137,7 +137,7 @@ describe('FileInfoService', () => {
 
 		test('PNG with alpha', async () => {
 			const path = `${resources}/with-alpha.png`;
-			const info = await fileInfoService.getFileInfo(path, { skipSensitiveDetection: true }) as any;
+			const info = await fileInfoService.getFileInfo(path) as any;
 			delete info.warnings;
 			delete info.blurhash;
 			delete info.sensitive;
@@ -157,7 +157,7 @@ describe('FileInfoService', () => {
 
 		test('Generic SVG', async () => {
 			const path = `${resources}/image.svg`;
-			const info = await fileInfoService.getFileInfo(path, { skipSensitiveDetection: true }) as any;
+			const info = await fileInfoService.getFileInfo(path) as any;
 			delete info.warnings;
 			delete info.blurhash;
 			delete info.sensitive;
@@ -178,7 +178,7 @@ describe('FileInfoService', () => {
 		test('SVG with XML definition', async () => {
 			// https://github.com/misskey-dev/misskey/issues/4413
 			const path = `${resources}/with-xml-def.svg`;
-			const info = await fileInfoService.getFileInfo(path, { skipSensitiveDetection: true }) as any;
+			const info = await fileInfoService.getFileInfo(path) as any;
 			delete info.warnings;
 			delete info.blurhash;
 			delete info.sensitive;
@@ -198,7 +198,7 @@ describe('FileInfoService', () => {
 
 		test('Dimension limit', async () => {
 			const path = `${resources}/25000x25000.png`;
-			const info = await fileInfoService.getFileInfo(path, { skipSensitiveDetection: true }) as any;
+			const info = await fileInfoService.getFileInfo(path) as any;
 			delete info.warnings;
 			delete info.blurhash;
 			delete info.sensitive;
@@ -218,7 +218,7 @@ describe('FileInfoService', () => {
 
 		test('Rotate JPEG', async () => {
 			const path = `${resources}/rotate.jpg`;
-			const info = await fileInfoService.getFileInfo(path, { skipSensitiveDetection: true }) as any;
+			const info = await fileInfoService.getFileInfo(path) as any;
 			delete info.warnings;
 			delete info.blurhash;
 			delete info.sensitive;
@@ -240,7 +240,7 @@ describe('FileInfoService', () => {
 	describe('AUDIO', () => {
 		test('MP3', async () => {
 			const path = `${resources}/kick_gaba7.mp3`;
-			const info = await fileInfoService.getFileInfo(path, { skipSensitiveDetection: true }) as any;
+			const info = await fileInfoService.getFileInfo(path) as any;
 			delete info.warnings;
 			delete info.blurhash;
 			delete info.sensitive;
@@ -260,7 +260,7 @@ describe('FileInfoService', () => {
 
 		test('WAV', async () => {
 			const path = `${resources}/kick_gaba7.wav`;
-			const info = await fileInfoService.getFileInfo(path, { skipSensitiveDetection: true }) as any;
+			const info = await fileInfoService.getFileInfo(path) as any;
 			delete info.warnings;
 			delete info.blurhash;
 			delete info.sensitive;
@@ -280,7 +280,7 @@ describe('FileInfoService', () => {
 
 		test('AAC', async () => {
 			const path = `${resources}/kick_gaba7.aac`;
-			const info = await fileInfoService.getFileInfo(path, { skipSensitiveDetection: true }) as any;
+			const info = await fileInfoService.getFileInfo(path) as any;
 			delete info.warnings;
 			delete info.blurhash;
 			delete info.sensitive;
@@ -300,7 +300,7 @@ describe('FileInfoService', () => {
 
 		test('FLAC', async () => {
 			const path = `${resources}/kick_gaba7.flac`;
-			const info = await fileInfoService.getFileInfo(path, { skipSensitiveDetection: true }) as any;
+			const info = await fileInfoService.getFileInfo(path) as any;
 			delete info.warnings;
 			delete info.blurhash;
 			delete info.sensitive;
@@ -322,7 +322,7 @@ describe('FileInfoService', () => {
 		 * video/webmとして検出されてしまう
 		test('WEBM AUDIO', async () => {
 			const path = `${resources}/kick_gaba7.webm`;
-			const info = await fileInfoService.getFileInfo(path, { skipSensitiveDetection: true }) as any;
+			const info = await fileInfoService.getFileInfo(path) as any;
 			delete info.warnings;
 			delete info.blurhash;
 			delete info.sensitive;
