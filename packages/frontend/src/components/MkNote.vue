@@ -70,6 +70,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 							:emojiUrls="appearNote.emojis"
 							:enableEmojiMenu="true"
 							:enableEmojiMenuReaction="true"
+							:isAnim="allowAnim"
 						/>
 						<div v-if="translating || translation" :class="$style.translation">
 							<MkLoading v-if="translating" mini/>
@@ -78,6 +79,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 								<Mfm :text="translation.text" :author="appearNote.user" :nyaize="'account'" :emojiUrls="appearNote.emojis"/>
 							</div>
 						</div>
+						<MkButton v-if="!allowAnim && animated" :small="true" @click="animatedMFM()" v-on:click.stop><i class="ph-play ph-bold ph-lg "></i> Animated MFM</MkButton>
+						<MkButton v-else-if="!defaultStore.state.animatedMfm && allowAnim && animated" :small="true" @click="animatedMFM()" v-on:click.stop><i class="ph-stop ph-bold ph-lg "></i> Animated MFM</MkButton>
 					</div>
 					<div v-if="appearNote.files.length > 0">
 						<MkMediaList :mediaList="appearNote.files" v-on:click.stop/>
@@ -175,6 +178,7 @@ import MkPoll from '@/components/MkPoll.vue';
 import MkUsersTooltip from '@/components/MkUsersTooltip.vue';
 import MkUrlPreview from '@/components/MkUrlPreview.vue';
 import MkInstanceTicker from '@/components/MkInstanceTicker.vue';
+import MkButton from '@/components/MkButton.vue';
 import { pleaseLogin } from '@/scripts/please-login.js';
 import { focusPrev, focusNext } from '@/scripts/focus.js';
 import { checkWordMute } from '@/scripts/check-word-mute.js';
@@ -183,9 +187,10 @@ import * as os from '@/os.js';
 import { defaultStore, noteViewInterruptors } from '@/store.js';
 import { reactionPicker } from '@/scripts/reaction-picker.js';
 import { extractUrlFromMfm } from '@/scripts/extract-url-from-mfm.js';
+import { checkAnimationFromMfm } from '@/scripts/check-animated-mfm.js';
 import { $i } from '@/account.js';
 import { i18n } from '@/i18n.js';
-import { getAbuseNoteMenu, getCopyNoteLinkMenu, getNoteClipMenu, getNoteMenu, getRenoteMenu } from '@/scripts/get-note-menu.js';
+import { getAbuseNoteMenu, getCopyNoteLinkMenu, getNoteClipMenu, getNoteMenu } from '@/scripts/get-note-menu.js';
 import { getNoteVersionsMenu } from '@/scripts/get-note-versions-menu.js';
 import { useNoteCapture } from '@/scripts/use-note-capture.js';
 import { deepClone } from '@/scripts/clone.js';
@@ -261,6 +266,8 @@ const isMyRenote = $i && ($i.id === note.userId);
 const showContent = ref(false);
 const parsed = $computed(() => appearNote.text ? mfm.parse(appearNote.text) : null);
 const urls = parsed ? extractUrlFromMfm(parsed) : null;
+const animated = $computed(() => parsed ? checkAnimationFromMfm(parsed) : null);
+const allowAnim = ref(defaultStore.state.advancedMfm && defaultStore.state.animatedMfm ? true : false);
 const isLong = shouldCollapsed(appearNote, urls ?? []);
 const collapsed = ref(appearNote.cw == null && isLong);
 const isDeleted = ref(false);
@@ -697,6 +704,18 @@ function showRenoteMenu(viaKeyboard = false): void {
 		], renoteTime.value, {
 			viaKeyboard: viaKeyboard,
 		});
+	}
+}
+
+function animatedMFM() {
+	if (allowAnim.value) {
+		allowAnim.value = false;
+	} else {
+		os.confirm({
+			type: 'warning',
+			text: 'Animated MFMs could include flashing lights and fast moving text/emojis.',
+			okText: 'Animate',
+		}).then((res) => { if (!res.canceled) allowAnim.value = true; });
 	}
 }
 

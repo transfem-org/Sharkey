@@ -40,6 +40,7 @@ type MfmProps = {
 	parsedNodes?: mfm.MfmNode[] | null;
 	enableEmojiMenu?: boolean;
 	enableEmojiMenuReaction?: boolean;
+	isAnim?: boolean;
 };
 
 // eslint-disable-next-line import/no-default-export
@@ -57,7 +58,7 @@ export default function(props: MfmProps) {
 		return t.match(/^[0-9.]+s$/) ? t : null;
 	};
 
-	const useAnim = defaultStore.state.advancedMfm && defaultStore.state.animatedMfm;
+	const useAnim = defaultStore.state.advancedMfm && defaultStore.state.animatedMfm ? true : props.isAnim ? true : false;
 
 	/**
 	 * Gen Vue Elements from MFM AST

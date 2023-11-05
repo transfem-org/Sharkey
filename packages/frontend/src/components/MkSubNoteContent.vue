@@ -9,7 +9,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<span v-if="note.isHidden" style="opacity: 0.5">({{ i18n.ts.private }})</span>
 		<span v-if="note.deletedAt" style="opacity: 0.5">({{ i18n.ts.deleted }})</span>
 		<MkA v-if="note.replyId" :class="$style.reply" :to="`/notes/${note.replyId}`" v-on:click.stop><i class="ph-arrow-bend-left-up ph-bold ph-lg"></i></MkA>
-		<Mfm v-if="note.text" :text="note.text" :author="note.user" :nyaize="'account'" :emojiUrls="note.emojis"/>
+		<Mfm v-if="note.text" :text="note.text" :author="note.user" :nyaize="'account'" :isAnim="allowAnim" :emojiUrls="note.emojis"/>
+		<MkButton v-if="!allowAnim && animated && !hideFiles" :small="true" @click="animatedMFM()" v-on:click.stop><i class="ph-play ph-bold ph-lg "></i> Animated MFM</MkButton>
+		<MkButton v-else-if="!defaultStore.state.animatedMfm && allowAnim && animated && !hideFiles" :small="true" @click="animatedMFM()" v-on:click.stop><i class="ph-stop ph-bold ph-lg "></i> Animated MFM</MkButton>
 		<div v-if="note.text && translating || note.text && translation" :class="$style.translation">
 			<MkLoading v-if="translating" mini/>
 			<div v-else>
@@ -39,13 +41,17 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { } from 'vue';
 import * as Misskey from 'misskey-js';
+import * as mfm from 'mfm-js';
 import MkMediaList from '@/components/MkMediaList.vue';
 import MkPoll from '@/components/MkPoll.vue';
+import MkButton from '@/components/MkButton.vue';
 import { i18n } from '@/i18n.js';
 import { $i } from '@/account.js';
 import { shouldCollapsed } from '@/scripts/collapsed.js';
 import { defaultStore } from '@/store.js';
 import { useRouter } from '@/router.js';
+import * as os from '@/os.js';
+import { checkAnimationFromMfm } from '@/scripts/check-animated-mfm.js';
 
 const props = defineProps<{
 	note: Misskey.entities.Note;
@@ -60,7 +66,23 @@ function noteclick(id: string) {
 	router.push(`/notes/${id}`);
 }
 
+const parsed = $computed(() => props.note.text ? mfm.parse(props.note.text) : null);
+const animated = $computed(() => parsed ? checkAnimationFromMfm(parsed) : null);
+let allowAnim = $ref(defaultStore.state.advancedMfm && defaultStore.state.animatedMfm ? true : false);
+
 const isLong = shouldCollapsed(props.note, []);
+
+function animatedMFM() {
+	if (allowAnim) {
+		allowAnim = false;
+	} else {
+		os.confirm({
+			type: 'warning',
+			text: 'Animated MFMs could include flashing lights and fast moving text/emojis.',
+			okText: 'Animate',
+		}).then((res) => { if (!res.canceled) allowAnim = true; });
+	}
+}
 
 const collapsed = $ref(isLong);
 </script>

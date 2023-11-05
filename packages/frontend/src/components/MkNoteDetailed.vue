@@ -83,6 +83,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					:emojiUrls="appearNote.emojis"
 					:enableEmojiMenu="true"
 					:enableEmojiMenuReaction="true"
+					:isAnim="allowAnim"
 				/>
 				<a v-if="appearNote.renote != null" :class="$style.rn">RN:</a>
 				<div v-if="translating || translation" :class="$style.translation">
@@ -92,6 +93,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<Mfm :text="translation.text" :author="appearNote.user" :nyaize="'account'" :emojiUrls="appearNote.emojis"/>
 					</div>
 				</div>
+				<MkButton v-if="!allowAnim && animated" :small="true" @click="animatedMFM()" v-on:click.stop><i class="ph-play ph-bold ph-lg "></i> Animated MFM</MkButton>
+				<MkButton v-else-if="!defaultStore.state.animatedMfm && allowAnim && animated" :small="true" @click="animatedMFM()" v-on:click.stop><i class="ph-stop ph-bold ph-lg "></i> Animated MFM</MkButton>
 				<div v-if="appearNote.files.length > 0">
 					<MkMediaList :mediaList="appearNote.files"/>
 				</div>
@@ -247,6 +250,7 @@ import { deepClone } from '@/scripts/clone.js';
 import { useTooltip } from '@/scripts/use-tooltip.js';
 import { claimAchievement } from '@/scripts/achievements.js';
 import { MenuItem } from '@/types/menu.js';
+import { checkAnimationFromMfm } from '@/scripts/check-animated-mfm.js';
 import MkRippleEffect from '@/components/MkRippleEffect.vue';
 import { showMovedDialog } from '@/scripts/show-moved-dialog.js';
 import MkUserCardMini from '@/components/MkUserCardMini.vue';
@@ -306,6 +310,8 @@ const translation = ref(null);
 const translating = ref(false);
 const parsed = $computed(() => appearNote.text ? mfm.parse(appearNote.text) : null);
 const urls = parsed ? extractUrlFromMfm(parsed) : null;
+const animated = $computed(() => parsed ? checkAnimationFromMfm(parsed) : null);
+const allowAnim = ref(defaultStore.state.advancedMfm && defaultStore.state.animatedMfm ? true : false);
 const showTicker = (defaultStore.state.instanceTicker === 'always') || (defaultStore.state.instanceTicker === 'remote' && appearNote.user.instance);
 const conversation = ref<Misskey.entities.Note[]>([]);
 const replies = ref<Misskey.entities.Note[]>([]);
@@ -734,6 +740,18 @@ function loadConversation() {
 }
 
 if (appearNote.reply && appearNote.reply.replyId && defaultStore.state.autoloadConversation) loadConversation();
+
+function animatedMFM() {
+	if (allowAnim.value) {
+		allowAnim.value = false;
+	} else {
+		os.confirm({
+			type: 'warning',
+			text: 'Animated MFMs could include flashing lights and fast moving text/emojis.',
+			okText: 'Animate',
+		}).then((res) => { if (!res.canceled) allowAnim.value = true; });
+	}
+}
 </script>
 
 <style lang="scss" module>
