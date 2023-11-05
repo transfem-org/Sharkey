@@ -50,13 +50,7 @@ export class FileInfoService {
 	 * Get file information
 	 */
 	@bindThis
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	public async getFileInfo(path: string, _opts: {
-		skipSensitiveDetection: boolean;
-		sensitiveThreshold?: number;
-		sensitiveThresholdForPorn?: number;
-		enableSensitiveMediaDetectionForVideos?: boolean;
-	}): Promise<FileInfo> {
+	public async getFileInfo(path: string): Promise<FileInfo> {
 		const warnings = [] as string[];
 
 		const size = await this.getFileSize(path);
