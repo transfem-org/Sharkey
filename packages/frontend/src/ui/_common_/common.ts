@@ -105,7 +105,7 @@ export function openInstanceMenu(ev: MouseEvent) {
 		},
 	}, ($i) ? {
 		text: i18n.ts._initialTutorial.launchTutorial,
-		icon: 'ti ti-presentation',
+		icon: 'ph-presentation ph-bold ph-lg',
 		action: () => {
 			os.popup(defineAsyncComponent(() => import('@/components/MkTutorialDialog.vue')), {}, {}, 'closed');
 		},

@@ -46,14 +46,14 @@ function onClick(ev: MouseEvent) {
 			text: props.emoji,
 		}, {
 			text: i18n.ts.copy,
-			icon: 'ti ti-copy',
+			icon: 'ph-copy ph-bold ph-lg',
 			action: () => {
 				copyToClipboard(props.emoji);
 				os.success();
 			},
 		}, ...(props.menuReaction && react ? [{
 			text: i18n.ts.doReaction,
-			icon: 'ti ti-plus',
+			icon: 'ph-plus ph-bold ph-lg',
 			action: () => {
 				react(props.emoji);
 			},
