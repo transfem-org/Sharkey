@@ -17,7 +17,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
 ARG TARGETARCH
 
 RUN curl -L https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-$TARGETARCH-static.tar.xz -o /ffmpeg.tar.xz \
-	&& tar xvf /ffmpeg.tar.xz -C / --strip-components 1 --wildcards 'ffmpeg-*-static/ffmpeg'
+	&& tar xvf /ffmpeg.tar.xz -C / --strip-components 1 --wildcards 'ffmpeg-*-static/ffmpeg' 'ffmpeg-*-static/ffprobe'
 
 RUN corepack enable
 
