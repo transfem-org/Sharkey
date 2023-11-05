@@ -182,6 +182,10 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				}));
 			}
 
+			if (!ps.withReplies) {
+				query.andWhere('note.replyId IS NULL');
+			}
+
 			const timeline = await query.limit(ps.limit).getMany();
 
 			return await this.noteEntityService.packMany(timeline, me);
