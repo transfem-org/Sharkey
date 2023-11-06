@@ -79,8 +79,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 								<Mfm :text="translation.text" :author="appearNote.user" :nyaize="'account'" :emojiUrls="appearNote.emojis"/>
 							</div>
 						</div>
-						<MkButton v-if="!allowAnim && animated" :class="$style.playMFMButton" :small="true" @click="animatedMFM()" v-on:click.stop><i class="ph-play ph-bold ph-lg "></i> Animated MFM</MkButton>
-						<MkButton v-else-if="!defaultStore.state.animatedMfm && allowAnim && animated" :class="$style.playMFMButton" :small="true" @click="animatedMFM()" v-on:click.stop><i class="ph-stop ph-bold ph-lg "></i> Animated MFM</MkButton>
+						<MkButton v-if="!allowAnim && animated" :class="$style.playMFMButton" :small="true" @click="animatedMFM()" v-on:click.stop><i class="ph-play ph-bold ph-lg "></i> {{ i18n.ts._animatedMFM.play }}</MkButton>
+						<MkButton v-else-if="!defaultStore.state.animatedMfm && allowAnim && animated" :class="$style.playMFMButton" :small="true" @click="animatedMFM()" v-on:click.stop><i class="ph-stop ph-bold ph-lg "></i> {{ i18n.ts._animatedMFM.stop }}</MkButton>
 					</div>
 					<div v-if="appearNote.files.length > 0">
 						<MkMediaList :mediaList="appearNote.files" v-on:click.stop/>
@@ -713,8 +713,8 @@ function animatedMFM() {
 	} else {
 		os.confirm({
 			type: 'warning',
-			text: 'Animated MFMs could include flashing lights and fast moving text/emojis.',
-			okText: 'Animate',
+			text: i18n.ts._animatedMFM._alert.text,
+			okText: i18n.ts._animatedMFM._alert.confirm,
 		}).then((res) => { if (!res.canceled) allowAnim.value = true; });
 	}
 }

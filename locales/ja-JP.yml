@@ -2388,3 +2388,10 @@ _externalResourceInstaller:
     _themeInstallFailed:
       title: "テーマのインストールに失敗しました"
       description: "テーマのインストール中に問題が発生しました。もう一度お試しください。エラーの詳細はJavascriptコンソールをご覧ください。"
+      
+_animatedMFM:
+  play: "MFMアニメーションを再生"
+  stop: "MFMアニメーション停止"
+  _alert:
+    text: "アニメーションMFMには、点滅するライトや高速で動くテキスト／絵文字を含めることができる。"
+    confirm: "アニメイト"

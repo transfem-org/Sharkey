@@ -2394,3 +2394,10 @@ _externalResourceInstaller:
     _themeInstallFailed:
       title: "Failed to install theme"
       description: "A problem occurred during theme installation. Please try again. Error details can be viewed in the Javascript console."
+
+_animatedMFM:
+  play: "Play MFM Animation"
+  stop: "Stop MFM Animation"
+  _alert:
+    text: "Animated MFMs could include flashing lights and fast moving text/emojis."
+    confirm: "Animate"

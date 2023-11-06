@@ -2501,6 +2501,14 @@ export interface Locale {
             };
         };
     };
+    "_animatedMFM": {
+        "play": string;
+        "stop": string;
+        "_alert": {
+            "text": string;
+            "confirm": string;
+        };
+    };
 }
 declare const locales: {
     [lang: string]: Locale;

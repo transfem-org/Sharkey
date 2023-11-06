@@ -10,8 +10,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<span v-if="note.deletedAt" style="opacity: 0.5">({{ i18n.ts.deleted }})</span>
 		<MkA v-if="note.replyId" :class="$style.reply" :to="`/notes/${note.replyId}`" v-on:click.stop><i class="ph-arrow-bend-left-up ph-bold ph-lg"></i></MkA>
 		<Mfm v-if="note.text" :text="note.text" :author="note.user" :nyaize="'account'" :isAnim="allowAnim" :emojiUrls="note.emojis"/>
-		<MkButton v-if="!allowAnim && animated && !hideFiles" :class="$style.playMFMButton" :small="true" @click="animatedMFM()" v-on:click.stop><i class="ph-play ph-bold ph-lg "></i> Animated MFM</MkButton>
-		<MkButton v-else-if="!defaultStore.state.animatedMfm && allowAnim && animated && !hideFiles" :class="$style.playMFMButton" :small="true" @click="animatedMFM()" v-on:click.stop><i class="ph-stop ph-bold ph-lg "></i> Animated MFM</MkButton>
+		<MkButton v-if="!allowAnim && animated && !hideFiles" :class="$style.playMFMButton" :small="true" @click="animatedMFM()" v-on:click.stop><i class="ph-play ph-bold ph-lg "></i> {{ i18n.ts._animatedMFM.play }}</MkButton>
+		<MkButton v-else-if="!defaultStore.state.animatedMfm && allowAnim && animated && !hideFiles" :class="$style.playMFMButton" :small="true" @click="animatedMFM()" v-on:click.stop><i class="ph-stop ph-bold ph-lg "></i> {{ i18n.ts._animatedMFM.stop }}</MkButton>
 		<div v-if="note.text && translating || note.text && translation" :class="$style.translation">
 			<MkLoading v-if="translating" mini/>
 			<div v-else>
@@ -78,8 +78,8 @@ function animatedMFM() {
 	} else {
 		os.confirm({
 			type: 'warning',
-			text: 'Animated MFMs could include flashing lights and fast moving text/emojis.',
-			okText: 'Animate',
+			text: i18n.ts._animatedMFM._alert.text,
+			okText: i18n.ts._animatedMFM._alert.confirm,
 		}).then((res) => { if (!res.canceled) allowAnim = true; });
 	}
 }
