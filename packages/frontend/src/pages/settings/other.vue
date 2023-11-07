@@ -35,6 +35,17 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</MkFolder>
 
 			<MkFolder>
+				<template #icon><i class="ph-database ph-bold ph-lg"></i></template>
+				<template #label>{{ i18n.ts._dataRequest.title }}</template>
+
+				<div class="_gaps_m">
+					<FormInfo warn>{{ i18n.ts._dataRequest.warn }}</FormInfo>
+					<FormInfo>{{ i18n.ts._dataRequest.text }}</FormInfo>
+					<MkButton primary @click="exportData">{{ i18n.ts._dataRequest.button }}</MkButton>
+				</div>
+			</MkFolder>
+
+			<MkFolder>
 				<template #icon><i class="ph-warning ph-bold ph-lg"></i></template>
 				<template #label>{{ i18n.ts.closeAccount }}</template>
 
@@ -155,6 +166,20 @@ async function updateRepliesAll(withReplies: boolean) {
 	if (canceled) return;
 	await os.api('following/update-all', { withReplies });
 }
+
+const exportData = () => {
+	os.api('i/export-data', {}).then(() => {
+		os.alert({
+			type: 'info',
+			text: i18n.ts.exportRequested,
+		});
+	}).catch((ev) => {
+		os.alert({
+			type: 'error',
+			text: ev.message,
+		});
+	});
+};
 
 watch([
 	enableCondensedLineForAcct,
