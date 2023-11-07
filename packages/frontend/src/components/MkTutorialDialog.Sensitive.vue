@@ -125,7 +125,7 @@ const exampleNote = reactive<Misskey.entities.Note>({
 		left: 0;
 		right: 0;
 		bottom: 0;
-		border-radius: 999px;
+		border-radius: var(--radius-ellipse);
 		background: linear-gradient(90deg, var(--buttonGradateA), var(--buttonGradateB));
 	}
 

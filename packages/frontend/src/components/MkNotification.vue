@@ -358,7 +358,7 @@ const rejectFollowRequest = () => {
 	width: 20px;
 	height: 20px;
 	box-sizing: border-box;
-	border-radius: 100%;
+	border-radius: var(--radius-full);
 	background: var(--panel);
 	box-shadow: 0 0 0 3px var(--panel);
 	font-size: 11px;
