@@ -62,7 +62,7 @@ function settings() {
 }
 
 const headerActions = $computed(() => list ? [{
-	icon: 'ph-gear ph-bold pg-lg',
+	icon: 'ph-gear ph-bold ph-lg',
 	text: i18n.ts.settings,
 	handler: settings,
 }] : []);
@@ -71,7 +71,7 @@ const headerTabs = $computed(() => []);
 
 definePageMetadata(computed(() => list ? {
 	title: list.name,
-	icon: 'ph-list ph-bold pg-lg',
+	icon: 'ph-list ph-bold ph-lg',
 } : null));
 </script>
 
@@ -92,7 +92,7 @@ definePageMetadata(computed(() => list ? {
 	display: block;
 	margin: var(--margin) auto 0 auto;
 	padding: 8px 16px;
-	border-radius: 5px;
+	border-radius: var(--radius-xl);
 }
 
 .tl {

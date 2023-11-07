@@ -7,7 +7,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <div class="_gaps_m">
 	<div :class="$style.avatarAndBanner" :style="{ backgroundImage: $i.bannerUrl ? `url(${ $i.bannerUrl })` : null }">
 		<div :class="$style.avatarContainer">
-			<MkAvatar :class="$style.avatar" :user="$i" @click="changeAvatar"/>
+			<MkAvatar :class="$style.avatar" :user="$i" forceShowDecoration @click="changeAvatar"/>
 			<MkButton primary rounded @click="changeAvatar">{{ i18n.ts._profile.changeAvatar }}</MkButton>
 		</div>
 		<MkButton primary rounded :class="$style.backgroundEdit" @click="changeBackground">{{ i18n.ts._profile.changeBackground }}</MkButton>
@@ -28,7 +28,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<template #prefix><i class="ph-map-pin ph-bold ph-lg"></i></template>
 	</MkInput>
 
-	<MkInput v-model="profile.birthday" type="date" manualSave>
+	<MkInput v-model="profile.birthday" :max="setMaxBirthDate()" type="date" manualSave>
 		<template #label>{{ i18n.ts.birthday }}</template>
 		<template #prefix><i class="ph-cake ph-bold ph-lg"></i></template>
 	</MkInput>
@@ -45,7 +45,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 	<FormSlot>
 		<MkFolder>
-			<template #icon><i class="ph-list ph-bold pg-lg"></i></template>
+			<template #icon><i class="ph-list ph-bold ph-lg"></i></template>
 			<template #label>{{ i18n.ts._profile.metadataEdit }}</template>
 
 			<div :class="$style.metadataRoot">
@@ -88,6 +88,24 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</MkFolder>
 		<template #caption>{{ i18n.ts._profile.metadataDescription }}</template>
 	</FormSlot>
+
+	<MkFolder>
+		<template #icon><i class="ph-sparkle ph-bold ph-lg"></i></template>
+		<template #label>{{ i18n.ts.avatarDecorations }}</template>
+
+		<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); grid-gap: 12px;">
+			<div
+				v-for="avatarDecoration in avatarDecorations"
+				:key="avatarDecoration.id"
+				:class="[$style.avatarDecoration, { [$style.avatarDecorationActive]: $i.avatarDecorations.some(x => x.id === avatarDecoration.id) }]"
+				@click="openDecoration(avatarDecoration)"
+			>
+				<div :class="$style.avatarDecorationName"><MkCondensedLine :minScale="0.5">{{ avatarDecoration.name }}</MkCondensedLine></div>
+				<MkAvatar style="width: 60px; height: 60px;" :user="$i" :decoration="{ url: avatarDecoration.url }" forceShowDecoration/>
+				<i v-if="avatarDecoration.roleIdsThatCanBeUsedThisDecoration.length > 0 && !$i.roles.some(r => avatarDecoration.roleIdsThatCanBeUsedThisDecoration.includes(r.id))" :class="$style.avatarDecorationLock" class="ph-lock ph-bold ph-lg"></i>
+			</div>
+		</div>
+	</MkFolder>
 
 	<MkFolder>
 		<template #label>{{ i18n.ts.advancedSettings }}</template>
@@ -133,6 +151,15 @@ import MkInfo from '@/components/MkInfo.vue';
 const Sortable = defineAsyncComponent(() => import('vuedraggable').then(x => x.default));
 
 const reactionAcceptance = computed(defaultStore.makeGetterSetter('reactionAcceptance'));
+let avatarDecorations: any[] = $ref([]);
+
+const now = new Date();
+
+const setMaxBirthDate = () => {
+	const y = now.getFullYear();
+
+	return `${y}-12-31`;
+};
 
 const profile = reactive({
 	name: $i.name,
@@ -154,6 +181,10 @@ watch(() => profile, () => {
 
 const fields = ref($i?.fields.map(field => ({ id: Math.random().toString(), name: field.name, value: field.value })) ?? []);
 const fieldEditMode = ref(false);
+
+os.api('get-avatar-decorations').then(_avatarDecorations => {
+	avatarDecorations = _avatarDecorations;
+});
 
 function addField() {
 	fields.value.push({
@@ -178,6 +209,13 @@ function saveFields() {
 }
 
 function save() {
+	if (profile.birthday && profile.birthday > setMaxBirthDate()) {
+		os.alert({
+			type: 'warning',
+			text: 'You can\'t set your birthday to the future',
+		});
+		return undefined;
+	}
 	os.apiWithDialog('i/update', {
 		// 空文字列をnullにしたいので??は使うな
 		// eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
@@ -280,6 +318,12 @@ function changeBackground(ev) {
 	});
 }
 
+function openDecoration(avatarDecoration) {
+	os.popup(defineAsyncComponent(() => import('./profile.avatar-decoration-dialog.vue')), {
+		decoration: avatarDecoration,
+	}, {}, 'closed');
+}
+
 const headerActions = $computed(() => []);
 
 const headerTabs = $computed(() => []);
@@ -296,7 +340,7 @@ definePageMetadata({
 	background-size: cover;
 	background-position: center;
 	border: solid 1px var(--divider);
-	border-radius: 5px;
+	border-radius: var(--radius);
 	overflow: clip;
 }
 
@@ -378,5 +422,34 @@ definePageMetadata({
 
 .dragItemForm {
 	flex-grow: 1;
+}
+
+.avatarDecoration {
+	cursor: pointer;
+	padding: 16px 16px 28px 16px;
+	border: solid 2px var(--divider);
+	border-radius: var(--radius-sm);
+	text-align: center;
+	font-size: 90%;
+	overflow: clip;
+	contain: content;
+}
+
+.avatarDecorationActive {
+	background-color: var(--accentedBg);
+	border-color: var(--accent);
+}
+
+.avatarDecorationName {
+	position: relative;
+	z-index: 10;
+	font-weight: bold;
+	margin-bottom: 20px;
+}
+
+.avatarDecorationLock {
+	position: absolute;
+	bottom: 12px;
+	right: 12px;
 }
 </style>

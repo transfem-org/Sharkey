@@ -1,4 +1,4 @@
-import { IdConvertType as IdType, convertId, convertFilter } from '../converters.js';
+import { convertFilter } from '../converters.js';
 import type { MegalodonInterface } from 'megalodon';
 import type { FastifyRequest } from 'fastify';
 
@@ -23,7 +23,7 @@ export class ApiFilterMastodon {
 
 	public async getFilter() {
 		try {
-			const data = await this.client.getFilter( convertId((this.request.params as any).id, IdType.SharkeyId) );
+			const data = await this.client.getFilter( (this.request.params as any).id );
 			return convertFilter(data.data);
 		} catch (e: any) {
 			console.error(e);
@@ -45,7 +45,7 @@ export class ApiFilterMastodon {
 	public async updateFilter() {
 		try {
 			const body: any = this.request.body;
-			const data = await this.client.updateFilter(convertId((this.request.params as any).id, IdType.SharkeyId), body.pharse, body.context);
+			const data = await this.client.updateFilter((this.request.params as any).id, body.pharse, body.context);
 			return convertFilter(data.data);
 		} catch (e: any) {
 			console.error(e);
@@ -55,7 +55,7 @@ export class ApiFilterMastodon {
 
 	public async rmFilter() {
 		try {
-			const data = await this.client.deleteFilter( convertId((this.request.params as any).id, IdType.SharkeyId) );
+			const data = await this.client.deleteFilter( (this.request.params as any).id );
 			return data.data;
 		} catch (e: any) {
 			console.error(e);

@@ -32,7 +32,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 			<MkFolder v-if="availableTos || availablePrivacyPolicy" :defaultOpen="true">
 				<template #label>{{ tosPrivacyPolicyLabel }}</template>
-				<template #suffix><i v-if="agreeTosAndPrivacyPolicy" class="ph-check ph-bold pg-lg" style="color: var(--success)"></i></template>
+				<template #suffix><i v-if="agreeTosAndPrivacyPolicy" class="ph-check ph-bold ph-lg" style="color: var(--success)"></i></template>
 				<div class="_gaps_s">
 					<div v-if="availableTos"><a :href="instance.tosUrl" class="_link" target="_blank">{{ i18n.ts.termsOfService }} <i class="ph-arrow-square-out ph-bold ph-lg"></i></a></div>
 					<div v-if="availablePrivacyPolicy"><a :href="instance.privacyPolicyUrl" class="_link" target="_blank">{{ i18n.ts.privacyPolicy }} <i class="ph-arrow-square-out ph-bold ph-lg"></i></a></div>
@@ -54,7 +54,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 			<div class="_buttonsCenter">
 				<MkButton inline rounded @click="emit('cancel')">{{ i18n.ts.cancel }}</MkButton>
-				<MkButton inline primary rounded gradate :disabled="!agreed" data-cy-signup-rules-continue @click="emit('done')">{{ i18n.ts.continue }} <i class="ph-arrow-right ph-bold pg-lg"></i></MkButton>
+				<MkButton inline primary rounded gradate :disabled="!agreed" data-cy-signup-rules-continue @click="emit('done')">{{ i18n.ts.continue }} <i class="ph-arrow-right ph-bold ph-lg"></i></MkButton>
 			</div>
 		</div>
 	</MkSpacer>
@@ -182,7 +182,7 @@ async function updateAgreeNote(v: boolean) {
 		font-weight: bold;
 		align-items: center;
 		justify-content: center;
-		border-radius: 4px;
+		border-radius: var(--radius-ellipse);
 	}
 }
 

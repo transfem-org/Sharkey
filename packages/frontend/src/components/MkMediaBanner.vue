@@ -34,7 +34,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { onMounted, shallowRef, watch } from 'vue';
 import * as Misskey from 'misskey-js';
-import { soundConfigStore } from '@/scripts/sound.js';
 import { i18n } from '@/i18n.js';
 
 const props = withDefaults(defineProps<{
@@ -55,7 +54,7 @@ watch(audioEl, () => {
 <style lang="scss" module>
 .root {
 	width: 100%;
-	border-radius: 4px;
+	border-radius: var(--radius-xs);
 	margin-top: 4px;
 	overflow: clip;
 }
@@ -79,7 +78,7 @@ watch(audioEl, () => {
 }
 
 .audio {
-	border-radius: 5px;
+	border-radius: var(--radius-sm);
 	overflow: clip;
 }
 </style>

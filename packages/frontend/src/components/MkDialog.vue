@@ -160,6 +160,7 @@ async function ok() {
 function cancel() {
 	done(true);
 }
+
 /*
 function onBgClick() {
 	if (props.cancelableByBgClick) cancel();
@@ -196,7 +197,7 @@ onBeforeUnmount(() => {
 	box-sizing: border-box;
 	text-align: center;
 	background: var(--panel);
-	border-radius: 4px;
+	border-radius: var(--radius-md);
 }
 
 .icon {

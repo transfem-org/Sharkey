@@ -47,7 +47,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</MkFolder>
 
 			<MkFolder :defaultOpen="false">
-				<template #icon><i class="ph-code ph-bold pg-lg"></i></template>
+				<template #icon><i class="ph-code ph-bold ph-lg"></i></template>
 				<template #label>{{ i18n.ts.editCode }}</template>
 
 				<div class="_gaps_m">
@@ -244,7 +244,7 @@ definePageMetadata({
 				position: relative;
 				width: 64px;
 				height: 64px;
-				border-radius: 5px;
+				border-radius: var(--radius-sm);
 
 				> .preview {
 					position: absolute;
@@ -255,7 +255,7 @@ definePageMetadata({
 					margin: auto;
 					width: 42px;
 					height: 42px;
-					border-radius: 4px;
+					border-radius: var(--radius-xs);
 					box-shadow: 0 2px 4px rgb(0 0 0 / 30%);
 					transition: transform 0.15s ease;
 				}
@@ -271,10 +271,10 @@ definePageMetadata({
 				}
 
 				&.rounded {
-					border-radius: 4px;
+					border-radius: var(--radius-ellipse);
 
 					> .preview {
-						border-radius: 4px;
+						border-radius: var(--radius-ellipse);
 					}
 				}
 

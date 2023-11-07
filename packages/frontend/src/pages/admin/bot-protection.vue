@@ -57,7 +57,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</FormSlot>
 			</template>
 
-			<MkButton primary @click="save"><i class="ph-floppy-disk ph-bold pg-lg"></i> {{ i18n.ts.save }}</MkButton>
+			<MkButton primary @click="save"><i class="ph-floppy-disk ph-bold ph-lg"></i> {{ i18n.ts.save }}</MkButton>
 		</div>
 	</FormSuspense>
 </div>

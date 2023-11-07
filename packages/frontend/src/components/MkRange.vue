@@ -34,6 +34,7 @@ const props = withDefaults(defineProps<{
 	textConverter?: (value: number) => string,
 	showTicks?: boolean;
 	easing?: boolean;
+	continuousUpdate?: boolean;
 }>(), {
 	step: 1,
 	textConverter: (v) => v.toString(),
@@ -123,6 +124,10 @@ const onMousedown = (ev: MouseEvent | TouchEvent) => {
 		const pointerX = ev.touches && ev.touches.length > 0 ? ev.touches[0].clientX : ev.clientX;
 		const pointerPositionOnContainer = pointerX - (containerRect.left + (thumbWidth / 2));
 		rawValue.value = Math.min(1, Math.max(0, pointerPositionOnContainer / (containerEl.value!.offsetWidth - thumbWidth)));
+
+		if (props.continuousUpdate) {
+			emit('update:modelValue', finalValue.value);
+		}
 	};
 
 	let beforeValue = finalValue.value;
@@ -181,7 +186,7 @@ const onMousedown = (ev: MouseEvent | TouchEvent) => {
 		padding: 7px 12px;
 		background: var(--panel);
 		border: solid 1px var(--panel);
-		border-radius: 5px;
+		border-radius: var(--radius-sm);
 
 		> .container {
 			position: relative;
@@ -197,7 +202,7 @@ const onMousedown = (ev: MouseEvent | TouchEvent) => {
 				width: calc(100% - #{$thumbWidth});
 				height: 3px;
 				background: rgba(0, 0, 0, 0.1);
-				border-radius: 4px;
+				border-radius: var(--radius-ellipse);
 				overflow: clip;
 
 				> .highlight {
@@ -228,7 +233,7 @@ const onMousedown = (ev: MouseEvent | TouchEvent) => {
 					height: 3px;
 					margin-left: - math.div($tickWidth, 2);
 					background: var(--divider);
-					border-radius: 4px;
+					border-radius: var(--radius-ellipse);
 				}
 			}
 
@@ -238,7 +243,7 @@ const onMousedown = (ev: MouseEvent | TouchEvent) => {
 				height: $thumbHeight;
 				cursor: grab;
 				background: var(--accent);
-				border-radius: 4px;
+				border-radius: var(--radius-ellipse);
 
 				&:hover {
 					background: var(--accentLighten);

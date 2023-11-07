@@ -29,9 +29,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 		{{ i18n.ts.noCrawle }}
 		<template #caption>{{ i18n.ts.noCrawleDescription }}</template>
 	</MkSwitch>
-	<MkSwitch v-model="preventAiLearning" @update:modelValue="save()">
-		{{ i18n.ts.preventAiLearning }}<span class="_beta">{{ i18n.ts.beta }}</span>
-		<template #caption>{{ i18n.ts.preventAiLearningDescription }}</template>
+	<MkSwitch v-model="isIndexable" @update:modelValue="save()">
+		{{ i18n.ts.makeIndexable }}
+		<template #caption>{{ i18n.ts.makeIndexableDescription }}</template>
 	</MkSwitch>
 	<MkSwitch v-model="isExplorable" @update:modelValue="save()">
 		{{ i18n.ts.makeExplorable }}
@@ -80,8 +80,8 @@ import { definePageMetadata } from '@/scripts/page-metadata.js';
 let isLocked = $ref($i.isLocked);
 let autoAcceptFollowed = $ref($i.autoAcceptFollowed);
 let noCrawle = $ref($i.noCrawle);
-let preventAiLearning = $ref($i.preventAiLearning);
 let isExplorable = $ref($i.isExplorable);
+let isIndexable = $ref($i.isIndexable);
 let hideOnlineStatus = $ref($i.hideOnlineStatus);
 let publicReactions = $ref($i.publicReactions);
 let ffVisibility = $ref($i.ffVisibility);
@@ -96,8 +96,8 @@ function save() {
 		isLocked: !!isLocked,
 		autoAcceptFollowed: !!autoAcceptFollowed,
 		noCrawle: !!noCrawle,
-		preventAiLearning: !!preventAiLearning,
 		isExplorable: !!isExplorable,
+		isIndexable: !!isIndexable,
 		hideOnlineStatus: !!hideOnlineStatus,
 		publicReactions: !!publicReactions,
 		ffVisibility: ffVisibility,

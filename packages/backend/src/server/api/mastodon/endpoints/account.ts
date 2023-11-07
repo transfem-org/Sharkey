@@ -1,7 +1,11 @@
-import { convertId, IdConvertType as IdType, convertAccount, convertRelationship, convertStatus } from '../converters.js';
-import { argsToBools, convertTimelinesArgsId, limitToInt } from './timeline.js';
+import { MastoConverters, convertRelationship } from '../converters.js';
+import { argsToBools, limitToInt } from './timeline.js';
 import type { MegalodonInterface } from 'megalodon';
 import type { FastifyRequest } from 'fastify';
+import { NoteEditRepository, NotesRepository, UsersRepository } from '@/models/_.js';
+import { UserEntityService } from '@/core/entities/UserEntityService.js';
+import type { Config } from '@/config.js';
+import { Injectable } from '@nestjs/common';
 
 const relationshipModel = {
 	id: '',
@@ -20,12 +24,13 @@ const relationshipModel = {
 	note: '',
 };
 
+@Injectable()
 export class ApiAccountMastodon {
 	private request: FastifyRequest;
 	private client: MegalodonInterface;
 	private BASE_URL: string;
 
-	constructor(request: FastifyRequest, client: MegalodonInterface, BASE_URL: string) {
+	constructor(request: FastifyRequest, client: MegalodonInterface, BASE_URL: string, private mastoconverter: MastoConverters) {
 		this.request = request;
 		this.client = client;
 		this.BASE_URL = BASE_URL;
@@ -34,23 +39,17 @@ export class ApiAccountMastodon {
 	public async verifyCredentials() {
 		try {
 			const data = await this.client.verifyAccountCredentials();
-			const acct = data.data;
-			acct.id = convertId(acct.id, IdType.MastodonId);
-			acct.display_name = acct.display_name || acct.username;
-			acct.url = `${this.BASE_URL}/@${acct.url}`;
-			acct.note = acct.note || '';
-			acct.avatar_static = acct.avatar;
-			acct.header = acct.header || '/static-assets/transparent.png';
-			acct.header_static = acct.header || '/static-assets/transparent.png';
-			acct.source = {
-				note: acct.note,
-				fields: acct.fields,
-				privacy: '',
-				sensitive: false,
-				language: '',
-			};
-			console.log(acct);
-			return acct;
+			const acct = await this.mastoconverter.convertAccount(data.data);
+			const newAcct = Object.assign({}, acct, {
+				source: {
+					note: acct.note,
+					fields: acct.fields,
+					privacy: '',
+					sensitive: false,
+					language: '',
+				},
+			});
+			return newAcct;
 		} catch (e: any) {
 			/* console.error(e);
 			console.error(e.response.data); */
@@ -61,7 +60,7 @@ export class ApiAccountMastodon {
 	public async lookup() {
 		try {
 			const data = await this.client.search((this.request.query as any).acct, { type: 'accounts' });
-			return convertAccount(data.data.accounts[0]);
+			return this.mastoconverter.convertAccount(data.data.accounts[0]);
 		} catch (e: any) {
 			/* console.error(e)
 			console.error(e.response.data); */
@@ -79,7 +78,7 @@ export class ApiAccountMastodon {
 
 			const reqIds = [];
 			for (let i = 0; i < users.length; i++) {
-				reqIds.push(convertId(users[i], IdType.SharkeyId));
+				reqIds.push(users[i]);
 			}
 
 			const data = await this.client.getRelationships(reqIds);
@@ -93,11 +92,8 @@ export class ApiAccountMastodon {
 
 	public async getStatuses() {
 		try {
-			const data = await this.client.getAccountStatuses(
-				convertId((this.request.params as any).id, IdType.SharkeyId), 
-				convertTimelinesArgsId(argsToBools(limitToInt(this.request.query as any)))
-			);
-			return data.data.map((status) => convertStatus(status));
+			const data = await this.client.getAccountStatuses((this.request.params as any).id, argsToBools(limitToInt(this.request.query as any)));
+			return await Promise.all(data.data.map(async (status) => await this.mastoconverter.convertStatus(status)));
 		} catch (e: any) {
 			console.error(e);
 			console.error(e.response.data);
@@ -108,10 +104,10 @@ export class ApiAccountMastodon {
 	public async getFollowers() {
 		try {
 			const data = await this.client.getAccountFollowers(
-				convertId((this.request.params as any).id, IdType.SharkeyId), 
-				convertTimelinesArgsId(limitToInt(this.request.query as any)),
+				(this.request.params as any).id, 
+				limitToInt(this.request.query as any),
 			);
-			return data.data.map((account) => convertAccount(account));
+			return await Promise.all(data.data.map(async (account) => await this.mastoconverter.convertAccount(account)));
 		} catch (e: any) {
 			console.error(e);
 			console.error(e.response.data);
@@ -122,10 +118,10 @@ export class ApiAccountMastodon {
 	public async getFollowing() {
 		try {
 			const data = await this.client.getAccountFollowing(
-				convertId((this.request.params as any).id, IdType.SharkeyId), 
-				convertTimelinesArgsId(limitToInt(this.request.query as any)),
+				(this.request.params as any).id, 
+				limitToInt(this.request.query as any),
 			);
-			return data.data.map((account) => convertAccount(account));
+			return await Promise.all(data.data.map(async (account) => await this.mastoconverter.convertAccount(account)));
 		} catch (e: any) {
 			console.error(e);
 			console.error(e.response.data);
@@ -135,7 +131,7 @@ export class ApiAccountMastodon {
 
 	public async addFollow() {
 		try {
-			const data = await this.client.followAccount( convertId((this.request.params as any).id, IdType.SharkeyId) );
+			const data = await this.client.followAccount( (this.request.params as any).id );
 			const acct = convertRelationship(data.data);
 			acct.following = true;
 			return acct;
@@ -148,7 +144,7 @@ export class ApiAccountMastodon {
 
 	public async rmFollow() {
 		try {
-			const data = await this.client.unfollowAccount( convertId((this.request.params as any).id, IdType.SharkeyId) );
+			const data = await this.client.unfollowAccount( (this.request.params as any).id );
 			const acct = convertRelationship(data.data);
 			acct.following = false;
 			return acct;
@@ -161,7 +157,7 @@ export class ApiAccountMastodon {
 
 	public async addBlock() {
 		try {
-			const data = await this.client.blockAccount( convertId((this.request.params as any).id, IdType.SharkeyId) );
+			const data = await this.client.blockAccount( (this.request.params as any).id );
 			return convertRelationship(data.data);
 		} catch (e: any) {
 			console.error(e);
@@ -172,7 +168,7 @@ export class ApiAccountMastodon {
 
 	public async rmBlock() {
 		try {
-			const data = await this.client.unblockAccount( convertId((this.request.params as any).id, IdType.SharkeyId) );
+			const data = await this.client.unblockAccount( (this.request.params as any).id );
 			return convertRelationship(data.data);
 		} catch (e: any) {
 			console.error(e);
@@ -184,7 +180,7 @@ export class ApiAccountMastodon {
 	public async addMute() {
 		try {
 			const data = await this.client.muteAccount(
-				convertId((this.request.params as any).id, IdType.SharkeyId),
+				(this.request.params as any).id,
                 this.request.body as any,
 			);
 			return convertRelationship(data.data);
@@ -197,7 +193,7 @@ export class ApiAccountMastodon {
 
 	public async rmMute() {
 		try {
-			const data = await this.client.unmuteAccount( convertId((this.request.params as any).id, IdType.SharkeyId) );
+			const data = await this.client.unmuteAccount( (this.request.params as any).id );
 			return convertRelationship(data.data);
 		} catch (e: any) {
 			console.error(e);
@@ -208,8 +204,8 @@ export class ApiAccountMastodon {
 
 	public async getBookmarks() {
 		try {
-			const data = await this.client.getBookmarks( convertTimelinesArgsId(limitToInt(this.request.query as any)) );
-			return data.data.map((status) => convertStatus(status));
+			const data = await this.client.getBookmarks( limitToInt(this.request.query as any) );
+			return data.data.map((status) => this.mastoconverter.convertStatus(status));
 		} catch (e: any) {
 			console.error(e);
 			console.error(e.response.data);
@@ -219,8 +215,8 @@ export class ApiAccountMastodon {
 
 	public async getFavourites() {
 		try {
-			const data = await this.client.getFavourites( convertTimelinesArgsId(limitToInt(this.request.query as any)) );
-			return data.data.map((status) => convertStatus(status));
+			const data = await this.client.getFavourites( limitToInt(this.request.query as any) );
+			return data.data.map((status) => this.mastoconverter.convertStatus(status));
 		} catch (e: any) {
 			console.error(e);
 			console.error(e.response.data);
@@ -230,8 +226,8 @@ export class ApiAccountMastodon {
 
 	public async getMutes() {
 		try {
-			const data = await this.client.getMutes( convertTimelinesArgsId(limitToInt(this.request.query as any)) );
-			return data.data.map((account) => convertAccount(account));
+			const data = await this.client.getMutes( limitToInt(this.request.query as any) );
+			return data.data.map((account) => this.mastoconverter.convertAccount(account));
 		} catch (e: any) {
 			console.error(e);
 			console.error(e.response.data);
@@ -241,8 +237,8 @@ export class ApiAccountMastodon {
 
 	public async getBlocks() {
 		try {
-			const data = await this.client.getBlocks( convertTimelinesArgsId(limitToInt(this.request.query as any)) );
-			return data.data.map((account) => convertAccount(account));
+			const data = await this.client.getBlocks( limitToInt(this.request.query as any) );
+			return data.data.map((account) => this.mastoconverter.convertAccount(account));
 		} catch (e: any) {
 			console.error(e);
 			console.error(e.response.data);
@@ -252,7 +248,7 @@ export class ApiAccountMastodon {
 
 	public async acceptFollow() {
 		try {
-			const data = await this.client.acceptFollowRequest( convertId((this.request.params as any).id, IdType.SharkeyId) );
+			const data = await this.client.acceptFollowRequest( (this.request.params as any).id );
 			return convertRelationship(data.data);
 		} catch (e: any) {
 			console.error(e);
@@ -263,7 +259,7 @@ export class ApiAccountMastodon {
 
 	public async rejectFollow() {
 		try {
-			const data = await this.client.rejectFollowRequest( convertId((this.request.params as any).id, IdType.SharkeyId) );
+			const data = await this.client.rejectFollowRequest( (this.request.params as any).id );
 			return convertRelationship(data.data);
 		} catch (e: any) {
 			console.error(e);

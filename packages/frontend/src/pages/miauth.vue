@@ -59,7 +59,7 @@ const props = defineProps<{
 	permission: string; // コンマ区切り
 }>();
 
-const _permissions = props.permission ? props.permission.split(',') : [];
+const _permissions = $computed(() => props.permission ? props.permission.split(',') : []);
 
 let state = $ref<string | null>(null);
 
@@ -95,7 +95,7 @@ const headerTabs = $computed(() => []);
 
 definePageMetadata({
 	title: 'MiAuth',
-	icon: 'ph-squares-four ph-bold pg-lg',
+	icon: 'ph-squares-four ph-bold ph-lg',
 });
 </script>
 

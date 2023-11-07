@@ -28,22 +28,22 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<MkButton primary rounded inline @click="iLoveMisskey">I <Mfm text="$[jelly ❤]"/> #Sharkey</MkButton>
 				</div>
 				<FormSection>
-					<div class="_formLinks">
+					<div class="_gaps_s">
 						<FormLink to="https://github.com/transfem-org/Sharkey" external>
-							<template #icon><i class="ph-code ph-bold pg-lg"></i></template>
+							<template #icon><i class="ph-code ph-bold ph-lg"></i></template>
 							{{ i18n.ts._aboutMisskey.source }}
 							<template #suffix>GitHub</template>
 						</FormLink>
 						<FormLink to="https://ko-fi.com/transfem" external>
-							<template #icon><i class="ph-piggy-bank ph-bold pg-lg"></i></template>
+							<template #icon><i class="ph-piggy-bank ph-bold ph-lg"></i></template>
 							{{ i18n.ts._aboutMisskey.donate }}
 							<template #suffix>Ko-Fi</template>
 						</FormLink>
 					</div>
 				</FormSection>
 				<FormSection>
-					<template #label>{{ i18n.ts._aboutMisskey.contributors }}</template>
-					<div :class="$style.contributors">
+					<template #label>{{ i18n.ts._aboutMisskey.projectMembers }}</template>
+					<div :class="$style.contributors" style="margin-bottom: 8px;">
 						<a href="https://github.com/Mar0xy" target="_blank" :class="$style.contributor">
 							<img src="https://avatars.githubusercontent.com/u/8841466?v=4" :class="$style.contributorAvatar">
 							<span :class="$style.contributorUsername">@Mar0xy</span>
@@ -57,7 +57,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</FormSection>
 				<FormSection>
 					<template #label>Misskey Contributors</template>
-					<div :class="$style.contributors">
+					<div :class="$style.contributors" style="margin-bottom: 8px;">
 						<a href="https://github.com/syuilo" target="_blank" :class="$style.contributor">
 							<img src="https://avatars.githubusercontent.com/u/4439005?v=4" :class="$style.contributorAvatar">
 							<span :class="$style.contributorUsername">@syuilo</span>
@@ -70,22 +70,18 @@ SPDX-License-Identifier: AGPL-3.0-only
 							<img src="https://avatars.githubusercontent.com/u/20679825?v=4" :class="$style.contributorAvatar">
 							<span :class="$style.contributorUsername">@acid-chicken</span>
 						</a>
-						<a href="https://github.com/rinsuki" target="_blank" :class="$style.contributor">
-							<img src="https://avatars.githubusercontent.com/u/6533808?v=4" :class="$style.contributorAvatar">
-							<span :class="$style.contributorUsername">@rinsuki</span>
+						<a href="https://github.com/kakkokari-gtyih" target="_blank" :class="$style.contributor">
+							<img src="https://avatars.githubusercontent.com/u/67428053?v=4" :class="$style.contributorAvatar">
+							<span :class="$style.contributorUsername">@kakkokari-gtyih</span>
 						</a>
-						<a href="https://github.com/mei23" target="_blank" :class="$style.contributor">
-							<img src="https://avatars.githubusercontent.com/u/30769358?v=4" :class="$style.contributorAvatar">
-							<span :class="$style.contributorUsername">@mei23</span>
-						</a>
-						<a href="https://github.com/robflop" target="_blank" :class="$style.contributor">
-							<img src="https://avatars.githubusercontent.com/u/8159402?v=4" :class="$style.contributorAvatar">
-							<span :class="$style.contributorUsername">@robflop</span>
+						<a href="https://github.com/taichanNE30" target="_blank" :class="$style.contributor">
+							<img src="https://avatars.githubusercontent.com/u/40626578?v=4" :class="$style.contributorAvatar">
+							<span :class="$style.contributorUsername">@taichanNE30</span>
 						</a>
 					</div>
 				</FormSection>
 				<FormSection>
-					<template #label>Our lovely GitHub Sponsors</template>
+					<template #label>Our lovely Sponsors</template>
 					<div :class="$style.contributors">
 						<span
 							v-for="sponsor in sponsors[0]"
@@ -224,7 +220,7 @@ definePageMetadata({
 				display: block;
 				width: 80px;
 				margin: 0 auto;
-				border-radius: 4px;
+				border-radius: var(--radius-md);
 				position: relative;
 				z-index: 1;
 				transform: translateX(-10%);
@@ -275,7 +271,7 @@ definePageMetadata({
 	align-items: center;
 	padding: 12px;
 	background: var(--buttonBg);
-	border-radius: 5px;
+	border-radius: var(--radius-sm);
 
 	&:hover {
 		text-decoration: none;
@@ -290,7 +286,7 @@ definePageMetadata({
 
 .contributorAvatar {
 	width: 30px;
-	border-radius: 100%;
+	border-radius: var(--radius-full);
 }
 
 .contributorUsername {
@@ -308,12 +304,12 @@ definePageMetadata({
 	align-items: center;
 	padding: 12px;
 	background: var(--buttonBg);
-	border-radius: 5px;
+	border-radius: var(--radius-sm);
 }
 
 .patronIcon {
 	width: 24px;
-	border-radius: 100%;
+	border-radius: var(--radius-full);
 }
 
 .patronName {

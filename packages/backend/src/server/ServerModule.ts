@@ -23,6 +23,7 @@ import { SigninService } from './api/SigninService.js';
 import { SignupApiService } from './api/SignupApiService.js';
 import { StreamingApiServerService } from './api/StreamingApiServerService.js';
 import { ClientServerService } from './web/ClientServerService.js';
+import { MastoConverters } from './api/mastodon/converters.js';
 import { FeedService } from './web/FeedService.js';
 import { UrlPreviewService } from './web/UrlPreviewService.js';
 import { MainChannelService } from './api/stream/channels/main.js';
@@ -87,6 +88,7 @@ import { OAuth2ProviderService } from './oauth/OAuth2ProviderService.js';
 		OpenApiServerService,
 		MastodonApiServerService,
 		OAuth2ProviderService,
+		MastoConverters,
 	],
 	exports: [
 		ServerService,

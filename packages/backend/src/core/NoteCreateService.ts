@@ -55,8 +55,8 @@ import { MetaService } from '@/core/MetaService.js';
 import { SearchService } from '@/core/SearchService.js';
 import { FeaturedService } from '@/core/FeaturedService.js';
 import { FunoutTimelineService } from '@/core/FunoutTimelineService.js';
-import { nyaize } from '@/misc/nyaize.js';
 import { UtilityService } from '@/core/UtilityService.js';
+import { UserBlockingService } from '@/core/UserBlockingService.js';
 
 type NotificationType = 'reply' | 'renote' | 'quote' | 'mention';
 
@@ -100,17 +100,14 @@ class NotificationManager {
 	}
 
 	@bindThis
-	public async deliver() {
+	public async notify() {
 		for (const x of this.queue) {
-			// ミュート情報を取得
-			const mentioneeMutes = await this.mutingsRepository.findBy({
-				muterId: x.target,
-			});
-
-			const mentioneesMutedUserIds = mentioneeMutes.map(m => m.muteeId);
-
-			// 通知される側のユーザーが通知する側のユーザーをミュートしていない限りは通知する
-			if (!mentioneesMutedUserIds.includes(this.notifier.id)) {
+			if (x.reason === 'renote') {
+				this.notificationService.createNotification(x.target, 'renote', {
+					noteId: this.note.id,
+					targetNoteId: this.note.renoteId!,
+				}, this.notifier.id);
+			} else {
 				this.notificationService.createNotification(x.target, x.reason, {
 					noteId: this.note.id,
 				}, this.notifier.id);
@@ -217,6 +214,7 @@ export class NoteCreateService implements OnApplicationShutdown {
 		private activeUsersChart: ActiveUsersChart,
 		private instanceChart: InstanceChart,
 		private utilityService: UtilityService,
+		private userBlockingService: UserBlockingService,
 	) { }
 
 	@bindThis
@@ -225,11 +223,8 @@ export class NoteCreateService implements OnApplicationShutdown {
 		username: MiUser['username'];
 		host: MiUser['host'];
 		isBot: MiUser['isBot'];
-		isCat: MiUser['isCat'];
-		speakAsCat: MiUser['speakAsCat'];
+		isIndexable: MiUser['isIndexable'];
 	}, data: Option, silent = false): Promise<MiNote> {
-		let patsedText: mfm.MfmNode[] | null = null;
-
 		// チャンネル外にリプライしたら対象のスコープに合わせる
 		// (クライアントサイドでやっても良い処理だと思うけどとりあえずサーバーサイドで)
 		if (data.reply && data.channel && data.reply.channelId !== data.channel.id) {
@@ -296,6 +291,18 @@ export class NoteCreateService implements OnApplicationShutdown {
 			}
 		}
 
+		// Check blocking
+		if (data.renote && data.text == null && data.poll == null && (data.files == null || data.files.length === 0)) {
+			if (data.renote.userHost === null) {
+				if (data.renote.userId !== user.id) {
+					const blocked = await this.userBlockingService.checkBlocked(data.renote.userId, user.id);
+					if (blocked) {
+						throw new Error('blocked');
+					}
+				}
+			}
+		}
+
 		// 返信対象がpublicではないならhomeにする
 		if (data.reply && data.reply.visibility !== 'public' && data.visibility === 'public') {
 			data.visibility = 'home';
@@ -316,25 +323,6 @@ export class NoteCreateService implements OnApplicationShutdown {
 				data.text = data.text.slice(0, DB_MAX_NOTE_TEXT_LENGTH);
 			}
 			data.text = data.text.trim();
-
-			if (user.isCat && user.speakAsCat) {
-				patsedText = mfm.parse(data.text);
-				function nyaizeNode(node: mfm.MfmNode) {
-					if (node.type === 'quote') return;
-					if (node.type === 'text') {
-						node.props.text = nyaize(node.props.text);
-					}
-					if (node.children) {
-						for (const child of node.children) {
-							nyaizeNode(child);
-						}
-					}
-				}
-				for (const node of patsedText) {
-					nyaizeNode(node);
-				}
-				data.text = mfm.toString(patsedText);
-			}
 		} else {
 			data.text = null;
 		}
@@ -345,7 +333,7 @@ export class NoteCreateService implements OnApplicationShutdown {
 
 		// Parse MFM if needed
 		if (!tags || !emojis || !mentionedUsers) {
-			const tokens = patsedText ?? (data.text ? mfm.parse(data.text)! : []);
+			const tokens = (data.text ? mfm.parse(data.text)! : []);
 			const cwTokens = data.cw ? mfm.parse(data.cw)! : [];
 			const choiceTokens = data.poll && data.poll.choices
 				? concat(data.poll.choices.map(choice => mfm.parse(choice)!))
@@ -493,6 +481,7 @@ export class NoteCreateService implements OnApplicationShutdown {
 		username: MiUser['username'];
 		host: MiUser['host'];
 		isBot: MiUser['isBot'];
+		isIndexable: MiUser['isIndexable'];
 	}, data: Option, silent: boolean, tags: string[], mentionedUsers: MinimumUser[]) {
 		const meta = await this.metaService.fetch();
 
@@ -504,7 +493,11 @@ export class NoteCreateService implements OnApplicationShutdown {
 		// Register host
 		if (this.userEntityService.isRemoteUser(user)) {
 			this.federatedInstanceService.fetch(user.host).then(async i => {
-				this.instancesRepository.increment({ id: i.id }, 'notesCount', 1);
+				if (note.renote && note.text) {
+					this.instancesRepository.increment({ id: i.id }, 'notesCount', 1);
+				} else if (!note.renote) {
+					this.instancesRepository.increment({ id: i.id }, 'notesCount', 1);
+				}
 				if ((await this.metaService.fetch()).enableChartsForFederatedInstances) {
 					this.instanceChart.updateNote(i.host, note, true);
 				}
@@ -520,8 +513,13 @@ export class NoteCreateService implements OnApplicationShutdown {
 			}
 		}
 
-		// Increment notes count (user)
-		this.incNotesCountOfUser(user);
+		if (data.renote && data.text) {
+			// Increment notes count (user)
+			this.incNotesCountOfUser(user);
+		} else if (!data.renote) {
+			// Increment notes count (user)
+			this.incNotesCountOfUser(user);
+		}
 
 		this.pushToTl(note, user);
 
@@ -589,7 +587,7 @@ export class NoteCreateService implements OnApplicationShutdown {
 			}
 
 			// Pack the note
-			const noteObj = await this.noteEntityService.pack(note, null, { skipHide: true });
+			const noteObj = await this.noteEntityService.pack(note, null, { skipHide: true, withReactionAndUserPairCache: true });
 
 			this.globalEventService.publishNotesStream(noteObj);
 
@@ -655,7 +653,7 @@ export class NoteCreateService implements OnApplicationShutdown {
 				}
 			}
 
-			nm.deliver();
+			nm.notify();
 
 			//#region AP deliver
 			if (this.userEntityService.isLocalUser(user)) {
@@ -714,7 +712,7 @@ export class NoteCreateService implements OnApplicationShutdown {
 		}
 
 		// Register to search database
-		this.index(note);
+		if (user.isIndexable) this.index(note);
 	}
 
 	@bindThis
@@ -852,6 +850,7 @@ export class NoteCreateService implements OnApplicationShutdown {
 	@bindThis
 	private async pushToTl(note: MiNote, user: { id: MiUser['id']; host: MiUser['host']; }) {
 		const meta = await this.metaService.fetch();
+		if (!meta.enableFanoutTimeline) return;
 
 		const r = this.redisForTimelines.pipeline();
 
@@ -895,7 +894,7 @@ export class NoteCreateService implements OnApplicationShutdown {
 
 			if (note.visibility === 'followers') {
 				// TODO: 重そうだから何とかしたい Set 使う？
-				userListMemberships = userListMemberships.filter(x => followings.some(f => f.followerId === x.userListUserId));
+				userListMemberships = userListMemberships.filter(x => x.userListUserId === user.id || followings.some(f => f.followerId === x.userListUserId));
 			}
 
 			// TODO: あまりにも数が多いと redisPipeline.exec に失敗する(理由は不明)ため、3万件程度を目安に分割して実行するようにする

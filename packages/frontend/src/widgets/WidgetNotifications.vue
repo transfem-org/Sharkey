@@ -5,9 +5,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <MkContainer :style="`height: ${widgetProps.height}px;`" :showHeader="widgetProps.showHeader" :scrollable="true" data-cy-mkw-notifications class="mkw-notifications">
-	<template #icon><i class="ph-bell ph-bold pg-lg"></i></template>
+	<template #icon><i class="ph-bell ph-bold ph-lg"></i></template>
 	<template #header>{{ i18n.ts.notifications }}</template>
-	<template #func="{ buttonStyleClass }"><button class="_button" :class="buttonStyleClass" @click="configureNotification()"><i class="ph-gear ph-bold pg-lg"></i></button></template>
+	<template #func="{ buttonStyleClass }"><button class="_button" :class="buttonStyleClass" @click="configureNotification()"><i class="ph-gear ph-bold ph-lg"></i></button></template>
 
 	<div>
 		<XNotifications :excludeTypes="widgetProps.excludeTypes"/>

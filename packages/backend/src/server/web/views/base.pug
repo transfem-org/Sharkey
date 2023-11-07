@@ -41,6 +41,7 @@ html
 		//- https://github.com/misskey-dev/misskey/issues/9842
 		link(rel='stylesheet' href='/assets/phosphor-icons/bold/style.css')
 		link(rel='modulepreload' href=`/vite/${clientEntry.file}`)
+		script(src='/client-assets/libopenmpt.js')
 
 		if !config.clientManifestExists
 				script(type="module" src="/vite/@vite/client")
@@ -70,6 +71,7 @@ html
 		script.
 			var VERSION = "#{version}";
 			var CLIENT_ENTRY = "#{clientEntry.file}";
+			window.libopenmpt = window.Module;
 
 		script
 			include ../boot.js

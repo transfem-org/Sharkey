@@ -145,11 +145,13 @@ const onGlobalMousedown = (event: MouseEvent) => {
 };
 
 let childCloseTimer: null | number = null;
+
 function onItemMouseEnter(item) {
 	childCloseTimer = window.setTimeout(() => {
 		closeChild();
 	}, 300);
 }
+
 function onItemMouseLeave(item) {
 	if (childCloseTimer) window.clearTimeout(childCloseTimer);
 }
@@ -239,7 +241,7 @@ onBeforeUnmount(() => {
 	&.asDrawer {
 		padding: 12px 0 max(env(safe-area-inset-bottom, 0px), 12px) 0;
 		width: 100%;
-		border-radius: 24px;
+		border-radius: var(--radius-lg);
 		border-bottom-right-radius: 0;
 		border-bottom-left-radius: 0;
 
@@ -249,7 +251,7 @@ onBeforeUnmount(() => {
 
 			&:before {
 				width: calc(100% - 24px);
-				border-radius: 12px;
+				border-radius: var(--radius);
 			}
 
 			> .icon {
@@ -288,7 +290,7 @@ onBeforeUnmount(() => {
 		margin: auto;
 		width: calc(100% - 16px);
 		height: 100%;
-		border-radius: 5px;
+		border-radius: var(--radius-sm);
 	}
 
 	&:not(:disabled):hover {

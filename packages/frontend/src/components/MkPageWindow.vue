@@ -66,7 +66,7 @@ const buttonsLeft = $computed(() => {
 
 	if (history.length > 1) {
 		buttons.push({
-			icon: 'ph-arrow-left ph-bold pg-lg',
+			icon: 'ph-arrow-left ph-bold ph-lg',
 			onClick: back,
 		});
 	}
@@ -79,7 +79,7 @@ const buttonsRight = $computed(() => {
 		title: i18n.ts.reload,
 		onClick: reload,
 	}, {
-		icon: 'ph-eject ph-bold pg-lg',
+		icon: 'ph-eject ph-bold ph-lg',
 		title: i18n.ts.showInPage,
 		onClick: expand,
 	}];
@@ -101,7 +101,7 @@ provide('shouldHeaderThin', true);
 provide('forceSpacerMin', true);
 
 const contextmenu = $computed(() => ([{
-	icon: 'ph-eject ph-bold pg-lg',
+	icon: 'ph-eject ph-bold ph-lg',
 	text: i18n.ts.showInPage,
 	action: expand,
 }, {
@@ -166,6 +166,8 @@ defineExpose({
 
 <style lang="scss" module>
 .root {
+	overscroll-behavior: contain;
+
 	min-height: 100%;
 	background: var(--bg);
 

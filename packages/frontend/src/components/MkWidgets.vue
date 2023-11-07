@@ -25,7 +25,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		>
 			<template #item="{element}">
 				<div :class="[$style.widget, $style.customizeContainer]" data-cy-customize-container>
-					<button :class="$style.customizeContainerConfig" class="_button" @click.prevent.stop="configWidget(element.id)"><i class="ph-gear ph-bold pg-lg"></i></button>
+					<button :class="$style.customizeContainerConfig" class="_button" @click.prevent.stop="configWidget(element.id)"><i class="ph-gear ph-bold ph-lg"></i></button>
 					<button :class="$style.customizeContainerRemove" data-cy-customize-container-remove class="_button" @click.prevent.stop="removeWidget(element)"><i class="ph-x ph-bold ph-lg"></i></button>
 					<div class="handle">
 						<component :is="`widget-${element.name}`" :ref="el => widgetRefs[element.id] = el" class="widget" :class="$style.customizeContainerHandleWidget" :widget="element" @updateProps="updateWidget(element.id, $event)"/>
@@ -111,7 +111,7 @@ function onContextmenu(widget: Widget, ev: MouseEvent) {
 		type: 'label',
 		text: i18n.t(`_widgets.${widget.name}`),
 	}, {
-		icon: 'ph-gear ph-bold pg-lg',
+		icon: 'ph-gear ph-bold ph-lg',
 		text: i18n.ts.settings,
 		action: () => {
 			configWidget(widget.id);
@@ -162,7 +162,7 @@ function onContextmenu(widget: Widget, ev: MouseEvent) {
 		height: 32px;
 		color: #fff;
 		background: rgba(#000, 0.7);
-		border-radius: 4px;
+		border-radius: var(--radius-xs);
 	}
 
 	&Config {

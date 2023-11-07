@@ -127,7 +127,7 @@ function showMenu(ev: MouseEvent) {
 
 .sensitive {
 	position: relative;
-	
+
 	&::after {
 		content: "";
 		position: absolute;
@@ -157,7 +157,7 @@ function showMenu(ev: MouseEvent) {
 .hide {
 	display: block;
 	position: absolute;
-	border-radius: 5px;
+	border-radius: var(--radius-sm);
 	background-color: black;
 	color: var(--accentLighten);
 	font-size: 12px;
@@ -187,7 +187,7 @@ function showMenu(ev: MouseEvent) {
 .menu {
 	display: block;
 	position: absolute;
-	border-radius: 4px;
+	border-radius: var(--radius-ellipse);
 	background-color: rgba(0, 0, 0, 0.3);
 	-webkit-backdrop-filter: var(--blur, blur(15px));
 	backdrop-filter: var(--blur, blur(15px));
@@ -223,7 +223,7 @@ function showMenu(ev: MouseEvent) {
 .indicator {
 	/* Hardcode to black because either --bg or --fg makes it hard to read in dark/light mode */
 	background-color: black;
-	border-radius: 5px;
+	border-radius: var(--radius-sm);
 	color: var(--accentLighten);
 	display: inline-block;
 	font-weight: bold;

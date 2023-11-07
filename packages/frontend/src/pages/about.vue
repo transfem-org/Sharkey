@@ -47,7 +47,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 						</MkKeyValue>
 					</FormSplit>
 					<FormLink v-if="instance.impressumUrl" :to="instance.impressumUrl" external>{{ i18n.ts.impressum }}</FormLink>
-					<div class="_formLinks">
+					<div class="_gaps_s">
 						<MkFolder v-if="instance.serverRules.length > 0">
 							<template #label>{{ i18n.ts.serverRules }}</template>
 
@@ -79,7 +79,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 			<FormSection>
 				<template #label>Well-known resources</template>
-				<div class="_formLinks">
+				<div class="_gaps_s">
 					<FormLink :to="`/.well-known/host-meta`" external>host-meta</FormLink>
 					<FormLink :to="`/.well-known/host-meta.json`" external>host-meta.json</FormLink>
 					<FormLink :to="`/.well-known/nodeinfo`" external>nodeinfo</FormLink>
@@ -148,7 +148,7 @@ const headerTabs = $computed(() => [{
 }, {
 	key: 'emojis',
 	title: i18n.ts.customEmojis,
-	icon: 'ph-smiley ph-bold pg-lg',
+	icon: 'ph-smiley ph-bold ph-lg',
 }, {
 	key: 'federation',
 	title: i18n.ts.federation,
@@ -156,7 +156,7 @@ const headerTabs = $computed(() => [{
 }, {
 	key: 'charts',
 	title: i18n.ts.charts,
-	icon: 'ph-chart-line ph-bold pg-lg',
+	icon: 'ph-chart-line ph-bold ph-lg',
 }]);
 
 definePageMetadata(computed(() => ({
@@ -168,7 +168,7 @@ definePageMetadata(computed(() => ({
 <style lang="scss" module>
 .banner {
 	text-align: center;
-	border-radius: 5px;
+	border-radius: var(--radius);
 	overflow: clip;
 	background-size: cover;
 	background-position: center center;
@@ -178,7 +178,7 @@ definePageMetadata(computed(() => ({
 	display: block;
 	margin: 16px auto 0 auto;
 	height: 64px;
-	border-radius: 5px;
+	border-radius: var(--radius-sm);
 }
 
 .bannerName {
@@ -217,7 +217,7 @@ definePageMetadata(computed(() => ({
 		font-weight: bold;
 		align-items: center;
 		justify-content: center;
-		border-radius: 4px;
+		border-radius: var(--radius-ellipse);
 	}
 }
 

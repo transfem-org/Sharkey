@@ -78,7 +78,7 @@ export class SearchService {
 		private idService: IdService,
 	) {
 		if (meilisearch) {
-			this.meilisearchNoteIndex = meilisearch.index(`${config.meilisearch!.index}---notes`);
+			this.meilisearchNoteIndex = meilisearch.index(`${this.config.meilisearch?.index}---notes`);
 			this.meilisearchNoteIndex.updateSettings({
 				searchableAttributes: [
 					'text',
@@ -103,8 +103,8 @@ export class SearchService {
 			});
 		}
 
-		if (config.meilisearch?.scope) {
-			this.meilisearchIndexScope = config.meilisearch.scope;
+		if (this.config.meilisearch?.scope) {
+			this.meilisearchIndexScope = this.config.meilisearch.scope;
 		}
 	}
 
@@ -158,12 +158,15 @@ export class SearchService {
 		userId?: MiNote['userId'] | null;
 		channelId?: MiNote['channelId'] | null;
 		host?: string | null;
+		filetype?: string | null;
+		order?: string | null;
+		disableMeili?: boolean | null;
 	}, pagination: {
 		untilId?: MiNote['id'];
 		sinceId?: MiNote['id'];
 		limit?: number;
 	}): Promise<MiNote[]> {
-		if (this.meilisearch) {
+		if (this.meilisearch && !opts.disableMeili) {
 			const filter: Q = {
 				op: 'and',
 				qs: [],
@@ -180,7 +183,7 @@ export class SearchService {
 				}
 			}
 			const res = await this.meilisearchNoteIndex!.search(q, {
-				sort: ['createdAt:desc'],
+				sort: [`createdAt:${opts.order ? opts.order : 'desc'}`],
 				matchingStrategy: 'all',
 				attributesToRetrieve: ['id', 'createdAt'],
 				filter: compileQuery(filter),
@@ -214,6 +217,21 @@ export class SearchService {
 				} else {
 					query.andWhere('user.host = :host', { host: opts.host });
 				}
+			}
+
+			if (opts.filetype) {
+				/* this is very ugly, but the "correct" solution would
+				  be `and exists (select 1 from
+				  unnest(note."attachedFileTypes") x(t) where t like
+				  :type)` and I can't find a way to get TypeORM to
+				  generate that; this hack works because `~*` is
+				  "regexp match, ignoring case" and the stringified
+				  version of an array of varchars (which is what
+				  `attachedFileTypes` is) looks like `{foo,bar}`, so
+				  we're looking for opts.filetype as the first half of
+				  a MIME type, either at start of the array (after the
+				  `{`) or later (after a `,`) */
+				query.andWhere(`note."attachedFileTypes"::varchar ~* :type`, { type: `[{,]${opts.filetype}/` });
 			}
 
 			this.queryService.generateVisibilityQuery(query, me);

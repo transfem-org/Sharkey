@@ -28,7 +28,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<div :class="$style.username"><MkAcct :user="user"/></div>
 			</div>
 			<div :class="$style.description">
-				<Mfm v-if="user.description" :class="$style.mfm" :text="user.description" :author="user" :i="$i"/>
+				<Mfm v-if="user.description" :class="$style.mfm" :text="user.description" :author="user"/>
 				<div v-else style="opacity: 0.7;">{{ i18n.ts.noAccountDescription }}</div>
 			</div>
 			<div :class="$style.status">
@@ -146,7 +146,7 @@ onMounted(() => {
 	color: #fff;
 	background: rgba(0, 0, 0, 0.7);
 	font-size: 0.7em;
-	border-radius: 5px;
+	border-radius: var(--radius-sm);
 }
 
 .locked:first-child {
@@ -157,7 +157,7 @@ onMounted(() => {
 	color: #fff;
 	background: rgba(0, 0, 0, 0.7);
 	font-size: 0.7em;
-	border-radius: 5px;
+	border-radius: var(--radius-xs);
 }
 
 .locked:not(:first-child) {
@@ -168,7 +168,7 @@ onMounted(() => {
 	color: #fff;
 	background: rgba(0, 0, 0, 0.7);
 	font-size: 0.7em;
-	border-radius: 5px;
+	border-radius: var(--radius-xs);
 }
 
 .avatarBack {
@@ -249,7 +249,7 @@ onMounted(() => {
 	right: 44px;
 	padding: 6px;
 	background: var(--panel);
-	border-radius: 4px;
+	border-radius: var(--radius-ellipse);
 }
 
 .follow {

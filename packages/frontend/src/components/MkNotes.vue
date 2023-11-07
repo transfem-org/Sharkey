@@ -55,9 +55,10 @@ defineExpose({
 <style lang="scss" module>
 .root {
 	&.noGap {
+		border-radius: var(--radius);
+
 		> .notes {
 			background: color-mix(in srgb, var(--panel) 65%, transparent);
-			backdrop-filter: blur(16px);
 		}
 	}
 
@@ -67,7 +68,6 @@ defineExpose({
 
 			.note {
 				background: color-mix(in srgb, var(--panel) 65%, transparent);
-				backdrop-filter: blur(16px);
 				border-radius: var(--radius);
 			}
 		}

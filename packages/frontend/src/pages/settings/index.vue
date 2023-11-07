@@ -23,7 +23,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</div>
 		</div>
 	</MkSpacer>
-</mkstickycontainer>
+</MkStickyContainer>
 </template>
 
 <script setup lang="ts">
@@ -42,7 +42,7 @@ import { fetchCustomEmojis } from '@/custom-emojis.js';
 
 const indexInfo = {
 	title: i18n.ts.settings,
-	icon: 'ph-gear ph-bold pg-lg',
+	icon: 'ph-gear ph-bold ph-lg',
 	hideHeader: true,
 };
 const INFO = ref(indexInfo);
@@ -84,7 +84,7 @@ const menuDef = computed(() => [{
 		to: '/settings/drive',
 		active: currentPage?.route.name === 'drive',
 	}, {
-		icon: 'ph-bell ph-bold pg-lg',
+		icon: 'ph-bell ph-bold ph-lg',
 		text: i18n.ts.notifications,
 		to: '/settings/notifications',
 		active: currentPage?.route.name === 'notifications',
@@ -122,7 +122,7 @@ const menuDef = computed(() => [{
 		to: '/settings/statusbar',
 		active: currentPage?.route.name === 'statusbar',
 	}, {
-		icon: 'ph-music-notes ph-bold pg-lg',
+		icon: 'ph-music-notes ph-bold ph-lg',
 		text: i18n.ts.sounds,
 		to: '/settings/sounds',
 		active: currentPage?.route.name === 'sounds',
@@ -135,7 +135,7 @@ const menuDef = computed(() => [{
 }, {
 	title: i18n.ts.otherSettings,
 	items: [{
-		icon: 'ph-seal-check ph-bold pg-lg',
+		icon: 'ph-seal-check ph-bold ph-lg',
 		text: i18n.ts.roles,
 		to: '/settings/roles',
 		active: currentPage?.route.name === 'roles',
@@ -145,7 +145,7 @@ const menuDef = computed(() => [{
 		to: '/settings/mute-block',
 		active: currentPage?.route.name === 'mute-block',
 	}, {
-		icon: 'ph-key ph-bold pg-lg',
+		icon: 'ph-key ph-bold ph-lg',
 		text: 'API',
 		to: '/settings/api',
 		active: currentPage?.route.name === 'api',
@@ -172,7 +172,7 @@ const menuDef = computed(() => [{
 	}],
 }, {
 	items: [{
-		icon: 'ph-floppy-disk ph-bold pg-lg',
+		icon: 'ph-floppy-disk ph-bold ph-lg',
 		text: i18n.ts.preferencesBackups,
 		to: '/settings/preferences-backups',
 		active: currentPage?.route.name === 'preferences-backups',

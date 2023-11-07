@@ -79,6 +79,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 							</MkInput>
 						</MkFolder>
 
+						<MkFolder v-if="matchQuery([i18n.ts._role._options.canManageAvatarDecorations, 'canManageAvatarDecorations'])">
+							<template #label>{{ i18n.ts._role._options.canManageAvatarDecorations }}</template>
+							<template #suffix>{{ policies.canManageAvatarDecorations ? i18n.ts.yes : i18n.ts.no }}</template>
+							<MkSwitch v-model="policies.canManageAvatarDecorations">
+								<template #label>{{ i18n.ts.enable }}</template>
+							</MkSwitch>
+						</MkFolder>
+
 						<MkFolder v-if="matchQuery([i18n.ts._role._options.canManageCustomEmojis, 'canManageCustomEmojis'])">
 							<template #label>{{ i18n.ts._role._options.canManageCustomEmojis }}</template>
 							<template #suffix>{{ policies.canManageCustomEmojis ? i18n.ts.yes : i18n.ts.no }}</template>
@@ -256,7 +264,7 @@ const headerTabs = $computed(() => []);
 
 definePageMetadata(computed(() => ({
 	title: i18n.ts.roles,
-	icon: 'ph-seal-check ph-bold pg-lg',
+	icon: 'ph-seal-check ph-bold ph-lg',
 })));
 </script>
 

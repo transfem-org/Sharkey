@@ -10,19 +10,19 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<MkAvatar :class="$style.avatar" :user="note.user" link preview/>
 		<div :class="$style.body">
 			<MkNoteHeader :class="$style.header" :note="note" :mini="true"/>
-			<div>
+			<div :class="$style.content">
 				<p v-if="note.cw != null" :class="$style.cw">
-					<Mfm v-if="note.cw != ''" style="margin-right: 8px;" :text="note.cw" :author="note.user" :i="$i"/>
+					<Mfm v-if="note.cw != ''" style="margin-right: 8px;" :text="note.cw" :author="note.user" :nyaize="'account'"/>
 					<MkCwButton v-model="showContent" :note="note"/>
 				</p>
 				<div v-show="note.cw == null || showContent">
-					<MkSubNoteContent :class="$style.text" :note="note"/>
+					<MkSubNoteContent :class="$style.text" :note="note" :translating="translating" :translation="translation"/>
 				</div>
 			</div>
 			<footer :class="$style.footer">
 				<MkReactionsViewer ref="reactionsViewer" :note="note"/>
 				<button class="_button" :class="$style.noteFooterButton" @click="reply()">
-					<i class="ph-arrow-u-up-left ph-bold pg-lg"></i>
+					<i class="ph-arrow-u-up-left ph-bold ph-lg"></i>
 					<p v-if="note.repliesCount > 0" :class="$style.noteFooterButtonCount">{{ note.repliesCount }}</p>
 				</button>
 				<button
@@ -121,7 +121,7 @@ const props = withDefaults(defineProps<{
 
 const el = shallowRef<HTMLElement>();
 const muted = ref($i ? checkWordMute(props.note, $i, $i.mutedWords) : false);
-const translation = ref(null);
+const translation = ref<any>(null);
 const translating = ref(false);
 const isDeleted = ref(false);
 const renoted = ref(false);
@@ -418,7 +418,7 @@ if (props.detail) {
 	left: 8px;
 	width: 5px;
 	height: calc(100% - 8px);
-	border-radius: 4px;
+	border-radius: var(--radius-ellipse);
 	pointer-events: none;
 }
 
@@ -428,12 +428,16 @@ if (props.detail) {
 	margin: 0 8px 0 0;
 	width: 38px;
 	height: 38px;
-	border-radius: 5px;
+	border-radius: var(--radius-sm);
 }
 
 .body {
 	flex: 1;
 	min-width: 0;
+}
+
+.content {
+	overflow: hidden;
 }
 
 .header {
@@ -474,7 +478,6 @@ if (props.detail) {
 }
 
 .cw {
-	cursor: default;
 	display: block;
 	margin: 0;
 	padding: 0;
@@ -510,6 +513,6 @@ if (props.detail) {
 	padding: 8px !important;
 	border: 1px solid var(--divider);
 	margin: 8px 8px 0 8px;
-	border-radius: 5px;
+	border-radius: var(--radius-sm);
 }
 </style>

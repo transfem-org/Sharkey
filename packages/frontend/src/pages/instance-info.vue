@@ -36,8 +36,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<div class="_gaps_s">
 					<MkSwitch v-model="suspended" :disabled="!instance" @update:modelValue="toggleSuspend">{{ i18n.ts.stopActivityDelivery }}</MkSwitch>
 					<MkSwitch v-model="isBlocked" :disabled="!meta || !instance" @update:modelValue="toggleBlock">{{ i18n.ts.blockThisInstance }}</MkSwitch>
-                    <MkSwitch v-model="isSilenced" :disabled="!meta || !instance" @update:modelValue="toggleSilenced">{{ i18n.ts.silenceThisInstance }}</MkSwitch>
-                    <MkButton @click="refreshMetadata"><i class="ph-arrows-counter-clockwise ph-bold pg-lg"></i> Refresh metadata</MkButton>
+					<MkSwitch v-model="isSilenced" :disabled="!meta || !instance" @update:modelValue="toggleSilenced">{{ i18n.ts.silenceThisInstance }}</MkSwitch>
+					<MkButton @click="refreshMetadata"><i class="ph-arrows-counter-clockwise ph-bold ph-lg"></i> Refresh metadata</MkButton>
 				</div>
 			</FormSection>
 
@@ -52,7 +52,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</MkKeyValue>
 				<MkKeyValue oneline style="margin: 1em 0;">
 					<template #key>{{ i18n.ts.latestRequestReceivedAt }}</template>
-					<template #value><MkTime v-if="instance.latestRequestReceivedAt" :time="instance.latestRequestReceivedAt"/><span v-else>N/A</span></template>
+					<template #value><MkTime v-if="instance.latestRequestReceivedAt" mode="detail" :time="instance.latestRequestReceivedAt"/><span v-else>N/A</span></template>
 				</MkKeyValue>
 			</FormSection>
 
@@ -171,8 +171,8 @@ async function fetch(): Promise<void> {
 	});
 	suspended = instance.isSuspended;
 	isBlocked = instance.isBlocked;
-    isSilenced = instance.isSilenced;
-    faviconUrl = getProxiedImageUrlNullable(instance.faviconUrl, 'preview') ?? getProxiedImageUrlNullable(instance.iconUrl, 'preview');
+	isSilenced = instance.isSilenced;
+	faviconUrl = getProxiedImageUrlNullable(instance.faviconUrl, 'preview') ?? getProxiedImageUrlNullable(instance.iconUrl, 'preview');
 }
 
 async function toggleBlock(): Promise<void> {
@@ -183,14 +183,16 @@ async function toggleBlock(): Promise<void> {
 		blockedHosts: isBlocked ? meta.blockedHosts.concat([host]) : meta.blockedHosts.filter(x => x !== host),
 	});
 }
+
 async function toggleSilenced(): Promise<void> {
-    if (!meta) throw new Error('No meta?');
-    if (!instance) throw new Error('No instance?');
-    const { host } = instance;
-    await os.api('admin/update-meta', {
-        silencedHosts: isSilenced ? meta.silencedHosts.concat([host]) : meta.silencedHosts.filter(x => x !== host),
-    });
+	if (!meta) throw new Error('No meta?');
+	if (!instance) throw new Error('No instance?');
+	const { host } = instance;
+	await os.api('admin/update-meta', {
+		silencedHosts: isSilenced ? meta.silencedHosts.concat([host]) : meta.silencedHosts.filter(x => x !== host),
+	});
 }
+
 async function toggleSuspend(): Promise<void> {
 	if (!instance) throw new Error('No instance?');
 	await os.api('admin/federation/update-instance', {
@@ -226,15 +228,15 @@ const headerTabs = $computed(() => [{
 }, {
 	key: 'chart',
 	title: i18n.ts.charts,
-	icon: 'ph-chart-line ph-bold pg-lg',
+	icon: 'ph-chart-line ph-bold ph-lg',
 }, {
 	key: 'users',
 	title: i18n.ts.users,
-	icon: 'ph-users ph-bold pg-lg',
+	icon: 'ph-users ph-bold ph-lg',
 }, {
 	key: 'raw',
 	title: 'Raw',
-	icon: 'ph-code ph-bold pg-lg',
+	icon: 'ph-code ph-bold ph-lg',
 }]);
 
 definePageMetadata({
@@ -252,7 +254,7 @@ definePageMetadata({
 		display: block;
 		margin: 0 16px 0 0;
 		height: 64px;
-		border-radius: 5px;
+		border-radius: var(--radius-sm);
 	}
 
 	> .name {

@@ -19,6 +19,7 @@ import { CleanRemoteFilesProcessorService } from './processors/CleanRemoteFilesP
 import { DeleteAccountProcessorService } from './processors/DeleteAccountProcessorService.js';
 import { DeleteDriveFilesProcessorService } from './processors/DeleteDriveFilesProcessorService.js';
 import { DeleteFileProcessorService } from './processors/DeleteFileProcessorService.js';
+import { ExportAccountDataProcessorService } from './processors/ExportAccountDataProcessorService.js';
 import { ExportBlockingProcessorService } from './processors/ExportBlockingProcessorService.js';
 import { ExportCustomEmojisProcessorService } from './processors/ExportCustomEmojisProcessorService.js';
 import { ExportFollowingProcessorService } from './processors/ExportFollowingProcessorService.js';
@@ -51,6 +52,7 @@ import { RelationshipProcessorService } from './processors/RelationshipProcessor
 		CheckExpiredMutingsProcessorService,
 		CleanProcessorService,
 		DeleteDriveFilesProcessorService,
+		ExportAccountDataProcessorService,
 		ExportCustomEmojisProcessorService,
 		ExportNotesProcessorService,
 		ExportFavoritesProcessorService,

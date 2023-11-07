@@ -10,18 +10,18 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<div v-if="channel && tab === 'overview'" class="_gaps">
 			<div class="_panel" :class="$style.bannerContainer">
 				<XChannelFollowButton :channel="channel" :full="true" :class="$style.subscribe"/>
-				<MkButton v-if="favorited" v-tooltip="i18n.ts.unfavorite" asLike class="button" rounded primary :class="$style.favorite" @click="unfavorite()"><i class="ph-star ph-bold pg-lg"></i></MkButton>
-				<MkButton v-else v-tooltip="i18n.ts.favorite" asLike class="button" rounded :class="$style.favorite" @click="favorite()"><i class="ph-star ph-bold pg-lg"></i></MkButton>
+				<MkButton v-if="favorited" v-tooltip="i18n.ts.unfavorite" asLike class="button" rounded primary :class="$style.favorite" @click="unfavorite()"><i class="ph-star ph-bold ph-lg"></i></MkButton>
+				<MkButton v-else v-tooltip="i18n.ts.favorite" asLike class="button" rounded :class="$style.favorite" @click="favorite()"><i class="ph-star ph-bold ph-lg"></i></MkButton>
 				<div :style="{ backgroundImage: channel.bannerUrl ? `url(${channel.bannerUrl})` : null }" :class="$style.banner">
 					<div :class="$style.bannerStatus">
-						<div><i class="ph-users ph-bold pg-lg ti-fw"></i><I18n :src="i18n.ts._channel.usersCount" tag="span" style="margin-left: 4px;"><template #n><b>{{ channel.usersCount }}</b></template></I18n></div>
+						<div><i class="ph-users ph-bold ph-lg ti-fw"></i><I18n :src="i18n.ts._channel.usersCount" tag="span" style="margin-left: 4px;"><template #n><b>{{ channel.usersCount }}</b></template></I18n></div>
 						<div><i class="ph-pencil ph-bold ph-lg ti-fw"></i><I18n :src="i18n.ts._channel.notesCount" tag="span" style="margin-left: 4px;"><template #n><b>{{ channel.notesCount }}</b></template></I18n></div>
 					</div>
 					<div v-if="channel.isSensitive" :class="$style.sensitiveIndicator">{{ i18n.ts.sensitive }}</div>
 					<div :class="$style.bannerFade"></div>
 				</div>
 				<div v-if="channel.description" :class="$style.description">
-					<Mfm :text="channel.description" :isNote="false" :i="$i"/>
+					<Mfm :text="channel.description" :isNote="false"/>
 				</div>
 			</div>
 
@@ -168,7 +168,7 @@ async function search() {
 const headerActions = $computed(() => {
 	if (channel && channel.userId) {
 		const share = {
-			icon: 'ph-share-network ph-bold pg-lg',
+			icon: 'ph-share-network ph-bold ph-lg',
 			text: i18n.ts.share,
 			handler: async (): Promise<void> => {
 				navigator.share({
@@ -181,7 +181,7 @@ const headerActions = $computed(() => {
 
 		const canEdit = ($i && $i.id === channel.userId) || iAmModerator;
 		return canEdit ? [share, {
-			icon: 'ph-gear ph-bold pg-lg',
+			icon: 'ph-gear ph-bold ph-lg',
 			text: i18n.ts.edit,
 			handler: edit,
 		}] : [share];
@@ -201,7 +201,7 @@ const headerTabs = $computed(() => [{
 }, {
 	key: 'featured',
 	title: i18n.ts.featured,
-	icon: 'ph-lightning ph-bold pg-lg',
+	icon: 'ph-lightning ph-bold ph-lg',
 }, {
 	key: 'search',
 	title: i18n.ts.search,
@@ -267,7 +267,7 @@ definePageMetadata(computed(() => channel ? {
 	padding: 8px 12px;
 	font-size: 80%;
 	background: rgba(0, 0, 0, 0.7);
-	border-radius: 5px;
+	border-radius: var(--radius-sm);
 	color: #fff;
 }
 
@@ -282,7 +282,7 @@ definePageMetadata(computed(() => channel ? {
 	left: 16px;
 	background: rgba(0, 0, 0, 0.7);
 	color: var(--warn);
-	border-radius: 5px;
+	border-radius: var(--radius-sm);
 	font-weight: bold;
 	font-size: 1em;
 	padding: 4px 7px;

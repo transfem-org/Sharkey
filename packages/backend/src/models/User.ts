@@ -160,6 +160,15 @@ export class MiUser {
 		length: 128, nullable: true,
 	})
 	public backgroundBlurhash: string | null;
+	
+	@Column('jsonb', {
+		default: [],
+	})
+	public avatarDecorations: {
+		id: string;
+		angle: number;
+		flipH: boolean;
+	}[];
 
 	@Index()
 	@Column('varchar', {
@@ -178,6 +187,12 @@ export class MiUser {
 		comment: 'Whether the User is silenced.',
 	})
 	public isSilenced: boolean;
+
+	@Column('boolean', {
+		default: true,
+		comment: 'Whether the User\'s notes get indexed.',
+	})
+	public isIndexable: boolean;
 
 	@Column('boolean', {
 		default: false,

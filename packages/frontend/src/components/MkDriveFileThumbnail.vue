@@ -63,7 +63,7 @@ const isThumbnailAvailable = computed(() => {
 	position: relative;
 	display: flex;
 	background: var(--panel);
-	border-radius: 5px;
+	border-radius: var(--radius-sm);
 	overflow: clip;
 }
 

@@ -9,7 +9,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<div :class="[$style.label, $style.item]">
 			{{ i18n.ts.visibility }}
 		</div>
-		<button key="public" class="_button" :class="[$style.item, { [$style.active]: v === 'public' }]" data-index="1" @click="choose('public')">
+		<button key="public" :disabled="isSilenced" class="_button" :class="[$style.item, { [$style.active]: v === 'public' }]" data-index="1" @click="choose('public')">
 			<div :class="$style.icon"><i class="ph-globe-hemisphere-west ph-bold ph-lg"></i></div>
 			<div :class="$style.body">
 				<span :class="$style.itemTitle">{{ i18n.ts._visibility.public }}</span>
@@ -51,6 +51,7 @@ const modal = $shallowRef<InstanceType<typeof MkModal>>();
 
 const props = withDefaults(defineProps<{
 	currentVisibility: typeof Misskey.noteVisibilities[number];
+	isSilenced: boolean;
 	localOnly: boolean;
 	src?: HTMLElement;
 }>(), {
@@ -80,7 +81,7 @@ function choose(visibility: typeof Misskey.noteVisibilities[number]): void {
 	&.asDrawer {
 		padding: 12px 0 max(env(safe-area-inset-bottom, 0px), 12px) 0;
 		width: 100%;
-		border-radius: 24px;
+		border-radius: var(--radius-lg);
 		border-bottom-right-radius: 0;
 		border-bottom-left-radius: 0;
 

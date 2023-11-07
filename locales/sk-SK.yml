@@ -921,6 +921,7 @@ youFollowing: "Sledované"
 icon: "Avatar"
 replies: "Odpovede"
 renotes: "Preposlať"
+flip: "Preklopiť"
 _role:
   priority: "Priorita"
   _priority:

@@ -43,7 +43,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<button v-tooltip.noDelay.left="i18n.ts._deck.addColumn" :class="$style.sideMenuButton" class="_button" @click="addColumn"><i class="ph-plus ph-bold ph-lg"></i></button>
 				</div>
 				<div :class="$style.sideMenuBottom">
-					<button v-tooltip.noDelay.left="i18n.ts.settings" :class="$style.sideMenuButton" class="_button" @click="showSettings"><i class="ph-gear ph-bold pg-lg"></i></button>
+					<button v-tooltip.noDelay.left="i18n.ts.settings" :class="$style.sideMenuButton" class="_button" @click="showSettings"><i class="ph-gear ph-bold ph-lg"></i></button>
 				</div>
 			</div>
 		</div>
@@ -52,7 +52,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<div v-if="isMobile" :class="$style.nav">
 		<button :class="$style.navButton" class="_button" @click="drawerMenuShowing = true"><i :class="$style.navButtonIcon" class="ph-list ph-bold ph-lg-2"></i><span v-if="menuIndicated" :class="$style.navButtonIndicator"><i class="_indicatorCircle"></i></span></button>
 		<button :class="$style.navButton" class="_button" @click="mainRouter.push('/')"><i :class="$style.navButtonIcon" class="ph-house ph-bold ph-lg"></i></button>
-		<button :class="$style.navButton" class="_button" @click="mainRouter.push('/my/notifications')"><i :class="$style.navButtonIcon" class="ph-bell ph-bold pg-lg"></i><span v-if="$i?.hasUnreadNotification" :class="$style.navButtonIndicator"><i class="_indicatorCircle"></i></span></button>
+		<button :class="$style.navButton" class="_button" @click="mainRouter.push('/my/notifications')">
+			<i :class="$style.navButtonIcon" class="ph-bell ph-bold ph-lg"></i>
+			<span v-if="$i?.hasUnreadNotification" :class="$style.navButtonIndicator">
+				<span class="_indicateCounter" :class="$style.itemIndicateValueIcon">{{ $i.unreadNotificationsCount > 99 ? '99+' : $i.unreadNotificationsCount }}</span>
+			</span>
+		</button>
 		<button :class="$style.postButton" class="_button" @click="os.post()"><i :class="$style.navButtonIcon" class="ph-pencil ph-bold ph-lg"></i></button>
 	</div>
 
@@ -446,7 +451,7 @@ body {
 	width: 100%;
 	max-width: 60px;
 	margin: auto;
-	border-radius: 5px;
+	border-radius: var(--radius-full);
 	background: var(--panel);
 	color: var(--fg);
 
@@ -485,5 +490,10 @@ body {
 	color: var(--indicator);
 	font-size: 16px;
 	animation: blink 1s infinite;
+
+	&:has(.itemIndicateValueIcon) {
+		animation: none;
+		font-size: 12px;
+	}
 }
 </style>

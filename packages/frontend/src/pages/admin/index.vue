@@ -16,7 +16,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<MkInfo v-if="noMaintainerInformation" warn class="info">{{ i18n.ts.noMaintainerInformationWarning }} <MkA to="/admin/settings" class="_link">{{ i18n.ts.configure }}</MkA></MkInfo>
 				<MkInfo v-if="noBotProtection" warn class="info">{{ i18n.ts.noBotProtectionWarning }} <MkA to="/admin/security" class="_link">{{ i18n.ts.configure }}</MkA></MkInfo>
 				<MkInfo v-if="noEmailServer" warn class="info">{{ i18n.ts.noEmailServerWarning }} <MkA to="/admin/email-settings" class="_link">{{ i18n.ts.configure }}</MkA></MkInfo>
-				<MkInfo v-if="pendingUserApprovals" warn class="info">{{ i18n.ts.pendingUserApprovals }} <MkA to="/admin/users" class="_link">{{ i18n.ts.check }}</MkA></MkInfo>
+				<MkInfo v-if="pendingUserApprovals" warn class="info">{{ i18n.ts.pendingUserApprovals }} <MkA to="/admin/approvals" class="_link">{{ i18n.ts.check }}</MkA></MkInfo>
 
 				<MkSuperMenu :def="menuDef" :grid="narrow"></MkSuperMenu>
 			</div>
@@ -45,7 +45,7 @@ const router = useRouter();
 
 const indexInfo = {
 	title: i18n.ts.controlPanel,
-	icon: 'ph-gear ph-bold pg-lg',
+	icon: 'ph-gear ph-bold ph-lg',
 	hideHeader: true,
 };
 
@@ -73,6 +73,7 @@ os.api('admin/abuse-user-reports', {
 
 os.api('admin/show-users', {
 	state: 'approved',
+	origin: 'local',
 	limit: 1,
 }).then(approvals => {
 	if (approvals.length > 0) pendingUserApprovals = true;
@@ -100,12 +101,12 @@ const menuDef = $computed(() => [{
 }, {
 	title: i18n.ts.administration,
 	items: [{
-		icon: 'ph-gauge ph-bold pg-lg',
+		icon: 'ph-gauge ph-bold ph-lg',
 		text: i18n.ts.dashboard,
 		to: '/admin/overview',
 		active: currentPage?.route.name === 'overview',
 	}, {
-		icon: 'ph-users ph-bold pg-lg',
+		icon: 'ph-users ph-bold ph-lg',
 		text: i18n.ts.users,
 		to: '/admin/users',
 		active: currentPage?.route.name === 'users',
@@ -115,15 +116,25 @@ const menuDef = $computed(() => [{
 		to: '/admin/invites',
 		active: currentPage?.route.name === 'invites',
 	}, {
-		icon: 'ph-seal-check ph-bold pg-lg',
+		icon: 'ph-chalkboard-teacher ph-bold ph-lg',
+		text: i18n.ts.approvals,
+		to: '/admin/approvals',
+		active: currentPage?.route.name === 'approvals',
+	}, {
+		icon: 'ph-seal-check ph-bold ph-lg',
 		text: i18n.ts.roles,
 		to: '/admin/roles',
 		active: currentPage?.route.name === 'roles',
 	}, {
-		icon: 'ph-smiley ph-bold pg-lg',
+		icon: 'ph-smiley ph-bold ph-lg',
 		text: i18n.ts.customEmojis,
 		to: '/admin/emojis',
 		active: currentPage?.route.name === 'emojis',
+	}, {
+		icon: 'ph-sparkle ph-bold ph-lg',
+		text: i18n.ts.avatarDecorations,
+		to: '/admin/avatar-decorations',
+		active: currentPage?.route.name === 'avatarDecorations',
 	}, {
 		icon: 'ph-globe-hemisphere-west ph-bold ph-lg',
 		text: i18n.ts.federation,
@@ -155,7 +166,7 @@ const menuDef = $computed(() => [{
 		to: '/admin/abuses',
 		active: currentPage?.route.name === 'abuses',
 	}, {
-		icon: 'ph-list ph-bold pg-lg-search',
+		icon: 'ph-list ph-bold ph-lg-search',
 		text: i18n.ts.moderationLogs,
 		to: '/admin/modlog',
 		active: currentPage?.route.name === 'modlog',
@@ -163,7 +174,7 @@ const menuDef = $computed(() => [{
 }, {
 	title: i18n.ts.settings,
 	items: [{
-		icon: 'ph-gear ph-bold pg-lg',
+		icon: 'ph-gear ph-bold ph-lg',
 		text: i18n.ts.general,
 		to: '/admin/settings',
 		active: currentPage?.route.name === 'settings',
@@ -193,7 +204,7 @@ const menuDef = $computed(() => [{
 		to: '/admin/security',
 		active: currentPage?.route.name === 'security',
 	}, {
-		icon: 'ph-planet ph-bold pg-lg',
+		icon: 'ph-planet ph-bold ph-lg',
 		text: i18n.ts.relays,
 		to: '/admin/relays',
 		active: currentPage?.route.name === 'relays',
@@ -208,7 +219,7 @@ const menuDef = $computed(() => [{
 		to: '/admin/proxy-account',
 		active: currentPage?.route.name === 'proxy-account',
 	}, {
-		icon: 'ph-arrow-square-out ph-bold pg-lg',
+		icon: 'ph-arrow-square-out ph-bold ph-lg',
 		text: i18n.ts.externalServices,
 		to: '/admin/external-services',
 		active: currentPage?.route.name === 'external-services',
@@ -221,7 +232,7 @@ const menuDef = $computed(() => [{
 }, {
 	title: i18n.ts.info,
 	items: [{
-		icon: 'ph-database ph-bold pg-lg',
+		icon: 'ph-database ph-bold ph-lg',
 		text: i18n.ts.database,
 		to: '/admin/database',
 		active: currentPage?.route.name === 'database',
@@ -303,7 +314,7 @@ const lookup = (ev) => {
 		},
 	}, {
 		text: i18n.ts.instance,
-		icon: 'ph-planet ph-bold pg-lg',
+		icon: 'ph-planet ph-bold ph-lg',
 		action: () => {
 			alert('TODO');
 		},
@@ -358,7 +369,7 @@ defineExpose({
 					display: block;
 					margin: auto;
 					height: 42px;
-					border-radius: 5px;
+					border-radius: var(--radius-sm);
 				}
 			}
 		}

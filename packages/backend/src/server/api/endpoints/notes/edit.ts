@@ -117,6 +117,12 @@ export const meta = {
 			code: "NOT_LOCAL_USER",
 			id: "b907f407-2aa0-4283-800b-a2c56290b822",
 		},
+
+		cannotRenoteOutsideOfChannel: {
+			message: 'Cannot renote outside of channel.',
+			code: 'CANNOT_RENOTE_OUTSIDE_OF_CHANNEL',
+			id: '33510210-8452-094c-6227-4a6c05d99f00',
+		},
 	},
 } as const;
 
@@ -134,7 +140,7 @@ export const paramDef = {
 			},
 		},
 		text: { type: "string", maxLength: MAX_NOTE_TEXT_LENGTH, nullable: true },
-		cw: { type: "string", nullable: true, maxLength: 250 },
+		cw: { type: "string", nullable: true, minLength: 1, maxLength: 250 },
 		localOnly: { type: "boolean", default: false },
 		noExtractMentions: { type: "boolean", default: false },
 		noExtractHashtags: { type: "boolean", default: false },
@@ -279,6 +285,19 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 					});
 					if (blockExist) {
 						throw new ApiError(meta.errors.youHaveBeenBlocked);
+					}
+				}
+
+				if (renote.channelId && renote.channelId !== ps.channelId) {
+					// チャンネルのノートに対しリノート要求がきたとき、チャンネル外へのリノート可否をチェック
+					// リノートのユースケースのうち、チャンネル内→チャンネル外は少数だと考えられるため、JOINはせず必要な時に都度取得する
+					const renoteChannel = await this.channelsRepository.findOneById(renote.channelId);
+					if (renoteChannel == null) {
+						// リノートしたいノートが書き込まれているチャンネルが無い
+						throw new ApiError(meta.errors.noSuchChannel);
+					} else if (!renoteChannel.allowRenoteToExternal) {
+						// リノート作成のリクエストだが、対象チャンネルがリノート禁止だった場合
+						throw new ApiError(meta.errors.cannotRenoteOutsideOfChannel);
 					}
 				}
 			}

@@ -14,6 +14,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 			<div class="_gaps_m">
 				<MkSwitch v-model="isLocalOnly">{{ i18n.ts.localOnly }}</MkSwitch>
+				<MkSwitch v-model="order">Sort by newest to oldest</MkSwitch>
+				<MkSelect v-model="filetype" small>
+					<template #label>File Type</template>
+					<option :value="null">None</option>
+					<option value="image">Images</option>
+					<option value="video">Videos</option>
+					<option value="audio">Audio</option>
+				</MkSelect>
 
 				<MkFolder>
 					<template #label>{{ i18n.ts.specifyUser }}</template>
@@ -48,6 +56,7 @@ import MkInput from '@/components/MkInput.vue';
 import MkRadios from '@/components/MkRadios.vue';
 import MkButton from '@/components/MkButton.vue';
 import MkSwitch from '@/components/MkSwitch.vue';
+import MkSelect from '@/components/MkSelect.vue';
 import { i18n } from '@/i18n.js';
 import * as os from '@/os.js';
 import MkFoldableSection from '@/components/MkFoldableSection.vue';
@@ -65,6 +74,8 @@ let searchOrigin = $ref('combined');
 let notePagination = $ref();
 let user = $ref(null);
 let isLocalOnly = $ref(false);
+let order = $ref(true);
+let filetype = $ref(null);
 
 function selectUser() {
 	os.selectUser().then(_user => {
@@ -101,6 +112,8 @@ async function search() {
 		params: {
 			query: searchQuery,
 			userId: user ? user.id : null,
+			order: order ? 'desc' : 'asc',
+			filetype: filetype,
 		},
 	};
 

@@ -12,7 +12,12 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
 	; echo 'Binary::apt::APT::Keep-Downloaded-Packages "true";' > /etc/apt/apt.conf.d/keep-cache \
 	&& apt-get update \
 	&& apt-get install -yqq --no-install-recommends \
-	build-essential
+	build-essential curl ca-certificates
+
+ARG TARGETARCH
+
+RUN curl -L https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-$TARGETARCH-static.tar.xz -o /ffmpeg.tar.xz \
+	&& tar xvf /ffmpeg.tar.xz -C / --strip-components 1 --wildcards 'ffmpeg-*-static/ffmpeg' 'ffmpeg-*-static/ffprobe'
 
 RUN corepack enable
 
@@ -64,7 +69,7 @@ ARG GID="991"
 
 RUN apt-get update \
 	&& apt-get install -y --no-install-recommends \
-	ffmpeg tini curl libjemalloc-dev libjemalloc2 \
+	tini curl libjemalloc-dev libjemalloc2 \
 	&& ln -s /usr/lib/$(uname -m)-linux-gnu/libjemalloc.so.2 /usr/local/lib/libjemalloc.so \
 	&& corepack enable \
 	&& groupadd -g "${GID}" sharkey \
@@ -80,6 +85,8 @@ WORKDIR /sharkey
 COPY --chown=sharkey:sharkey --from=target-builder /sharkey/node_modules ./node_modules
 COPY --chown=sharkey:sharkey --from=target-builder /sharkey/packages/megalodon/node_modules ./packages/megalodon/node_modules
 COPY --chown=sharkey:sharkey --from=target-builder /sharkey/packages/backend/node_modules ./packages/backend/node_modules
+COPY --chown=sharkey:sharkey --from=native-builder /ffmpeg /usr/local/bin/
+COPY --chown=sharkey:sharkey --from=native-builder /ffprobe /usr/local/bin/
 COPY --chown=sharkey:sharkey --from=native-builder /sharkey/built ./built
 COPY --chown=sharkey:sharkey --from=native-builder /sharkey/packages/megalodon/lib ./packages/megalodon/lib
 COPY --chown=sharkey:sharkey --from=native-builder /sharkey/packages/backend/built ./packages/backend/built

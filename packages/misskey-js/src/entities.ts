@@ -12,11 +12,17 @@ export type UserLite = {
 	id: ID;
 	username: string;
 	host: string | null;
-	name: string;
+	name: string | null;
 	onlineStatus: 'online' | 'active' | 'offline' | 'unknown';
 	avatarUrl: string;
 	avatarBlurhash: string;
 	approved: boolean;
+	avatarDecorations: {
+		id: ID;
+		url: string;
+		angle?: number;
+		flipH?: boolean;
+	}[];
 	emojis: {
 		name: string;
 		url: string;
@@ -29,6 +35,9 @@ export type UserLite = {
 		faviconUrl: Instance['faviconUrl'];
 		themeColor: Instance['themeColor'];
 	};
+	isCat?: boolean;
+	isBot?: boolean;
+	isIndexable?: boolean;
 };
 
 export type UserDetailed = UserLite & {
@@ -57,6 +66,7 @@ export type UserDetailed = UserLite & {
 	speakAsCat: boolean;
 	isFollowed: boolean;
 	isFollowing: boolean;
+	isIndexable: boolean;
 	isLocked: boolean;
 	isModerator: boolean;
 	isMuted: boolean;
@@ -104,6 +114,7 @@ export type MeDetailed = UserDetailed & {
 	hasUnreadMessagingMessage: boolean;
 	hasUnreadNotification: boolean;
 	hasUnreadSpecifiedNotes: boolean;
+	unreadNotificationsCount: number;
 	hideOnlineStatus: boolean;
 	injectFeaturedNote: boolean;
 	integrations: Record<string, any>;
@@ -196,6 +207,8 @@ export type Note = {
 	fileIds: DriveFile['id'][];
 	visibility: 'public' | 'home' | 'followers' | 'specified';
 	visibleUserIds?: User['id'][];
+	channel?: Channel;
+	channelId?: Channel['id'];
 	localOnly?: boolean;
 	myReaction?: string;
 	reactions: Record<string, number>;
@@ -230,10 +243,12 @@ export type NoteReaction = {
 export type NoteEdit = {
 	noteId: Note['id'];
 	note: Note;
-	text: string;
+	newText: string;
+	oldText: string;
 	cw: string;
 	fileIds: DriveFile['id'][];
 	updatedAt?: DateString;
+	oldDate: DateString;
 }
 
 export type Notification = {
@@ -524,7 +539,20 @@ export type FollowRequest = {
 
 export type Channel = {
 	id: ID;
-	// TODO
+	lastNotedAt: Date | null;
+	userId: User['id'] | null;
+	user: User | null;
+	name: string;
+	description: string | null;
+	bannerId: DriveFile['id'] | null;
+	banner: DriveFile | null;
+	pinnedNoteIds: string[];
+	color: string;
+	isArchived: boolean;
+	notesCount: number;
+	usersCount: number;
+	isSensitive: boolean;
+	allowRenoteToExternal: boolean;
 };
 
 export type Following = {
@@ -713,4 +741,16 @@ export type ModerationLog = {
 } | {
 	type: 'deleteAd';
 	info: ModerationLogPayloads['deleteAd'];
+} | {
+	type: 'createAvatarDecoration';
+	info: ModerationLogPayloads['createAvatarDecoration'];
+} | {
+	type: 'updateAvatarDecoration';
+	info: ModerationLogPayloads['updateAvatarDecoration'];
+} | {
+	type: 'deleteAvatarDecoration';
+	info: ModerationLogPayloads['deleteAvatarDecoration'];
+} | {
+	type: 'resolveAbuseReport';
+	info: ModerationLogPayloads['resolveAbuseReport'];
 });

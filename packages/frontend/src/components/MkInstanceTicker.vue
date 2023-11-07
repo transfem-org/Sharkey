@@ -46,7 +46,7 @@ $height: 2ex;
 	display: flex;
 	align-items: center;
 	height: $height;
-	border-radius: 4px 0 0 4px;
+	border-radius: var(--radius-xs) 0 0 var(--radius-xs);
 	overflow: clip;
 	color: #fff;
 	text-shadow: /* .866 ≈ sin(60deg) */

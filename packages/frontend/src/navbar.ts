@@ -20,6 +20,15 @@ export const navbarItemDef = reactive({
 		icon: 'ph-bell ph-bold ph-lg',
 		show: computed(() => $i != null),
 		indicated: computed(() => $i != null && $i.hasUnreadNotification),
+		indicateValue: computed(() => {
+			if (!$i || $i.unreadNotificationsCount === 0) return '';
+
+			if ($i.unreadNotificationsCount > 99) {
+				return '99+';
+			} else {
+				return $i.unreadNotificationsCount.toString();
+			}
+		}),
 		to: '/my/notifications',
 	},
 	drive: {
@@ -72,7 +81,7 @@ export const navbarItemDef = reactive({
 	},
 	favorites: {
 		title: i18n.ts.favorites,
-		icon: 'ph-bookmark ph-bold ph-lg',
+		icon: 'ph-star ph-bold ph-lg',
 		show: computed(() => $i != null),
 		to: '/my/favorites',
 	},

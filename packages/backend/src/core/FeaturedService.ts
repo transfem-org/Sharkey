@@ -35,10 +35,16 @@ export class FeaturedService {
 			`${name}:${currentWindow}`,
 			score,
 			element);
-		redisTransaction.expire(
-			`${name}:${currentWindow}`,
-			(windowRange * 3) / 1000,
-			'NX'); // "NX -- Set expiry only when the key has no expiry" = 有効期限がないときだけ設定
+
+		const TTL = await this.redisClient.ttl(`${name}:${currentWindow}`);
+		
+		if (TTL === -1) {
+			this.redisClient.expire(`${name}:${currentWindow}`,
+				(windowRange * 3) / 1000, // 1時間
+				//'NX', // "NX -- Set expiry only when the key has no expiry" = 有効期限がないときだけ設定
+			);
+		}
+		
 		await redisTransaction.exec();
 	}
 
@@ -52,7 +58,7 @@ export class FeaturedService {
 			`${name}:${currentWindow}`, 0, threshold, 'REV', 'WITHSCORES');
 		redisPipeline.zrange(
 			`${name}:${previousWindow}`, 0, threshold, 'REV', 'WITHSCORES');
-		const [currentRankingResult, previousRankingResult] = await redisPipeline.exec().then(result => result ? result.map(r => r[1] as string[]) : [[], []]);
+		const [currentRankingResult, previousRankingResult] = await redisPipeline.exec().then(result => result ? result.map(r => (r[1] ?? []) as string[]) : [[], []]);
 
 		const ranking = new Map<string, number>();
 		for (let i = 0; i < currentRankingResult.length; i += 2) {

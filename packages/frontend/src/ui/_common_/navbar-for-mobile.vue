@@ -19,19 +19,22 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<div v-if="item === '-'" :class="$style.divider"></div>
 			<component :is="navbarItemDef[item].to ? 'MkA' : 'button'" v-else-if="navbarItemDef[item] && (navbarItemDef[item].show !== false)" class="_button" :class="[$style.item, { [$style.active]: navbarItemDef[item].active }]" :activeClass="$style.active" :to="navbarItemDef[item].to" v-on="navbarItemDef[item].action ? { click: navbarItemDef[item].action } : {}">
 				<i class="ti-fw" :class="[$style.itemIcon, navbarItemDef[item].icon]"></i><span :class="$style.itemText">{{ navbarItemDef[item].title }}</span>
-				<span v-if="navbarItemDef[item].indicated" :class="$style.itemIndicator"><i class="_indicatorCircle"></i></span>
+				<span v-if="navbarItemDef[item].indicated" :class="$style.itemIndicator">
+					<span v-if="navbarItemDef[item].indicateValue" class="_indicateCounter" :class="$style.itemIndicateValueIcon">{{ navbarItemDef[item].indicateValue }}</span>
+					<i v-else class="_indicatorCircle"></i>
+				</span>
 			</component>
 		</template>
 		<div :class="$style.divider"></div>
 		<MkA v-if="$i.isAdmin || $i.isModerator" :class="$style.item" :activeClass="$style.active" to="/admin">
-			<i :class="$style.itemIcon" class="ph-gauge ph-bold pg-lg ti-fw"></i><span :class="$style.itemText">{{ i18n.ts.controlPanel }}</span>
+			<i :class="$style.itemIcon" class="ph-gauge ph-bold ph-lg ti-fw"></i><span :class="$style.itemText">{{ i18n.ts.controlPanel }}</span>
 		</MkA>
 		<button :class="$style.item" class="_button" @click="more">
 			<i :class="$style.itemIcon" class="ph-dots-nine ph-bold ph-lg ti-fw"></i><span :class="$style.itemText">{{ i18n.ts.more }}</span>
 			<span v-if="otherMenuItemIndicated" :class="$style.itemIndicator"><i class="_indicatorCircle"></i></span>
 		</button>
 		<MkA :class="$style.item" :activeClass="$style.active" to="/settings">
-			<i :class="$style.itemIcon" class="ph-gear ph-bold pg-lg ti-fw"></i><span :class="$style.itemText">{{ i18n.ts.settings }}</span>
+			<i :class="$style.itemIcon" class="ph-gear ph-bold ph-lg ti-fw"></i><span :class="$style.itemText">{{ i18n.ts.settings }}</span>
 		</MkA>
 	</div>
 	<div :class="$style.bottom">
@@ -146,7 +149,7 @@ function more() {
 		left: 0;
 		right: 0;
 		bottom: 0;
-		border-radius: 4px;
+		border-radius: var(--radius-ellipse);
 		background: linear-gradient(90deg, var(--buttonGradateA), var(--buttonGradateB));
 	}
 
@@ -233,7 +236,7 @@ function more() {
 			left: 0;
 			right: 0;
 			bottom: 0;
-			border-radius: 4px;
+			border-radius: var(--radius-ellipse);
 			background: var(--accentedBg);
 		}
 	}
@@ -252,6 +255,12 @@ function more() {
 	color: var(--navIndicator);
 	font-size: 8px;
 	animation: blink 1s infinite;
+
+	&:has(.itemIndicateValueIcon) {
+		animation: none;
+		left: auto;
+		right: 20px;
+	}
 }
 
 .itemText {

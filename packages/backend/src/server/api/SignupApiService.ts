@@ -23,6 +23,7 @@ import { L_CHARS, secureRndstr } from '@/misc/secure-rndstr.js';
 import { SigninService } from './SigninService.js';
 import type { FastifyRequest, FastifyReply } from 'fastify';
 import instance from './endpoints/charts/instance.js';
+import { RoleService } from '@/core/RoleService.js';
 
 @Injectable()
 export class SignupApiService {
@@ -52,6 +53,7 @@ export class SignupApiService {
 		private signupService: SignupService,
 		private signinService: SigninService,
 		private emailService: EmailService,
+		private roleService: RoleService,
 	) {
 	}
 
@@ -147,7 +149,20 @@ export class SignupApiService {
 				return;
 			}
 
-			if (ticket.usedAt) {
+			// メアド認証が有効の場合
+			if (instance.emailRequiredForSignup) {
+				// メアド認証済みならエラー
+				if (ticket.usedBy) {
+					reply.code(400);
+					return;
+				}
+
+				// 認証しておらず、メール送信から30分以内ならエラー
+				if (ticket.usedAt && ticket.usedAt.getTime() + (1000 * 60 * 30) > Date.now()) {
+					reply.code(400);
+					return;
+				}
+			} else if (ticket.usedAt) {
 				reply.code(400);
 				return;
 			}
@@ -199,7 +214,7 @@ export class SignupApiService {
 			reply.code(204);
 			return;
 		} else if (instance.approvalRequiredForSignup) {
-			await this.signupService.signup({
+			const { account } = await this.signupService.signup({
 				username, password, host, reason,
 			});
 
@@ -207,6 +222,26 @@ export class SignupApiService {
 				this.emailService.sendEmail(emailAddress, 'Approval pending',
 					'Congratulations! Your account is now pending approval. You will get notified when you have been accepted.',
 					'Congratulations! Your account is now pending approval. You will get notified when you have been accepted.');
+			}
+
+			if (ticket) {
+				await this.registrationTicketsRepository.update(ticket.id, {
+					usedAt: new Date(),
+					usedBy: account,
+					usedById: account.id,
+				});
+			}
+
+			const moderators = await this.roleService.getModerators();
+
+			for (const moderator of moderators) {
+				const profile = await this.userProfilesRepository.findOneBy({ userId: moderator.id });
+
+				if (profile?.email) {
+					this.emailService.sendEmail(profile.email, 'New user awaiting approval',
+						`A new user called ${account.username} is awaiting approval with the following reason: "${reason}"`,
+						`A new user called ${account.username} is awaiting approval with the following reason: "${reason}"`);
+				}
 			}
 
 			reply.code(204);
@@ -251,6 +286,10 @@ export class SignupApiService {
 		try {
 			const pendingUser = await this.userPendingsRepository.findOneByOrFail({ code });
 
+			if (this.idService.parse(pendingUser.id).date.getTime() + (1000 * 60 * 30) < Date.now()) {
+				throw new FastifyReplyError(400, 'EXPIRED');
+			}
+
 			const { account, secret } = await this.signupService.signup({
 				username: pendingUser.username,
 				passwordHash: pendingUser.password,
@@ -284,6 +323,19 @@ export class SignupApiService {
 						'Congratulations! Your account is now pending approval. You will get notified when you have been accepted.',
 						'Congratulations! Your account is now pending approval. You will get notified when you have been accepted.');
 				}
+
+				const moderators = await this.roleService.getModerators();
+
+				for (const moderator of moderators) {
+					const profile = await this.userProfilesRepository.findOneBy({ userId: moderator.id });
+
+					if (profile?.email) {
+						this.emailService.sendEmail(profile.email, 'New user awaiting approval',
+							`A new user called ${pendingUser.username} is awaiting approval with the following reason: "${pendingUser.reason}"`,
+							`A new user called ${pendingUser.username} is awaiting approval with the following reason: "${pendingUser.reason}"`);
+					}
+				}
+
 				return { pendingApproval: true };
 			}
 

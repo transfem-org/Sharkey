@@ -18,7 +18,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 							<MkButton v-if="flash.isLiked" v-tooltip="i18n.ts.unlike" asLike class="button" rounded primary @click="unlike()"><i class="ph-heart ph-bold ph-lg"></i><span v-if="flash.likedCount > 0" style="margin-left: 6px;">{{ flash.likedCount }}</span></MkButton>
 							<MkButton v-else v-tooltip="i18n.ts.like" asLike class="button" rounded @click="like()"><i class="ph-heart ph-bold ph-lg"></i><span v-if="flash.likedCount > 0" style="margin-left: 6px;">{{ flash.likedCount }}</span></MkButton>
 							<MkButton v-tooltip="i18n.ts.shareWithNote" class="button" rounded @click="shareWithNote"><i class="ph-repeat ph-bold ph-lg ti-fw"></i></MkButton>
-							<MkButton v-tooltip="i18n.ts.share" class="button" rounded @click="share"><i class="ph-share-network ph-bold pg-lg ti-fw"></i></MkButton>
+							<MkButton v-tooltip="i18n.ts.share" class="button" rounded @click="share"><i class="ph-share-network ph-bold ph-lg ti-fw"></i></MkButton>
 						</div>
 					</div>
 					<div v-else :class="$style.ready">
@@ -33,10 +33,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 					</div>
 				</Transition>
 				<MkFolder :defaultOpen="false" :max-height="280" class="_margin">
-					<template #icon><i class="ph-code ph-bold pg-lg"></i></template>
+					<template #icon><i class="ph-code ph-bold ph-lg"></i></template>
 					<template #label>{{ i18n.ts._play.viewSource }}</template>
 
-					<MkCode :code="flash.script" :inline="false" class="_monospace"/>
+					<MkCode :code="flash.script" lang="is" :inline="false" class="_monospace"/>
 				</MkFolder>
 				<div :class="$style.footer">
 					<Mfm :text="`By @${flash.user.username}`"/>

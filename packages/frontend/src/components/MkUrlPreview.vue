@@ -72,7 +72,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</div>
 		<div v-if="!playerEnabled && player.url" :class="$style.action">
 			<MkButton :small="true" inline @click="playerEnabled = true">
-				<i class="ph-play ph-bold pg-lg"></i> {{ i18n.ts.enablePlayer }}
+				<i class="ph-play ph-bold ph-lg"></i> {{ i18n.ts.enablePlayer }}
 			</MkButton>
 			<MkButton v-if="!isMobile" :small="true" inline @click="openPlayer()">
 				<i class="ph-picture-in-picture ph-bold ph-lg"></i> {{ i18n.ts.openInWindow }}
@@ -231,7 +231,7 @@ onUnmounted(() => {
 	display: block;
 	font-size: 14px;
 	box-shadow: 0 0 0 1px var(--divider);
-	border-radius: 5px;
+	border-radius: var(--radius-sm);
 	overflow: clip;
 
 	&:hover {

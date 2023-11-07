@@ -4,7 +4,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<div ref="root">
+<div ref="root" :class="$style.root">
 	<XBanner v-for="media in mediaList.filter(media => !previewable(media))" :key="media.id" :media="media"/>
 	<div v-if="mediaList.filter(media => previewable(media)).length > 0" :class="$style.container">
 		<div
@@ -21,6 +21,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<template v-for="media in mediaList.filter(media => previewable(media))">
 				<XVideo v-if="media.type.startsWith('video')" :key="`video:${media.id}`" :class="$style.media" :video="media"/>
 				<XImage v-else-if="media.type.startsWith('image')" :key="`image:${media.id}`" :class="$style.media" class="image" :data-id="media.id" :image="media" :raw="raw"/>
+				<XModPlayer v-else-if="isModule(media)" :key="media.id" :module="media"/>
 			</template>
 		</div>
 	</div>
@@ -71,8 +72,9 @@ import 'photoswipe/style.css';
 import XBanner from '@/components/MkMediaBanner.vue';
 import XImage from '@/components/MkMediaImage.vue';
 import XVideo from '@/components/MkMediaVideo.vue';
+import XModPlayer from '@/components/MkModPlayer.vue';
 import * as os from '@/os.js';
-import { FILE_TYPE_BROWSERSAFE } from '@/const';
+import { FILE_TYPE_BROWSERSAFE, FILE_EXT_TRACKER_MODULES, FILE_TYPE_TRACKER_MODULES } from '@/const.js';
 import { defaultStore } from '@/store.js';
 import { getScrollContainer, getBodyScrollHeight } from '@/scripts/scroll.js';
 
@@ -145,6 +147,12 @@ async function calcAspectRatio() {
 
 	gallery.value.style.aspectRatio = 'initial';
 }
+
+const isModule = (file: Misskey.entities.DriveFile): boolean => {
+	return FILE_TYPE_TRACKER_MODULES.includes(file.type) || FILE_EXT_TRACKER_MODULES.some((ext) => {
+		return (file.name.toLowerCase().endsWith('.' + ext) || file.name.toLowerCase().endsWith('.' + ext + '.unknown'));
+	});
+};
 
 onMounted(() => {
 	calcAspectRatio();
@@ -255,11 +263,16 @@ onUnmounted(() => {
 const previewable = (file: Misskey.entities.DriveFile): boolean => {
 	if (file.type === 'image/svg+xml') return true; // svgのwebpublic/thumbnailはpngなのでtrue
 	// FILE_TYPE_BROWSERSAFEに適合しないものはブラウザで表示するのに不適切
+	if (isModule(file)) return true;
 	return (file.type.startsWith('video') || file.type.startsWith('image')) && FILE_TYPE_BROWSERSAFE.includes(file.type);
 };
 </script>
 
 <style lang="scss" module>
+.root {
+	cursor: auto; /* not clickToOpen-able */
+}
+
 .container {
 	position: relative;
 	width: 100%;
@@ -341,7 +354,7 @@ const previewable = (file: Misskey.entities.DriveFile): boolean => {
 
 .media {
 	overflow: hidden; // clipにするとバグる
-	border-radius: 5px;
+	border-radius: var(--radius-sm);
 }
 
 :global(.pswp) {

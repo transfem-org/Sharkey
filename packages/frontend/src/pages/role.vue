@@ -74,7 +74,7 @@ const users = $computed(() => ({
 
 const headerTabs = $computed(() => [{
 	key: 'users',
-	icon: 'ph-users ph-bold pg-lg',
+	icon: 'ph-users ph-bold ph-lg',
 	title: i18n.ts.users,
 }, {
 	key: 'timeline',
@@ -84,7 +84,7 @@ const headerTabs = $computed(() => [{
 
 definePageMetadata(computed(() => ({
 	title: role?.name,
-	icon: 'ph-seal-check ph-bold pg-lg',
+	icon: 'ph-seal-check ph-bold ph-lg',
 })));
 </script>
 
@@ -104,7 +104,7 @@ definePageMetadata(computed(() => ({
   width: 128px;
 	height: 128px;
 	margin-bottom: 16px;
-	border-radius: 4px;
+	border-radius: var(--radius-md);
 }
 </style>
 

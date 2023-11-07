@@ -177,7 +177,7 @@ const headerTabs = $computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.dashboard,
-	icon: 'ph-gauge ph-bold pg-lg',
+	icon: 'ph-gauge ph-bold ph-lg',
 });
 </script>
 

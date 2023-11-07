@@ -24,7 +24,12 @@ export class NoteEdit {
 	@Column("text", {
 		nullable: true,
 	})
-	public text: string | null;
+	public oldText: string | null;
+
+	@Column("text", {
+		nullable: true,
+	})
+	public newText: string | null;
 
 	@Column("varchar", {
 		length: 512,
@@ -43,4 +48,9 @@ export class NoteEdit {
 		comment: "The updated date of the Note.",
 	})
 	public updatedAt: Date;
+
+	@Column("timestamp with time zone", {
+		comment: "The old date from before the edit",
+	})
+	public oldDate: Date;
 }

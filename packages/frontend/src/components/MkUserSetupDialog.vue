@@ -15,7 +15,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<template v-if="page === 1" #header><i class="ph-user-list ph-bold ph-lg"></i> {{ i18n.ts._initialAccountSetting.profileSetting }}</template>
 	<template v-else-if="page === 2" #header><i class="ph-lock ph-bold ph-lg"></i> {{ i18n.ts._initialAccountSetting.privacySetting }}</template>
 	<template v-else-if="page === 3" #header><i class="ph-user-plus ph-bold ph-lg"></i> {{ i18n.ts.follow }}</template>
-	<template v-else-if="page === 4" #header><i class="ph-bell-ringing ph-bold pg-lg"></i> {{ i18n.ts.pushNotification }}</template>
+	<template v-else-if="page === 4" #header><i class="ph-bell-ringing ph-bold ph-lg"></i> {{ i18n.ts.pushNotification }}</template>
 	<template v-else-if="page === 5" #header>{{ i18n.ts.done }}</template>
 	<template v-else #header>{{ i18n.ts.initialAccountSetting }}</template>
 
@@ -38,7 +38,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 							<i class="ph-confetti ph-bold ph-lg" style="display: block; margin: auto; font-size: 3em; color: var(--accent);"></i>
 							<div style="font-size: 120%;">{{ i18n.ts._initialAccountSetting.accountCreated }}</div>
 							<div>{{ i18n.ts._initialAccountSetting.letsStartAccountSetup }}</div>
-							<MkButton primary rounded gradate style="margin: 16px auto 0 auto;" data-cy-user-setup-continue @click="page++">{{ i18n.ts._initialAccountSetting.profileSetting }} <i class="ph-arrow-right ph-bold pg-lg"></i></MkButton>
+							<MkButton primary rounded gradate style="margin: 16px auto 0 auto;" data-cy-user-setup-continue @click="page++">{{ i18n.ts._initialAccountSetting.profileSetting }} <i class="ph-arrow-right ph-bold ph-lg"></i></MkButton>
 							<MkButton style="margin: 0 auto;" transparent rounded @click="later(true)">{{ i18n.ts.later }}</MkButton>
 						</div>
 					</MkSpacer>
@@ -46,24 +46,32 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</template>
 			<template v-else-if="page === 1">
 				<div style="height: 100cqh; overflow: auto;">
-					<MkSpacer :marginMin="20" :marginMax="28">
-						<XProfile/>
-						<div class="_buttonsCenter" style="margin-top: 16px;">
-							<MkButton rounded data-cy-user-setup-back @click="page--"><i class="ph-arrow-left ph-bold pg-lg"></i> {{ i18n.ts.goBack }}</MkButton>
-							<MkButton primary rounded gradate data-cy-user-setup-continue @click="page++">{{ i18n.ts.continue }} <i class="ph-arrow-right ph-bold pg-lg"></i></MkButton>
+					<div :class="$style.pageRoot">
+						<MkSpacer :marginMin="20" :marginMax="28" :class="$style.pageMain">
+							<XProfile/>
+						</MkSpacer>
+						<div :class="$style.pageFooter">
+							<div class="_buttonsCenter">
+								<MkButton rounded data-cy-user-setup-back @click="page--"><i class="ph-arrow-left ph-bold ph-lg"></i> {{ i18n.ts.goBack }}</MkButton>
+								<MkButton primary rounded gradate data-cy-user-setup-continue @click="page++">{{ i18n.ts.continue }} <i class="ph-arrow-right ph-bold ph-lg"></i></MkButton>
+							</div>
 						</div>
-					</MkSpacer>
+					</div>
 				</div>
 			</template>
 			<template v-else-if="page === 2">
 				<div style="height: 100cqh; overflow: auto;">
-					<MkSpacer :marginMin="20" :marginMax="28">
-						<XPrivacy/>
-						<div class="_buttonsCenter" style="margin-top: 16px;">
-							<MkButton rounded data-cy-user-setup-back @click="page--"><i class="ph-arrow-left ph-bold pg-lg"></i> {{ i18n.ts.goBack }}</MkButton>
-							<MkButton primary rounded gradate data-cy-user-setup-continue @click="page++">{{ i18n.ts.continue }} <i class="ph-arrow-right ph-bold pg-lg"></i></MkButton>
+					<div :class="$style.pageRoot">
+						<MkSpacer :marginMin="20" :marginMax="28" :class="$style.pageMain">
+							<XPrivacy/>
+						</MkSpacer>
+						<div :class="$style.pageFooter">
+							<div class="_buttonsCenter">
+								<MkButton rounded data-cy-user-setup-back @click="page--"><i class="ph-arrow-left ph-bold ph-lg"></i> {{ i18n.ts.goBack }}</MkButton>
+								<MkButton primary rounded gradate data-cy-user-setup-continue @click="page++">{{ i18n.ts.continue }} <i class="ph-arrow-right ph-bold ph-lg"></i></MkButton>
+							</div>
 						</div>
-					</MkSpacer>
+					</div>
 				</div>
 			</template>
 			<template v-else-if="page === 3">
@@ -73,8 +81,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 					</MkSpacer>
 					<div :class="$style.pageFooter">
 						<div class="_buttonsCenter">
-							<MkButton rounded data-cy-user-setup-back @click="page--"><i class="ph-arrow-left ph-bold pg-lg"></i> {{ i18n.ts.goBack }}</MkButton>
-							<MkButton primary rounded gradate style="" data-cy-user-setup-continue @click="page++">{{ i18n.ts.continue }} <i class="ph-arrow-right ph-bold pg-lg"></i></MkButton>
+							<MkButton rounded data-cy-user-setup-back @click="page--"><i class="ph-arrow-left ph-bold ph-lg"></i> {{ i18n.ts.goBack }}</MkButton>
+							<MkButton primary rounded gradate style="" data-cy-user-setup-continue @click="page++">{{ i18n.ts.continue }} <i class="ph-arrow-right ph-bold ph-lg"></i></MkButton>
 						</div>
 					</div>
 				</div>
@@ -83,13 +91,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<div :class="$style.centerPage">
 					<MkSpacer :marginMin="20" :marginMax="28">
 						<div class="_gaps" style="text-align: center;">
-							<i class="ph-bell-ringing ph-bold pg-lg" style="display: block; margin: auto; font-size: 3em; color: var(--accent);"></i>
+							<i class="ph-bell-ringing ph-bold ph-lg" style="display: block; margin: auto; font-size: 3em; color: var(--accent);"></i>
 							<div style="font-size: 120%;">{{ i18n.ts.pushNotification }}</div>
 							<div style="padding: 0 16px;">{{ i18n.t('_initialAccountSetting.pushNotificationDescription', { name: instance.name ?? host }) }}</div>
 							<MkPushNotificationAllowButton primary showOnlyToRegister style="margin: 0 auto;"/>
 							<div class="_buttonsCenter" style="margin-top: 16px;">
-								<MkButton rounded data-cy-user-setup-back @click="page--"><i class="ph-arrow-left ph-bold pg-lg"></i> {{ i18n.ts.goBack }}</MkButton>
-								<MkButton primary rounded gradate data-cy-user-setup-continue @click="page++">{{ i18n.ts.continue }} <i class="ph-arrow-right ph-bold pg-lg"></i></MkButton>
+								<MkButton rounded data-cy-user-setup-back @click="page--"><i class="ph-arrow-left ph-bold ph-lg"></i> {{ i18n.ts.goBack }}</MkButton>
+								<MkButton primary rounded gradate data-cy-user-setup-continue @click="page++">{{ i18n.ts.continue }} <i class="ph-arrow-right ph-bold ph-lg"></i></MkButton>
 							</div>
 						</div>
 					</MkSpacer>
@@ -102,16 +110,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<div class="_gaps" style="text-align: center;">
 							<i class="ph-check ph-bold ph-lg" style="display: block; margin: auto; font-size: 3em; color: var(--accent);"></i>
 							<div style="font-size: 120%;">{{ i18n.ts._initialAccountSetting.initialAccountSettingCompleted }}</div>
-							<I18n :src="i18n.ts._initialAccountSetting.ifYouNeedLearnMore" tag="div" style="padding: 0 16px;">
-								<template #name>{{ instance.name ?? host }}</template>
-								<template #link>
-									<a href="https://misskey-hub.net/help.html" target="_blank" class="_link">{{ i18n.ts.help }}</a>
-								</template>
-							</I18n>
-							<div>{{ i18n.t('_initialAccountSetting.haveFun', { name: instance.name ?? host }) }}</div>
+							<div>{{ i18n.t('_initialAccountSetting.youCanContinueTutorial', { name: instance.name ?? host }) }}</div>
 							<div class="_buttonsCenter" style="margin-top: 16px;">
-								<MkButton rounded data-cy-user-setup-back @click="page--"><i class="ph-arrow-left ph-bold pg-lg"></i> {{ i18n.ts.goBack }}</MkButton>
-								<MkButton primary rounded gradate data-cy-user-setup-continue @click="close(false)">{{ i18n.ts.close }}</MkButton>
+								<MkButton rounded primary gradate data-cy-user-setup-continue @click="launchTutorial()">{{ i18n.ts._initialAccountSetting.startTutorial }} <i class="ph-arrow-right ph-bold ph-lg"></i></MkButton>
+							</div>
+							<div class="_buttonsCenter">
+								<MkButton rounded data-cy-user-setup-back @click="page--"><i class="ph-arrow-left ph-bold ph-lg"></i> {{ i18n.ts.goBack }}</MkButton>
+								<MkButton rounded primary data-cy-user-setup-continue @click="setupComplete()">{{ i18n.ts.close }}</MkButton>
 							</div>
 						</div>
 					</MkSpacer>
@@ -123,7 +128,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { ref, shallowRef, watch } from 'vue';
+import { ref, shallowRef, watch, nextTick, defineAsyncComponent } from 'vue';
 import MkModalWindow from '@/components/MkModalWindow.vue';
 import MkButton from '@/components/MkButton.vue';
 import XProfile from '@/components/MkUserSetupDialog.Profile.vue';
@@ -143,6 +148,7 @@ const emit = defineEmits<{
 
 const dialog = shallowRef<InstanceType<typeof MkModalWindow>>();
 
+// eslint-disable-next-line vue/no-setup-props-destructure
 const page = ref(defaultStore.state.accountSetupWizard);
 
 watch(page, () => {
@@ -158,8 +164,22 @@ async function close(skip: boolean) {
 		if (canceled) return;
 	}
 
-	dialog.value.close();
+	dialog.value?.close();
 	defaultStore.set('accountSetupWizard', -1);
+}
+
+function setupComplete() {
+	defaultStore.set('accountSetupWizard', -1);
+	dialog.value?.close();
+}
+
+function launchTutorial() {
+	setupComplete();
+	nextTick(() => {
+		os.popup(defineAsyncComponent(() => import('@/components/MkTutorialDialog.vue')), {
+			initialPage: 1,
+		}, {}, 'closed');
+	});
 }
 
 async function later(later: boolean) {
@@ -171,7 +191,7 @@ async function later(later: boolean) {
 		if (canceled) return;
 	}
 
-	dialog.value.close();
+	dialog.value?.close();
 	defaultStore.set('accountSetupWizard', 0);
 }
 </script>
@@ -214,10 +234,21 @@ async function later(later: boolean) {
 	box-sizing: border-box;
 }
 
+.pageRoot {
+	display: flex;
+	flex-direction: column;
+	min-height: 100%;
+}
+
+.pageMain {
+	flex-grow: 1;
+}
+
 .pageFooter {
 	position: sticky;
 	bottom: 0;
 	left: 0;
+	flex-shrink: 0;
 	padding: 12px;
 	border-top: solid 0.5px var(--divider);
 	-webkit-backdrop-filter: blur(15px);

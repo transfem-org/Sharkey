@@ -27,7 +27,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</div>
 	<div :class="$style.caption"><slot name="caption"></slot></div>
 
-	<MkButton v-if="manualSave && changed" primary @click="updated"><i class="ph-floppy-disk ph-bold pg-lg"></i> {{ i18n.ts.save }}</MkButton>
+	<MkButton v-if="manualSave && changed" primary @click="updated"><i class="ph-floppy-disk ph-bold ph-lg"></i> {{ i18n.ts.save }}</MkButton>
 </div>
 </template>
 
@@ -241,7 +241,7 @@ function show(ev: MouseEvent) {
 	color: var(--fg);
 	background: var(--panel);
 	border: solid 1px var(--panel);
-	border-radius: 5px;
+	border-radius: var(--radius-sm);
 	outline: none;
 	box-shadow: none;
 	box-sizing: border-box;

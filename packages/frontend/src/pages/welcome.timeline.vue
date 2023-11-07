@@ -9,8 +9,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<div v-for="note in notes" :key="note.id" :class="$style.note">
 			<div class="_panel" :class="$style.content">
 				<div>
-					<MkA v-if="note.replyId" class="reply" :to="`/notes/${note.replyId}`"><i class="ph-arrow-u-up-left ph-bold pg-lg"></i></MkA>
-					<Mfm v-if="note.text" :text="note.text" :author="note.user" :i="$i"/>
+					<MkA v-if="note.replyId" class="reply" :to="`/notes/${note.replyId}`"><i class="ph-arrow-u-up-left ph-bold ph-lg"></i></MkA>
+					<Mfm v-if="note.text" :text="note.text" :author="note.user"/>
 					<MkA v-if="note.renoteId" class="rp" :to="`/notes/${note.renoteId}`">RN: ...</MkA>
 				</div>
 				<div v-if="note.files.length > 0" :class="$style.richcontent">
@@ -88,7 +88,7 @@ onUpdated(() => {
 	padding: 16px;
 	margin: 0 0 0 auto;
 	max-width: max-content;
-	border-radius: 4px;
+	border-radius: var(--radius-md);
 }
 
 .richcontent {

@@ -9,7 +9,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<MkLoading v-if="fetching"/>
 		<div v-else :class="$style.root">
 			<div class="item _panel users">
-				<div class="icon"><i class="ph-users ph-bold pg-lg"></i></div>
+				<div class="icon"><i class="ph-users ph-bold ph-lg"></i></div>
 				<div class="body">
 					<div class="value">
 						<MkNumber :value="stats.originalUsersCount" style="margin-right: 0.5em;"/>
@@ -29,7 +29,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</div>
 			</div>
 			<div class="item _panel instances">
-				<div class="icon"><i class="ph-planet ph-bold pg-lg"></i></div>
+				<div class="icon"><i class="ph-planet ph-bold ph-lg"></i></div>
 				<div class="body">
 					<div class="value">
 						<MkNumber :value="stats.instances" style="margin-right: 0.5em;"/>
@@ -38,7 +38,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</div>
 			</div>
 			<div class="item _panel emojis">
-				<div class="icon"><i class="ph-smiley ph-bold pg-lg"></i></div>
+				<div class="icon"><i class="ph-smiley ph-bold ph-lg"></i></div>
 				<div class="body">
 					<div class="value">
 						<MkNumber :value="customEmojis.length" style="margin-right: 0.5em;"/>
@@ -115,7 +115,7 @@ onMounted(async () => {
 				margin-right: 12px;
 				background: var(--accentedBg);
 				color: var(--accent);
-				border-radius: 5px;
+				border-radius: var(--radius);
 			}
 
 			&.users {

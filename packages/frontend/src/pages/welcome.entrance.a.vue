@@ -24,7 +24,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<MarqueeText :duration="40">
 			<MkA v-for="instance in instances" :key="instance.id" :class="$style.federationInstance" :to="`/instance-info/${instance.host}`" behavior="window">
 				<!--<MkInstanceCardMini :instance="instance"/>-->
-				<img v-if="instance.iconUrl" class="icon" :src="instance.iconUrl" alt=""/>
+				<img v-if="instance.iconUrl" class="icon" :src="getInstanceIcon(instance)" alt=""/>
 				<span class="name _monospace">{{ instance.host }}</span>
 			</MkA>
 		</MarqueeText>
@@ -46,9 +46,14 @@ import { instance } from '@/instance.js';
 import number from '@/filters/number.js';
 import MkNumber from '@/components/MkNumber.vue';
 import MkVisitorDashboard from '@/components/MkVisitorDashboard.vue';
+import { getProxiedImageUrl } from '@/scripts/media-proxy.js';
 
 let meta = $ref<Misskey.entities.Instance>();
 let instances = $ref<any[]>();
+
+function getInstanceIcon(instance): string {
+  return getProxiedImageUrl(instance.iconUrl, 'preview');
+}
 
 os.api('meta', { detail: true }).then(_meta => {
 	meta = _meta;
@@ -155,7 +160,7 @@ os.apiGet('federation/instances', {
 		background: var(--acrylicPanel);
 		-webkit-backdrop-filter: var(--blur, blur(15px));
 		backdrop-filter: var(--blur, blur(15px));
-		border-radius: 4px;
+		border-radius: var(--radius-ellipse);
 		overflow: clip;
 		width: 800px;
 		padding: 8px 0;
@@ -175,14 +180,14 @@ os.apiGet('federation/instances', {
 	padding: 6px 12px 6px 6px;
 	margin: 0 10px 0 0;
 	background: var(--panel);
-	border-radius: 4px;
+	border-radius: var(--radius-ellipse);
 
 	> :global(.icon) {
 		display: inline-block;
 		width: 20px;
 		height: 20px;
 		margin-right: 5px;
-		border-radius: 4px;
+		border-radius: var(--radius-ellipse);
 	}
 }
 </style>

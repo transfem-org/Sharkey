@@ -37,12 +37,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</div>
 
 				<div class="_buttons">
-					<MkButton v-if="plugin.config" inline @click="config(plugin)"><i class="ph-gear ph-bold pg-lg"></i> {{ i18n.ts.settings }}</MkButton>
+					<MkButton v-if="plugin.config" inline @click="config(plugin)"><i class="ph-gear ph-bold ph-lg"></i> {{ i18n.ts.settings }}</MkButton>
 					<MkButton inline danger @click="uninstall(plugin)"><i class="ph-trash ph-bold ph-lg"></i> {{ i18n.ts.uninstall }}</MkButton>
 				</div>
 
 				<MkFolder>
-					<template #icon><i class="ph-code ph-bold pg-lg"></i></template>
+					<template #icon><i class="ph-code ph-bold ph-lg"></i></template>
 					<template #label>{{ i18n.ts._plugin.viewSource }}</template>
 
 					<div class="_gaps_s">
@@ -50,7 +50,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 							<MkButton inline @click="copy(plugin)"><i class="ph-copy ph-bold ph-lg"></i> {{ i18n.ts.copy }}</MkButton>
 						</div>
 
-						<MkCode :code="plugin.src ?? ''"/>
+						<MkCode :code="plugin.src ?? ''" lang="is"/>
 					</div>
 				</MkFolder>
 			</div>
@@ -77,9 +77,11 @@ import { definePageMetadata } from '@/scripts/page-metadata.js';
 
 const plugins = ref(ColdDeviceStorage.get('plugins'));
 
-function uninstall(plugin) {
+async function uninstall(plugin) {
 	ColdDeviceStorage.set('plugins', plugins.value.filter(x => x.id !== plugin.id));
-	os.success();
+	await os.apiWithDialog('i/revoke-token', {
+		token: plugin.token,
+	});
 	nextTick(() => {
 		unisonReload();
 	});

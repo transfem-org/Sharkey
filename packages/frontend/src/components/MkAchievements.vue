@@ -123,7 +123,7 @@ onMounted(() => {
 	width: 58px;
 	height: 58px;
 	padding: 6px;
-	border-radius: 100%;
+	border-radius: var(--radius-full);
 	box-sizing: border-box;
 	pointer-events: none;
 	user-select: none;
@@ -190,7 +190,7 @@ onMounted(() => {
 	position: relative;
 	width: 100%;
 	height: 100%;
-	border-radius: 100%;
+	border-radius: var(--radius-full);
 	box-shadow: 0 1px 0px #ffffff88 inset;
 }
 

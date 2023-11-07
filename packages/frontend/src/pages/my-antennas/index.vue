@@ -45,7 +45,7 @@ fetch();
 
 const headerActions = $computed(() => [{
 	asFullButton: true,
-	icon: 'ph-arrows-counter-clockwise ph-bold pg-lg',
+	icon: 'ph-arrows-counter-clockwise ph-bold ph-lg',
 	text: i18n.ts.reload,
 	handler: () => {
 		antennasCache.delete();
@@ -57,7 +57,7 @@ const headerTabs = $computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.manageAntennas,
-	icon: 'ph-flying-saucer ph-bold pg-lg',
+	icon: 'ph-flying-saucer ph-bold ph-lg',
 });
 
 onActivated(() => {
@@ -74,7 +74,7 @@ onActivated(() => {
 	display: block;
 	padding: 16px;
 	border: solid 1px var(--divider);
-	border-radius: 5px;
+	border-radius: var(--radius-sm);
 
 	&:hover {
 		border: solid 1px var(--accent);

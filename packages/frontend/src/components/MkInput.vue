@@ -20,6 +20,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			:placeholder="placeholder"
 			:pattern="pattern"
 			:autocomplete="autocomplete"
+			:autocapitalize="autocapitalize"
 			:spellcheck="spellcheck"
 			:step="step"
 			:list="id"
@@ -58,11 +59,12 @@ const props = defineProps<{
 	placeholder?: string;
 	autofocus?: boolean;
 	autocomplete?: string;
+	autocapitalize?: string;
 	spellcheck?: boolean;
 	step?: any;
 	datalist?: string[];
 	min?: number;
-	max?: number;
+	max?: number | string;
 	inline?: boolean;
 	debounce?: boolean;
 	manualSave?: boolean;
@@ -225,7 +227,7 @@ defineExpose({
 	color: var(--fg);
 	background: var(--panel);
 	border: solid 1px var(--panel);
-	border-radius: 5px;
+	border-radius: var(--radius-sm);
 	outline: none;
 	box-shadow: none;
 	box-sizing: border-box;

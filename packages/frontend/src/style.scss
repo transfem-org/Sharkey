@@ -15,7 +15,15 @@
  */
 
 :root {
+	--radius-xs: 5px;
+	--radius-sm: 5px;
 	--radius: 5px;
+	--radius-md: 5px;
+	--radius-lg: 5px;
+	--radius-xl: 5px;
+	--radius-ellipse: 5px;
+	--radius-full: 5px;
+
 	--marginFull: 16px;
 	--marginHalf: 10px;
 
@@ -30,6 +38,17 @@
 	}
 
 	//--ad: rgb(255 169 0 / 10%);
+}
+
+html.radius-misskey {
+	--radius-xs: 4px;
+	--radius-sm: 8px;
+	--radius: 12px;
+	--radius-md: 16px;
+	--radius-lg: 24px;
+	--radius-xl: 32px;
+	--radius-ellipse: 999px;
+	--radius-full: 100%;
 }
 
 ::selection {
@@ -159,8 +178,21 @@ hr {
 	display: inline-block;
 	width: 1em;
 	height: 1em;
-	border-radius: 100%;
+	border-radius: var(--radius-full);
 	background: currentColor;
+}
+
+._indicateCounter {
+	display: inline-flex;
+	color: var(--fgOnAccent);
+	font-weight: 700;
+	background: var(--indicator);
+	height: 1.5em;
+	min-width: 1em;
+	align-items: center;
+	justify-content: center;
+	border-radius: var(--radius-ellipse);
+	padding: 0.3em 0.5em;
 }
 
 ._noSelect {
@@ -268,7 +300,6 @@ hr {
 
 ._panel {
 	background: color-mix(in srgb, var(--panel) 65%, transparent);
-	backdrop-filter: blur(16px);
 	border-radius: var(--radius);
 	overflow: clip;
 }
@@ -340,19 +371,13 @@ hr {
 	grid-gap: 12px;
 }
 
-._formLinks {
-	> *:not(:last-child) {
-		margin-bottom: 8px;
-	}
-}
-
 ._beta {
 	margin-left: 0.7em;
 	font-size: 65%;
 	padding: 2px 3px;
 	color: var(--accent);
 	border: solid 1px var(--accent);
-	border-radius: 4px;
+	border-radius: var(--radius-xs);
 	vertical-align: top;
 }
 
@@ -392,7 +417,7 @@ hr {
 		vertical-align: bottom;
 		height: 128px;
 		margin-bottom: 16px;
-		border-radius: 4px;
+		border-radius: var(--radius-md);
 	}
 }
 
@@ -407,10 +432,6 @@ hr {
 
 ._monospace {
 	font-family: Fira code, Fira Mono, Consolas, Menlo, Courier, monospace !important;
-}
-
-.prism-editor__textarea:focus {
-	outline: none;
 }
 
 ._zoom {

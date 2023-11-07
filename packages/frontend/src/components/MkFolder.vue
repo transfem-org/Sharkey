@@ -139,7 +139,7 @@ onMounted(() => {
 	background: var(--buttonBg);
 	-webkit-backdrop-filter: var(--blur, blur(15px));
 	backdrop-filter: var(--blur, blur(15px));
-	border-radius: 5px;
+	border-radius: var(--radius-sm);
 	transition: border-radius 0.3s;
 
 	&:hover {
@@ -153,7 +153,7 @@ onMounted(() => {
 	}
 
 	&.opened {
-		border-radius: 6px 6px 0 0;
+		border-radius: var(--radius-sm) var(--radius-sm) 0 0;
 	}
 }
 
@@ -207,7 +207,7 @@ onMounted(() => {
 
 .body {
 	background: var(--panel);
-	border-radius: 0 0 6px 6px;
+	border-radius: 0 0 var(--radius-sm) var(--radius-sm);
 	container-type: inline-size;
 
 	&.bgSame {

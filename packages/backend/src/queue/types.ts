@@ -39,6 +39,7 @@ export type DbJobData<T extends keyof DbJobMap> = DbJobMap[T];
 
 export type DbJobMap = {
 	deleteDriveFiles: DbJobDataWithUser;
+	exportAccountData: DbJobDataWithUser;
 	exportCustomEmojis: DbJobDataWithUser;
 	exportAntennas: DBExportAntennasData;
 	exportNotes: DbJobDataWithUser;

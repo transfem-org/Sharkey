@@ -39,7 +39,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</MkInput>
 				<MkInput v-model="token" type="text" pattern="^([0-9]{6}|[A-Z0-9]{32})$" autocomplete="one-time-code" :spellcheck="false" required>
 					<template #label>{{ i18n.ts.token }}</template>
-					<template #prefix><i class="ph-keyhole ph-bold pg-lg"></i></template>
+					<template #prefix><i class="ph-keyhole ph-bold ph-lg"></i></template>
 				</MkInput>
 				<MkButton type="submit" :disabled="signing" large primary rounded style="margin: 0 auto;">{{ signing ? i18n.ts.loggingIn : i18n.ts.login }}</MkButton>
 			</div>
@@ -236,6 +236,6 @@ function resetPassword(): void {
 	background: #ddd;
 	background-position: center;
 	background-size: cover;
-	border-radius: 5px;
+	border-radius: var(--radius-full);
 }
 </style>

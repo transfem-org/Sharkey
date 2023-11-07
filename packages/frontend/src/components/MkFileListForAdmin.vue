@@ -108,7 +108,7 @@ const props = defineProps<{
 				padding: 2px 4px;
 				background: #ff0000bf;
 				color: #fff;
-				border-radius: 4px;
+				border-radius: var(--radius-xs);
 				font-size: 85%;
 				animation: sensitive-blink 1s infinite;
 			}

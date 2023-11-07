@@ -17,7 +17,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, shallowRef, watch } from 'vue';
+import { computed, inject, onMounted, shallowRef, watch } from 'vue';
 import * as Misskey from 'misskey-js';
 import XDetails from '@/components/MkReactionsViewer.details.vue';
 import MkReactionIcon from '@/components/MkReactionIcon.vue';
@@ -34,6 +34,12 @@ const props = defineProps<{
 	count: number;
 	isInitial: boolean;
 	note: Misskey.entities.Note;
+}>();
+
+const mock = inject<boolean>('mock', false);
+
+const emit = defineEmits<{
+	(ev: 'reactionToggled', emoji: string, newCount: number): void;
 }>();
 
 const buttonEl = shallowRef<HTMLElement>();
@@ -53,6 +59,11 @@ async function toggleReaction() {
 		});
 		if (confirm.canceled) return;
 
+		if (mock) {
+			emit('reactionToggled', props.reaction, (props.count - 1));
+			return;
+		}
+
 		os.api('notes/reactions/delete', {
 			noteId: props.note.id,
 		}).then(() => {
@@ -64,6 +75,11 @@ async function toggleReaction() {
 			}
 		});
 	} else {
+		if (mock) {
+			emit('reactionToggled', props.reaction, (props.count + 1));
+			return;
+		}
+
 		os.api('notes/reactions/create', {
 			noteId: props.note.id,
 			reaction: props.reaction,
@@ -92,24 +108,26 @@ onMounted(() => {
 	if (!props.isInitial) anime();
 });
 
-useTooltip(buttonEl, async (showing) => {
-	const reactions = await os.apiGet('notes/reactions', {
-		noteId: props.note.id,
-		type: props.reaction,
-		limit: 11,
-		_cacheKey_: props.count,
-	});
+if (!mock) {
+	useTooltip(buttonEl, async (showing) => {
+		const reactions = await os.apiGet('notes/reactions', {
+			noteId: props.note.id,
+			type: props.reaction,
+			limit: 10,
+			_cacheKey_: props.count,
+		});
 
-	const users = reactions.map(x => x.user);
+		const users = reactions.map(x => x.user);
 
-	os.popup(XDetails, {
-		showing,
-		reaction: props.reaction,
-		users,
-		count: props.count,
-		targetElement: buttonEl.value,
-	}, {}, 'closed');
-}, 100);
+		os.popup(XDetails, {
+			showing,
+			reaction: props.reaction,
+			users,
+			count: props.count,
+			targetElement: buttonEl.value,
+		}, {}, 'closed');
+	}, 100);
+}
 </script>
 
 <style lang="scss" module>
@@ -119,7 +137,7 @@ useTooltip(buttonEl, async (showing) => {
 	margin: 2px;
 	padding: 0 6px;
 	font-size: 1.5em;
-	border-radius: 5px;
+	border-radius: var(--radius-sm);
 
 	&.canToggle {
 		background: var(--buttonBg);
@@ -136,7 +154,7 @@ useTooltip(buttonEl, async (showing) => {
 	&.small {
 		height: 32px;
 		font-size: 1em;
-		border-radius: 4px;
+		border-radius: var(--radius-xs);
 
 		> .count {
 			font-size: 0.9em;
@@ -147,7 +165,7 @@ useTooltip(buttonEl, async (showing) => {
 	&.large {
 		height: 52px;
 		font-size: 2em;
-		border-radius: 5px;
+		border-radius: var(--radius-sm);
 
 		> .count {
 			font-size: 0.6em;

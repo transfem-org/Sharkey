@@ -7,7 +7,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <div class="_gaps_m">
 	<FromSlot>
 		<template #label>{{ i18n.ts.reactionSettingDescription }}</template>
-		<div v-panel style="border-radius: 5px;">
+		<div v-panel style="border-radius: var(--radius-sm);">
 			<Sortable v-model="reactions" :class="$style.reactions" :itemKey="item => item" :animation="150" :delay="100" :delayOnTouchOnly="true">
 				<template #item="{element}">
 					<button class="_button" :class="$style.reactionsItem" @click="remove(element, $event)">

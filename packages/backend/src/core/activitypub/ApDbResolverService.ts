@@ -12,7 +12,7 @@ import type { MiUserPublickey } from '@/models/UserPublickey.js';
 import { CacheService } from '@/core/CacheService.js';
 import type { MiNote } from '@/models/Note.js';
 import { bindThis } from '@/decorators.js';
-import { MiLocalUser, MiRemoteUser } from '@/models/User.js';
+import type { MiLocalUser, MiRemoteUser } from '@/models/User.js';
 import { getApId } from './type.js';
 import { ApPersonService } from './models/ApPersonService.js';
 import type { IObject } from './type.js';
@@ -162,6 +162,19 @@ export class ApDbResolverService implements OnApplicationShutdown {
 			user,
 			key,
 		};
+	}
+
+	/**
+	 * Sharkey User -> Refetched Key
+	 */
+	@bindThis
+	public async refetchPublicKeyForApId(user: MiRemoteUser): Promise<MiUserPublickey | null> {
+		await this.apPersonService.updatePerson(user.uri);
+		const key = await this.userPublickeysRepository.findOneBy({ userId: user.id });
+		if (key != null) {
+			await this.publicKeyByUserIdCache.set(user.id, key);
+		}
+		return key;
 	}
 
 	@bindThis

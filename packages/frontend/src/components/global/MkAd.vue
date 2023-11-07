@@ -169,7 +169,7 @@ function reduceFrequency(): void {
 	display: block;
 	object-fit: contain;
 	margin: auto;
-	border-radius: 5px;
+	border-radius: var(--radius-xs);
 }
 
 .i {
@@ -179,7 +179,7 @@ function reduceFrequency(): void {
 	display: grid;
 	place-content: center;
 	background: var(--panel);
-	border-radius: 100%;
+	border-radius: var(--radius-full);
 	padding: 2px;
 }
 

@@ -2,6 +2,7 @@ version: "3"
 
 services:
   web:
+#   image: ghcr.io/transfem-org/sharkey:stable
     build: .
     restart: always
     links:
@@ -17,20 +18,19 @@ services:
       - "3000:3000"
     networks:
       - shonk
-      - web
     volumes:
       - ./files:/sharkey/files
       - ./.config:/sharkey/.config:ro
 
   redis:
     restart: always
-    image: redis:7-alpine
+    image: eqalpha/keydb:latest
     networks:
       - shonk
     volumes:
       - ./redis:/data
     healthcheck:
-      test: "redis-cli ping"
+      test: "keydb-cli ping"
       interval: 5s
       retries: 20
 
@@ -64,5 +64,3 @@ services:
 
 networks:
   shonk:
-  web:
-    external: true

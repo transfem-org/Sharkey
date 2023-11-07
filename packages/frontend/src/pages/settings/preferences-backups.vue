@@ -114,6 +114,7 @@ type Profile = {
 		hot: Record<keyof typeof defaultStoreSaveKeys, unknown>;
 		cold: Record<keyof typeof coldDeviceStorageSaveKeys, unknown>;
 		fontSize: string | null;
+		cornerRadius: string | null;
 		useSystemFont: 't' | null;
 		wallpaper: string | null;
 	};
@@ -171,6 +172,7 @@ function getSettings(): Profile['settings'] {
 		hot,
 		cold,
 		fontSize: miLocalStorage.getItem('fontSize'),
+		cornerRadius: miLocalStorage.getItem('cornerRadius'),
 		useSystemFont: miLocalStorage.getItem('useSystemFont') as 't' | null,
 		wallpaper: miLocalStorage.getItem('wallpaper'),
 	};
@@ -284,6 +286,13 @@ async function applyProfile(id: string): Promise<void> {
 		miLocalStorage.removeItem('fontSize');
 	}
 
+	// cornerRadius
+	if (settings.cornerRadius) {
+		miLocalStorage.setItem('cornerRadius', settings.cornerRadius);
+	} else {
+		miLocalStorage.removeItem('cornerRadius');
+	}
+
 	// useSystemFont
 	if (settings.useSystemFont) {
 		miLocalStorage.setItem('useSystemFont', settings.useSystemFont);
@@ -391,7 +400,7 @@ function menu(ev: MouseEvent, profileId: string) {
 		action: () => rename(profileId),
 	}, {
 		text: ts._preferencesBackups.save,
-		icon: 'ph-floppy-disk ph-bold pg-lg',
+		icon: 'ph-floppy-disk ph-bold ph-lg',
 		action: () => save(profileId),
 	}, null, {
 		text: ts.delete,
@@ -417,7 +426,7 @@ onUnmounted(() => {
 
 definePageMetadata(computed(() => ({
 	title: ts.preferencesBackups,
-	icon: 'ph-floppy-disk ph-bold pg-lg',
+	icon: 'ph-floppy-disk ph-bold ph-lg',
 })));
 </script>
 

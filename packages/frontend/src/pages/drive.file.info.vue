@@ -41,7 +41,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<button class="_button" :class="$style.fileAltEditBtn" @click="describe()">
 				<MkKeyValue>
 					<template #key>{{ i18n.ts.description }}</template>
-					<template #value>{{ file.comment ? file.comment : `(${i18n.ts.none})` }}<i class="ti ti-pencil" :class="$style.fileAltEditIcon"></i></template>
+					<template #value>{{ file.comment ? file.comment : `(${i18n.ts.none})` }}<i class="ph-pencil ph-bold ph-lg" :class="$style.fileAltEditIcon"></i></template>
 				</MkKeyValue>
 			</button>
 			<MkKeyValue :class="$style.fileMetaDataChildren">
@@ -55,6 +55,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<MkKeyValue :class="$style.fileMetaDataChildren">
 				<template #key>{{ i18n.ts._fileViewer.size }}</template>
 				<template #value>{{ bytes(file.size) }}</template>
+			</MkKeyValue>
+			<MkKeyValue :class="$style.fileMetaDataChildren" :copy="file.url">
+				<template #key>URL</template>
+				<template #value>{{ file.url }}</template>
 			</MkKeyValue>
 		</div>
 	</div>
@@ -221,7 +225,7 @@ onMounted(async () => {
 
 	.fileQuickActionsOthersButton {
 		padding: .5rem;
-		border-radius: 99rem;
+		border-radius: var(--radius-ellipse);
 
 		&:hover,
 		&:focus-visible {

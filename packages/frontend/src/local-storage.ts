@@ -21,6 +21,7 @@ type Keys =
 	'colorScheme' |
 	'useSystemFont' |
 	'fontSize' |
+	'cornerRadius' |
 	'ui' |
 	'ui_temp' |
 	'locale' |

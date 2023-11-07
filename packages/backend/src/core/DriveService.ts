@@ -461,35 +461,11 @@ export class DriveService {
 		requestHeaders = null,
 		ext = null,
 	}: AddFileArgs): Promise<MiDriveFile> {
-		let skipNsfwCheck = false;
 		const instance = await this.metaService.fetch();
 		const userRoleNSFW = user && (await this.roleService.getUserPolicies(user.id)).alwaysMarkNsfw;
-		if (user == null) {
-			skipNsfwCheck = true;
-		} else if (userRoleNSFW) {
-			skipNsfwCheck = true;
-		}
-		if (instance.sensitiveMediaDetection === 'none') skipNsfwCheck = true;
-		if (user && instance.sensitiveMediaDetection === 'local' && this.userEntityService.isRemoteUser(user)) skipNsfwCheck = true;
-		if (user && instance.sensitiveMediaDetection === 'remote' && this.userEntityService.isLocalUser(user)) skipNsfwCheck = true;
 
-		const info = await this.fileInfoService.getFileInfo(path, {
-			skipSensitiveDetection: skipNsfwCheck,
-			sensitiveThreshold: // 感度が高いほどしきい値は低くすることになる
-			instance.sensitiveMediaDetectionSensitivity === 'veryHigh' ? 0.1 :
-			instance.sensitiveMediaDetectionSensitivity === 'high' ? 0.3 :
-			instance.sensitiveMediaDetectionSensitivity === 'low' ? 0.7 :
-			instance.sensitiveMediaDetectionSensitivity === 'veryLow' ? 0.9 :
-			0.5,
-			sensitiveThresholdForPorn: 0.75,
-			enableSensitiveMediaDetectionForVideos: instance.enableSensitiveMediaDetectionForVideos,
-		});
+		const info = await this.fileInfoService.getFileInfo(path);
 		this.registerLogger.info(`${JSON.stringify(info)}`);
-
-		// 現状 false positive が多すぎて実用に耐えない
-		//if (info.porn && instance.disallowUploadWhenPredictedAsPorn) {
-		//	throw new IdentifiableError('282f77bf-5816-4f72-9264-aa14d8261a21', 'Detected as porn.');
-		//}
 
 		// detect name
 		const detectedName = correctFilename(
@@ -586,7 +562,6 @@ export class DriveService {
 			: false;
 
 		if (info.sensitive && profile!.autoSensitive) file.isSensitive = true;
-		if (info.sensitive && instance.setSensitiveFlagAutomatically) file.isSensitive = true;
 		if (userRoleNSFW) file.isSensitive = true;
 
 		if (url !== null) {

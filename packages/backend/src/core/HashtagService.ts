@@ -176,20 +176,30 @@ export class HashtagService {
 
 		// チャート用
 		redisPipeline.pfadd(`hashtagUsers:${hashtag}:${window}`, userId);
-		redisPipeline.expire(`hashtagUsers:${hashtag}:${window}`,
-			60 * 60 * 24 * 3, // 3日間
-			'NX', // "NX -- Set expiry only when the key has no expiry" = 有効期限がないときだけ設定
-		);
 
 		// ユニークカウント用
 		// TODO: Bloom Filter を使うようにしても良さそう
 		redisPipeline.sadd(`hashtagUsers:${hashtag}`, userId);
-		redisPipeline.expire(`hashtagUsers:${hashtag}`,
-			60 * 60, // 1時間
-			'NX', // "NX -- Set expiry only when the key has no expiry" = 有効期限がないときだけ設定
-		);
 
-		redisPipeline.exec();
+		await redisPipeline.exec();
+
+		const TTL = await this.redisClient.ttl(`hashtagUsers:${hashtag}`);
+		
+		if (TTL === -1) {
+			this.redisClient.expire(`hashtagUsers:${hashtag}`,
+				60 * 60, // 1時間
+				//'NX', // "NX -- Set expiry only when the key has no expiry" = 有効期限がないときだけ設定
+			);
+		}
+
+		const TTLwindow = await this.redisClient.ttl(`hashtagUsers:${hashtag}:${window}`);
+
+		if (TTLwindow === -1) {
+			this.redisClient.expire(`hashtagUsers:${hashtag}:${window}`,
+				60 * 60 * 24 * 3, // 3日間
+				//'NX', // "NX -- Set expiry only when the key has no expiry" = 有効期限がないときだけ設定
+			);
+		}
 	}
 
 	@bindThis

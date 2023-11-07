@@ -12,6 +12,7 @@ export interface IObject {
 	id?: string;
 	name?: string | null;
 	summary?: string;
+	_misskey_summary?: string;
 	published?: string;
 	cc?: ApObject;
 	to?: ApObject;
@@ -183,6 +184,7 @@ export interface IActor extends IObject {
 	};
 	'vcard:bday'?: string;
 	'vcard:Address'?: string;
+	isIndexable?: boolean;
 	listenbrainz?: string;
 	backgroundUrl?: string;
 }
