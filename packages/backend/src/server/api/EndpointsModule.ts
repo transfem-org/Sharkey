@@ -206,6 +206,7 @@ import * as ep___i_authorizedApps from './endpoints/i/authorized-apps.js';
 import * as ep___i_claimAchievement from './endpoints/i/claim-achievement.js';
 import * as ep___i_changePassword from './endpoints/i/change-password.js';
 import * as ep___i_deleteAccount from './endpoints/i/delete-account.js';
+import * as ep___i_exportData from './endpoints/i/export-data.js';
 import * as ep___i_exportBlocking from './endpoints/i/export-blocking.js';
 import * as ep___i_exportFollowing from './endpoints/i/export-following.js';
 import * as ep___i_exportMute from './endpoints/i/export-mute.js';
@@ -573,6 +574,7 @@ const $i_authorizedApps: Provider = { provide: 'ep:i/authorized-apps', useClass:
 const $i_claimAchievement: Provider = { provide: 'ep:i/claim-achievement', useClass: ep___i_claimAchievement.default };
 const $i_changePassword: Provider = { provide: 'ep:i/change-password', useClass: ep___i_changePassword.default };
 const $i_deleteAccount: Provider = { provide: 'ep:i/delete-account', useClass: ep___i_deleteAccount.default };
+const $i_exportData: Provider = { provide: 'ep:i/export-data', useClass: ep___i_exportData.default };
 const $i_exportBlocking: Provider = { provide: 'ep:i/export-blocking', useClass: ep___i_exportBlocking.default };
 const $i_exportFollowing: Provider = { provide: 'ep:i/export-following', useClass: ep___i_exportFollowing.default };
 const $i_exportMute: Provider = { provide: 'ep:i/export-mute', useClass: ep___i_exportMute.default };
@@ -944,6 +946,7 @@ const $sponsors: Provider = { provide: 'ep:sponsors', useClass: ep___sponsors.de
 		$i_claimAchievement,
 		$i_changePassword,
 		$i_deleteAccount,
+		$i_exportData,
 		$i_exportBlocking,
 		$i_exportFollowing,
 		$i_exportMute,
@@ -1309,6 +1312,7 @@ const $sponsors: Provider = { provide: 'ep:sponsors', useClass: ep___sponsors.de
 		$i_claimAchievement,
 		$i_changePassword,
 		$i_deleteAccount,
+		$i_exportData,
 		$i_exportBlocking,
 		$i_exportFollowing,
 		$i_exportMute,

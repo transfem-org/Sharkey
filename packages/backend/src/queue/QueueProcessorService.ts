@@ -14,6 +14,7 @@ import { EndedPollNotificationProcessorService } from './processors/EndedPollNot
 import { DeliverProcessorService } from './processors/DeliverProcessorService.js';
 import { InboxProcessorService } from './processors/InboxProcessorService.js';
 import { DeleteDriveFilesProcessorService } from './processors/DeleteDriveFilesProcessorService.js';
+import { ExportAccountDataProcessorService } from './processors/ExportAccountDataProcessorService.js';
 import { ExportCustomEmojisProcessorService } from './processors/ExportCustomEmojisProcessorService.js';
 import { ExportNotesProcessorService } from './processors/ExportNotesProcessorService.js';
 import { ExportFollowingProcessorService } from './processors/ExportFollowingProcessorService.js';
@@ -89,6 +90,7 @@ export class QueueProcessorService implements OnApplicationShutdown {
 		private deliverProcessorService: DeliverProcessorService,
 		private inboxProcessorService: InboxProcessorService,
 		private deleteDriveFilesProcessorService: DeleteDriveFilesProcessorService,
+		private exportAccountDataProcessorService: ExportAccountDataProcessorService,
 		private exportCustomEmojisProcessorService: ExportCustomEmojisProcessorService,
 		private exportNotesProcessorService: ExportNotesProcessorService,
 		private exportFavoritesProcessorService: ExportFavoritesProcessorService,
@@ -162,6 +164,7 @@ export class QueueProcessorService implements OnApplicationShutdown {
 		this.dbQueueWorker = new Bull.Worker(QUEUE.DB, (job) => {
 			switch (job.name) {
 				case 'deleteDriveFiles': return this.deleteDriveFilesProcessorService.process(job);
+				case 'exportAccountData': return this.exportAccountDataProcessorService.process(job);
 				case 'exportCustomEmojis': return this.exportCustomEmojisProcessorService.process(job);
 				case 'exportNotes': return this.exportNotesProcessorService.process(job);
 				case 'exportFavorites': return this.exportFavoritesProcessorService.process(job);

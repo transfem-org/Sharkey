@@ -165,6 +165,16 @@ export class QueueService {
 	}
 
 	@bindThis
+	public createExportAccountDataJob(user: ThinUser) {
+		return this.dbQueue.add('exportAccountData', {
+			user: { id: user.id },
+		}, {
+			removeOnComplete: true,
+			removeOnFail: true,
+		});
+	}
+
+	@bindThis
 	public createExportNotesJob(user: ThinUser) {
 		return this.dbQueue.add('exportNotes', {
 			user: { id: user.id },
