@@ -30,7 +30,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 								<span>{{ bytes(file.size) }}</span>
 							</div>
 							<div>
-								<span>{{ i18n.ts.registeredDate }}: <MkTime :time="file.createdAt" mode="detail"/></span>
+								<span>{{ i18n.ts.createdAt }}: <MkTime :time="file.createdAt" mode="detail"/></span>
 							</div>
 							<div v-if="sortModeSelect === 'sizeDesc'">
 								<div :class="$style.meter"><div :class="$style.meterValue" :style="genUsageBar(file.size)"></div></div>
