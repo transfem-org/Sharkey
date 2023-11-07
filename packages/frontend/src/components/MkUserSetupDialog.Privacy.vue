@@ -31,14 +31,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<MkSwitch v-model="noCrawle">{{ i18n.ts.noCrawle }}<template #caption>{{ i18n.ts.noCrawleDescription }}</template></MkSwitch>
 	</MkFolder>
 
-	<MkFolder>
-		<template #label>{{ i18n.ts.preventAiLearning }}</template>
-		<template #icon><i class="ph-image-square ph-bold ph-lg-shield"></i></template>
-		<template #suffix>{{ preventAiLearning ? i18n.ts.on : i18n.ts.off }}</template>
-
-		<MkSwitch v-model="preventAiLearning">{{ i18n.ts.preventAiLearning }}<template #caption>{{ i18n.ts.preventAiLearningDescription }}</template></MkSwitch>
-	</MkFolder>
-
 	<MkInfo>{{ i18n.ts._initialAccountSetting.youCanEditMoreSettingsInSettingsPageLater }}</MkInfo>
 </div>
 </template>
@@ -56,14 +48,12 @@ import { $i } from '@/account.js';
 let isLocked = ref(false);
 let hideOnlineStatus = ref(false);
 let noCrawle = ref(false);
-let preventAiLearning = ref(true);
 
-watch([isLocked, hideOnlineStatus, noCrawle, preventAiLearning], () => {
+watch([isLocked, hideOnlineStatus, noCrawle], () => {
 	os.api('i/update', {
 		isLocked: !!isLocked.value,
 		hideOnlineStatus: !!hideOnlineStatus.value,
 		noCrawle: !!noCrawle.value,
-		preventAiLearning: !!preventAiLearning.value,
 	});
 });
 </script>
