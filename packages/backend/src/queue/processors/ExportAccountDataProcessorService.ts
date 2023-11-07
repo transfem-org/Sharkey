@@ -187,7 +187,7 @@ export class ExportAccountDataProcessorService {
 
 		for (const signin of signins) {
 			// eslint-disable-next-line @typescript-eslint/no-unused-vars
-			const { userId, id, headers, user, ...signinTrimmed } = signin;
+			const { userId, id, user, ...signinTrimmed } = signin;
 			const isFirst = signins.indexOf(signin) === 0;
 
 			await writeIPs(isFirst ? JSON.stringify(signinTrimmed) : ',\n' + JSON.stringify(signinTrimmed));
