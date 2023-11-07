@@ -52,7 +52,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</MkKeyValue>
 				<MkKeyValue oneline style="margin: 1em 0;">
 					<template #key>{{ i18n.ts.latestRequestReceivedAt }}</template>
-					<template #value><MkTime v-if="instance.latestRequestReceivedAt" :time="instance.latestRequestReceivedAt"/><span v-else>N/A</span></template>
+					<template #value><MkTime v-if="instance.latestRequestReceivedAt" mode="detail" :time="instance.latestRequestReceivedAt"/><span v-else>N/A</span></template>
 				</MkKeyValue>
 			</FormSection>
 
