@@ -2509,6 +2509,12 @@ export interface Locale {
             "confirm": string;
         };
     };
+    "_dataRequest": {
+        "title": string;
+        "warn": string;
+        "text": string;
+        "button": string;
+    };
 }
 declare const locales: {
     [lang: string]: Locale;
