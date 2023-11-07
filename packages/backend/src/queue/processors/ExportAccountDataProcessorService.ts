@@ -21,6 +21,7 @@ import { UtilityService } from '@/core/UtilityService.js';
 import { DownloadService } from '@/core/DownloadService.js';
 import { QueueLoggerService } from '../QueueLoggerService.js';
 import type * as Bull from 'bullmq';
+import { EmailService } from '@/core/EmailService.js';
 
 @Injectable()
 export class ExportAccountDataProcessorService {
@@ -71,6 +72,7 @@ export class ExportAccountDataProcessorService {
 		private idService: IdService,
 		private driveFileEntityService: DriveFileEntityService,
 		private downloadService: DownloadService,
+		private emailService: EmailService,
 		private queueLoggerService: QueueLoggerService,
 	) {
 		this.logger = this.queueLoggerService.logger.createSubLogger('export-account-data');
@@ -709,6 +711,13 @@ export class ExportAccountDataProcessorService {
 				this.logger.succ(`Exported to: ${driveFile.id}`);
 				cleanup();
 				archiveCleanup();
+				if (profile.email) {
+					this.emailService.sendEmail(profile.email, 
+						'Your data archive is ready', 
+						`Click the following link to download the archive: ${driveFile.url}<br/>It is also available in your drive.`, 
+						`Click the following link to download the archive: ${driveFile.url}\r\n\r\nIt is also available in your drive.`,
+					);
+				}
 				resolve();
 			});
 			archive.pipe(archiveStream);
