@@ -748,6 +748,8 @@ export interface Locale {
     "developer": string;
     "makeExplorable": string;
     "makeExplorableDescription": string;
+    "makeIndexable": string;
+    "makeIndexableDescription": string;
     "showGapBetweenNotesInTimeline": string;
     "duplicate": string;
     "left": string;

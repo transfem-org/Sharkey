@@ -37,6 +37,7 @@ export type UserLite = {
 	};
 	isCat?: boolean;
 	isBot?: boolean;
+	isIndexable?: boolean;
 };
 
 export type UserDetailed = UserLite & {
@@ -65,6 +66,7 @@ export type UserDetailed = UserLite & {
 	speakAsCat: boolean;
 	isFollowed: boolean;
 	isFollowing: boolean;
+	isIndexable: boolean;
 	isLocked: boolean;
 	isModerator: boolean;
 	isMuted: boolean;

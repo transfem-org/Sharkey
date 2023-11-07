@@ -745,6 +745,8 @@ thisIsExperimentalFeature: "This is an experimental feature. Its functionality i
 developer: "Developer"
 makeExplorable: "Make account visible in \"Explore\""
 makeExplorableDescription: "If you turn this off, your account will not show up in the \"Explore\" section."
+makeIndexable: "Make public notes indexable"
+makeIndexableDescription: "Allow note search to index your public notes."
 showGapBetweenNotesInTimeline: "Show a gap between posts on the timeline"
 duplicate: "Duplicate"
 left: "Left"
