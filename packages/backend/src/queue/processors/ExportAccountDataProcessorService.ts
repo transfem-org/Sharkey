@@ -1,6 +1,3 @@
-/* eslint-disable no-constant-condition */
-/* eslint-disable @typescript-eslint/no-unnecessary-condition */
-
 import * as fs from 'node:fs';
 import { Inject, Injectable } from '@nestjs/common';
 import { In, IsNull, MoreThan, Not } from 'typeorm';
@@ -8,7 +5,7 @@ import { format as dateFormat } from 'date-fns';
 import mime from 'mime-types';
 import archiver from 'archiver';
 import { DI } from '@/di-symbols.js';
-import type { AntennasRepository, BlockingsRepository, DriveFilesRepository, FollowingsRepository, MiBlocking, MiFollowing, MiMuting, MiNote, MiNoteFavorite, MiPoll, MiUser, MutingsRepository, NoteFavoritesRepository, NotesRepository, PollsRepository, UserListMembershipsRepository, UserListsRepository, UserProfilesRepository, UsersRepository } from '@/models/_.js';
+import type { AntennasRepository, BlockingsRepository, DriveFilesRepository, FollowingsRepository, MiBlocking, MiFollowing, MiMuting, MiNote, MiNoteFavorite, MiPoll, MiUser, MutingsRepository, NoteFavoritesRepository, NotesRepository, PollsRepository, SigninsRepository, UserListMembershipsRepository, UserListsRepository, UserProfilesRepository, UsersRepository } from '@/models/_.js';
 import type { Config } from '@/config.js';
 import type Logger from '@/logger.js';
 import { DriveService } from '@/core/DriveService.js';
@@ -19,9 +16,9 @@ import { bindThis } from '@/decorators.js';
 import { Packed } from '@/misc/json-schema.js';
 import { UtilityService } from '@/core/UtilityService.js';
 import { DownloadService } from '@/core/DownloadService.js';
+import { EmailService } from '@/core/EmailService.js';
 import { QueueLoggerService } from '../QueueLoggerService.js';
 import type * as Bull from 'bullmq';
-import { EmailService } from '@/core/EmailService.js';
 
 @Injectable()
 export class ExportAccountDataProcessorService {
@@ -66,6 +63,9 @@ export class ExportAccountDataProcessorService {
 
 		@Inject(DI.userListMembershipsRepository)
 		private userListMembershipsRepository: UserListMembershipsRepository,
+
+		@Inject(DI.signinsRepository)
+		private signinsRepository: SigninsRepository,
 
 		private utilityService: UtilityService,
 		private driveService: DriveService,
@@ -159,6 +159,43 @@ export class ExportAccountDataProcessorService {
 		await writeProfile(']}');
 
 		profileStream.end();
+
+		// Stored IPs export
+
+		const signins = await this.signinsRepository.findBy({ userId: user.id });
+
+		const ipPath = path + '/ips.json';
+
+		fs.writeFileSync(ipPath, '', 'utf-8');
+
+		const ipStream = fs.createWriteStream(ipPath, { flags: 'a' });
+
+		const writeIPs = (text: string): Promise<void> => {
+			return new Promise<void>((res, rej) => {
+				ipStream.write(text, err => {
+					if (err) {
+						this.logger.error(err);
+						rej(err);
+					} else {
+						res();
+					}
+				});
+			});
+		};
+
+		await writeIPs(`{"metaVersion":1,"host":"${this.config.host}","exportedAt":"${new Date().toString()}","ips":[`);
+
+		for (const signin of signins) {
+			// eslint-disable-next-line @typescript-eslint/no-unused-vars
+			const { userId, id, headers, user, ...signinTrimmed } = signin;
+			const isFirst = signins.indexOf(signin) === 0;
+
+			await writeIPs(isFirst ? JSON.stringify(signinTrimmed) : ',\n' + JSON.stringify(signinTrimmed));
+		}
+
+		await writeIPs(']}');
+
+		ipStream.end();
 
 		// Note Export
 
