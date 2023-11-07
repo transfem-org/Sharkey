@@ -159,7 +159,7 @@ watch(() => props.user.avatarBlurhash, () => {
 	display: inline-block;
 	vertical-align: bottom;
 	flex-shrink: 0;
-	border-radius: 100%;
+	border-radius: 100%; // sharkey: controlled by square avatars setting!
 	line-height: 16px;
 }
 
@@ -169,7 +169,7 @@ watch(() => props.user.avatarBlurhash, () => {
 	left: 0;
 	right: 0;
 	top: 0;
-	border-radius: 100%;
+	border-radius: 100%; // sharkey: controlled by square avatars setting!
 	z-index: 1;
 	overflow: clip;
 	object-fit: cover;
@@ -187,10 +187,10 @@ watch(() => props.user.avatarBlurhash, () => {
 }
 
 .square {
-	border-radius: 20%;
+	border-radius: 20%; // sharkey: controlled by square avatars setting!
 
 	> .inner {
-		border-radius: 20%;
+		border-radius: 20%; // sharkey: controlled by square avatars setting!
 	}
 }
 
