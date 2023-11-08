@@ -1,4 +1,3 @@
----
 _lang_: "Deutsch"
 headlineMisskey: "Ein durch Notizen verbundenes Netzwerk"
 introMisskey: "Willkommen! Sharkey ist eine dezentralisierte Open-Source Microblogging-Platform.\nVerfasse „Notizen“ um mitzuteilen, was gerade passiert oder um Ereignisse mit anderen zu teilen. 📡\nMit „Reaktionen“ kannst du außerdem schnell deine Gefühle über Notizen anderer Benutzer zum Ausdruck bringen. 👍\nEine neue Welt wartet auf dich! 🚀"
@@ -2210,3 +2209,7 @@ _externalResourceInstaller:
     _themeInstallFailed:
       title: "Das Farbschema konnte nicht installiert werden"
       description: "Während der Installation des Farbschemas ist ein Problem aufgetreten. Bitte versuche es erneut. Detaillierte Fehlerinformationen können über die Javascript-Konsole abgerufen werden."
+markAsNSFW: Alle Medien eines Benutzers als NSFW markieren
+rmquote: Zitierung entfernt.
+nsfwConfirm: Sind Sie sicher, dass Sie alle Medien dieses Kontos als NSFW markieren möchten?
+quoted: Zitiert.
