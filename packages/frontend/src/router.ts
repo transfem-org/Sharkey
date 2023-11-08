@@ -251,7 +251,7 @@ export const routes = [{
 		icon: 'icon',
 		permission: 'permission',
 	},
-},{
+}, {
 	path: '/tags/:tag',
 	component: page(() => import('./pages/tag.vue')),
 }, {
