@@ -98,4 +98,4 @@ ENV NODE_ENV=production
 VOLUME "/sharkey/files"
 HEALTHCHECK --interval=5s --retries=20 CMD ["/bin/bash", "/sharkey/healthcheck.sh"]
 ENTRYPOINT ["/usr/bin/tini", "--"]
-CMD ["pnpm", "run", "migrate", "&&", "pnpm", "run", "dev"];
+CMD ["pnpm", "run", "migrate", ";", "pnpm", "run", "dev"];
