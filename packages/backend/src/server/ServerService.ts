@@ -186,17 +186,6 @@ export class ServerService implements OnApplicationShutdown {
 			}
 		});
 
-		fastify.get('/oauth/authorize', async (request, reply) => {
-			const query: any = request.query;
-			let param = "mastodon=true";
-			if (query.state) param += `&state=${query.state}`;
-			if (query.redirect_uri) param += `&redirect_uri=${query.redirect_uri}`;
-			const client = query.client_id ? query.client_id : "";
-			reply.redirect(
-				`${Buffer.from(client.toString(), 'base64').toString()}?${param}`,
-			);
-		});
-
 		fastify.get<{ Params: { code: string } }>('/verify-email/:code', async (request, reply) => {
 			const profile = await this.userProfilesRepository.findOneBy({
 				emailVerifyCode: request.params.code,
