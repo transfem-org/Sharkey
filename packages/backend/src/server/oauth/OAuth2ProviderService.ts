@@ -3,9 +3,9 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
+import querystring from 'querystring';
 import { Inject, Injectable } from '@nestjs/common';
 import megalodon, { MegalodonInterface } from 'megalodon';
-import querystring from 'querystring';
 import { v4 as uuid } from 'uuid';
 /* import { kinds } from '@/misc/api-permissions.js';
 import type { Config } from '@/config.js';
@@ -74,8 +74,16 @@ export class OAuth2ProviderService {
 			if (query.redirect_uri) param += `&redirect_uri=${query.redirect_uri}`;
 			const client = query.client_id ? query.client_id : "";
 			reply.redirect(
-				`${atob(client)}?${param}`,
+				`${Buffer.from(client.toString(), 'base64').toString()}?${param}`,
 			);
+		});
+
+		fastify.post('/oauth/decision', async (request, reply) => {
+			const body: any = request.body;
+			if (body.cancel) {
+				reply.send({ user: body.login_token, allow: false });
+			}
+			reply.send({ user: body.login_token, allow: true });
 		});
 
 		fastify.post('/oauth/token', async (request, reply) => {
