@@ -49,6 +49,7 @@ jobs:
         with:
           builder: ${{ steps.buildx.outputs.name }}
           context: .
+          file: "{{context}}/Dockerfile.development"
           push: true
           platforms: ${{ steps.buildx.outputs.platforms }}
           provenance: false
