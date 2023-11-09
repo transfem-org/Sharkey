@@ -78,6 +78,17 @@ export class OAuth2ProviderService {
 			);
 		});
 
+		fastify.get('/oauth/authorize/', async (request, reply) => {
+			const query: any = request.query;
+			let param = "mastodon=true";
+			if (query.state) param += `&state=${query.state}`;
+			if (query.redirect_uri) param += `&redirect_uri=${query.redirect_uri}`;
+			const client = query.client_id ? query.client_id : "";
+			reply.redirect(
+				`${Buffer.from(client.toString(), 'base64').toString()}?${param}`,
+			);
+		});
+
 		fastify.post('/oauth/token', async (request, reply) => {
 			const body: any = request.body || request.query;
 			if (body.grant_type === "client_credentials") {
