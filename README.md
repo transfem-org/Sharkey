@@ -18,6 +18,8 @@
 
 <a href="https://ko-fi.com/transfem">
 		<img src="https://custom-icon-badges.herokuapp.com/badge/donate-F96854?logoColor=F96854&style=for-the-badge&logo=kofi&labelColor=363B40" alt="donate"/></a>
+<a href="https://hosted.weblate.org/projects/sharkey/">
+		<img src="https://custom-icon-badges.herokuapp.com/badge/translate-sharkey-124437?logoColor=acea31&style=for-the-badge&logo=translate-sharkey&labelColor=363B40" alt="Translate Sharkey"/></a>
 
 ---
 
