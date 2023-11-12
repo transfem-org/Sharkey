@@ -366,7 +366,7 @@ export class ImportNotesProcessorService {
 
 		if (post.media && this.isIterable(post.media) && post.media.length > 1) {
 			date = new Date(post.creation_timestamp * 1000);
-			title = post.title;
+			title = post.title.encode('latin-1').decode('utf-8');
 			for await (const file of post.media) {
 				const slashdex = file.uri.lastIndexOf('/');
 				const name = file.uri.substring(slashdex + 1);
@@ -377,7 +377,7 @@ export class ImportNotesProcessorService {
 			}
 		} else if (post.media && this.isIterable(post.media) && !(post.media.length > 1)) {
 			date = new Date(post.media[0].creation_timestamp * 1000);
-			title = post.media[0].title;
+			title = post.media[0].title.encode('latin-1').decode('utf-8');
 			const slashdex = post.media[0].uri.lastIndexOf('/');
 			const name = post.media[0].uri.substring(slashdex + 1);
 			const exists = await this.driveFilesRepository.findOneBy({ name: name, userId: user.id }) ?? await this.driveFilesRepository.findOneBy({ name: `${name}.jpg`, userId: user.id }) ?? await this.driveFilesRepository.findOneBy({ name: `${name}.mp4`, userId: user.id });
