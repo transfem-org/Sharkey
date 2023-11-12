@@ -49,6 +49,12 @@ export type DbJobMap = {
 	exportBlocking: DbJobDataWithUser;
 	exportUserLists: DbJobDataWithUser;
 	importAntennas: DBAntennaImportJobData;
+	importNotes: DbUserImportJobData;
+	importTweetsToDb: DbNoteImportToDbJobData;
+	importIGToDb: DbNoteImportToDbJobData;
+	importMastoToDb: DbNoteImportToDbJobData;
+	importPleroToDb: DbNoteImportToDbJobData;
+	importKeyNotesToDb: DbNoteImportToDbJobData;
 	importFollowing: DbUserImportJobData;
 	importFollowingToDb: DbUserImportToDbJobData;
 	importMuting: DbUserImportJobData;
@@ -84,6 +90,12 @@ export type DbUserImportJobData = {
 	withReplies?: boolean;
 };
 
+export type DbNoteImportJobData = {
+	user: ThinUser;
+	fileId: MiDriveFile['id'];
+	type?: string;
+};
+
 export type DBAntennaImportJobData = {
 	user: ThinUser,
 	antenna: Antenna
@@ -93,6 +105,11 @@ export type DbUserImportToDbJobData = {
 	user: ThinUser;
 	target: string;
 	withReplies?: boolean;
+};
+
+export type DbNoteImportToDbJobData = {
+	user: ThinUser;
+	target: any;
 };
 
 export type ObjectStorageJobData = ObjectStorageFileJobData | Record<string, unknown>;

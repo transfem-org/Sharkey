@@ -259,6 +259,48 @@ export class QueueService {
 	}
 
 	@bindThis
+	public createImportNotesJob(user: ThinUser, fileId: MiDriveFile['id'], type: string | null | undefined) {
+		return this.dbQueue.add('importNotes', {
+			user: { id: user.id },
+			fileId: fileId,
+			type: type,
+		}, {
+			removeOnComplete: true,
+			removeOnFail: true,
+		});
+	}
+
+	@bindThis
+	public createImportTweetsToDbJob(user: ThinUser, targets: string[]) {
+		const jobs = targets.map(rel => this.generateToDbJobData('importTweetsToDb', { user, target: rel }));
+		return this.dbQueue.addBulk(jobs);
+	}
+
+	@bindThis
+	public createImportMastoToDbJob(user: ThinUser, targets: string[]) {
+		const jobs = targets.map(rel => this.generateToDbJobData('importMastoToDb', { user, target: rel }));
+		return this.dbQueue.addBulk(jobs);
+	}
+
+	@bindThis
+	public createImportPleroToDbJob(user: ThinUser, targets: string[]) {
+		const jobs = targets.map(rel => this.generateToDbJobData('importPleroToDb', { user, target: rel }));
+		return this.dbQueue.addBulk(jobs);
+	}
+
+	@bindThis
+	public createImportKeyNotesToDbJob(user: ThinUser, targets: string[]) {
+		const jobs = targets.map(rel => this.generateToDbJobData('importKeyNotesToDb', { user, target: rel }));
+		return this.dbQueue.addBulk(jobs);
+	}
+
+	@bindThis
+	public createImportIGToDbJob(user: ThinUser, targets: string[]) {
+		const jobs = targets.map(rel => this.generateToDbJobData('importIGToDb', { user, target: rel }));
+		return this.dbQueue.addBulk(jobs);
+	}
+
+	@bindThis
 	public createImportFollowingToDbJob(user: ThinUser, targets: string[], withReplies?: boolean) {
 		const jobs = targets.map(rel => this.generateToDbJobData('importFollowingToDb', { user, target: rel, withReplies }));
 		return this.dbQueue.addBulk(jobs);
@@ -293,7 +335,7 @@ export class QueueService {
 	}
 
 	@bindThis
-	private generateToDbJobData<T extends 'importFollowingToDb' | 'importBlockingToDb', D extends DbJobData<T>>(name: T, data: D): {
+	private generateToDbJobData<T extends 'importFollowingToDb' | 'importBlockingToDb' | 'importTweetsToDb' | 'importIGToDb' | 'importMastoToDb' | 'importPleroToDb' | 'importKeyNotesToDb', D extends DbJobData<T>>(name: T, data: D): {
 		name: string,
 		data: D,
 		opts: Bull.JobsOptions,
