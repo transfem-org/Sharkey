@@ -364,9 +364,17 @@ export class ImportNotesProcessorService {
 		let title;
 		const files: MiDriveFile[] = [];
 
+		function decodeIGString(str: any) {
+			const arr = [];
+			for (let i = 0; i < str.length; i++) {
+				arr.push(str.charCodeAt(i));
+			}
+			return Buffer.from(arr).toString('utf8');
+		}
+
 		if (post.media && this.isIterable(post.media) && post.media.length > 1) {
 			date = new Date(post.creation_timestamp * 1000);
-			title = post.title.encode('latin-1').decode('utf-8');
+			title = decodeIGString(post.title);
 			for await (const file of post.media) {
 				const slashdex = file.uri.lastIndexOf('/');
 				const name = file.uri.substring(slashdex + 1);
@@ -377,7 +385,7 @@ export class ImportNotesProcessorService {
 			}
 		} else if (post.media && this.isIterable(post.media) && !(post.media.length > 1)) {
 			date = new Date(post.media[0].creation_timestamp * 1000);
-			title = post.media[0].title.encode('latin-1').decode('utf-8');
+			title = decodeIGString(post.media[0].title);
 			const slashdex = post.media[0].uri.lastIndexOf('/');
 			const name = post.media[0].uri.substring(slashdex + 1);
 			const exists = await this.driveFilesRepository.findOneBy({ name: name, userId: user.id }) ?? await this.driveFilesRepository.findOneBy({ name: `${name}.jpg`, userId: user.id }) ?? await this.driveFilesRepository.findOneBy({ name: `${name}.mp4`, userId: user.id });
