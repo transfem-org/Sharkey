@@ -15,7 +15,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<div v-if="!conversationLoaded" style="padding: 16px">
 			<MkButton style="margin: 0 auto;" primary rounded @click="loadConversation">{{ i18n.ts.loadConversation }}</MkButton>
 		</div>
-		<MkNoteSub v-for="note in conversation" :meta="meta" :key="note.id" :class="$style.replyToMore" :note="note" :expandAllCws="props.expandAllCws"/>
+		<MkNoteSub v-for="note in conversation" :key="note.id" :meta="meta" :class="$style.replyToMore" :note="note" :expandAllCws="props.expandAllCws"/>
 	</div>
 	<MkNoteSub v-if="appearNote.reply" :meta="meta" :note="appearNote.reply" :class="$style.replyTo" :expandAllCws="props.expandAllCws"/>
 	<div v-if="isRenote" :class="$style.renote">
