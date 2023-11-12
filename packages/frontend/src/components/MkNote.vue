@@ -534,7 +534,7 @@ function react(viaKeyboard = false): void {
 
 		os.api('notes/reactions/create', {
 			noteId: appearNote.id,
-			reaction: '❤️',
+			reaction: props.meta.defaultLike,
 		});
 		const el = reactButton.value as HTMLElement | null | undefined;
 		if (el) {

@@ -189,7 +189,7 @@ function react(viaKeyboard = false): void {
 	if (props.note.reactionAcceptance === 'likeOnly') {
 		os.api('notes/reactions/create', {
 			noteId: props.note.id,
-			reaction: '❤️',
+			reaction: props.meta.defaultLike,
 		});
 		const el = reactButton.value as HTMLElement | null | undefined;
 		if (el) {
