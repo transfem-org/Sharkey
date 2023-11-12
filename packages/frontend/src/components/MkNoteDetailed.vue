@@ -15,9 +15,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<div v-if="!conversationLoaded" style="padding: 16px">
 			<MkButton style="margin: 0 auto;" primary rounded @click="loadConversation">{{ i18n.ts.loadConversation }}</MkButton>
 		</div>
-		<MkNoteSub v-for="note in conversation" :key="note.id" :class="$style.replyToMore" :note="note" :expandAllCws="props.expandAllCws"/>
+		<MkNoteSub v-for="note in conversation" :meta="meta" :key="note.id" :class="$style.replyToMore" :note="note" :expandAllCws="props.expandAllCws"/>
 	</div>
-	<MkNoteSub v-if="appearNote.reply" :note="appearNote.reply" :class="$style.replyTo" :expandAllCws="props.expandAllCws"/>
+	<MkNoteSub v-if="appearNote.reply" :meta="meta" :note="appearNote.reply" :class="$style.replyTo" :expandAllCws="props.expandAllCws"/>
 	<div v-if="isRenote" :class="$style.renote">
 		<MkAvatar :class="$style.renoteAvatar" :user="note.user" link preview/>
 		<i class="ph-rocket-launch ph-bold ph-lg" style="margin-right: 4px;"></i>
@@ -171,7 +171,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<div v-if="!repliesLoaded" style="padding: 16px">
 				<MkButton style="margin: 0 auto;" primary rounded @click="loadReplies">{{ i18n.ts.loadReplies }}</MkButton>
 			</div>
-			<MkNoteSub v-for="note in replies" :key="note.id" :note="note" :class="$style.reply" :detail="true" :expandAllCws="props.expandAllCws"/>
+			<MkNoteSub v-for="note in replies" :key="note.id" :meta="meta" :note="note" :class="$style.reply" :detail="true" :expandAllCws="props.expandAllCws"/>
 		</div>
 		<div v-else-if="tab === 'renotes'" :class="$style.tab_renotes">
 			<MkPagination :pagination="renotesPagination" :disableAutoLoad="true">
@@ -188,7 +188,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<div v-if="!quotesLoaded" style="padding: 16px">
 				<MkButton style="margin: 0 auto;" primary rounded @click="loadQuotes">{{ i18n.ts.loadReplies }}</MkButton>
 			</div>
-			<MkNoteSub v-for="note in quotes" :key="note.id" :note="note" :class="$style.reply" :detail="true" :expandAllCws="props.expandAllCws"/>
+			<MkNoteSub v-for="note in quotes" :key="note.id" :meta="meta" :note="note" :class="$style.reply" :detail="true" :expandAllCws="props.expandAllCws"/>
 		</div>
 		<div v-else-if="tab === 'reactions'" :class="$style.tab_reactions">
 			<div :class="$style.reactionTabs">
@@ -262,6 +262,12 @@ const props = defineProps<{
 	note: Misskey.entities.Note;
 	expandAllCws?: boolean;
 }>();
+
+let meta = $ref<Misskey.entities.LiteInstanceMetadata>() as Misskey.entities.LiteInstanceMetadata;
+
+os.api('meta', { detail: false }).then(res => {
+	meta = res as unknown as Misskey.entities.LiteInstanceMetadata;
+});
 
 const inChannel = inject('inChannel', null);
 

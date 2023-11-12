@@ -12,7 +12,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	:class="[$style.root, { [$style.showActionsOnlyHover]: defaultStore.state.showNoteActionsOnlyHover }]"
 	:tabindex="!isDeleted ? '-1' : undefined"
 >
-	<MkNoteSub v-if="appearNote.reply && !renoteCollapsed" :note="appearNote.reply" :class="$style.replyTo"/>
+	<MkNoteSub v-if="appearNote.reply && !renoteCollapsed" :meta="props.meta" :note="appearNote.reply" :class="$style.replyTo"/>
 	<div v-if="pinned" :class="$style.tip"><i class="ph-push-pin ph-bold ph-lg"></i> {{ i18n.ts.pinnedNote }}</div>
 	<!--<div v-if="appearNote._prId_" class="tip"><i class="ph-megaphone ph-bold ph-lg"></i> {{ i18n.ts.promotion }}<button class="_textButton hide" @click="readPromo()">{{ i18n.ts.hideThisNote }} <i class="ph-x ph-bold ph-lg"></i></button></div>-->
 	<!--<div v-if="appearNote._featuredId_" class="tip"><i class="ph-lightning ph-bold ph-lg"></i> {{ i18n.ts.featured }}</div>-->
@@ -207,6 +207,7 @@ const props = withDefaults(defineProps<{
 	note: Misskey.entities.Note;
 	pinned?: boolean;
 	mock?: boolean;
+	meta: Misskey.entities.LiteInstanceMetadata;
 }>(), {
 	mock: false,
 });
@@ -512,7 +513,7 @@ function like(): void {
 	}
 	os.api('notes/reactions/create', {
 		noteId: appearNote.id,
-		reaction: '❤️',
+		reaction: props.meta.defaultLike,
 	});
 	const el = likeButton.value as HTMLElement | null | undefined;
 	if (el) {

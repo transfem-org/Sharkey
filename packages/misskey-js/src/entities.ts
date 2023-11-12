@@ -401,6 +401,7 @@ export type LiteInstanceMetadata = {
 	notesPerOneAd: number;
 	translatorAvailable: boolean;
 	serverRules: string[];
+	defaultLike: string;
 };
 
 export type DetailedInstanceMetadata = LiteInstanceMetadata & {

@@ -533,4 +533,10 @@ export class MiMeta {
 		default: 0,
 	})
 	public notesPerOneAd: number;
+
+	@Column('varchar', {
+		length: 500,
+		nullable: true,
+	})
+	public defaultLike: string | null;
 }
