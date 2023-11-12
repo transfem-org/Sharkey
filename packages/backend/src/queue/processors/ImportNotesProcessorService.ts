@@ -98,7 +98,7 @@ export class ImportNotesProcessorService {
 			return;
 		}
 
-		const type = job.data.type ?? '';
+		const type = job.data.type;
 
 		if (type === 'Twitter' || file.name.startsWith('twitter') && file.name.endsWith('.zip')) {
 			const [path, cleanup] = await createTempDir();
