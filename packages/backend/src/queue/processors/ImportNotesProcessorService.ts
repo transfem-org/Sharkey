@@ -42,14 +42,6 @@ export class ImportNotesProcessorService {
 	) {
 		this.logger = this.queueLoggerService.logger.createSubLogger('import-notes');
 	}
-	@bindThis
-	private async _keepTweet(tweet: any) {
-		if (!tweet.created_at.endsWith(new Date().getFullYear())) {
-			return false;
-		}
-	
-		return !tweet.full_text.startsWith('@');
-	}
 
 	@bindThis
 	private async uploadFiles(dir: any, user: any) {
@@ -84,7 +76,7 @@ export class ImportNotesProcessorService {
 
 	@bindThis
 	public async process(job: Bull.Job<DbNoteImportJobData>): Promise<void> {
-		this.logger.info(`Importing following of ${job.data.user.id} ...`);
+		this.logger.info(`Starting note import of ${job.data.user.id} ...`);
 
 		const user = await this.usersRepository.findOneBy({ id: job.data.user.id });
 		if (user == null) {
@@ -135,7 +127,7 @@ export class ImportNotesProcessorService {
 				script.runInContext(context);
 				const tweets = Object.keys(fakeWindow.window.YTD.tweets.part0).reduce((m, key, i, obj) => {
 					return m.concat(fakeWindow.window.YTD.tweets.part0[key].tweet);
-				}, []).filter(this._keepTweet);
+				}, []);
 				this.queueService.createImportTweetsToDbJob(job.data.user, tweets);
 			} finally {
 				cleanup();
