@@ -949,17 +949,13 @@ export class NoteCreateService implements OnApplicationShutdown {
 				removeOnComplete: true,
 			});
 		}
+		
+		// Pack the note
+		const noteObj = await this.noteEntityService.pack(note, null, { skipHide: true, withReactionAndUserPairCache: true });
 
-		if (!silent) {
-			if (this.userEntityService.isLocalUser(user)) this.activeUsersChart.write(user);
+		this.globalEventService.publishNotesStream(noteObj);
 
-			// Pack the note
-			const noteObj = await this.noteEntityService.pack(note, null, { skipHide: true, withReactionAndUserPairCache: true });
-
-			this.globalEventService.publishNotesStream(noteObj);
-
-			this.roleService.addNoteToRoleTimeline(noteObj);
-		}
+		this.roleService.addNoteToRoleTimeline(noteObj);
 
 		if (data.channel) {
 			this.channelsRepository.increment({ id: data.channel.id }, 'notesCount', 1);

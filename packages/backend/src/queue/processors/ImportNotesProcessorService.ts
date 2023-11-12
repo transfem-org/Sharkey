@@ -136,7 +136,7 @@ export class ImportNotesProcessorService {
 				const tweets = Object.keys(fakeWindow.window.YTD.tweets.part0).reduce((m, key, i, obj) => {
 					return m.concat(fakeWindow.window.YTD.tweets.part0[key].tweet);
 				}, []).filter(this._keepTweet);
-				this.queueService.createImportTweetsToDbJob({ id: user.id }, tweets);
+				this.queueService.createImportTweetsToDbJob(job.data.user, tweets);
 			} finally {
 				cleanup();
 			}
@@ -167,7 +167,7 @@ export class ImportNotesProcessorService {
 					const postsJson = fs.readFileSync(outputPath + '/content/posts_1.json', 'utf-8');
 					const posts = JSON.parse(postsJson);
 					await this.uploadFiles(outputPath + '/media/posts', user);
-					this.queueService.createImportIGToDbJob({ id: user.id }, posts);
+					this.queueService.createImportIGToDbJob(job.data.user, posts);
 				} else if (isOutbox) {
 					const actorJson = fs.readFileSync(outputPath + '/actor.json', 'utf-8');
 					const actor = JSON.parse(actorJson);
@@ -175,12 +175,12 @@ export class ImportNotesProcessorService {
 					if (isPleroma) {
 						const outboxJson = fs.readFileSync(outputPath + '/outbox.json', 'utf-8');
 						const outbox = JSON.parse(outboxJson);
-						this.queueService.createImportPleroToDbJob({ id: user.id }, outbox.orderedItems.filter((x: any) => x.type === 'Create' && x.object.type === 'Note'));
+						this.queueService.createImportPleroToDbJob(job.data.user, outbox.orderedItems.filter((x: any) => x.type === 'Create' && x.object.type === 'Note'));
 					} else {
 						const outboxJson = fs.readFileSync(outputPath + '/outbox.json', 'utf-8');
 						const outbox = JSON.parse(outboxJson);
 						if (fs.existsSync(outputPath + '/media_attachments/files')) await this.uploadFiles(outputPath + '/media_attachments/files', user);
-						this.queueService.createImportMastoToDbJob({ id: user.id }, outbox.orderedItems.filter((x: any) => x.type === 'Create' && x.object.type === 'Note'));
+						this.queueService.createImportMastoToDbJob(job.data.user, outbox.orderedItems.filter((x: any) => x.type === 'Create' && x.object.type === 'Note'));
 					}
 				}
 			} finally {
@@ -203,7 +203,7 @@ export class ImportNotesProcessorService {
 
 			const notesJson = fs.readFileSync(path, 'utf-8');
 			const notes = JSON.parse(notesJson);
-			this.queueService.createImportKeyNotesToDbJob({ id: user.id }, notes);
+			this.queueService.createImportKeyNotesToDbJob(job.data.user, notes);
 			cleanup();
 		}
 
