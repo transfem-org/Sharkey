@@ -98,7 +98,9 @@ export class ImportNotesProcessorService {
 			return;
 		}
 
-		if (job.data.type === 'Twitter' || file.name.startsWith('twitter') && file.name.endsWith('.zip')) {
+		const type = job.data.type ?? '';
+
+		if (type === 'Twitter' || file.name.startsWith('twitter') && file.name.endsWith('.zip')) {
 			const [path, cleanup] = await createTempDir();
 
 			this.logger.info(`Temp dir is ${path}`);
@@ -159,8 +161,8 @@ export class ImportNotesProcessorService {
 			try {
 				this.logger.succ(`Unzipping to ${outputPath}`);
 				ZipReader.withDestinationPath(outputPath).viaBuffer(await fs.promises.readFile(destPath));
-				const isInstagram = job.data.type === 'Instagram' || fs.existsSync(outputPath + '/instagram_live') || fs.existsSync(outputPath + '/instagram_ads_and_businesses');
-				const isOutbox = job.data.type === 'Mastodon' || fs.existsSync(outputPath + '/outbox.json');
+				const isInstagram = type === 'Instagram' || fs.existsSync(outputPath + '/instagram_live') || fs.existsSync(outputPath + '/instagram_ads_and_businesses');
+				const isOutbox = type === 'Mastodon' || fs.existsSync(outputPath + '/outbox.json');
 				if (isInstagram) {
 					const postsJson = fs.readFileSync(outputPath + '/content/posts_1.json', 'utf-8');
 					const posts = JSON.parse(postsJson);
