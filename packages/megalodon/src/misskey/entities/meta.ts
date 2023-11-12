@@ -18,6 +18,7 @@ namespace MisskeyEntity {
       gtlAvailable: boolean
       ltlAvailable: boolean
       canPublicNote: boolean
+      canImportNotes: boolean
       canInvite: boolean
       canManageCustomEmojis: boolean
       canHideAds: boolean
