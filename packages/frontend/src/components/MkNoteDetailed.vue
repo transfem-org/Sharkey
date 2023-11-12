@@ -558,7 +558,7 @@ function react(viaKeyboard = false): void {
 	if (appearNote.reactionAcceptance === 'likeOnly') {
 		os.api('notes/reactions/create', {
 			noteId: appearNote.id,
-			reaction: props.meta.defaultLike,
+			reaction: meta.defaultLike,
 		});
 		const el = reactButton.value as HTMLElement | null | undefined;
 		if (el) {
@@ -588,7 +588,7 @@ function like(): void {
 	showMovedDialog();
 	os.api('notes/reactions/create', {
 		noteId: appearNote.id,
-		reaction: props.meta.defaultLike,
+		reaction: meta.defaultLike,
 	});
 	const el = likeButton.value as HTMLElement | null | undefined;
 	if (el) {
