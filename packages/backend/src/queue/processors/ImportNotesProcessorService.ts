@@ -4,7 +4,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { IsNull } from 'typeorm';
 import { ZipReader } from 'slacc';
 import { DI } from '@/di-symbols.js';
-import type { UsersRepository, DriveFilesRepository, MiDriveFile, MiNote } from '@/models/_.js';
+import type { UsersRepository, DriveFilesRepository, MiDriveFile, MiNote, NotesRepository } from '@/models/_.js';
 import type Logger from '@/logger.js';
 import { DownloadService } from '@/core/DownloadService.js';
 import { UtilityService } from '@/core/UtilityService.js';
@@ -18,7 +18,7 @@ import { ApNoteService } from '@/core/activitypub/models/ApNoteService.js';
 import { extractApHashtagObjects } from '@/core/activitypub/models/tag.js';
 import { QueueLoggerService } from '../QueueLoggerService.js';
 import type * as Bull from 'bullmq';
-import type { DbNoteImportToDbJobData, DbNoteImportJobData } from '../types.js';
+import type { DbNoteImportToDbJobData, DbNoteImportJobData, DbKeyNoteImportToDbJobData } from '../types.js';
 
 @Injectable()
 export class ImportNotesProcessorService {
@@ -30,6 +30,9 @@ export class ImportNotesProcessorService {
 
 		@Inject(DI.driveFilesRepository)
 		private driveFilesRepository: DriveFilesRepository,
+
+		@Inject(DI.notesRepository)
+		private notesRepository: NotesRepository,
 
 		private queueService: QueueService,
 		private utilityService: UtilityService,
@@ -64,6 +67,30 @@ export class ImportNotesProcessorService {
 				}
 			}
 		}
+	}
+
+	// Function was taken from Firefish and edited to remove renoteId and make it run in only one for loop instead of two
+	@bindThis
+	private async recreateChain(arr: any[]) {
+		type NotesMap = {
+			[id: string]: any;
+		};
+		const notesTree: any[] = [];
+		const lookup: NotesMap = {};
+		for await (const note of arr) {
+			lookup[`${note.id}`] = note;
+			note.childNotes = [];
+			let parent = null;
+			
+			if (note.replyId == null) {
+				notesTree.push(note);
+			} else {
+				parent = lookup[`${note.replyId}`];
+			}
+
+			if (parent) parent.childNotes.push(note);
+		}
+		return notesTree;
 	}
 
 	@bindThis
@@ -195,7 +222,8 @@ export class ImportNotesProcessorService {
 
 			const notesJson = fs.readFileSync(path, 'utf-8');
 			const notes = JSON.parse(notesJson);
-			this.queueService.createImportKeyNotesToDbJob(job.data.user, notes);
+			const processedNotes = await this.recreateChain(notes);
+			this.queueService.createImportKeyNotesToDbJob(job.data.user, processedNotes, null);
 			cleanup();
 		}
 
@@ -203,7 +231,7 @@ export class ImportNotesProcessorService {
 	}
 
 	@bindThis
-	public async processKeyNotesToDb(job: Bull.Job<DbNoteImportToDbJobData>): Promise<void> {
+	public async processKeyNotesToDb(job: Bull.Job<DbKeyNoteImportToDbJobData>): Promise<void> {
 		const note = job.data.target;
 		const user = await this.usersRepository.findOneBy({ id: job.data.user.id });
 		if (user == null) {
@@ -211,6 +239,8 @@ export class ImportNotesProcessorService {
 		}
 
 		if (note.renoteId) return;
+
+		const parentNote = job.data.note ? await this.notesRepository.findOneBy({ id: job.data.note }) : null;
 
 		const files: MiDriveFile[] = [];
 		const date = new Date(note.createdAt);
@@ -243,8 +273,8 @@ export class ImportNotesProcessorService {
 			}
 		}
 
-		await this.noteCreateService.import(user, { createdAt: date, text: note.text, apMentions: new Array(0), visibility: note.visibility, localOnly: note.localOnly, files: files, cw: note.cw });
-		if (note.childNotes) this.queueService.createImportKeyNotesToDbJob(user, note.childNotes);
+		const createdNote = await this.noteCreateService.import(user, { createdAt: date, reply: parentNote, text: note.text, apMentions: new Array(0), visibility: note.visibility, localOnly: note.localOnly, files: files, cw: note.cw });
+		if (note.childNotes) this.queueService.createImportKeyNotesToDbJob(user, note.childNotes, createdNote.id);
 	}
 
 	@bindThis
