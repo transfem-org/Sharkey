@@ -210,6 +210,8 @@ export class ImportNotesProcessorService {
 			return;
 		}
 
+		if (note.renoteId) return;
+
 		const files: MiDriveFile[] = [];
 		const date = new Date(note.createdAt);
 
