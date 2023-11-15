@@ -172,9 +172,9 @@ export class ClientServerService {
 			icon: meta.iconUrl,
 			appleTouchIcon: meta.app512IconUrl,
 			themeColor: meta.themeColor,
-			serverErrorImageUrl: meta.serverErrorImageUrl ?? 'https://xn--931a.moe/assets/error.jpg',
-			infoImageUrl: meta.infoImageUrl ?? 'https://xn--931a.moe/assets/info.jpg',
-			notFoundImageUrl: meta.notFoundImageUrl ?? 'https://xn--931a.moe/assets/not-found.jpg',
+			serverErrorImageUrl: meta.serverErrorImageUrl ?? 'https://launcher.moe/error.png',
+			infoImageUrl: meta.infoImageUrl ?? 'https://launcher.moe/nothinghere.png',
+			notFoundImageUrl: meta.notFoundImageUrl ?? 'https://launcher.moe/missingpage.webp',
 		};
 	}
 
