@@ -280,6 +280,7 @@ const translating = ref(false);
 const showTicker = (defaultStore.state.instanceTicker === 'always') || (defaultStore.state.instanceTicker === 'remote' && appearNote.user.instance);
 const canRenote = computed(() => ['public', 'home'].includes(appearNote.visibility) || (appearNote.visibility === 'followers' && appearNote.userId === $i.id));
 let renoteCollapsed = $ref(defaultStore.state.collapseRenotes && isRenote && (($i && ($i.id === note.userId || $i.id === appearNote.userId)) || (appearNote.myReaction != null)));
+const defaultLike = computed(() => defaultStore.state.like !== '❤️' ? defaultStore.state.like : props.meta.defaultLike);
 
 const keymap = {
 	'r': () => reply(true),
@@ -513,7 +514,7 @@ function like(): void {
 	}
 	os.api('notes/reactions/create', {
 		noteId: appearNote.id,
-		reaction: props.meta.defaultLike,
+		reaction: defaultLike.value,
 	});
 	const el = likeButton.value as HTMLElement | null | undefined;
 	if (el) {
@@ -534,7 +535,7 @@ function react(viaKeyboard = false): void {
 
 		os.api('notes/reactions/create', {
 			noteId: appearNote.id,
-			reaction: props.meta.defaultLike,
+			reaction: defaultLike.value,
 		});
 		const el = reactButton.value as HTMLElement | null | undefined;
 		if (el) {

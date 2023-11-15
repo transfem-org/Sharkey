@@ -134,6 +134,7 @@ const menuButton = shallowRef<HTMLElement>();
 const likeButton = shallowRef<HTMLElement>();
 
 let appearNote = $computed(() => isRenote ? props.note.renote as Misskey.entities.Note : props.note);
+const defaultLike = computed(() => defaultStore.state.like !== '❤️' ? defaultStore.state.like : props.meta.defaultLike);
 
 const isRenote = (
 	props.note.renote != null &&
@@ -189,7 +190,7 @@ function react(viaKeyboard = false): void {
 	if (props.note.reactionAcceptance === 'likeOnly') {
 		os.api('notes/reactions/create', {
 			noteId: props.note.id,
-			reaction: props.meta.defaultLike,
+			reaction: defaultLike.value,
 		});
 		const el = reactButton.value as HTMLElement | null | undefined;
 		if (el) {
@@ -219,7 +220,7 @@ function like(): void {
 	showMovedDialog();
 	os.api('notes/reactions/create', {
 		noteId: props.note.id,
-		reaction: props.meta.defaultLike,
+		reaction: defaultLike.value,
 	});
 	const el = reactButton.value as HTMLElement | null | undefined;
 	if (el) {

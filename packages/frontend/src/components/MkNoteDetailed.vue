@@ -323,6 +323,7 @@ const conversation = ref<Misskey.entities.Note[]>([]);
 const replies = ref<Misskey.entities.Note[]>([]);
 const quotes = ref<Misskey.entities.Note[]>([]);
 const canRenote = computed(() => ['public', 'home'].includes(appearNote.visibility) || appearNote.userId === $i.id);
+const defaultLike = computed(() => defaultStore.state.like !== '❤️' ? defaultStore.state.like : meta.defaultLike);
 
 watch(() => props.expandAllCws, (expandAllCws) => {
 	if (expandAllCws !== showContent.value) showContent.value = expandAllCws;
@@ -558,7 +559,7 @@ function react(viaKeyboard = false): void {
 	if (appearNote.reactionAcceptance === 'likeOnly') {
 		os.api('notes/reactions/create', {
 			noteId: appearNote.id,
-			reaction: meta.defaultLike,
+			reaction: defaultLike.value,
 		});
 		const el = reactButton.value as HTMLElement | null | undefined;
 		if (el) {
@@ -588,7 +589,7 @@ function like(): void {
 	showMovedDialog();
 	os.api('notes/reactions/create', {
 		noteId: appearNote.id,
-		reaction: meta.defaultLike,
+		reaction: defaultLike.value,
 	});
 	const el = likeButton.value as HTMLElement | null | undefined;
 	if (el) {
