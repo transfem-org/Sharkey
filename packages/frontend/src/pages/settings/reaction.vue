@@ -27,9 +27,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<template #label>Default like emoji</template>
 		<MkCustomEmoji v-if="like.startsWith(':')" style="max-height: 3em; font-size: 1.1em;" :useOriginalSize="false" :class="$style.reaction" :name="like" :normal="true" :noStyle="true"/>
 		<MkEmoji v-else :emoji="like" style="max-height: 3em; font-size: 1.1em;" :normal="true" :noStyle="true"/>
-		<div class="_gaps_s" style="padding-top: 8px;">
-			<MkButton rounded :small="true" @click="chooseNewLike"><i class="ph-smiley ph-bold ph-lg"></i> Change</MkButton>
-			<MkButton rounded :small="true" @click="resetLike"><i class="ph-arrow-clockwise ph-bold ph-lg"></i> Reset</MkButton>
+		<div class="_buttons" style="padding-top: 8px;">
+			<MkButton rounded :small="true" inline @click="chooseNewLike"><i class="ph-smiley ph-bold ph-lg"></i> Change</MkButton>
+			<MkButton rounded :small="true" inline @click="resetLike"><i class="ph-arrow-clockwise ph-bold ph-lg"></i> Reset</MkButton>
 		</div>
 	</FromSlot>
 
