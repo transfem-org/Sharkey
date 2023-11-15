@@ -1762,6 +1762,7 @@ _serverDisconnectedBehavior:
   reload: "自動でリロード"
   dialog: "ダイアログで警告"
   quiet: "控えめに警告"
+  disabled: "警告を無効にする"
 
 _channel:
   create: "チャンネルを作成"
