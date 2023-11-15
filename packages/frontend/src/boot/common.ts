@@ -249,7 +249,7 @@ export async function common(createVue: () => App<Element>) {
 	// https://github.com/misskey-dev/misskey/pull/8575#issuecomment-1114239210
 	// なぜか2回実行されることがあるため、mountするdivを1つに制限する
 	const rootEl = ((): HTMLElement => {
-		const MISSKEY_MOUNT_DIV_ID = 'misskey_app';
+		const MISSKEY_MOUNT_DIV_ID = 'sharkey_app';
 
 		const currentRoot = document.getElementById(MISSKEY_MOUNT_DIV_ID);
 
