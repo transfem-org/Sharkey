@@ -24,7 +24,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				:ad="true"
 				:class="$style.notes"
 			>
-				<MkNote :key="note._featuredId_ || note._prId_ || note.id" :meta="meta" :class="$style.note" :note="note"/>
+				<MkNote :key="note._featuredId_ || note._prId_ || note.id" :class="$style.note" :note="note"/>
 			</MkDateSeparatedList>
 		</div>
 	</template>
@@ -33,25 +33,17 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { shallowRef } from 'vue';
-import * as Misskey from 'misskey-js';
 import MkNote from '@/components/MkNote.vue';
 import MkDateSeparatedList from '@/components/MkDateSeparatedList.vue';
 import MkPagination, { Paging } from '@/components/MkPagination.vue';
 import { i18n } from '@/i18n.js';
 import { infoImageUrl } from '@/instance.js';
-import * as os from '@/os.js';
 
 const props = defineProps<{
 	pagination: Paging;
 	noGap?: boolean;
 	disableAutoLoad?: boolean;
 }>();
-
-let meta = $ref<Misskey.entities.LiteInstanceMetadata>() as Misskey.entities.LiteInstanceMetadata;
-
-os.api('meta', { detail: false }).then(res => {
-	meta = res as unknown as Misskey.entities.LiteInstanceMetadata;
-});
 
 const pagingComponent = shallowRef<InstanceType<typeof MkPagination>>();
 

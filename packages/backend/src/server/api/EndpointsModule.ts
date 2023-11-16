@@ -284,6 +284,7 @@ import * as ep___notes_polls_vote from './endpoints/notes/polls/vote.js';
 import * as ep___notes_reactions from './endpoints/notes/reactions.js';
 import * as ep___notes_reactions_create from './endpoints/notes/reactions/create.js';
 import * as ep___notes_reactions_delete from './endpoints/notes/reactions/delete.js';
+import * as ep___notes_like from './endpoints/notes/like.js';
 import * as ep___notes_renotes from './endpoints/notes/renotes.js';
 import * as ep___notes_replies from './endpoints/notes/replies.js';
 import * as ep___notes_edit from './endpoints/notes/edit.js';
@@ -653,6 +654,7 @@ const $notes_polls_vote: Provider = { provide: 'ep:notes/polls/vote', useClass: 
 const $notes_reactions: Provider = { provide: 'ep:notes/reactions', useClass: ep___notes_reactions.default };
 const $notes_reactions_create: Provider = { provide: 'ep:notes/reactions/create', useClass: ep___notes_reactions_create.default };
 const $notes_reactions_delete: Provider = { provide: 'ep:notes/reactions/delete', useClass: ep___notes_reactions_delete.default };
+const $notes_like: Provider = { provide: 'ep:notes/like', useClass: ep___notes_like.default };
 const $notes_renotes: Provider = { provide: 'ep:notes/renotes', useClass: ep___notes_renotes.default };
 const $notes_replies: Provider = { provide: 'ep:notes/replies', useClass: ep___notes_replies.default };
 const $notes_searchByTag: Provider = { provide: 'ep:notes/search-by-tag', useClass: ep___notes_searchByTag.default };
@@ -1026,6 +1028,7 @@ const $sponsors: Provider = { provide: 'ep:sponsors', useClass: ep___sponsors.de
 		$notes_reactions,
 		$notes_reactions_create,
 		$notes_reactions_delete,
+		$notes_like,
 		$notes_renotes,
 		$notes_replies,
 		$notes_searchByTag,
@@ -1393,6 +1396,7 @@ const $sponsors: Provider = { provide: 'ep:sponsors', useClass: ep___sponsors.de
 		$notes_reactions,
 		$notes_reactions_create,
 		$notes_reactions_delete,
+		$notes_like,
 		$notes_renotes,
 		$notes_replies,
 		$notes_searchByTag,

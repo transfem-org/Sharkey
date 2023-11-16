@@ -15,9 +15,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<div v-if="!conversationLoaded" style="padding: 16px">
 			<MkButton style="margin: 0 auto;" primary rounded @click="loadConversation">{{ i18n.ts.loadConversation }}</MkButton>
 		</div>
-		<MkNoteSub v-for="note in conversation" :key="note.id" :meta="meta" :class="$style.replyToMore" :note="note" :expandAllCws="props.expandAllCws"/>
+		<MkNoteSub v-for="note in conversation" :key="note.id" :class="$style.replyToMore" :note="note" :expandAllCws="props.expandAllCws"/>
 	</div>
-	<MkNoteSub v-if="appearNote.reply" :meta="meta" :note="appearNote.reply" :class="$style.replyTo" :expandAllCws="props.expandAllCws"/>
+	<MkNoteSub v-if="appearNote.reply" :note="appearNote.reply" :class="$style.replyTo" :expandAllCws="props.expandAllCws"/>
 	<div v-if="isRenote" :class="$style.renote">
 		<MkAvatar :class="$style.renoteAvatar" :user="note.user" link preview/>
 		<i class="ph-rocket-launch ph-bold ph-lg" style="margin-right: 4px;"></i>
@@ -171,7 +171,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<div v-if="!repliesLoaded" style="padding: 16px">
 				<MkButton style="margin: 0 auto;" primary rounded @click="loadReplies">{{ i18n.ts.loadReplies }}</MkButton>
 			</div>
-			<MkNoteSub v-for="note in replies" :key="note.id" :meta="meta" :note="note" :class="$style.reply" :detail="true" :expandAllCws="props.expandAllCws"/>
+			<MkNoteSub v-for="note in replies" :key="note.id" :note="note" :class="$style.reply" :detail="true" :expandAllCws="props.expandAllCws"/>
 		</div>
 		<div v-else-if="tab === 'renotes'" :class="$style.tab_renotes">
 			<MkPagination :pagination="renotesPagination" :disableAutoLoad="true">
@@ -188,7 +188,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<div v-if="!quotesLoaded" style="padding: 16px">
 				<MkButton style="margin: 0 auto;" primary rounded @click="loadQuotes">{{ i18n.ts.loadReplies }}</MkButton>
 			</div>
-			<MkNoteSub v-for="note in quotes" :key="note.id" :meta="meta" :note="note" :class="$style.reply" :detail="true" :expandAllCws="props.expandAllCws"/>
+			<MkNoteSub v-for="note in quotes" :key="note.id" :note="note" :class="$style.reply" :detail="true" :expandAllCws="props.expandAllCws"/>
 		</div>
 		<div v-else-if="tab === 'reactions'" :class="$style.tab_reactions">
 			<div :class="$style.reactionTabs">
@@ -263,12 +263,6 @@ const props = defineProps<{
 	expandAllCws?: boolean;
 }>();
 
-let meta = $ref<Misskey.entities.LiteInstanceMetadata>() as Misskey.entities.LiteInstanceMetadata;
-
-os.api('meta', { detail: false }).then(res => {
-	meta = res as unknown as Misskey.entities.LiteInstanceMetadata;
-});
-
 const inChannel = inject('inChannel', null);
 
 let note = $ref(deepClone(props.note));
@@ -323,7 +317,7 @@ const conversation = ref<Misskey.entities.Note[]>([]);
 const replies = ref<Misskey.entities.Note[]>([]);
 const quotes = ref<Misskey.entities.Note[]>([]);
 const canRenote = computed(() => ['public', 'home'].includes(appearNote.visibility) || appearNote.userId === $i.id);
-const defaultLike = computed(() => defaultStore.state.like !== '❤️' ? defaultStore.state.like : meta.defaultLike);
+const defaultLike = computed(() => defaultStore.state.like !== '❤️' ? defaultStore.state.like : null);
 
 watch(() => props.expandAllCws, (expandAllCws) => {
 	if (expandAllCws !== showContent.value) showContent.value = expandAllCws;
@@ -557,9 +551,9 @@ function react(viaKeyboard = false): void {
 	pleaseLogin();
 	showMovedDialog();
 	if (appearNote.reactionAcceptance === 'likeOnly') {
-		os.api('notes/reactions/create', {
+		os.api('notes/like', {
 			noteId: appearNote.id,
-			reaction: defaultLike.value,
+			override: defaultLike.value,
 		});
 		const el = reactButton.value as HTMLElement | null | undefined;
 		if (el) {
@@ -587,9 +581,9 @@ function react(viaKeyboard = false): void {
 function like(): void {
 	pleaseLogin();
 	showMovedDialog();
-	os.api('notes/reactions/create', {
+	os.api('notes/like', {
 		noteId: appearNote.id,
-		reaction: defaultLike.value,
+		override: defaultLike.value,
 	});
 	const el = likeButton.value as HTMLElement | null | undefined;
 	if (el) {
