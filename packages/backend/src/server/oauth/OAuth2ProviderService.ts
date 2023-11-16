@@ -78,6 +78,8 @@ export class OAuth2ProviderService {
 			payload.on('error', done);
 		});
 
+		fastify.register(multer.contentParser);
+
 		fastify.get('/oauth/authorize', async (request, reply) => {
 			const query: any = request.query;
 			let param = "mastodon=true";
