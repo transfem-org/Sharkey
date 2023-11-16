@@ -12,6 +12,8 @@ import type { Config } from '@/config.js';
 import { DI } from '@/di-symbols.js'; */
 import multer from 'fastify-multer';
 import { bindThis } from '@/decorators.js';
+import type { Config } from '@/config.js';
+import { DI } from '@/di-symbols.js';
 import type { FastifyInstance } from 'fastify';
 
 function getClient(BASE_URL: string, authorization: string | undefined): MegalodonInterface {
