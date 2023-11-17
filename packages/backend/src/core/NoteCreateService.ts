@@ -953,10 +953,6 @@ export class NoteCreateService implements OnApplicationShutdown {
 		// Pack the note
 		const noteObj = await this.noteEntityService.pack(note, null, { skipHide: true, withReactionAndUserPairCache: true });
 
-		this.globalEventService.publishNotesStream(noteObj);
-
-		this.roleService.addNoteToRoleTimeline(noteObj);
-
 		if (data.channel) {
 			this.channelsRepository.increment({ id: data.channel.id }, 'notesCount', 1);
 			this.channelsRepository.update(data.channel.id, {
