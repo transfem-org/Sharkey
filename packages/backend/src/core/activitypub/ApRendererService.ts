@@ -525,7 +525,7 @@ export class ApRendererService {
 			discoverable: user.isExplorable,
 			publicKey: this.renderKey(user, keypair, '#main-key'),
 			isCat: user.isCat,
-			noindex: user.isIndexable,
+			noindex: user.noindex,
 			speakAsCat: user.speakAsCat,
 			attachment: attachment.length ? attachment : undefined,
 		};

@@ -189,10 +189,10 @@ export class MiUser {
 	public isSilenced: boolean;
 
 	@Column('boolean', {
-		default: true,
-		comment: 'Whether the User\'s notes get indexed.',
+		default: false,
+		comment: 'Whether the User\'s notes dont get indexed.',
 	})
-	public isIndexable: boolean;
+	public noindex: boolean;
 
 	@Column('boolean', {
 		default: false,
