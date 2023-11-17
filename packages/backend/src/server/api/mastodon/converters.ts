@@ -272,7 +272,7 @@ export class MastoConverters {
 			poll: status.poll ?? null,
 			application: null, //FIXME
 			language: null, //FIXME
-			pinned: null,
+			pinned: false,
 			reactions: status.emoji_reactions,
 			emoji_reactions: status.emoji_reactions,
 			bookmarked: false,
