@@ -272,8 +272,8 @@ export class QueueService {
 	}
 
 	@bindThis
-	public createImportTweetsToDbJob(user: ThinUser, targets: string[]) {
-		const jobs = targets.map(rel => this.generateToDbJobData('importTweetsToDb', { user, target: rel }));
+	public createImportTweetsToDbJob(user: ThinUser, targets: string[], note: MiNote['id'] | null) {
+		const jobs = targets.map(rel => this.generateToDbJobData('importTweetsToDb', { user, target: rel, note }));
 		return this.dbQueue.addBulk(jobs);
 	}
 

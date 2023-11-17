@@ -94,6 +94,29 @@ export class ImportNotesProcessorService {
 	}
 
 	@bindThis
+	private async recreateTwitChain(arr: any[]) {
+		type TweetsMap = {
+			[id: string]: any;
+		};
+		const tweetsTree: any[] = [];
+		const lookup: TweetsMap = {};
+		for await (const tweet of arr) {
+			lookup[`${tweet.id_str}`] = tweet;
+			tweet.replies = [];
+			let parent = null;
+			
+			if (!tweet.in_reply_to_status_id_str) {
+				tweetsTree.push(tweet);
+			} else {
+				parent = lookup[`${tweet.in_reply_to_status_id_str}`];
+			}
+
+			if (parent) parent.replies.push(tweet);
+		}
+		return tweetsTree;
+	}
+
+	@bindThis
 	private isIterable(obj: any) {
 		if (obj == null) {
 			return false;
@@ -155,7 +178,10 @@ export class ImportNotesProcessorService {
 				const tweets = Object.keys(fakeWindow.window.YTD.tweets.part0).reduce((m, key, i, obj) => {
 					return m.concat(fakeWindow.window.YTD.tweets.part0[key].tweet);
 				}, []);
-				this.queueService.createImportTweetsToDbJob(job.data.user, tweets);
+				// Due to the way twitter outputs the tweets the entire array needs to be reversed for the recreate function.
+				const reversedTweets = tweets.reverse();
+				const processedTweets = await this.recreateTwitChain(reversedTweets);
+				this.queueService.createImportTweetsToDbJob(job.data.user, processedTweets, null);
 			} finally {
 				cleanup();
 			}
@@ -430,14 +456,14 @@ export class ImportNotesProcessorService {
 	}
 
 	@bindThis
-	public async processTwitterDb(job: Bull.Job<DbNoteImportToDbJobData>): Promise<void> {
+	public async processTwitterDb(job: Bull.Job<DbKeyNoteImportToDbJobData>): Promise<void> {
 		const tweet = job.data.target;
 		const user = await this.usersRepository.findOneBy({ id: job.data.user.id });
 		if (user == null) {
 			return;
 		}
 
-		if (tweet.in_reply_to_status_id_str) return;
+		const parentNote = job.data.note ? await this.notesRepository.findOneBy({ id: job.data.note }) : null;
 
 		async function replaceTwitterUrls(full_text: string, urls: any) {
 			let full_textedit = full_text;
@@ -516,7 +542,8 @@ export class ImportNotesProcessorService {
 					}
 				}
 			}
-			await this.noteCreateService.import(user, { createdAt: date, text: text, files: files });
+			const createdNote = await this.noteCreateService.import(user, { createdAt: date, reply: parentNote, text: text, files: files });
+			if (tweet.replies) this.queueService.createImportTweetsToDbJob(user, tweet.replies, createdNote.id);
 		} catch (e) {
 			this.logger.warn(`Error: ${e}`);
 		}
