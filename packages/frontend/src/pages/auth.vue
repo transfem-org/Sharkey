@@ -84,6 +84,8 @@ function accepted() {
 		if (session.app.callbackUrl.includes('public-api.wordpress.com')) {
 			callbackUrl.searchParams.append('action', 'verify');
 			callbackUrl.searchParams.append('service', 'mastodon');
+			callbackUrl.searchParams.append('kr_nonce', wordpress.get('kr_nonce') as string);
+			callbackUrl.searchParams.append('nonce', wordpress.get('nonce') as string);
 		}
 		location.href = callbackUrl.toString();
 	} else if (session && session.app.callbackUrl) {
