@@ -77,10 +77,14 @@ function accepted() {
 			state = "fetch-session-error";
 			throw new Error("Callback URI doesn't match registered app");
 		}
-		const test = new URLSearchParams(window.location.search);
-		const callbackUrl = session.app.callbackUrl.includes('elk.zone') ? new URL(session.app.callbackUrl) : session.app.callbackUrl.includes('wordpress.com') ? new URL(test.get('redirect_uri') as string) : new URL(redirectUri);
+		const wordpress = new URLSearchParams(window.location.search);
+		const callbackUrl = session.app.callbackUrl.includes('elk.zone') ? new URL(session.app.callbackUrl) : session.app.callbackUrl.includes('wordpress.com') ? new URL(wordpress.get('redirect_uri') as string) : new URL(redirectUri);
 		callbackUrl.searchParams.append("code", session.token);
 		if (getUrlParams().state) callbackUrl.searchParams.append("state", getUrlParams().state);
+		if (session.app.callbackUrl.includes('public-api.wordpress.com')) {
+			callbackUrl.searchParams.append('action', 'verify');
+			callbackUrl.searchParams.append('service', 'mastodon');
+		}
 		location.href = callbackUrl.toString();
 	} else if (session && session.app.callbackUrl) {
 		const url = new URL(session.app.callbackUrl);
