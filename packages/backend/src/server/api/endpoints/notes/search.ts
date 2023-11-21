@@ -75,7 +75,6 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				host: ps.host,
 				filetype: ps.filetype,
 				order: ps.order,
-				disableMeili: ps.filetype ? true : false,
 			}, {
 				untilId: ps.untilId,
 				sinceId: ps.sinceId,
