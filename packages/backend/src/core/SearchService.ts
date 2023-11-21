@@ -29,8 +29,7 @@ type Q =
 	{ op: 'is not null', k: K} |
 	{ op: 'and', qs: Q[] } |
 	{ op: 'or', qs: Q[] } |
-	{ op: 'not', q: Q } |
-	{ op: 'in', qs: Q[] };
+	{ op: 'not', q: Q };
 
 function compileValue(value: V): string {
 	if (typeof value === 'string') {
