@@ -569,7 +569,7 @@ export class ImportNotesProcessorService {
 			return;
 		}
 
-		if (!this.isIterable(post.data) || !post.data[0].post) return;
+		if (!this.isIterable(post.data) || this.isIterable(post.data) && post.data[0].post === undefined) return;
 
 		const date = new Date(post.timestamp * 1000);
 		const title = decodeFBString(post.data[0].post);
@@ -583,12 +583,18 @@ export class ImportNotesProcessorService {
 			return Buffer.from(arr).toString('utf8');
 		}
 
-		if (post.attachments && this.isIterable(post.attachments) && this.isIterable(post.attachments.data)) {
-			for await (const file of post.attachments.data) {
-				if (!file.media) return;
-				const slashdex = file.media.uri.lastIndexOf('/');
-				const name = file.media.uri.substring(slashdex + 1);
-				const exists = await this.driveFilesRepository.findOneBy({ name: name, userId: user.id }) ?? await this.driveFilesRepository.findOneBy({ name: `${name}.jpg`, userId: user.id }) ?? await this.driveFilesRepository.findOneBy({ name: `${name}.mp4`, userId: user.id });
+		if (post.attachments && this.isIterable(post.attachments)) {
+			const media = [];
+			for await (const data of post.attachments[0].data) {
+				if (data.media) {
+					media.push(data.media);
+				}
+			}
+
+			for await (const file of media) {
+				const slashdex = file.uri.lastIndexOf('/');
+				const name = file.uri.substring(slashdex + 1);
+				const exists = await this.driveFilesRepository.findOneBy({ name: name, userId: user.id });
 				if (exists) {
 					files.push(exists);
 				}
