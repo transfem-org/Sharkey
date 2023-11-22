@@ -175,6 +175,7 @@ export class ClientServerService {
 			serverErrorImageUrl: meta.serverErrorImageUrl ?? 'https://launcher.moe/error.png',
 			infoImageUrl: meta.infoImageUrl ?? 'https://launcher.moe/nothinghere.png',
 			notFoundImageUrl: meta.notFoundImageUrl ?? 'https://launcher.moe/missingpage.webp',
+			instanceUrl: this.config.url,
 		};
 	}
 

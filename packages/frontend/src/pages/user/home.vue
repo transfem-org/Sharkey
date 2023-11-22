@@ -25,7 +25,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 								<span v-if="user.isAdmin" :title="i18n.ts.isAdmin" style="color: var(--badge);"><i class="ph-shield ph-bold ph-lg"></i></span>
 								<span v-if="user.isLocked" :title="i18n.ts.isLocked"><i class="ph-lock ph-bold ph-lg"></i></span>
 								<span v-if="user.isBot" :title="i18n.ts.isBot"><i class="ph-robot ph-bold ph-lg"></i></span>
-								<button v-if="!isEditingMemo && !memoDraft" class="_button add-note-button" @click="showMemoTextarea">
+								<button v-if="$i && !isEditingMemo && !memoDraft" class="_button add-note-button" @click="showMemoTextarea">
 									<i class="ph-pencil-line ph-bold ph-lg"/> {{ i18n.ts.addMemo }}
 								</button>
 							</div>
