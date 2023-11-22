@@ -302,6 +302,12 @@ export class QueueService {
 	}
 
 	@bindThis
+	public createImportFBToDbJob(user: ThinUser, targets: string[]) {
+		const jobs = targets.map(rel => this.generateToDbJobData('importFBToDb', { user, target: rel }));
+		return this.dbQueue.addBulk(jobs);
+	}
+
+	@bindThis
 	public createImportFollowingToDbJob(user: ThinUser, targets: string[], withReplies?: boolean) {
 		const jobs = targets.map(rel => this.generateToDbJobData('importFollowingToDb', { user, target: rel, withReplies }));
 		return this.dbQueue.addBulk(jobs);
@@ -336,7 +342,7 @@ export class QueueService {
 	}
 
 	@bindThis
-	private generateToDbJobData<T extends 'importFollowingToDb' | 'importBlockingToDb' | 'importTweetsToDb' | 'importIGToDb' | 'importMastoToDb' | 'importPleroToDb' | 'importKeyNotesToDb', D extends DbJobData<T>>(name: T, data: D): {
+	private generateToDbJobData<T extends 'importFollowingToDb' | 'importBlockingToDb' | 'importTweetsToDb' | 'importIGToDb' | 'importFBToDb' | 'importMastoToDb' | 'importPleroToDb' | 'importKeyNotesToDb', D extends DbJobData<T>>(name: T, data: D): {
 		name: string,
 		data: D,
 		opts: Bull.JobsOptions,
