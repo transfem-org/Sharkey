@@ -258,7 +258,7 @@ export default function(props: MfmProps) {
 							style: 'display: inline-block; font-size: 90%; border: solid 1px var(--divider); border-radius: 999px; padding: 4px 10px 4px 6px;',
 						}, [
 							h('i', {
-								class: 'ti ti-clock',
+								class: 'ph-clock ph-bold ph-lg',
 								style: 'margin-right: 0.25em;',
 							}),
 							h(MkTime, {

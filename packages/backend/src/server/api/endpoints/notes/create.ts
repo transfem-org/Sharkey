@@ -283,7 +283,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				} else if (isPureRenote(reply)) {
 					throw new ApiError(meta.errors.cannotReplyToPureRenote);
 				} else if (!await this.noteEntityService.isVisibleForMe(reply, me.id)) {
-					throw new ApiError(meta.errors.cannotReplyToInvisibleNote);
+					throw new ApiError(meta.errors.noSuchReplyTarget);
 				}
 
 				// Check blocking

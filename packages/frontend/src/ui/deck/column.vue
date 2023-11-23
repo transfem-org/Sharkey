@@ -186,7 +186,7 @@ function getMenu() {
 
 	if (props.refresher) {
 		items = [{
-			icon: 'ti ti-refresh',
+			icon: 'ph-arrows-counter-clockwise ph-bold ph-lg',
 			text: i18n.ts.reload,
 			action: () => {
 				if (props.refresher) {

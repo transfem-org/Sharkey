@@ -302,7 +302,7 @@ function lookup(ev: MouseEvent) {
 		},
 	}, {
 		text: `${i18n.ts.user} (${i18n.ts.email})`,
-		icon: 'ti ti-user',
+		icon: 'ph-user ph-bold ph-lg',
 		action: () => {
 			lookupUserByEmail();
 		},
