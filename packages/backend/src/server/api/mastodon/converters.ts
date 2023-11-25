@@ -133,7 +133,7 @@ export class MastoConverters {
 		const fqn = `${user.username}@${user.host ?? this.config.hostname}`;
 		let acct = user.username;
 		let acctUrl = `https://${user.host || this.config.host}/@${user.username}`;
-		const acctUri = `https://${this.config.host}/@${user.id}`;
+		const acctUri = `https://${this.config.host}/users/${user.id}`;
 		if (user.host) {
 			acct = `${user.username}@${user.host}`;
 			acctUrl = `https://${user.host}/@${user.username}`;
