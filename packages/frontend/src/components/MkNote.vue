@@ -271,7 +271,7 @@ const renoteUri = appearNote.renote ? appearNote.renote.uri : null;
 const isMyRenote = $i && ($i.id === note.userId);
 const showContent = ref(false);
 const parsed = $computed(() => appearNote.text ? mfm.parse(appearNote.text) : null);
-const urls = $computed(() => parsed ? extractUrlFromMfm(parsed) : null);
+const urls = $computed(() => parsed ? extractUrlFromMfm(parsed).filter(u => u !== renoteUrl && u !== renoteUri) : null);
 const animated = $computed(() => parsed ? checkAnimationFromMfm(parsed) : null);
 const allowAnim = ref(defaultStore.state.advancedMfm && defaultStore.state.animatedMfm ? true : false);
 const isLong = shouldCollapsed(appearNote, urls ?? []);
