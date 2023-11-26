@@ -94,6 +94,7 @@ describe('ActivityPub', () => {
 		cacheRemoteFiles: true,
 		cacheRemoteSensitiveFiles: true,
 		enableFanoutTimeline: true,
+		enableFanoutTimelineDbFallback: true,
 		perUserHomeTimelineCacheMax: 800,
 		perLocalUserUserTimelineCacheMax: 800,
 		perRemoteUserUserTimelineCacheMax: 800,

@@ -1304,6 +1304,8 @@ _serverSettings:
   shortName: "略称"
   shortNameDescription: "サーバーの正式名称が長い場合に、代わりに表示することのできる略称や通称。"
   fanoutTimelineDescription: "有効にすると、各種タイムラインを取得する際のパフォーマンスが大幅に向上し、データベースへの負荷を軽減することが可能です。ただし、Redisのメモリ使用量は増加します。サーバーのメモリ容量が少ない場合、または動作が不安定な場合は無効にすることができます。"
+  fanoutTimelineDbFallback: "データベースへのフォールバック"
+  fanoutTimelineDbFallbackDescription: "有効にすると、タイムラインがキャッシュされていない場合にDBへ追加で問い合わせを行うフォールバック処理を行います。無効にすると、フォールバック処理を行わないことでさらにサーバーの負荷を軽減することができますが、タイムラインが取得できる範囲に制限が生じます。"
 
 _accountMigration:
   moveFrom: "別のアカウントからこのアカウントに移行"
@@ -1605,6 +1607,7 @@ _role:
     gtlAvailable: "グローバルタイムラインの閲覧"
     ltlAvailable: "ローカルタイムラインの閲覧"
     canPublicNote: "パブリック投稿の許可"
+    canImportNotes: "ノートのインポートが可能"
     canInvite: "サーバー招待コードの発行"
     inviteLimit: "招待コードの作成可能数"
     inviteLimitCycle: "招待コードの発行間隔"
@@ -1761,6 +1764,7 @@ _serverDisconnectedBehavior:
   reload: "自動でリロード"
   dialog: "ダイアログで警告"
   quiet: "控えめに警告"
+  disabled: "警告を無効にする"
 
 _channel:
   create: "チャンネルを作成"
@@ -1884,6 +1888,15 @@ _ago:
   monthsAgo: "{n}ヶ月前"
   yearsAgo: "{n}年前"
   invalid: "ありません"
+
+_timeIn:
+  seconds: "{n}秒後"
+  minutes: "{n}分後"
+  hours: "{n}時間後"
+  days: "{n}日後"
+  weeks: "{n}週間後"
+  months: "{n}ヶ月後"
+  years: "{n}年後"
 
 _time:
   second: "秒"

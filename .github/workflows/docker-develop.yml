@@ -56,6 +56,7 @@ jobs:
           labels: develop
           cache-from: type=gha
           cache-to: type=gha,mode=max
+          build-args: NODE_ENV=development
       - name: Push update to server
         if: steps.build.outcome == 'success'
         uses: indiesdev/curl@v1.1

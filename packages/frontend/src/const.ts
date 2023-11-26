@@ -112,6 +112,7 @@ export const ROLE_POLICIES = [
 	'gtlAvailable',
 	'ltlAvailable',
 	'canPublicNote',
+	'canImportNotes',
 	'canInvite',
 	'inviteLimit',
 	'inviteLimitCycle',
@@ -140,6 +141,8 @@ export const ROLE_POLICIES = [
 export const CURRENT_STICKY_TOP = 'CURRENT_STICKY_TOP';
 export const CURRENT_STICKY_BOTTOM = 'CURRENT_STICKY_BOTTOM';
 
-export const DEFAULT_SERVER_ERROR_IMAGE_URL = 'https://xn--931a.moe/assets/error.jpg';
-export const DEFAULT_NOT_FOUND_IMAGE_URL = 'https://xn--931a.moe/assets/not-found.jpg';
-export const DEFAULT_INFO_IMAGE_URL = 'https://xn--931a.moe/assets/info.jpg';
+export const DEFAULT_SERVER_ERROR_IMAGE_URL = 'https://launcher.moe/error.png';
+export const DEFAULT_NOT_FOUND_IMAGE_URL = 'https://launcher.moe/missingpage.webp';
+export const DEFAULT_INFO_IMAGE_URL = 'https://launcher.moe/nothinghere.png';
+
+export const MFM_TAGS = ['tada', 'jelly', 'twitch', 'shake', 'spin', 'jump', 'bounce', 'flip', 'x2', 'x3', 'x4', 'scale', 'position', 'fg', 'bg', 'font', 'blur', 'rainbow', 'sparkle', 'rotate', 'ruby', 'unixtime'];

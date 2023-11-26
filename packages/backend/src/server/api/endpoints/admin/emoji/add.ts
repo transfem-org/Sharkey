@@ -72,6 +72,8 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 			const isDuplicate = await this.customEmojiService.checkDuplicate(ps.name);
 			if (isDuplicate) throw new ApiError(meta.errors.duplicateName);
 
+			if (driveFile.user !== null) await this.driveFilesRepository.update(driveFile.id, { user: null });
+
 			const emoji = await this.customEmojiService.add({
 				driveFile,
 				name: ps.name,

@@ -509,6 +509,11 @@ export class MiMeta {
 	})
 	public enableFanoutTimeline: boolean;
 
+	@Column('boolean', {
+		default: true,
+	})
+	public enableFanoutTimelineDbFallback: boolean;
+
 	@Column('integer', {
 		default: 300,
 	})
@@ -533,4 +538,10 @@ export class MiMeta {
 		default: 0,
 	})
 	public notesPerOneAd: number;
+
+	@Column('varchar', {
+		length: 500,
+		nullable: true,
+	})
+	public defaultLike: string | null;
 }

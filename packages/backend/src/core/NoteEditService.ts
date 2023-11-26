@@ -224,7 +224,7 @@ export class NoteEditService implements OnApplicationShutdown {
 		username: MiUser['username'];
 		host: MiUser['host'];
 		isBot: MiUser['isBot'];
-		isIndexable: MiUser['isIndexable'];
+		noindex: MiUser['noindex'];
 	}, editid: MiNote['id'], data: Option, silent = false): Promise<MiNote> {
 		if (!editid) {
 			throw new Error('fail');
@@ -499,7 +499,7 @@ export class NoteEditService implements OnApplicationShutdown {
 		username: MiUser['username'];
 		host: MiUser['host'];
 		isBot: MiUser['isBot'];
-		isIndexable: MiUser['isIndexable'];
+		noindex: MiUser['noindex'];
 	}, data: Option, silent: boolean, tags: string[], mentionedUsers: MinimumUser[]) {
 		// Register host
 		if (this.userEntityService.isRemoteUser(user)) {
@@ -688,7 +688,7 @@ export class NoteEditService implements OnApplicationShutdown {
 		}
 
 		// Register to search database
-		if (user.isIndexable) this.index(note);
+		if (!user.noindex) this.index(note);
 	}
 
 	@bindThis

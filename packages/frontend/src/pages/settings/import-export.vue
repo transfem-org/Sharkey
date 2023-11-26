@@ -7,11 +7,26 @@ SPDX-License-Identifier: AGPL-3.0-only
 <div class="_gaps_m">
 	<FormSection first>
 		<template #label><i class="ph-pencil ph-bold ph-lg"></i> {{ i18n.ts._exportOrImport.allNotes }}</template>
-		<MkFolder>
-			<template #label>{{ i18n.ts.export }}</template>
-			<template #icon><i class="ph-download ph-bold ph-lg"></i></template>
-			<MkButton primary :class="$style.button" inline @click="exportNotes()"><i class="ph-download ph-bold ph-lg"></i> {{ i18n.ts.export }}</MkButton>
-		</MkFolder>
+		<div class="_gaps_s">
+			<MkFolder>
+				<template #label>{{ i18n.ts.export }}</template>
+				<template #icon><i class="ph-download ph-bold ph-lg"></i></template>
+				<MkButton primary :class="$style.button" inline @click="exportNotes()"><i class="ph-download ph-bold ph-lg"></i> {{ i18n.ts.export }}</MkButton>
+			</MkFolder>
+			<MkFolder v-if="$i && $i.policies.canImportNotes">
+				<template #label>{{ i18n.ts.import }}</template>
+				<template #icon><i class="ph-upload ph-bold ph-lg"></i></template>
+				<MkRadios v-model="noteType" style="padding-bottom: 8px;" small>
+					<template #label>Origin</template>
+					<option value="Misskey">Misskey/Firefish</option>
+					<option value="Mastodon">Mastodon/Pleroma/Akkoma</option>
+					<option value="Twitter">Twitter</option>
+					<option value="Instagram">Instagram</option>
+					<option value="Facebook">Facebook</option>
+				</MkRadios>
+				<MkButton primary :class="$style.button" inline @click="importNotes($event)"><i class="ph-upload ph-bold ph-lg"></i> {{ i18n.ts.import }}</MkButton>
+			</MkFolder>
+		</div>
 	</FormSection>
 	<FormSection>
 		<template #label><i class="ph-star ph-bold ph-lg"></i> {{ i18n.ts._exportOrImport.favoritedNotes }}</template>
@@ -116,6 +131,7 @@ import MkButton from '@/components/MkButton.vue';
 import FormSection from '@/components/form/section.vue';
 import MkFolder from '@/components/MkFolder.vue';
 import MkSwitch from '@/components/MkSwitch.vue';
+import MkRadios from '@/components/MkRadios.vue';
 import * as os from '@/os.js';
 import { selectFile } from '@/scripts/select-file.js';
 import { i18n } from '@/i18n.js';
@@ -125,6 +141,7 @@ import { defaultStore } from "@/store.js";
 
 const excludeMutingUsers = ref(false);
 const excludeInactiveUsers = ref(false);
+const noteType = ref(null);
 const withReplies = ref(defaultStore.state.defaultWithReplies);
 
 const onExportSuccess = () => {
@@ -185,6 +202,14 @@ const importFollowing = async (ev) => {
 	os.api('i/import-following', {
 		fileId: file.id,
 		withReplies: withReplies.value,
+	}).then(onImportSuccess).catch(onError);
+};
+
+const importNotes = async (ev) => {
+	const file = await selectFile(ev.currentTarget ?? ev.target);
+	os.api('i/import-notes', {
+		fileId: file.id,
+		type: noteType.value,
 	}).then(onImportSuccess).catch(onError);
 };
 

@@ -93,6 +93,7 @@ export class SearchService {
 					'userHost',
 					'channelId',
 					'tags',
+					'attachedFileTypes',
 				],
 				typoTolerance: {
 					enabled: false,
@@ -138,6 +139,7 @@ export class SearchService {
 				cw: note.cw,
 				text: note.text,
 				tags: note.tags,
+				attachedFileTypes: note.attachedFileTypes,
 			}], {
 				primaryKey: 'id',
 			});
@@ -180,6 +182,44 @@ export class SearchService {
 					filter.qs.push({ op: 'is null', k: 'userHost' });
 				} else {
 					filter.qs.push({ op: '=', k: 'userHost', v: opts.host });
+				}
+			}
+			if (opts.filetype) {
+				if (opts.filetype === 'image') {
+					filter.qs.push({ op: 'or', qs: [
+						{ op: '=', k: 'attachedFileTypes', v: 'image/webp' }, 
+						{ op: '=', k: 'attachedFileTypes', v: 'image/png' },
+						{ op: '=', k: 'attachedFileTypes', v: 'image/jpeg' },
+						{ op: '=', k: 'attachedFileTypes', v: 'image/avif' },
+						{ op: '=', k: 'attachedFileTypes', v: 'image/apng' },
+						{ op: '=', k: 'attachedFileTypes', v: 'image/gif' },
+					] });
+				} else if (opts.filetype === 'video') {
+					filter.qs.push({ op: 'or', qs: [
+						{ op: '=', k: 'attachedFileTypes', v: 'video/mp4' }, 
+						{ op: '=', k: 'attachedFileTypes', v: 'video/webm' },
+						{ op: '=', k: 'attachedFileTypes', v: 'video/mpeg' },
+						{ op: '=', k: 'attachedFileTypes', v: 'video/x-m4v' },
+					] });
+				} else if (opts.filetype === 'audio') {
+					filter.qs.push({ op: 'or', qs: [
+						{ op: '=', k: 'attachedFileTypes', v: 'audio/mpeg' }, 
+						{ op: '=', k: 'attachedFileTypes', v: 'audio/flac' },
+						{ op: '=', k: 'attachedFileTypes', v: 'audio/wav' },
+						{ op: '=', k: 'attachedFileTypes', v: 'audio/aac' },
+						{ op: '=', k: 'attachedFileTypes', v: 'audio/webm' },
+						{ op: '=', k: 'attachedFileTypes', v: 'audio/opus' },
+						{ op: '=', k: 'attachedFileTypes', v: 'audio/ogg' },
+						{ op: '=', k: 'attachedFileTypes', v: 'audio/x-m4a' },
+						{ op: '=', k: 'attachedFileTypes', v: 'audio/mod' },
+						{ op: '=', k: 'attachedFileTypes', v: 'audio/s3m' },
+						{ op: '=', k: 'attachedFileTypes', v: 'audio/xm' },
+						{ op: '=', k: 'attachedFileTypes', v: 'audio/it' },
+						{ op: '=', k: 'attachedFileTypes', v: 'audio/x-mod' },
+						{ op: '=', k: 'attachedFileTypes', v: 'audio/x-s3m' },
+						{ op: '=', k: 'attachedFileTypes', v: 'audio/x-xm' },
+						{ op: '=', k: 'attachedFileTypes', v: 'audio/x-it' },
+					] });
 				}
 			}
 			const res = await this.meilisearchNoteIndex!.search(q, {

@@ -23,6 +23,16 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<template #caption>{{ i18n.ts.reactionSettingDescription2 }} <button class="_textButton" @click="preview">{{ i18n.ts.preview }}</button></template>
 	</FromSlot>
 
+	<FromSlot>
+		<template #label>Default like emoji</template>
+		<MkCustomEmoji v-if="like.startsWith(':')" style="max-height: 3em; font-size: 1.1em;" :useOriginalSize="false" :class="$style.reaction" :name="like" :normal="true" :noStyle="true"/>
+		<MkEmoji v-else :emoji="like" style="max-height: 3em; font-size: 1.1em;" :normal="true" :noStyle="true"/>
+		<div class="_buttons" style="padding-top: 8px;">
+			<MkButton rounded :small="true" inline @click="chooseNewLike"><i class="ph-smiley ph-bold ph-lg"></i> Change</MkButton>
+			<MkButton rounded :small="true" inline @click="resetLike"><i class="ph-arrow-clockwise ph-bold ph-lg"></i> Reset</MkButton>
+		</div>
+	</FromSlot>
+
 	<MkRadios v-model="reactionPickerSize">
 		<template #label>{{ i18n.ts.size }}</template>
 		<option :value="1">{{ i18n.ts.small }}</option>
@@ -74,6 +84,7 @@ import { definePageMetadata } from '@/scripts/page-metadata.js';
 import { deepClone } from '@/scripts/clone.js';
 
 let reactions = $ref(deepClone(defaultStore.state.reactions));
+const like = $computed(defaultStore.makeGetterSetter('like'));
 
 const reactionPickerSize = $computed(defaultStore.makeGetterSetter('reactionPickerSize'));
 const reactionPickerWidth = $computed(defaultStore.makeGetterSetter('reactionPickerWidth'));
@@ -118,6 +129,18 @@ function chooseEmoji(ev: MouseEvent) {
 			reactions.push(emoji);
 		}
 	});
+}
+
+function chooseNewLike(ev: MouseEvent) {
+	os.pickEmoji(ev.currentTarget ?? ev.target, {
+		showPinned: false,
+	}).then(emoji => {
+		defaultStore.set('like', emoji as string);
+	});
+}
+
+function resetLike() {
+	defaultStore.set('like', '❤️');
 }
 
 watch($$(reactions), () => {
