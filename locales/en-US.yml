@@ -1298,6 +1298,8 @@ _serverSettings:
   shortName: "Short name"
   shortNameDescription: "A shorthand for the instance's name that can be displayed if the full official name is long."
   fanoutTimelineDescription: "Greatly increases performance of timeline retrieval and reduces load on the database when enabled. In exchange, memory usage of Redis will increase. Consider disabling this in case of low server memory or server instability."
+  fanoutTimelineDbFallback: "Fallback to database"
+  fanoutTimelineDbFallbackDescription: "When enabled, fallback processing is performed by making an additional query to the DB if the timeline is not cached. Disabling it further reduces the server load by not performing fallback processing, but limits the range of timelines that can be retrieved."
 _accountMigration:
   moveFrom: "Migrate another account to this one"
   moveFromSub: "Create alias to another account"
