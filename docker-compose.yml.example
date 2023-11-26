@@ -24,13 +24,13 @@ services:
 
   redis:
     restart: always
-    image: eqalpha/keydb:latest
+    image: redis:7-alpine
     networks:
       - shonk
     volumes:
       - ./redis:/data
     healthcheck:
-      test: "keydb-cli ping"
+      test: "redis-cli ping"
       interval: 5s
       retries: 20
 

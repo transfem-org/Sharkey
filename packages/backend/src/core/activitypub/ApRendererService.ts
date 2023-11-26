@@ -23,7 +23,7 @@ import { MfmService } from '@/core/MfmService.js';
 import { UserEntityService } from '@/core/entities/UserEntityService.js';
 import { DriveFileEntityService } from '@/core/entities/DriveFileEntityService.js';
 import type { MiUserKeypair } from '@/models/UserKeypair.js';
-import type { UsersRepository, UserProfilesRepository, NotesRepository, DriveFilesRepository, PollsRepository } from '@/models/_.js';
+import type { UsersRepository, UserProfilesRepository, NotesRepository, DriveFilesRepository, PollsRepository, InstancesRepository } from '@/models/_.js';
 import { bindThis } from '@/decorators.js';
 import { CustomEmojiService } from '@/core/CustomEmojiService.js';
 import { isNotNull } from '@/misc/is-not-null.js';
@@ -31,6 +31,7 @@ import { IdService } from '@/core/IdService.js';
 import { LdSignatureService } from './LdSignatureService.js';
 import { ApMfmService } from './ApMfmService.js';
 import type { IAccept, IActivity, IAdd, IAnnounce, IApDocument, IApEmoji, IApHashtag, IApImage, IApMention, IBlock, ICreate, IDelete, IFlag, IFollow, IKey, ILike, IMove, IObject, IPost, IQuestion, IReject, IRemove, ITombstone, IUndo, IUpdate } from './type.js';
+import { MetaService } from '../MetaService.js';
 
 @Injectable()
 export class ApRendererService {
@@ -53,6 +54,9 @@ export class ApRendererService {
 		@Inject(DI.pollsRepository)
 		private pollsRepository: PollsRepository,
 
+		@Inject(DI.instancesRepository)
+		private instancesRepository: InstancesRepository,
+
 		private customEmojiService: CustomEmojiService,
 		private userEntityService: UserEntityService,
 		private driveFileEntityService: DriveFileEntityService,
@@ -61,6 +65,7 @@ export class ApRendererService {
 		private apMfmService: ApMfmService,
 		private mfmService: MfmService,
 		private idService: IdService,
+		private metaService: MetaService,
 	) {
 	}
 
@@ -265,14 +270,28 @@ export class ApRendererService {
 	@bindThis
 	public async renderLike(noteReaction: MiNoteReaction, note: { uri: string | null }): Promise<ILike> {
 		const reaction = noteReaction.reaction;
+		const meta = await this.metaService.fetch(true);
+		let isMastodon = false;
 
+		if (meta.defaultLike && reaction.replaceAll(':', '') === meta.defaultLike.replaceAll(':', '')) {
+			const note = await this.notesRepository.findOneBy({ id: noteReaction.noteId });
+
+			if (note && note.userHost) {
+				const instance = await this.instancesRepository.findOneBy({ host: note.userHost });
+
+				if (instance && instance.softwareName === 'mastodon') isMastodon = true;
+				if (instance && instance.softwareName === 'akkoma')	isMastodon = true;
+				if (instance && instance.softwareName === 'pleroma') isMastodon = true;
+			}
+		}
+		
 		const object: ILike = {
 			type: 'Like',
 			id: `${this.config.url}/likes/${noteReaction.id}`,
 			actor: `${this.config.url}/users/${noteReaction.userId}`,
 			object: note.uri ? note.uri : `${this.config.url}/notes/${noteReaction.noteId}`,
-			content: reaction,
-			_misskey_reaction: reaction,
+			content: isMastodon ? undefined : reaction,
+			_misskey_reaction: isMastodon ? undefined : reaction,
 		};
 
 		if (reaction.startsWith(':')) {
@@ -466,7 +485,7 @@ export class ApRendererService {
 		const attachment = profile.fields.map(field => ({
 			type: 'PropertyValue',
 			name: field.name,
-			value: /^https?:/.test(field.value)
+			value: (field.value.startsWith('http://') || field.value.startsWith('https://'))
 				? `<a href="${new URL(field.value).href}" rel="me nofollow noopener" target="_blank">${new URL(field.value).href}</a>`
 				: field.value,
 		}));
@@ -506,7 +525,7 @@ export class ApRendererService {
 			discoverable: user.isExplorable,
 			publicKey: this.renderKey(user, keypair, '#main-key'),
 			isCat: user.isCat,
-			isIndexable: user.isIndexable,
+			noindex: user.noindex,
 			speakAsCat: user.speakAsCat,
 			attachment: attachment.length ? attachment : undefined,
 		};

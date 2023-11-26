@@ -10,6 +10,7 @@ import * as ep___admin_meta from './endpoints/admin/meta.js';
 import * as ep___admin_abuseUserReports from './endpoints/admin/abuse-user-reports.js';
 import * as ep___admin_accounts_create from './endpoints/admin/accounts/create.js';
 import * as ep___admin_accounts_delete from './endpoints/admin/accounts/delete.js';
+import * as ep___admin_accounts_findByEmail from './endpoints/admin/accounts/find-by-email.js';
 import * as ep___admin_ad_create from './endpoints/admin/ad/create.js';
 import * as ep___admin_ad_delete from './endpoints/admin/ad/delete.js';
 import * as ep___admin_ad_list from './endpoints/admin/ad/list.js';
@@ -219,6 +220,7 @@ import * as ep___i_gallery_likes from './endpoints/i/gallery/likes.js';
 import * as ep___i_gallery_posts from './endpoints/i/gallery/posts.js';
 import * as ep___i_importBlocking from './endpoints/i/import-blocking.js';
 import * as ep___i_importFollowing from './endpoints/i/import-following.js';
+import * as ep___i_importNotes from './endpoints/i/import-notes.js';
 import * as ep___i_importMuting from './endpoints/i/import-muting.js';
 import * as ep___i_importUserLists from './endpoints/i/import-user-lists.js';
 import * as ep___i_importAntennas from './endpoints/i/import-antennas.js';
@@ -283,6 +285,7 @@ import * as ep___notes_polls_vote from './endpoints/notes/polls/vote.js';
 import * as ep___notes_reactions from './endpoints/notes/reactions.js';
 import * as ep___notes_reactions_create from './endpoints/notes/reactions/create.js';
 import * as ep___notes_reactions_delete from './endpoints/notes/reactions/delete.js';
+import * as ep___notes_like from './endpoints/notes/like.js';
 import * as ep___notes_renotes from './endpoints/notes/renotes.js';
 import * as ep___notes_replies from './endpoints/notes/replies.js';
 import * as ep___notes_searchByTag from './endpoints/notes/search-by-tag.js';
@@ -376,6 +379,7 @@ const eps = [
 	['admin/abuse-user-reports', ep___admin_abuseUserReports],
 	['admin/accounts/create', ep___admin_accounts_create],
 	['admin/accounts/delete', ep___admin_accounts_delete],
+	['admin/accounts/find-by-email', ep___admin_accounts_findByEmail],
 	['admin/ad/create', ep___admin_ad_create],
 	['admin/ad/delete', ep___admin_ad_delete],
 	['admin/ad/list', ep___admin_ad_list],
@@ -585,6 +589,7 @@ const eps = [
 	['i/gallery/posts', ep___i_gallery_posts],
 	['i/import-blocking', ep___i_importBlocking],
 	['i/import-following', ep___i_importFollowing],
+	['i/import-notes', ep___i_importNotes],
 	['i/import-muting', ep___i_importMuting],
 	['i/import-user-lists', ep___i_importUserLists],
 	['i/import-antennas', ep___i_importAntennas],
@@ -649,6 +654,7 @@ const eps = [
 	['notes/reactions', ep___notes_reactions],
 	['notes/reactions/create', ep___notes_reactions_create],
 	['notes/reactions/delete', ep___notes_reactions_delete],
+	['notes/like', ep___notes_like],
 	['notes/renotes', ep___notes_renotes],
 	['notes/replies', ep___notes_replies],
 	['notes/search-by-tag', ep___notes_searchByTag],

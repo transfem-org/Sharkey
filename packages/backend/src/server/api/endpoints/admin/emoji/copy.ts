@@ -4,6 +4,7 @@
  */
 
 import { Inject, Injectable } from '@nestjs/common';
+import { IsNull } from 'typeorm';
 import { Endpoint } from '@/server/api/endpoint-base.js';
 import type { EmojisRepository } from '@/models/_.js';
 import { IdService } from '@/core/IdService.js';
@@ -25,6 +26,11 @@ export const meta = {
 			message: 'No such emoji.',
 			code: 'NO_SUCH_EMOJI',
 			id: 'e2785b66-dca3-4087-9cac-b93c541cc425',
+		},
+		duplicateName: {
+			message: 'Duplicate name.',
+			code: 'DUPLICATE_NAME',
+			id: 'f7a3462c-4e6e-4069-8421-b9bd4f4c3975',
 		},
 	},
 
@@ -68,6 +74,9 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 			if (emoji == null) {
 				throw new ApiError(meta.errors.noSuchEmoji);
 			}
+
+			const isDuplicate = await this.emojisRepository.findOneBy({ name: emoji.name, host: IsNull() } );
+			if (isDuplicate) throw new ApiError(meta.errors.duplicateName);
 
 			let driveFile: MiDriveFile;
 

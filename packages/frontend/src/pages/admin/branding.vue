@@ -47,6 +47,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<template #label>{{ i18n.ts.backgroundImageUrl }}</template>
 					</MkInput>
 
+					<FromSlot>
+						<template #label>Default like emoji</template>
+						<MkCustomEmoji v-if="defaultLike.startsWith(':')" style="max-height: 3em; font-size: 1.1em;" :useOriginalSize="false" :class="$style.reaction" :name="defaultLike" :normal="true" :noStyle="true"/>
+						<MkEmoji v-else :emoji="defaultLike" style="max-height: 3em; font-size: 1.1em;" :normal="true" :noStyle="true"/>
+						<MkButton rounded :small="true" @click="chooseNewLike"><i class="ph-smiley ph-bold ph-lg"></i> Change</MkButton>
+					</FromSlot>
+
 					<MkInput v-model="notFoundImageUrl" type="url">
 						<template #prefix><i class="ph-link ph-bold ph-lg"></i></template>
 						<template #label>{{ i18n.ts.notFoundDescription }}</template>
@@ -102,6 +109,7 @@ import MkInput from '@/components/MkInput.vue';
 import MkTextarea from '@/components/MkTextarea.vue';
 import FormSection from '@/components/form/section.vue';
 import FormSplit from '@/components/form/split.vue';
+import FromSlot from '@/components/form/slot.vue';
 import FormSuspense from '@/components/form/suspense.vue';
 import * as os from '@/os.js';
 import { instance, fetchInstance } from '@/instance.js';
@@ -119,6 +127,7 @@ let backgroundImageUrl: string | null = $ref(null);
 let themeColor: any = $ref(null);
 let defaultLightTheme: any = $ref(null);
 let defaultDarkTheme: any = $ref(null);
+let defaultLike: any = $ref(null);
 let serverErrorImageUrl: string | null = $ref(null);
 let infoImageUrl: string | null = $ref(null);
 let notFoundImageUrl: string | null = $ref(null);
@@ -134,6 +143,7 @@ async function init() {
 	themeColor = meta.themeColor;
 	defaultLightTheme = meta.defaultLightTheme;
 	defaultDarkTheme = meta.defaultDarkTheme;
+	defaultLike = meta.defaultLike;
 	serverErrorImageUrl = meta.serverErrorImageUrl;
 	infoImageUrl = meta.infoImageUrl;
 	notFoundImageUrl = meta.notFoundImageUrl;
@@ -156,6 +166,19 @@ function save() {
 		manifestJsonOverride: manifestJsonOverride === '' ? '{}' : JSON.stringify(JSON5.parse(manifestJsonOverride)),
 	}).then(() => {
 		fetchInstance();
+	});
+}
+
+function chooseNewLike(ev: MouseEvent) {
+	os.pickEmoji(ev.currentTarget ?? ev.target, {
+		showPinned: false,
+	}).then(emoji => {
+		os.apiWithDialog('admin/update-meta', {
+			defaultLike: emoji,
+		}).then(() => {
+			fetchInstance();
+			defaultLike = emoji;
+		});
 	});
 }
 

@@ -133,6 +133,7 @@ export class MastoConverters {
 		const fqn = `${user.username}@${user.host ?? this.config.hostname}`;
 		let acct = user.username;
 		let acctUrl = `https://${user.host || this.config.host}/@${user.username}`;
+		const acctUri = `https://${this.config.host}/users/${user.id}`;
 		if (user.host) {
 			acct = `${user.username}@${user.host}`;
 			acctUrl = `https://${user.host}/@${user.username}`;
@@ -150,6 +151,7 @@ export class MastoConverters {
 			statuses_count: user.notesCount,
 			note: profile?.description ?? '',
 			url: user.uri ?? acctUrl,
+			uri: user.uri ?? acctUri,
 			avatar: user.avatarUrl ? user.avatarUrl : 'https://dev.joinsharkey.org/static-assets/avatar.png',
 			avatar_static: user.avatarUrl ? user.avatarUrl : 'https://dev.joinsharkey.org/static-assets/avatar.png',
 			header: user.bannerUrl ? user.bannerUrl : 'https://dev.joinsharkey.org/static-assets/transparent.png',
@@ -272,7 +274,7 @@ export class MastoConverters {
 			poll: status.poll ?? null,
 			application: null, //FIXME
 			language: null, //FIXME
-			pinned: null,
+			pinned: false,
 			reactions: status.emoji_reactions,
 			emoji_reactions: status.emoji_reactions,
 			bookmarked: false,

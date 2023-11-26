@@ -79,7 +79,7 @@ export const packedUserLiteSchema = {
 			type: 'boolean',
 			nullable: false, optional: false,
 		},
-		isIndexable: {
+		noindex: {
 			type: 'boolean',
 			nullable: false, optional: false,
 		},

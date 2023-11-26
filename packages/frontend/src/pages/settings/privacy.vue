@@ -29,7 +29,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		{{ i18n.ts.noCrawle }}
 		<template #caption>{{ i18n.ts.noCrawleDescription }}</template>
 	</MkSwitch>
-	<MkSwitch v-model="isIndexable" @update:modelValue="save()">
+	<MkSwitch v-model="noindex" @update:modelValue="save()">
 		{{ i18n.ts.makeIndexable }}
 		<template #caption>{{ i18n.ts.makeIndexableDescription }}</template>
 	</MkSwitch>
@@ -81,7 +81,7 @@ let isLocked = $ref($i.isLocked);
 let autoAcceptFollowed = $ref($i.autoAcceptFollowed);
 let noCrawle = $ref($i.noCrawle);
 let isExplorable = $ref($i.isExplorable);
-let isIndexable = $ref($i.isIndexable);
+let noindex = $ref($i.noindex);
 let hideOnlineStatus = $ref($i.hideOnlineStatus);
 let publicReactions = $ref($i.publicReactions);
 let ffVisibility = $ref($i.ffVisibility);
@@ -97,7 +97,7 @@ function save() {
 		autoAcceptFollowed: !!autoAcceptFollowed,
 		noCrawle: !!noCrawle,
 		isExplorable: !!isExplorable,
-		isIndexable: !!isIndexable,
+		noindex: !!noindex,
 		hideOnlineStatus: !!hideOnlineStatus,
 		publicReactions: !!publicReactions,
 		ffVisibility: ffVisibility,

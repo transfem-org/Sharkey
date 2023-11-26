@@ -279,7 +279,7 @@ body {
 	overscroll-behavior: none;
 }
 
-#misskey_app {
+#sharkey_app {
 	width: 100%;
 	height: 100%;
 	overflow: clip;

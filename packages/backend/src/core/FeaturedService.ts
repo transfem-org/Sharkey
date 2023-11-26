@@ -35,16 +35,10 @@ export class FeaturedService {
 			`${name}:${currentWindow}`,
 			score,
 			element);
-
-		const TTL = await this.redisClient.ttl(`${name}:${currentWindow}`);
-		
-		if (TTL === -1) {
-			this.redisClient.expire(`${name}:${currentWindow}`,
-				(windowRange * 3) / 1000, // 1時間
-				//'NX', // "NX -- Set expiry only when the key has no expiry" = 有効期限がないときだけ設定
-			);
-		}
-		
+		redisTransaction.expire(
+			`${name}:${currentWindow}`,
+			(windowRange * 3) / 1000,
+			'NX'); // "NX -- Set expiry only when the key has no expiry" = 有効期限がないときだけ設定
 		await redisTransaction.exec();
 	}
 

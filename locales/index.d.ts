@@ -1317,6 +1317,8 @@ export interface Locale {
         "shortName": string;
         "shortNameDescription": string;
         "fanoutTimelineDescription": string;
+        "fanoutTimelineDbFallback": string;
+        "fanoutTimelineDbFallbackDescription": string;
     };
     "_accountMigration": {
         "moveFrom": string;
@@ -1696,6 +1698,7 @@ export interface Locale {
             "gtlAvailable": string;
             "ltlAvailable": string;
             "canPublicNote": string;
+            "canImportNotes": string;
             "canInvite": string;
             "inviteLimit": string;
             "inviteLimitCycle": string;
@@ -1856,6 +1859,7 @@ export interface Locale {
         "reload": string;
         "dialog": string;
         "quiet": string;
+        "disabled": string;
     };
     "_channel": {
         "create": string;
@@ -1979,6 +1983,15 @@ export interface Locale {
         "monthsAgo": string;
         "yearsAgo": string;
         "invalid": string;
+    };
+    "_timeIn": {
+        "seconds": string;
+        "minutes": string;
+        "hours": string;
+        "days": string;
+        "weeks": string;
+        "months": string;
+        "years": string;
     };
     "_time": {
         "second": string;

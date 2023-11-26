@@ -68,7 +68,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</header>
 		<div :class="$style.noteContent">
 			<p v-if="appearNote.cw != null" :class="$style.cw">
-				<Mfm v-if="appearNote.cw != ''" style="margin-right: 8px;" :text="appearNote.cw" :author="appearNote.user" :nyaize="'account'"/>
+				<Mfm v-if="appearNote.cw != ''" style="margin-right: 8px;" :text="appearNote.cw" :author="appearNote.user" :nyaize="'respect'"/>
 				<MkCwButton v-model="showContent" :note="appearNote"/>
 			</p>
 			<div v-show="appearNote.cw == null || showContent">
@@ -79,7 +79,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					:parsedNodes="parsed"
 					:text="appearNote.text"
 					:author="appearNote.user"
-					:nyaize="'account'"
+					:nyaize="'respect'"
 					:emojiUrls="appearNote.emojis"
 					:enableEmojiMenu="true"
 					:enableEmojiMenuReaction="true"
@@ -90,7 +90,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<MkLoading v-if="translating" mini/>
 					<div v-else>
 						<b>{{ i18n.t('translatedFrom', { x: translation.sourceLang }) }}: </b>
-						<Mfm :text="translation.text" :author="appearNote.user" :nyaize="'account'" :emojiUrls="appearNote.emojis"/>
+						<Mfm :text="translation.text" :author="appearNote.user" :nyaize="'respect'" :emojiUrls="appearNote.emojis"/>
 					</div>
 				</div>
 				<MkButton v-if="!allowAnim && animated" :class="$style.playMFMButton" :small="true" @click="animatedMFM()" v-on:click.stop><i class="ph-play ph-bold ph-lg "></i> {{ i18n.ts._animatedMFM.play }}</MkButton>
@@ -270,11 +270,17 @@ let note = $ref(deepClone(props.note));
 // plugin
 if (noteViewInterruptors.length > 0) {
 	onMounted(async () => {
-		let result:Misskey.entities.Note | null = deepClone(note);
+		let result: Misskey.entities.Note | null = deepClone(note);
 		for (const interruptor of noteViewInterruptors) {
-			result = await interruptor.handler(result);
-
-			if (result === null) return isDeleted.value = true;
+			try {
+				result = await interruptor.handler(result);
+				if (result === null) {
+					isDeleted.value = true;
+					return;
+				}
+			} catch (err) {
+				console.error(err);
+			}
 		}
 		note = result;
 	});
@@ -309,7 +315,7 @@ const muted = ref($i ? checkWordMute(appearNote, $i, $i.mutedWords) : false);
 const translation = ref(null);
 const translating = ref(false);
 const parsed = $computed(() => appearNote.text ? mfm.parse(appearNote.text) : null);
-const urls = parsed ? extractUrlFromMfm(parsed) : null;
+const urls = parsed ? extractUrlFromMfm(parsed).filter(u => u !== renoteUrl && u !== renoteUri) : null;
 const animated = $computed(() => parsed ? checkAnimationFromMfm(parsed) : null);
 const allowAnim = ref(defaultStore.state.advancedMfm && defaultStore.state.animatedMfm ? true : false);
 const showTicker = (defaultStore.state.instanceTicker === 'always') || (defaultStore.state.instanceTicker === 'remote' && appearNote.user.instance);
@@ -317,6 +323,7 @@ const conversation = ref<Misskey.entities.Note[]>([]);
 const replies = ref<Misskey.entities.Note[]>([]);
 const quotes = ref<Misskey.entities.Note[]>([]);
 const canRenote = computed(() => ['public', 'home'].includes(appearNote.visibility) || appearNote.userId === $i.id);
+const defaultLike = computed(() => defaultStore.state.like !== '❤️' ? defaultStore.state.like : null);
 
 watch(() => props.expandAllCws, (expandAllCws) => {
 	if (expandAllCws !== showContent.value) showContent.value = expandAllCws;
@@ -550,9 +557,9 @@ function react(viaKeyboard = false): void {
 	pleaseLogin();
 	showMovedDialog();
 	if (appearNote.reactionAcceptance === 'likeOnly') {
-		os.api('notes/reactions/create', {
+		os.api('notes/like', {
 			noteId: appearNote.id,
-			reaction: '❤️',
+			override: defaultLike.value,
 		});
 		const el = reactButton.value as HTMLElement | null | undefined;
 		if (el) {
@@ -580,9 +587,9 @@ function react(viaKeyboard = false): void {
 function like(): void {
 	pleaseLogin();
 	showMovedDialog();
-	os.api('notes/reactions/create', {
+	os.api('notes/like', {
 		noteId: appearNote.id,
-		reaction: '❤️',
+		override: defaultLike.value,
 	});
 	const el = likeButton.value as HTMLElement | null | undefined;
 	if (el) {

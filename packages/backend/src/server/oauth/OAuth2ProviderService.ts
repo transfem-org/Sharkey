@@ -3,14 +3,17 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
+import querystring from 'querystring';
 import { Inject, Injectable } from '@nestjs/common';
 import megalodon, { MegalodonInterface } from 'megalodon';
-import querystring from 'querystring';
 import { v4 as uuid } from 'uuid';
 /* import { kinds } from '@/misc/api-permissions.js';
 import type { Config } from '@/config.js';
 import { DI } from '@/di-symbols.js'; */
+import multer from 'fastify-multer';
 import { bindThis } from '@/decorators.js';
+import type { Config } from '@/config.js';
+import { DI } from '@/di-symbols.js';
 import type { FastifyInstance } from 'fastify';
 
 function getClient(BASE_URL: string, authorization: string | undefined): MegalodonInterface {
@@ -24,8 +27,8 @@ function getClient(BASE_URL: string, authorization: string | undefined): Megalod
 @Injectable()
 export class OAuth2ProviderService {
 	constructor(
-		/* @Inject(DI.config)
-		private config: Config, */
+		@Inject(DI.config)
+		private config: Config,
 	) { }
 
 	@bindThis
@@ -45,6 +48,14 @@ export class OAuth2ProviderService {
 				authorization_response_iss_parameter_supported: true,
 			});
 		}); */
+
+		const upload = multer({
+			storage: multer.diskStorage({}),
+			limits: {
+				fileSize: this.config.maxFileSize || 262144000,
+				files: 1,
+			},
+		});
 
 		fastify.addHook('onRequest', (request, reply, done) => {
 			reply.header('Access-Control-Allow-Origin', '*');
@@ -67,6 +78,8 @@ export class OAuth2ProviderService {
 			payload.on('error', done);
 		});
 
+		fastify.register(multer.contentParser);
+
 		fastify.get('/oauth/authorize', async (request, reply) => {
 			const query: any = request.query;
 			let param = "mastodon=true";
@@ -74,11 +87,22 @@ export class OAuth2ProviderService {
 			if (query.redirect_uri) param += `&redirect_uri=${query.redirect_uri}`;
 			const client = query.client_id ? query.client_id : "";
 			reply.redirect(
-				`${atob(client)}?${param}`,
+				`${Buffer.from(client.toString(), 'base64').toString()}?${param}`,
 			);
 		});
 
-		fastify.post('/oauth/token', async (request, reply) => {
+		fastify.get('/oauth/authorize/', async (request, reply) => {
+			const query: any = request.query;
+			let param = "mastodon=true";
+			if (query.state) param += `&state=${query.state}`;
+			if (query.redirect_uri) param += `&redirect_uri=${query.redirect_uri}`;
+			const client = query.client_id ? query.client_id : "";
+			reply.redirect(
+				`${Buffer.from(client.toString(), 'base64').toString()}?${param}`,
+			);
+		});
+
+		fastify.post('/oauth/token', { preHandler: upload.none() }, async (request, reply) => {
 			const body: any = request.body || request.query;
 			if (body.grant_type === "client_credentials") {
 				const ret = {

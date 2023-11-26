@@ -37,7 +37,7 @@ export type UserLite = {
 	};
 	isCat?: boolean;
 	isBot?: boolean;
-	isIndexable?: boolean;
+	noindex?: boolean;
 };
 
 export type UserDetailed = UserLite & {
@@ -66,7 +66,7 @@ export type UserDetailed = UserLite & {
 	speakAsCat: boolean;
 	isFollowed: boolean;
 	isFollowing: boolean;
-	isIndexable: boolean;
+	noindex: boolean;
 	isLocked: boolean;
 	isModerator: boolean;
 	isMuted: boolean;
@@ -401,6 +401,7 @@ export type LiteInstanceMetadata = {
 	notesPerOneAd: number;
 	translatorAvailable: boolean;
 	serverRules: string[];
+	defaultLike: string;
 };
 
 export type DetailedInstanceMetadata = LiteInstanceMetadata & {
