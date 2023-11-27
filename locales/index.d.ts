@@ -58,6 +58,7 @@ export interface Locale {
     "sendMessage": string;
     "copyRSS": string;
     "copyUsername": string;
+    "openRemoteProfile": string;
     "copyUserId": string;
     "copyNoteId": string;
     "copyFileId": string;

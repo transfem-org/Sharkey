@@ -176,7 +176,13 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: Router 
 			const canonical = user.host === null ? `@${user.username}` : `@${user.username}@${toUnicode(user.host)}`;
 			copyToClipboard(`${url}/${canonical}`);
 		},
-	}, {
+	}, ...(user.host ? [{
+		icon: 'ph-share ph-bold ph-lg',
+		text: i18n.ts.openRemoteProfile,
+		action: () => {
+			open(`${user.uri}`, '_blank');
+		},
+	}] : []), {
 		icon: 'ph-envelope ph-bold ph-lg',
 		text: i18n.ts.sendMessage,
 		action: () => {
