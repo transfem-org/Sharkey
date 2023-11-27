@@ -226,7 +226,10 @@ const currentClip = inject<Ref<Misskey.entities.Clip> | null>('currentClip', nul
 let note = $ref(deepClone(props.note));
 
 function noteclick(id: string) {
-	router.push(`/notes/${id}`);
+	const selection = document.getSelection();
+	if (selection?.toString().length === 0) {
+		router.push(`/notes/${id}`);
+	}
 }
 
 // plugin
