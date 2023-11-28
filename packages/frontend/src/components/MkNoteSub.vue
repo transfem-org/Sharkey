@@ -133,7 +133,7 @@ const menuButton = shallowRef<HTMLElement>();
 const likeButton = shallowRef<HTMLElement>();
 
 let appearNote = $computed(() => isRenote ? props.note.renote as Misskey.entities.Note : props.note);
-const defaultLike = computed(() => defaultStore.state.like !== '❤️' ? defaultStore.state.like : null);
+const defaultLike = computed(() => defaultStore.state.like ? defaultStore.state.like : null);
 
 const isRenote = (
 	props.note.renote != null &&

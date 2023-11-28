@@ -323,7 +323,7 @@ const conversation = ref<Misskey.entities.Note[]>([]);
 const replies = ref<Misskey.entities.Note[]>([]);
 const quotes = ref<Misskey.entities.Note[]>([]);
 const canRenote = computed(() => ['public', 'home'].includes(appearNote.visibility) || appearNote.userId === $i.id);
-const defaultLike = computed(() => defaultStore.state.like !== '❤️' ? defaultStore.state.like : null);
+const defaultLike = computed(() => defaultStore.state.like ? defaultStore.state.like : null);
 
 watch(() => props.expandAllCws, (expandAllCws) => {
 	if (expandAllCws !== showContent.value) showContent.value = expandAllCws;
