@@ -25,7 +25,6 @@ import { getStaticImageUrl } from '@/scripts/media-proxy.js';
 const props = defineProps<{
 	username: string;
 	host: string;
-	first?: boolean;
 }>();
 
 const canonical = props.host === localHost ? `@${props.username}` : `@${props.username}@${toUnicode(props.host)}`;
@@ -99,6 +98,7 @@ const avatarUrl = computed(() => defaultStore.state.disableShowingAnimatedImages
     }
   }
 }
+
 .icon {
 	width: 1.5em;
 	height: 1.5em;
