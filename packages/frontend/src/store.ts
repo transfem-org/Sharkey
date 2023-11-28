@@ -112,7 +112,7 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	like: {
 		where: 'account',
-		default: '❤️',
+		default: null as string | null,
 	},
 	mutedAds: {
 		where: 'account',
