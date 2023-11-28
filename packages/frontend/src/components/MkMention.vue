@@ -4,7 +4,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<MkA v-user-preview="canonical" :class="[$style.root, { [$style.isMe]: isMe }]" :to="url" :style="{ background: bgCss }">
+<MkA v-user-preview="canonical" :class="[{ [$style.root]: !first, [$style.altRoot]: first, [$style.isMe]: isMe }]" :to="url" :style="{ background: bgCss }">
 	<img :class="$style.icon" :src="avatarUrl" alt="">
 	<span>
 		<span>@{{ username }}</span>
@@ -25,6 +25,7 @@ import { getStaticImageUrl } from '@/scripts/media-proxy.js';
 const props = defineProps<{
 	username: string;
 	host: string;
+	first?: boolean;
 }>();
 
 const canonical = props.host === localHost ? `@${props.username}` : `@${props.username}@${toUnicode(props.host)}`;
@@ -57,6 +58,47 @@ const avatarUrl = computed(() => defaultStore.state.disableShowingAnimatedImages
 	}
 }
 
+.root + .root {
+  position: relative;
+  margin-inline: -20px 0;
+  box-shadow: -4px 0 0 var(--panel), -15px 0 15px var(--panel);
+  overflow: clip;
+  isolation: isolate;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--panel);
+    z-index: -1;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--panel);
+    z-index: -1;
+    background: inherit;
+  }
+
+  span {
+    display: inline-block;
+    white-space: nowrap;
+    max-width: 3em;
+    mask: linear-gradient(to right, #000 20%, rgba(0, 0, 0, 0.4));
+  }
+
+  + .root {
+    margin-inline: -10px 0;
+    padding-inline-end: 0;
+    box-shadow: -4px 0 0 var(--panel);
+
+    span {
+      display: none;
+    }
+  }
+}
 .icon {
 	width: 1.5em;
 	height: 1.5em;
