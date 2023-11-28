@@ -74,7 +74,7 @@ export class ImportNotesProcessorService {
 
 	// Function was taken from Firefish and modified for our needs
 	@bindThis
-	private async recreateChain(idField: string, replyField: string, arr: any[]): Promise<any[]> {
+	private async recreateChain(idField: string, replyField: string, arr: any[], includeOrphans: boolean): Promise<any[]> {
 		type NotesMap = {
 			[id: string]: any;
 		};
@@ -83,26 +83,34 @@ export class ImportNotesProcessorService {
 		const notesWaitingForParent: NotesMap = {};
 
 		for await (const note of arr) {
-			noteById[note[idField]] = note;
+			const noteId = note[idField];
+
+			noteById[noteId] = note;
 			note.childNotes = [];
 
-			const children = notesWaitingForParent[note[idField]];
+			const children = notesWaitingForParent[noteId];
 			if (children) {
 				note.childNotes.push(...children);
+				delete notesWaitingForParent[noteId];
 			}
 
-			if (note[replyField] == null) {
+			const noteReplyId = note[replyField];
+			if (noteReplyId == null) {
 				notesTree.push(note);
 				continue;
 			}
 
-			const parent = noteById[note[replyField]];
+			const parent = noteById[noteReplyId];
 			if (parent) {
 				parent.childNotes.push(note);
 			} else {
-				notesWaitingForParent[note[replyField]] ||= [];
-				notesWaitingForParent[note[replyField]].push(note);
+				notesWaitingForParent[noteReplyId] ||= [];
+				notesWaitingForParent[noteReplyId].push(note);
 			}
+		}
+
+		if (includeOrphans) {
+			notesTree.push(...Object.values(notesWaitingForParent).flat(1));
 		}
 
 		return notesTree;
@@ -176,7 +184,7 @@ export class ImportNotesProcessorService {
 				const tweets = Object.keys(fakeWindow.window.YTD.tweets.part0).reduce((m, key, i, obj) => {
 					return m.concat(fakeWindow.window.YTD.tweets.part0[key].tweet);
 				}, []);
-				const processedTweets = await this.recreateChain('id_str', 'in_reply_to_status_id_str', tweets);
+				const processedTweets = await this.recreateChain('id_str', 'in_reply_to_status_id_str', tweets, false);
 				this.queueService.createImportTweetsToDbJob(job.data.user, processedTweets, null);
 			} finally {
 				cleanup();
@@ -289,7 +297,7 @@ export class ImportNotesProcessorService {
 
 			const notesJson = fs.readFileSync(path, 'utf-8');
 			const notes = JSON.parse(notesJson);
-			const processedNotes = await this.recreateChain('id', 'replyId', notes);
+			const processedNotes = await this.recreateChain('id', 'replyId', notes, false);
 			this.queueService.createImportKeyNotesToDbJob(job.data.user, processedNotes, null);
 			cleanup();
 		}
