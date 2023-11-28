@@ -260,7 +260,6 @@ onMounted(() => {
 			padding-top: 16px;
 			box-sizing: border-box;
 			overflow: auto;
-			background: var(--bg);
 
 			@media (max-width: $widgets-hide-threshold) {
 				display: none;
