@@ -4,7 +4,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<MkA v-user-preview="canonical" :class="[{ [$style.root]: !first, [$style.altRoot]: first, [$style.isMe]: isMe }]" :to="url" :style="{ background: bgCss }">
+<MkA v-user-preview="canonical" :class="[$style.root, { [$style.isMe]: isMe }]" :to="url" :style="{ background: bgCss }">
 	<img :class="$style.icon" :src="avatarUrl" alt="">
 	<span>
 		<span>@{{ username }}</span>
