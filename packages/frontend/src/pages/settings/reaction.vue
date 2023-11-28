@@ -83,6 +83,7 @@ import { defaultStore } from '@/store.js';
 import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 import { deepClone } from '@/scripts/clone.js';
+import { unisonReload } from '@/scripts/unison-reload.js';
 
 let reactions = $ref(deepClone(defaultStore.state.reactions));
 const like = $computed(defaultStore.makeGetterSetter('like'));
@@ -91,6 +92,16 @@ const reactionPickerSize = $computed(defaultStore.makeGetterSetter('reactionPick
 const reactionPickerWidth = $computed(defaultStore.makeGetterSetter('reactionPickerWidth'));
 const reactionPickerHeight = $computed(defaultStore.makeGetterSetter('reactionPickerHeight'));
 const reactionPickerUseDrawerForMobile = $computed(defaultStore.makeGetterSetter('reactionPickerUseDrawerForMobile'));
+
+async function reloadAsk() {
+	const { canceled } = await os.confirm({
+		type: 'info',
+		text: i18n.ts.reloadToApplySetting,
+	});
+	if (canceled) return;
+
+	unisonReload();
+}
 
 function save() {
 	defaultStore.set('reactions', reactions);
@@ -135,13 +146,15 @@ function chooseEmoji(ev: MouseEvent) {
 function chooseNewLike(ev: MouseEvent) {
 	os.pickEmoji(ev.currentTarget ?? ev.target, {
 		showPinned: false,
-	}).then(emoji => {
+	}).then(async emoji => {
 		defaultStore.set('like', emoji as string);
+		await reloadAsk();
 	});
 }
 
-function resetLike() {
+async function resetLike() {
 	defaultStore.set('like', null);
+	await reloadAsk();
 }
 
 watch($$(reactions), () => {
