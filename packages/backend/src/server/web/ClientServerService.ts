@@ -139,7 +139,9 @@ export class ClientServerService {
 				'type': 'image/png',
 				'purpose': 'maskable',
 			}, {
-				'src': '/static-assets/splash.png',
+				// 空文字列の場合右辺を使いたいため
+				// eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+				'src': instance.app512IconUrl || '/static-assets/icons/512.png',
 				'sizes': '300x300',
 				'type': 'image/png',
 				'purpose': 'any',
