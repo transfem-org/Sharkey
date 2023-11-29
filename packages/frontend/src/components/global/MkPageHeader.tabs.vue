@@ -216,6 +216,7 @@ onUnmounted(() => {
 
 	&.active {
 		opacity: 1;
+		color: var(--accent);
 	}
 
 	&.animate {

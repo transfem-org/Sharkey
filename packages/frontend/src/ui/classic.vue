@@ -253,9 +253,13 @@ onMounted(() => {
 		}
 
 		> .widgets {
-			//--panelBorder: none;
+			position: sticky;
+			top: 0;
 			width: 300px;
-			padding-bottom: calc(var(--margin) + env(safe-area-inset-bottom, 0px));
+			height: 100%;
+			padding-top: 16px;
+			box-sizing: border-box;
+			overflow: auto;
 
 			@media (max-width: $widgets-hide-threshold) {
 				display: none;

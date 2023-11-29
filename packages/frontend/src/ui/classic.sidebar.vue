@@ -109,7 +109,8 @@ watch(defaultStore.reactiveState.menuDisplay, () => {
 	$nav-icon-only-width: 78px; // TODO: どこかに集約したい
 	$avatar-size: 32px;
 	$avatar-margin: 8px;
-
+	position: sticky;
+	top: 16px;
 	padding: 0 16px;
 	box-sizing: border-box;
 	width: 260px;
