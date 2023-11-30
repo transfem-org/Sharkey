@@ -13,7 +13,7 @@ export const meta = {
 	prohibitMoved: true,
 	limit: {
 		duration: ms('1hour'),
-		max: 5,
+		max: 2,
 	},
 
 	errors: {
