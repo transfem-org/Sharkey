@@ -74,7 +74,7 @@ export class ImportNotesProcessorService {
 
 	// Function was taken from Firefish and modified for our needs
 	@bindThis
-	private async recreateChain(idField: string, replyField: string, arr: any[], includeOrphans: boolean): Promise<any[]> {
+	private async recreateChain(idFieldPath: string[], replyFieldPath: string[], arr: any[], includeOrphans: boolean): Promise<any[]> {
 		type NotesMap = {
 			[id: string]: any;
 		};
@@ -83,7 +83,10 @@ export class ImportNotesProcessorService {
 		const notesWaitingForParent: NotesMap = {};
 
 		for await (const note of arr) {
-			const noteId = note[idField];
+			const noteId = idFieldPath.reduce(
+				(obj, step) => obj[step],
+				note,
+			);
 
 			noteById[noteId] = note;
 			note.childNotes = [];
@@ -94,7 +97,10 @@ export class ImportNotesProcessorService {
 				delete notesWaitingForParent[noteId];
 			}
 
-			const noteReplyId = note[replyField];
+			const noteReplyId = replyFieldPath.reduce(
+				(obj, step) => obj[step],
+				note,
+			);
 			if (noteReplyId == null) {
 				notesTree.push(note);
 				continue;
@@ -184,7 +190,7 @@ export class ImportNotesProcessorService {
 				const tweets = Object.keys(fakeWindow.window.YTD.tweets.part0).reduce((m, key, i, obj) => {
 					return m.concat(fakeWindow.window.YTD.tweets.part0[key].tweet);
 				}, []);
-				const processedTweets = await this.recreateChain('id_str', 'in_reply_to_status_id_str', tweets, false);
+				const processedTweets = await this.recreateChain(['id_str'], ['in_reply_to_status_id_str'], tweets, false);
 				this.queueService.createImportTweetsToDbJob(job.data.user, processedTweets, null);
 			} finally {
 				cleanup();
@@ -274,7 +280,7 @@ export class ImportNotesProcessorService {
 						if (fs.existsSync(outputPath + '/media_attachments/files') && mastoFolder) {
 							await this.uploadFiles(outputPath + '/media_attachments/files', user, mastoFolder.id);
 						}
-						const processedToots = await this.recreateChain('id', 'inReplyTo', outbox.orderedItems.filter((x: any) => x.type === 'Create' && x.object.type === 'Note'), true);
+						const processedToots = await this.recreateChain(['object', 'id'], ['object', 'inReplyTo'], outbox.orderedItems.filter((x: any) => x.type === 'Create' && x.object.type === 'Note'), true);
 						this.queueService.createImportMastoToDbJob(job.data.user, processedToots, null);
 					}
 				}
@@ -298,7 +304,7 @@ export class ImportNotesProcessorService {
 
 			const notesJson = fs.readFileSync(path, 'utf-8');
 			const notes = JSON.parse(notesJson);
-			const processedNotes = await this.recreateChain('id', 'replyId', notes, false);
+			const processedNotes = await this.recreateChain(['id'], ['replyId'], notes, false);
 			this.queueService.createImportKeyNotesToDbJob(job.data.user, processedNotes, null);
 			cleanup();
 		}
