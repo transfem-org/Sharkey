@@ -990,6 +990,7 @@ export interface Locale {
     "numberOfProfileView": string;
     "like": string;
     "unlike": string;
+    "defaultLike": string;
     "numberOfLikes": string;
     "show": string;
     "neverShow": string;

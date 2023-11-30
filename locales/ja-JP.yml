@@ -987,6 +987,7 @@ cannotLoad: "読み込めません"
 numberOfProfileView: "プロフィール表示回数"
 like: "いいね！"
 unlike: "いいねを解除"
+defaultLike: "絵文字のようなデフォルト"
 numberOfLikes: "いいね数"
 show: "表示"
 neverShow: "今後表示しない"
@@ -2403,7 +2404,7 @@ _externalResourceInstaller:
     _themeInstallFailed:
       title: "テーマのインストールに失敗しました"
       description: "テーマのインストール中に問題が発生しました。もう一度お試しください。エラーの詳細はJavascriptコンソールをご覧ください。"
-      
+
 _animatedMFM:
   play: "MFMアニメーションを再生"
   stop: "MFMアニメーション停止"
