@@ -217,6 +217,7 @@ export type Note = {
 	clippedCount?: number;
 	poll?: {
 		expiresAt: DateString | null;
+		expiredAfter: DateString | null;
 		multiple: boolean;
 		choices: {
 			isVoted: boolean;

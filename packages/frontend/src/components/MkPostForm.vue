@@ -931,8 +931,8 @@ onMounted(() => {
 				poll = {
 					choices: init.poll.choices.map(x => x.text),
 					multiple: init.poll.multiple,
-					expiresAt: init.poll.expiresAt,
-					expiredAfter: init.poll.expiredAfter,
+					expiresAt: init.poll.expiresAt ? new Date(init.poll.expiresAt).getTime().toString() : null,
+					expiredAfter: init.poll.expiredAfter ? new Date(init.poll.expiredAfter).getTime().toString() : null,
 				};
 			}
 			visibility = init.visibility;
