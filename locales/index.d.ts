@@ -894,6 +894,7 @@ export interface Locale {
     "deleteAccountConfirm": string;
     "incorrectPassword": string;
     "voteConfirm": string;
+    "voteConfirmMulti": string;
     "hide": string;
     "useDrawerReactionPickerForMobile": string;
     "welcomeBackWithName": string;
@@ -2154,6 +2155,7 @@ export interface Locale {
         "remainingHours": string;
         "remainingMinutes": string;
         "remainingSeconds": string;
+        "multiple": string;
     };
     "_visibility": {
         "public": string;
