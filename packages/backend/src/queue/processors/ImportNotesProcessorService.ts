@@ -268,7 +268,8 @@ export class ImportNotesProcessorService {
 					if (isPleroma) {
 						const outboxJson = fs.readFileSync(outputPath + '/outbox.json', 'utf-8');
 						const outbox = JSON.parse(outboxJson);
-						this.queueService.createImportPleroToDbJob(job.data.user, outbox.orderedItems.filter((x: any) => x.type === 'Create' && x.object.type === 'Note'));
+						const processedToots = await this.recreateChain(['object', 'id'], ['object', 'inReplyTo'], outbox.orderedItems.filter((x: any) => x.type === 'Create' && x.object.type === 'Note'), true);
+						this.queueService.createImportPleroToDbJob(job.data.user, processedToots, null);
 					} else {
 						const outboxJson = fs.readFileSync(outputPath + '/outbox.json', 'utf-8');
 						const outbox = JSON.parse(outboxJson);
@@ -421,12 +422,14 @@ export class ImportNotesProcessorService {
 	}
 
 	@bindThis
-	public async processPleroToDb(job: Bull.Job<DbNoteImportToDbJobData>): Promise<void> {
+	public async processPleroToDb(job: Bull.Job<DbNoteWithParentImportToDbJobData>): Promise<void> {
 		const post = job.data.target;
 		const user = await this.usersRepository.findOneBy({ id: job.data.user.id });
 		if (user == null) {
 			return;
 		}
+
+		if (post.directMessage) return;
 
 		const date = new Date(post.object.published);
 		let text = undefined;
@@ -437,14 +440,17 @@ export class ImportNotesProcessorService {
 		if (folder == null) return;
 
 		if (post.object.inReplyTo != null) {
-			try {
-				reply = await this.apNoteService.resolveNote(post.object.inReplyTo);
-			} catch (error) {
-				reply = null;
+			const parentNote = job.data.note ? await this.notesRepository.findOneBy({ id: job.data.note }) : null;
+			if (parentNote) {
+				reply = parentNote;
+			} else {
+				try {
+					reply = await this.apNoteService.resolveNote(post.object.inReplyTo);
+				} catch (error) {
+					reply = null;
+				}
 			}
 		}
-
-		if (post.directMessage) return;
 
 		const hashtags = extractApHashtagObjects(post.object.tag).map((x) => x.name).filter((x): x is string => x != null);
 
@@ -489,7 +495,8 @@ export class ImportNotesProcessorService {
 			}
 		}
 
-		await this.noteCreateService.import(user, { createdAt: date, text: text, files: files, apMentions: new Array(0), cw: post.object.sensitive ? post.object.summary : null, reply: reply });
+		const createdNote = await this.noteCreateService.import(user, { createdAt: date, text: text, files: files, apMentions: new Array(0), cw: post.object.sensitive ? post.object.summary : null, reply: reply });
+		if (post.childNotes) this.queueService.createImportPleroToDbJob(user, post.childNotes, createdNote.id);
 	}
 
 	@bindThis
