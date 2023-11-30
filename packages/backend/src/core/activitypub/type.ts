@@ -121,6 +121,7 @@ export interface IPost extends IObject {
 	quoteUrl?: string;
 	quoteUri?: string;
 	updated?: string;
+	edited_at?: string;
 }
 
 export interface IQuestion extends IObject {
@@ -249,6 +250,7 @@ export interface IApDocument extends IObject {
 	type: 'Document';
 	name: string | null;
 	mediaType: string;
+	description: string | null;
 }
 
 export interface IApImage extends IObject {
