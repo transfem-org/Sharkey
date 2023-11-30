@@ -91,7 +91,6 @@ function options(ev) {
 				text: 'With Videos',
 				action: () => {
 					filetype = 'video';
-					console.log(filetype);
 				},
 			}],
 	}], ev.currentTarget ?? ev.target);
