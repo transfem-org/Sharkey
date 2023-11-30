@@ -171,7 +171,7 @@ export class ApRendererService {
 			mediaType: file.webpublicType ?? file.type,
 			url: this.driveFileEntityService.getPublicUrl(file),
 			name: file.comment,
-			description: file.comment,
+			summary: file.comment,
 		};
 	}
 
@@ -747,7 +747,6 @@ export class ApRendererService {
 			summary: summary ?? undefined,
 			content: content ?? undefined,
 			updated: note.updatedAt?.toISOString(),
-			edited_at: note.updatedAt?.toISOString(),
 			_misskey_content: text,
 			source: {
 				content: text,
