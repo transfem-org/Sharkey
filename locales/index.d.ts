@@ -2126,6 +2126,7 @@ export interface Locale {
             "chooseList": string;
         };
         "clicker": string;
+        "search": string;
     };
     "_cw": {
         "hide": string;

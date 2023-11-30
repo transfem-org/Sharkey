@@ -1981,6 +1981,7 @@ _widgets:
   _userList:
     chooseList: "Select a list"
   clicker: "Clicker"
+  search: "Search"
 _cw:
   hide: "Hide"
   show: "Show content"

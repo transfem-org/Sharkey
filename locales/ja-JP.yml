@@ -2030,6 +2030,7 @@ _widgets:
   _userList:
     chooseList: "リストを選択"
   clicker: "クリッカー"
+  search: "検索"
 
 _cw:
   hide: "隠す"
