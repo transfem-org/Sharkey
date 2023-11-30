@@ -278,14 +278,14 @@ export class QueueService {
 	}
 
 	@bindThis
-	public createImportMastoToDbJob(user: ThinUser, targets: string[]) {
-		const jobs = targets.map(rel => this.generateToDbJobData('importMastoToDb', { user, target: rel }));
+	public createImportMastoToDbJob(user: ThinUser, targets: string[], note: MiNote['id'] | null) {
+		const jobs = targets.map(rel => this.generateToDbJobData('importMastoToDb', { user, target: rel, note }));
 		return this.dbQueue.addBulk(jobs);
 	}
 
 	@bindThis
-	public createImportPleroToDbJob(user: ThinUser, targets: string[]) {
-		const jobs = targets.map(rel => this.generateToDbJobData('importPleroToDb', { user, target: rel }));
+	public createImportPleroToDbJob(user: ThinUser, targets: string[], note: MiNote['id'] | null) {
+		const jobs = targets.map(rel => this.generateToDbJobData('importPleroToDb', { user, target: rel, note }));
 		return this.dbQueue.addBulk(jobs);
 	}
 

@@ -137,8 +137,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				ref="quoteButton"
 				class="_button"
 				:class="$style.noteFooterButton"
-				:style="quoted ? 'color: var(--accent) !important;' : ''"
-				@mousedown="quoted ? undoQuote() : quote()"
+				@mousedown="quote()"
 			>
 				<i class="ph-quotes ph-bold ph-lg"></i>
 			</button>
@@ -310,7 +309,6 @@ const isMyRenote = $i && ($i.id === note.userId);
 const showContent = ref(false);
 const isDeleted = ref(false);
 const renoted = ref(false);
-const quoted = ref(false);
 const muted = ref($i ? checkWordMute(appearNote, $i, $i.mutedWords) : false);
 const translation = ref(null);
 const translating = ref(false);
@@ -323,7 +321,7 @@ const conversation = ref<Misskey.entities.Note[]>([]);
 const replies = ref<Misskey.entities.Note[]>([]);
 const quotes = ref<Misskey.entities.Note[]>([]);
 const canRenote = computed(() => ['public', 'home'].includes(appearNote.visibility) || appearNote.userId === $i.id);
-const defaultLike = computed(() => defaultStore.state.like !== '❤️' ? defaultStore.state.like : null);
+const defaultLike = computed(() => defaultStore.state.like ? defaultStore.state.like : null);
 
 watch(() => props.expandAllCws, (expandAllCws) => {
 	if (expandAllCws !== showContent.value) showContent.value = expandAllCws;
@@ -336,15 +334,6 @@ if ($i) {
 		limit: 1,
 	}).then((res) => {
 		renoted.value = res.length > 0;
-	});
-
-	os.api("notes/renotes", {
-		noteId: appearNote.id,
-		userId: $i.id,
-		limit: 1,
-		quote: true,
-	}).then((res) => {
-		quoted.value = res.length > 0;
 	});
 }
 
@@ -511,7 +500,6 @@ function quote() {
 					os.popup(MkRippleEffect, { x, y }, {}, 'end');
 				}
 
-				quoted.value = res.length > 0;
 				os.toast(i18n.ts.quoted);
 			});
 		});
@@ -534,7 +522,6 @@ function quote() {
 					os.popup(MkRippleEffect, { x, y }, {}, 'end');
 				}
 
-				quoted.value = res.length > 0;
 				os.toast(i18n.ts.quoted);
 			});
 		});
@@ -617,23 +604,6 @@ function undoRenote() : void {
 	renoted.value = false;
 
 	const el = renoteButton.value as HTMLElement | null | undefined;
-	if (el) {
-		const rect = el.getBoundingClientRect();
-		const x = rect.left + (el.offsetWidth / 2);
-		const y = rect.top + (el.offsetHeight / 2);
-		os.popup(MkRippleEffect, { x, y }, {}, 'end');
-	}
-}
-
-function undoQuote() : void {
-	os.api("notes/unrenote", {
-		noteId: appearNote.id,
-		quote: true
-	});
-	os.toast(i18n.ts.rmquote);
-	quoted.value = false;
-
-	const el = quoteButton.value as HTMLElement | null | undefined;
 	if (el) {
 		const rect = el.getBoundingClientRect();
 		const x = rect.left + (el.offsetWidth / 2);

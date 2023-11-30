@@ -112,7 +112,7 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	like: {
 		where: 'account',
-		default: '❤️',
+		default: null as string | null,
 	},
 	mutedAds: {
 		where: 'account',
@@ -188,7 +188,7 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	serverDisconnectedBehavior: {
 		where: 'device',
-		default: 'quiet' as 'quiet' | 'reload' | 'dialog' | 'disabled',
+		default: 'disabled' as 'quiet' | 'dialog' | 'disabled',
 	},
 	nsfw: {
 		where: 'device',

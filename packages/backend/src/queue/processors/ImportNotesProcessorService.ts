@@ -3,7 +3,7 @@ import * as vm from 'node:vm';
 import { Inject, Injectable } from '@nestjs/common';
 import { ZipReader } from 'slacc';
 import { DI } from '@/di-symbols.js';
-import type { UsersRepository, DriveFilesRepository, MiDriveFile, MiNote, NotesRepository, MiUser } from '@/models/_.js';
+import type { UsersRepository, DriveFilesRepository, MiDriveFile, MiNote, NotesRepository, MiUser, DriveFoldersRepository, MiDriveFolder } from '@/models/_.js';
 import type Logger from '@/logger.js';
 import { DownloadService } from '@/core/DownloadService.js';
 import { bindThis } from '@/decorators.js';
@@ -14,9 +14,10 @@ import { DriveService } from '@/core/DriveService.js';
 import { MfmService } from '@/core/MfmService.js';
 import { ApNoteService } from '@/core/activitypub/models/ApNoteService.js';
 import { extractApHashtagObjects } from '@/core/activitypub/models/tag.js';
+import { IdService } from '@/core/IdService.js';
 import { QueueLoggerService } from '../QueueLoggerService.js';
 import type * as Bull from 'bullmq';
-import type { DbNoteImportToDbJobData, DbNoteImportJobData, DbKeyNoteImportToDbJobData } from '../types.js';
+import type { DbNoteImportToDbJobData, DbNoteImportJobData, DbNoteWithParentImportToDbJobData } from '../types.js';
 
 @Injectable()
 export class ImportNotesProcessorService {
@@ -29,6 +30,9 @@ export class ImportNotesProcessorService {
 		@Inject(DI.driveFilesRepository)
 		private driveFilesRepository: DriveFilesRepository,
 
+		@Inject(DI.driveFoldersRepository)
+		private driveFoldersRepository: DriveFoldersRepository,
+
 		@Inject(DI.notesRepository)
 		private notesRepository: NotesRepository,
 
@@ -38,20 +42,21 @@ export class ImportNotesProcessorService {
 		private apNoteService: ApNoteService,
 		private driveService: DriveService,
 		private downloadService: DownloadService,
+		private idService: IdService,
 		private queueLoggerService: QueueLoggerService,
 	) {
 		this.logger = this.queueLoggerService.logger.createSubLogger('import-notes');
 	}
 
 	@bindThis
-	private async uploadFiles(dir: string, user: MiUser) {
+	private async uploadFiles(dir: string, user: MiUser, folder?: MiDriveFolder['id']) {
 		const fileList = fs.readdirSync(dir);
 		for await (const file of fileList) {
 			const name = `${dir}/${file}`;
 			if (fs.statSync(name).isDirectory()) {
-				await this.uploadFiles(name, user);
+				await this.uploadFiles(name, user, folder);
 			} else {
-				const exists = await this.driveFilesRepository.findOneBy({ name: file, userId: user.id });
+				const exists = await this.driveFilesRepository.findOneBy({ name: file, userId: user.id, folderId: folder });
 
 				if (file.endsWith('.srt')) return;
 
@@ -60,6 +65,7 @@ export class ImportNotesProcessorService {
 						user: user,
 						path: name,
 						name: file,
+						folderId: folder,
 					});
 				}
 			}
@@ -68,7 +74,7 @@ export class ImportNotesProcessorService {
 
 	// Function was taken from Firefish and modified for our needs
 	@bindThis
-	private async recreateChain(idField: string, replyField: string, arr: any[]): Promise<any[]> {
+	private async recreateChain(idFieldPath: string[], replyFieldPath: string[], arr: any[], includeOrphans: boolean): Promise<any[]> {
 		type NotesMap = {
 			[id: string]: any;
 		};
@@ -77,26 +83,40 @@ export class ImportNotesProcessorService {
 		const notesWaitingForParent: NotesMap = {};
 
 		for await (const note of arr) {
-			noteById[note[idField]] = note;
+			const noteId = idFieldPath.reduce(
+				(obj, step) => obj[step],
+				note,
+			);
+
+			noteById[noteId] = note;
 			note.childNotes = [];
 
-			const children = notesWaitingForParent[note[idField]];
+			const children = notesWaitingForParent[noteId];
 			if (children) {
 				note.childNotes.push(...children);
+				delete notesWaitingForParent[noteId];
 			}
 
-			if (note[replyField] == null) {
+			const noteReplyId = replyFieldPath.reduce(
+				(obj, step) => obj[step],
+				note,
+			);
+			if (noteReplyId == null) {
 				notesTree.push(note);
 				continue;
 			}
 
-			const parent = noteById[note[replyField]];
+			const parent = noteById[noteReplyId];
 			if (parent) {
 				parent.childNotes.push(note);
 			} else {
-				notesWaitingForParent[note[replyField]] ||= [];
-				notesWaitingForParent[note[replyField]].push(note);
+				notesWaitingForParent[noteReplyId] ||= [];
+				notesWaitingForParent[noteReplyId].push(note);
 			}
+		}
+
+		if (includeOrphans) {
+			notesTree.push(...Object.values(notesWaitingForParent).flat(1));
 		}
 
 		return notesTree;
@@ -124,6 +144,12 @@ export class ImportNotesProcessorService {
 		});
 		if (file == null) {
 			return;
+		}
+
+		let folder = await this.driveFoldersRepository.findOneBy({ name: 'Imports', userId: job.data.user.id });
+		if (folder == null) {
+			await this.driveFoldersRepository.insert({ id: this.idService.gen(), name: 'Imports', userId: job.data.user.id });
+			folder = await this.driveFoldersRepository.findOneBy({ name: 'Imports', userId: job.data.user.id });
 		}
 
 		const type = job.data.type;
@@ -164,7 +190,7 @@ export class ImportNotesProcessorService {
 				const tweets = Object.keys(fakeWindow.window.YTD.tweets.part0).reduce((m, key, i, obj) => {
 					return m.concat(fakeWindow.window.YTD.tweets.part0[key].tweet);
 				}, []);
-				const processedTweets = await this.recreateChain("id_str", "in_reply_to_status_id_str", tweets);
+				const processedTweets = await this.recreateChain(['id_str'], ['in_reply_to_status_id_str'], tweets, false);
 				this.queueService.createImportTweetsToDbJob(job.data.user, processedTweets, null);
 			} finally {
 				cleanup();
@@ -192,7 +218,12 @@ export class ImportNotesProcessorService {
 				ZipReader.withDestinationPath(outputPath).viaBuffer(await fs.promises.readFile(destPath));
 				const postsJson = fs.readFileSync(outputPath + '/your_activity_across_facebook/posts/your_posts__check_ins__photos_and_videos_1.json', 'utf-8');
 				const posts = JSON.parse(postsJson);
-				await this.uploadFiles(outputPath + '/your_activity_across_facebook/posts/media', user);
+				const facebookFolder = await this.driveFoldersRepository.findOneBy({ name: 'Facebook', userId: job.data.user.id, parentId: folder?.id });
+				if (facebookFolder == null && folder) {
+					await this.driveFoldersRepository.insert({ id: this.idService.gen(), name: 'Facebook', userId: job.data.user.id, parentId: folder.id });
+					const createdFolder = await this.driveFoldersRepository.findOneBy({ name: 'Facebook', userId: job.data.user.id, parentId: folder.id });
+					if (createdFolder) await this.uploadFiles(outputPath + '/your_activity_across_facebook/posts/media', user, createdFolder.id);
+				}
 				this.queueService.createImportFBToDbJob(job.data.user, posts);
 			} finally {
 				cleanup();
@@ -223,7 +254,12 @@ export class ImportNotesProcessorService {
 				if (isInstagram) {
 					const postsJson = fs.readFileSync(outputPath + '/content/posts_1.json', 'utf-8');
 					const posts = JSON.parse(postsJson);
-					await this.uploadFiles(outputPath + '/media/posts', user);
+					const igFolder = await this.driveFoldersRepository.findOneBy({ name: 'Instagram', userId: job.data.user.id, parentId: folder?.id });
+					if (igFolder == null && folder) {
+						await this.driveFoldersRepository.insert({ id: this.idService.gen(), name: 'Instagram', userId: job.data.user.id, parentId: folder.id });
+						const createdFolder = await this.driveFoldersRepository.findOneBy({ name: 'Instagram', userId: job.data.user.id, parentId: folder.id });
+						if (createdFolder) await this.uploadFiles(outputPath + '/media/posts', user, createdFolder.id);
+					}
 					this.queueService.createImportIGToDbJob(job.data.user, posts);
 				} else if (isOutbox) {
 					const actorJson = fs.readFileSync(outputPath + '/actor.json', 'utf-8');
@@ -232,12 +268,21 @@ export class ImportNotesProcessorService {
 					if (isPleroma) {
 						const outboxJson = fs.readFileSync(outputPath + '/outbox.json', 'utf-8');
 						const outbox = JSON.parse(outboxJson);
-						this.queueService.createImportPleroToDbJob(job.data.user, outbox.orderedItems.filter((x: any) => x.type === 'Create' && x.object.type === 'Note'));
+						const processedToots = await this.recreateChain(['object', 'id'], ['object', 'inReplyTo'], outbox.orderedItems.filter((x: any) => x.type === 'Create' && x.object.type === 'Note'), true);
+						this.queueService.createImportPleroToDbJob(job.data.user, processedToots, null);
 					} else {
 						const outboxJson = fs.readFileSync(outputPath + '/outbox.json', 'utf-8');
 						const outbox = JSON.parse(outboxJson);
-						if (fs.existsSync(outputPath + '/media_attachments/files')) await this.uploadFiles(outputPath + '/media_attachments/files', user);
-						this.queueService.createImportMastoToDbJob(job.data.user, outbox.orderedItems.filter((x: any) => x.type === 'Create' && x.object.type === 'Note'));
+						let mastoFolder = await this.driveFoldersRepository.findOneBy({ name: 'Mastodon', userId: job.data.user.id, parentId: folder?.id });
+						if (mastoFolder == null && folder) {
+							await this.driveFoldersRepository.insert({ id: this.idService.gen(), name: 'Mastodon', userId: job.data.user.id, parentId: folder.id });
+							mastoFolder = await this.driveFoldersRepository.findOneBy({ name: 'Mastodon', userId: job.data.user.id, parentId: folder.id });
+						}
+						if (fs.existsSync(outputPath + '/media_attachments/files') && mastoFolder) {
+							await this.uploadFiles(outputPath + '/media_attachments/files', user, mastoFolder.id);
+						}
+						const processedToots = await this.recreateChain(['object', 'id'], ['object', 'inReplyTo'], outbox.orderedItems.filter((x: any) => x.type === 'Create' && x.object.type === 'Note'), true);
+						this.queueService.createImportMastoToDbJob(job.data.user, processedToots, null);
 					}
 				}
 			} finally {
@@ -260,7 +305,7 @@ export class ImportNotesProcessorService {
 
 			const notesJson = fs.readFileSync(path, 'utf-8');
 			const notes = JSON.parse(notesJson);
-			const processedNotes = await this.recreateChain("id", "replyId", notes);
+			const processedNotes = await this.recreateChain(['id'], ['replyId'], notes, false);
 			this.queueService.createImportKeyNotesToDbJob(job.data.user, processedNotes, null);
 			cleanup();
 		}
@@ -269,7 +314,7 @@ export class ImportNotesProcessorService {
 	}
 
 	@bindThis
-	public async processKeyNotesToDb(job: Bull.Job<DbKeyNoteImportToDbJobData>): Promise<void> {
+	public async processKeyNotesToDb(job: Bull.Job<DbNoteWithParentImportToDbJobData>): Promise<void> {
 		const note = job.data.target;
 		const user = await this.usersRepository.findOneBy({ id: job.data.user.id });
 		if (user == null) {
@@ -280,16 +325,25 @@ export class ImportNotesProcessorService {
 
 		const parentNote = job.data.note ? await this.notesRepository.findOneBy({ id: job.data.note }) : null;
 
+		const folder = await this.driveFoldersRepository.findOneBy({ name: 'Imports', userId: job.data.user.id });
+		if (folder == null) return;
+
 		const files: MiDriveFile[] = [];
 		const date = new Date(note.createdAt);
 
 		if (note.files && this.isIterable(note.files)) {
+			let keyFolder = await this.driveFoldersRepository.findOneBy({ name: 'Misskey', userId: job.data.user.id, parentId: folder.id });
+			if (keyFolder == null) {
+				await this.driveFoldersRepository.insert({ id: this.idService.gen(), name: 'Misskey', userId: job.data.user.id, parentId: folder.id });
+				keyFolder = await this.driveFoldersRepository.findOneBy({ name: 'Misskey', userId: job.data.user.id, parentId: folder.id });
+			}
+
 			for await (const file of note.files) {
 				const [filePath, cleanup] = await createTemp();
 				const slashdex = file.url.lastIndexOf('/');
 				const name = file.url.substring(slashdex + 1);
 
-				const exists = await this.driveFilesRepository.findOneBy({ name: name, userId: user.id });
+				const exists = await this.driveFilesRepository.findOneBy({ name: name, userId: user.id }) ?? await this.driveFilesRepository.findOneBy({ name: name, userId: user.id, folderId: keyFolder?.id });
 
 				if (!exists) {
 					try {
@@ -301,6 +355,7 @@ export class ImportNotesProcessorService {
 						user: user,
 						path: filePath,
 						name: name,
+						folderId: keyFolder?.id,
 					});
 					files.push(driveFile);
 				} else {
@@ -316,12 +371,14 @@ export class ImportNotesProcessorService {
 	}
 
 	@bindThis
-	public async processMastoToDb(job: Bull.Job<DbNoteImportToDbJobData>): Promise<void> {
+	public async processMastoToDb(job: Bull.Job<DbNoteWithParentImportToDbJobData>): Promise<void> {
 		const toot = job.data.target;
 		const user = await this.usersRepository.findOneBy({ id: job.data.user.id });
 		if (user == null) {
 			return;
 		}
+
+		if (toot.directMessage) return;
 
 		const date = new Date(toot.object.published);
 		let text = undefined;
@@ -329,14 +386,17 @@ export class ImportNotesProcessorService {
 		let reply: MiNote | null = null;
 
 		if (toot.object.inReplyTo != null) {
-			try {
-				reply = await this.apNoteService.resolveNote(toot.object.inReplyTo);
-			} catch (error) {
-				reply = null;
+			const parentNote = job.data.note ? await this.notesRepository.findOneBy({ id: job.data.note }) : null;
+			if (parentNote) {
+				reply = parentNote;
+			} else {
+				try {
+					reply = await this.apNoteService.resolveNote(toot.object.inReplyTo);
+				} catch (error) {
+					reply = null;
+				}
 			}
 		}
-
-		if (toot.directMessage) return;
 
 		const hashtags = extractApHashtagObjects(toot.object.tag).map((x) => x.name).filter((x): x is string => x != null);
 
@@ -357,31 +417,40 @@ export class ImportNotesProcessorService {
 			}
 		}
 
-		await this.noteCreateService.import(user, { createdAt: date, text: text, files: files, apMentions: new Array(0), cw: toot.object.sensitive ? toot.object.summary : null, reply: reply });
+		const createdNote = await this.noteCreateService.import(user, { createdAt: date, text: text, files: files, apMentions: new Array(0), cw: toot.object.sensitive ? toot.object.summary : null, reply: reply });
+		if (toot.childNotes) this.queueService.createImportMastoToDbJob(user, toot.childNotes, createdNote.id);
 	}
 
 	@bindThis
-	public async processPleroToDb(job: Bull.Job<DbNoteImportToDbJobData>): Promise<void> {
+	public async processPleroToDb(job: Bull.Job<DbNoteWithParentImportToDbJobData>): Promise<void> {
 		const post = job.data.target;
 		const user = await this.usersRepository.findOneBy({ id: job.data.user.id });
 		if (user == null) {
 			return;
 		}
 
+		if (post.directMessage) return;
+
 		const date = new Date(post.object.published);
 		let text = undefined;
 		const files: MiDriveFile[] = [];
 		let reply: MiNote | null = null;
 
+		const folder = await this.driveFoldersRepository.findOneBy({ name: 'Imports', userId: job.data.user.id });
+		if (folder == null) return;
+
 		if (post.object.inReplyTo != null) {
-			try {
-				reply = await this.apNoteService.resolveNote(post.object.inReplyTo);
-			} catch (error) {
-				reply = null;
+			const parentNote = job.data.note ? await this.notesRepository.findOneBy({ id: job.data.note }) : null;
+			if (parentNote) {
+				reply = parentNote;
+			} else {
+				try {
+					reply = await this.apNoteService.resolveNote(post.object.inReplyTo);
+				} catch (error) {
+					reply = null;
+				}
 			}
 		}
-
-		if (post.directMessage) return;
 
 		const hashtags = extractApHashtagObjects(post.object.tag).map((x) => x.name).filter((x): x is string => x != null);
 
@@ -392,12 +461,18 @@ export class ImportNotesProcessorService {
 		}
 
 		if (post.object.attachment && this.isIterable(post.object.attachment)) {
+			let pleroFolder = await this.driveFoldersRepository.findOneBy({ name: 'Pleroma', userId: job.data.user.id, parentId: folder.id });
+			if (pleroFolder == null) {
+				await this.driveFoldersRepository.insert({ id: this.idService.gen(), name: 'Pleroma', userId: job.data.user.id, parentId: folder.id });
+				pleroFolder = await this.driveFoldersRepository.findOneBy({ name: 'Pleroma', userId: job.data.user.id, parentId: folder.id });
+			}
+
 			for await (const file of post.object.attachment) {
 				const slashdex = file.url.lastIndexOf('/');
 				const name = file.url.substring(slashdex + 1);
 				const [filePath, cleanup] = await createTemp();
 
-				const exists = await this.driveFilesRepository.findOneBy({ name: name, userId: user.id });
+				const exists = await this.driveFilesRepository.findOneBy({ name: name, userId: user.id }) ?? await this.driveFilesRepository.findOneBy({ name: name, userId: user.id, folderId: pleroFolder?.id });
 
 				if (!exists) {
 					try {
@@ -409,6 +484,7 @@ export class ImportNotesProcessorService {
 						user: user,
 						path: filePath,
 						name: name,
+						folderId: pleroFolder?.id,
 					});
 					files.push(driveFile);
 				} else {
@@ -419,7 +495,8 @@ export class ImportNotesProcessorService {
 			}
 		}
 
-		await this.noteCreateService.import(user, { createdAt: date, text: text, files: files, apMentions: new Array(0), cw: post.object.sensitive ? post.object.summary : null, reply: reply });
+		const createdNote = await this.noteCreateService.import(user, { createdAt: date, text: text, files: files, apMentions: new Array(0), cw: post.object.sensitive ? post.object.summary : null, reply: reply });
+		if (post.childNotes) this.queueService.createImportPleroToDbJob(user, post.childNotes, createdNote.id);
 	}
 
 	@bindThis
@@ -468,12 +545,15 @@ export class ImportNotesProcessorService {
 	}
 
 	@bindThis
-	public async processTwitterDb(job: Bull.Job<DbKeyNoteImportToDbJobData>): Promise<void> {
+	public async processTwitterDb(job: Bull.Job<DbNoteWithParentImportToDbJobData>): Promise<void> {
 		const tweet = job.data.target;
 		const user = await this.usersRepository.findOneBy({ id: job.data.user.id });
 		if (user == null) {
 			return;
 		}
+
+		const folder = await this.driveFoldersRepository.findOneBy({ name: 'Imports', userId: job.data.user.id });
+		if (folder == null) return;
 
 		const parentNote = job.data.note ? await this.notesRepository.findOneBy({ id: job.data.note }) : null;
 
@@ -500,13 +580,19 @@ export class ImportNotesProcessorService {
 			const files: MiDriveFile[] = [];
 
 			if (tweet.extended_entities && this.isIterable(tweet.extended_entities.media)) {
+				let twitFolder = await this.driveFoldersRepository.findOneBy({ name: 'Twitter', userId: job.data.user.id, parentId: folder.id });
+				if (twitFolder == null) {
+					await this.driveFoldersRepository.insert({ id: this.idService.gen(), name: 'Twitter', userId: job.data.user.id, parentId: folder.id });
+					twitFolder = await this.driveFoldersRepository.findOneBy({ name: 'Twitter', userId: job.data.user.id, parentId: folder.id });
+				}
+
 				for await (const file of tweet.extended_entities.media) {
 					if (file.video_info) {
 						const [filePath, cleanup] = await createTemp();
 						const slashdex = file.video_info.variants[0].url.lastIndexOf('/');
 						const name = file.video_info.variants[0].url.substring(slashdex + 1);
 
-						const exists = await this.driveFilesRepository.findOneBy({ name: name, userId: user.id });
+						const exists = await this.driveFilesRepository.findOneBy({ name: name, userId: user.id }) ?? await this.driveFilesRepository.findOneBy({ name: name, userId: user.id, folderId: twitFolder?.id });
 
 						const videos = file.video_info.variants.filter((x: any) => x.content_type === 'video/mp4');
 
@@ -520,6 +606,7 @@ export class ImportNotesProcessorService {
 								user: user,
 								path: filePath,
 								name: name,
+								folderId: twitFolder?.id,
 							});
 							files.push(driveFile);
 						} else {
@@ -545,6 +632,7 @@ export class ImportNotesProcessorService {
 								user: user,
 								path: filePath,
 								name: name,
+								folderId: twitFolder?.id,
 							});
 							files.push(driveFile);
 						} else {

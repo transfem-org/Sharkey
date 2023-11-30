@@ -14,7 +14,7 @@ import { DI } from '@/di-symbols.js';
 import { ApiError } from '../../error.js';
 
 export const meta = {
-	tags: ["notes"],
+	tags: ['notes'],
 
 	requireCredential: true,
 
@@ -23,99 +23,99 @@ export const meta = {
 		max: 300,
 	},
 
-	kind: "write:notes",
+	kind: 'write:notes',
 
 	res: {
-		type: "object",
+		type: 'object',
 		optional: false,
 		nullable: false,
 		properties: {
 			createdNote: {
-				type: "object",
+				type: 'object',
 				optional: false,
 				nullable: false,
-				ref: "Note",
+				ref: 'Note',
 			},
 		},
 	},
 
 	errors: {
 		noSuchRenoteTarget: {
-			message: "No such renote target.",
-			code: "NO_SUCH_RENOTE_TARGET",
-			id: "b5c90186-4ab0-49c8-9bba-a1f76c282ba4",
+			message: 'No such renote target.',
+			code: 'NO_SUCH_RENOTE_TARGET',
+			id: 'b5c90186-4ab0-49c8-9bba-a1f76c282ba4',
 		},
 
 		cannotReRenote: {
-			message: "You can not Renote a pure Renote.",
-			code: "CANNOT_RENOTE_TO_A_PURE_RENOTE",
-			id: "fd4cc33e-2a37-48dd-99cc-9b806eb2031a",
+			message: 'You can not Renote a pure Renote.',
+			code: 'CANNOT_RENOTE_TO_A_PURE_RENOTE',
+			id: 'fd4cc33e-2a37-48dd-99cc-9b806eb2031a',
 		},
 
 		noSuchReplyTarget: {
-			message: "No such reply target.",
-			code: "NO_SUCH_REPLY_TARGET",
-			id: "749ee0f6-d3da-459a-bf02-282e2da4292c",
+			message: 'No such reply target.',
+			code: 'NO_SUCH_REPLY_TARGET',
+			id: '749ee0f6-d3da-459a-bf02-282e2da4292c',
 		},
 
 		cannotReplyToPureRenote: {
-			message: "You can not reply to a pure Renote.",
-			code: "CANNOT_REPLY_TO_A_PURE_RENOTE",
-			id: "3ac74a84-8fd5-4bb0-870f-01804f82ce15",
+			message: 'You can not reply to a pure Renote.',
+			code: 'CANNOT_REPLY_TO_A_PURE_RENOTE',
+			id: '3ac74a84-8fd5-4bb0-870f-01804f82ce15',
 		},
 
 		cannotCreateAlreadyExpiredPoll: {
-			message: "Poll is already expired.",
-			code: "CANNOT_CREATE_ALREADY_EXPIRED_POLL",
-			id: "04da457d-b083-4055-9082-955525eda5a5",
+			message: 'Poll is already expired.',
+			code: 'CANNOT_CREATE_ALREADY_EXPIRED_POLL',
+			id: '04da457d-b083-4055-9082-955525eda5a5',
 		},
 
 		noSuchChannel: {
-			message: "No such channel.",
-			code: "NO_SUCH_CHANNEL",
-			id: "b1653923-5453-4edc-b786-7c4f39bb0bbb",
+			message: 'No such channel.',
+			code: 'NO_SUCH_CHANNEL',
+			id: 'b1653923-5453-4edc-b786-7c4f39bb0bbb',
 		},
 
 		youHaveBeenBlocked: {
-			message: "You have been blocked by this user.",
-			code: "YOU_HAVE_BEEN_BLOCKED",
-			id: "b390d7e1-8a5e-46ed-b625-06271cafd3d3",
+			message: 'You have been blocked by this user.',
+			code: 'YOU_HAVE_BEEN_BLOCKED',
+			id: 'b390d7e1-8a5e-46ed-b625-06271cafd3d3',
 		},
 
 		accountLocked: {
-			message: "You migrated. Your account is now locked.",
-			code: "ACCOUNT_LOCKED",
-			id: "d390d7e1-8a5e-46ed-b625-06271cafd3d3",
+			message: 'You migrated. Your account is now locked.',
+			code: 'ACCOUNT_LOCKED',
+			id: 'd390d7e1-8a5e-46ed-b625-06271cafd3d3',
 		},
 
 		needsEditId: {
-			message: "You need to specify `editId`.",
-			code: "NEEDS_EDIT_ID",
-			id: "d697edc8-8c73-4de8-bded-35fd198b79e5",
+			message: 'You need to specify `editId`.',
+			code: 'NEEDS_EDIT_ID',
+			id: 'd697edc8-8c73-4de8-bded-35fd198b79e5',
 		},
 
 		noSuchNote: {
-			message: "No such note.",
-			code: "NO_SUCH_NOTE",
-			id: "eef6c173-3010-4a23-8674-7c4fcaeba719",
+			message: 'No such note.',
+			code: 'NO_SUCH_NOTE',
+			id: 'eef6c173-3010-4a23-8674-7c4fcaeba719',
 		},
 
 		youAreNotTheAuthor: {
-			message: "You are not the author of this note.",
-			code: "YOU_ARE_NOT_THE_AUTHOR",
-			id: "c6e61685-411d-43d0-b90a-a448d2539001",
+			message: 'You are not the author of this note.',
+			code: 'YOU_ARE_NOT_THE_AUTHOR',
+			id: 'c6e61685-411d-43d0-b90a-a448d2539001',
 		},
 
 		cannotPrivateRenote: {
-			message: "You can not perform a private renote.",
-			code: "CANNOT_PRIVATE_RENOTE",
-			id: "19a50f1c-84fa-4e33-81d3-17834ccc0ad8",
+			message: 'You can not perform a private renote.',
+			code: 'CANNOT_PRIVATE_RENOTE',
+			id: '19a50f1c-84fa-4e33-81d3-17834ccc0ad8',
 		},
 
 		notLocalUser: {
-			message: "You are not a local user.",
-			code: "NOT_LOCAL_USER",
-			id: "b907f407-2aa0-4283-800b-a2c56290b822",
+			message: 'You are not a local user.',
+			code: 'NOT_LOCAL_USER',
+			id: 'b907f407-2aa0-4283-800b-a2c56290b822',
 		},
 
 		cannotRenoteOutsideOfChannel: {
@@ -127,60 +127,63 @@ export const meta = {
 } as const;
 
 export const paramDef = {
-	type: "object",
+	type: 'object',
 	properties: {
-		editId: { type: "string", format: "misskey:id" },
-		visibility: { type: "string", enum: ['public', 'home', 'followers', 'specified'], default: "public" },
+		editId: { type: 'string', format: 'misskey:id' },
+		visibility: { type: 'string', enum: ['public', 'home', 'followers', 'specified'], default: 'public' },
 		visibleUserIds: {
-			type: "array",
+			type: 'array',
 			uniqueItems: true,
 			items: {
-				type: "string",
-				format: "misskey:id",
+				type: 'string',
+				format: 'misskey:id',
 			},
 		},
-		text: { type: "string", maxLength: MAX_NOTE_TEXT_LENGTH, nullable: true },
-		cw: { type: "string", nullable: true, minLength: 1, maxLength: 250 },
-		localOnly: { type: "boolean", default: false },
-		noExtractMentions: { type: "boolean", default: false },
-		noExtractHashtags: { type: "boolean", default: false },
-		noExtractEmojis: { type: "boolean", default: false },
+		cw: { type: 'string', nullable: true, minLength: 1, maxLength: 250 },
+		localOnly: { type: 'boolean', default: false },
+		reactionAcceptance: { type: 'string', nullable: true, enum: [null, 'likeOnly', 'likeOnlyForRemote', 'nonSensitiveOnly', 'nonSensitiveOnlyForLocalLikeOnlyForRemote'], default: null },
+		noExtractMentions: { type: 'boolean', default: false },
+		noExtractHashtags: { type: 'boolean', default: false },
+		noExtractEmojis: { type: 'boolean', default: false },
+		replyId: { type: 'string', format: 'misskey:id', nullable: true },
+		renoteId: { type: 'string', format: 'misskey:id', nullable: true },
+		channelId: { type: 'string', format: 'misskey:id', nullable: true },
+		text: {
+			type: 'string',
+			minLength: 1,
+			maxLength: MAX_NOTE_TEXT_LENGTH,
+			nullable: true,
+		},
 		fileIds: {
-			type: "array",
+			type: 'array',
 			uniqueItems: true,
 			minItems: 1,
 			maxItems: 16,
-			items: { type: "string", format: "misskey:id" },
+			items: { type: 'string', format: 'misskey:id' },
 		},
 		mediaIds: {
-			deprecated: true,
-			description:
-				"Use `fileIds` instead. If both are specified, this property is discarded.",
-			type: "array",
+			type: 'array',
 			uniqueItems: true,
 			minItems: 1,
 			maxItems: 16,
-			items: { type: "string", format: "misskey:id" },
+			items: { type: 'string', format: 'misskey:id' },
 		},
-		replyId: { type: "string", format: "misskey:id", nullable: true },
-		renoteId: { type: "string", format: "misskey:id", nullable: true },
-		channelId: { type: "string", format: "misskey:id", nullable: true },
 		poll: {
-			type: "object",
+			type: 'object',
 			nullable: true,
 			properties: {
 				choices: {
-					type: "array",
+					type: 'array',
 					uniqueItems: true,
 					minItems: 2,
 					maxItems: 10,
-					items: { type: "string", minLength: 1, maxLength: 50 },
+					items: { type: 'string', minLength: 1, maxLength: 50 },
 				},
-				multiple: { type: "boolean", default: false },
-				expiresAt: { type: "integer", nullable: true },
-				expiredAfter: { type: "integer", nullable: true, minimum: 1 },
+				multiple: { type: 'boolean' },
+				expiresAt: { type: 'integer', nullable: true },
+				expiredAfter: { type: 'integer', nullable: true, minimum: 1 },
 			},
-			required: ["choices"],
+			required: ['choices'],
 		},
 	},
 	anyOf: [
@@ -188,32 +191,32 @@ export const paramDef = {
 			// (re)note with text, files and poll are optional
 			properties: {
 				text: {
-					type: "string",
+					type: 'string',
 					minLength: 1,
 					maxLength: MAX_NOTE_TEXT_LENGTH,
 					nullable: false,
 				},
 			},
-			required: ["text"],
+			required: ['text'],
 		},
 		{
 			// (re)note with files, text and poll are optional
-			required: ["fileIds"],
+			required: ['fileIds'],
 		},
 		{
 			// (re)note with files, text and poll are optional
-			required: ["mediaIds"],
+			required: ['mediaIds'],
 		},
 		{
 			// (re)note with poll, text and files are optional
 			properties: {
-				poll: { type: "object", nullable: false },
+				poll: { type: 'object', nullable: false },
 			},
-			required: ["poll"],
+			required: ['poll'],
 		},
 		{
 			// pure renote
-			required: ["renoteId"],
+			required: ['renoteId'],
 		},
 	],
 } as const;

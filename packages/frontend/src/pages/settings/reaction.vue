@@ -24,9 +24,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</FromSlot>
 
 	<FromSlot>
-		<template #label>Default like emoji</template>
-		<MkCustomEmoji v-if="like.startsWith(':')" style="max-height: 3em; font-size: 1.1em;" :useOriginalSize="false" :class="$style.reaction" :name="like" :normal="true" :noStyle="true"/>
-		<MkEmoji v-else :emoji="like" style="max-height: 3em; font-size: 1.1em;" :normal="true" :noStyle="true"/>
+		<template #label>{{ i18n.ts.defaultLike }}</template>
+		<MkCustomEmoji v-if="like && like.startsWith(':')" style="max-height: 3em; font-size: 1.1em;" :useOriginalSize="false" :class="$style.reaction" :name="like" :normal="true" :noStyle="true"/>
+		<MkEmoji v-else-if="like && !like.startsWith(':')" :emoji="like" style="max-height: 3em; font-size: 1.1em;" :normal="true" :noStyle="true"/>
+		<span v-else-if="!like">{{ i18n.ts.notSet }}</span>
 		<div class="_buttons" style="padding-top: 8px;">
 			<MkButton rounded :small="true" inline @click="chooseNewLike"><i class="ph-smiley ph-bold ph-lg"></i> Change</MkButton>
 			<MkButton rounded :small="true" inline @click="resetLike"><i class="ph-arrow-clockwise ph-bold ph-lg"></i> Reset</MkButton>
@@ -82,6 +83,7 @@ import { defaultStore } from '@/store.js';
 import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 import { deepClone } from '@/scripts/clone.js';
+import { unisonReload } from '@/scripts/unison-reload.js';
 
 let reactions = $ref(deepClone(defaultStore.state.reactions));
 const like = $computed(defaultStore.makeGetterSetter('like'));
@@ -90,6 +92,16 @@ const reactionPickerSize = $computed(defaultStore.makeGetterSetter('reactionPick
 const reactionPickerWidth = $computed(defaultStore.makeGetterSetter('reactionPickerWidth'));
 const reactionPickerHeight = $computed(defaultStore.makeGetterSetter('reactionPickerHeight'));
 const reactionPickerUseDrawerForMobile = $computed(defaultStore.makeGetterSetter('reactionPickerUseDrawerForMobile'));
+
+async function reloadAsk() {
+	const { canceled } = await os.confirm({
+		type: 'info',
+		text: i18n.ts.reloadToApplySetting,
+	});
+	if (canceled) return;
+
+	unisonReload();
+}
 
 function save() {
 	defaultStore.set('reactions', reactions);
@@ -134,13 +146,15 @@ function chooseEmoji(ev: MouseEvent) {
 function chooseNewLike(ev: MouseEvent) {
 	os.pickEmoji(ev.currentTarget ?? ev.target, {
 		showPinned: false,
-	}).then(emoji => {
+	}).then(async emoji => {
 		defaultStore.set('like', emoji as string);
+		await reloadAsk();
 	});
 }
 
-function resetLike() {
-	defaultStore.set('like', '❤️');
+async function resetLike() {
+	defaultStore.set('like', null);
+	await reloadAsk();
 }
 
 watch($$(reactions), () => {

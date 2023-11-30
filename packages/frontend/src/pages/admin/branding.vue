@@ -48,7 +48,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					</MkInput>
 
 					<FromSlot>
-						<template #label>Default like emoji</template>
+						<template #label>{{ i18n.ts.defaultLike }}</template>
 						<MkCustomEmoji v-if="defaultLike.startsWith(':')" style="max-height: 3em; font-size: 1.1em;" :useOriginalSize="false" :class="$style.reaction" :name="defaultLike" :normal="true" :noStyle="true"/>
 						<MkEmoji v-else :emoji="defaultLike" style="max-height: 3em; font-size: 1.1em;" :normal="true" :noStyle="true"/>
 						<MkButton rounded :small="true" @click="chooseNewLike"><i class="ph-smiley ph-bold ph-lg"></i> Change</MkButton>

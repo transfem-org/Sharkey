@@ -28,8 +28,19 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<div :class="$style.username"><MkAcct :user="user"/></div>
 			</div>
 			<div :class="$style.description">
-				<Mfm v-if="user.description" :class="$style.mfm" :text="user.description" :author="user"/>
+				<Mfm v-if="user.description" :nyaize="false" :class="$style.mfm" :text="user.description" :author="user"/>
 				<div v-else style="opacity: 0.7;">{{ i18n.ts.noAccountDescription }}</div>
+			</div>
+			<div v-if="user.fields.length > 0" :class="$style.fields">
+				<dl v-for="(field, i) in user.fields" :key="i" :class="$style.field">
+					<dt :class="$style.fieldname">
+						<Mfm :text="field.name" :nyaize="false" :plain="true" :colored="false"/>
+					</dt>
+					<dd :class="$style.fieldvalue">
+						<Mfm :text="field.value" :nyaize="false" :author="user" :colored="false"/>
+						<i v-if="user.verifiedLinks.includes(field.value)" v-tooltip:dialog="i18n.ts.verifiedLink" class="ph-seal-check ph-bold ph-lg" :class="$style.verifiedLink"></i>
+					</dd>
+				</dl>
 			</div>
 			<div :class="$style.status">
 				<div :class="$style.statusItem">
@@ -219,6 +230,48 @@ onMounted(() => {
 	text-align: center;
 	border-top: solid 1px var(--divider);
 	border-bottom: solid 1px var(--divider);
+}
+
+.fields {
+	font-size: 0.8em;
+	padding: 16px;
+	border-top: solid 1px var(--divider);
+	border-bottom: solid 1px var(--divider);
+}
+
+.field {
+	display: flex;
+	padding: 0;
+	margin: 0;
+
+	&:not(:last-child) {
+		margin-bottom: 8px;
+	}
+
+	:deep(span) {
+		white-space: nowrap !important;
+	}
+}
+
+.fieldvalue {
+	width: 70%;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	word-wrap: nowrap;
+	margin: 0;
+}
+
+.fieldname {
+	width: 100px;
+	max-height: 45px;
+	overflow: hidden;
+	white-space: nowrap;
+	display: inline;
+	text-overflow: ellipsis;
+	font-weight: bold;
+	text-align: center;
+	padding-inline-end: 10px;
 }
 
 .mfm {

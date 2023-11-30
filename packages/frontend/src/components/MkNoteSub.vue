@@ -41,8 +41,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					ref="quoteButton"
 					class="_button"
 					:class="$style.noteFooterButton"
-					:style="quoted ? 'color: var(--accent) !important;' : ''"
-					@mousedown="quoted ? undoQuote() : quote()"
+					@mousedown="quote()"
 				>
 					<i class="ph-quotes ph-bold ph-lg"></i>
 				</button>
@@ -125,7 +124,6 @@ const translation = ref<any>(null);
 const translating = ref(false);
 const isDeleted = ref(false);
 const renoted = ref(false);
-const quoted = ref(false);
 const reactButton = shallowRef<HTMLElement>();
 const renoteButton = shallowRef<HTMLElement>();
 const quoteButton = shallowRef<HTMLElement>();
@@ -133,7 +131,7 @@ const menuButton = shallowRef<HTMLElement>();
 const likeButton = shallowRef<HTMLElement>();
 
 let appearNote = $computed(() => isRenote ? props.note.renote as Misskey.entities.Note : props.note);
-const defaultLike = computed(() => defaultStore.state.like !== '❤️' ? defaultStore.state.like : null);
+const defaultLike = computed(() => defaultStore.state.like ? defaultStore.state.like : null);
 
 const isRenote = (
 	props.note.renote != null &&
@@ -155,15 +153,6 @@ if ($i) {
 		limit: 1,
 	}).then((res) => {
 		renoted.value = res.length > 0;
-	});
-
-	os.api("notes/renotes", {
-		noteId: appearNote.id,
-		userId: $i.id,
-		limit: 1,
-		quote: true,
-	}).then((res) => {
-		quoted.value = res.length > 0;
 	});
 }
 
@@ -255,23 +244,6 @@ function undoRenote() : void {
 	}
 }
 
-function undoQuote() : void {
-	os.api("notes/unrenote", {
-		noteId: appearNote.id,
-		quote: true
-	});
-	os.toast(i18n.ts.rmquote);
-	quoted.value = false;
-
-	const el = quoteButton.value as HTMLElement | null | undefined;
-	if (el) {
-		const rect = el.getBoundingClientRect();
-		const x = rect.left + (el.offsetWidth / 2);
-		const y = rect.top + (el.offsetHeight / 2);
-		os.popup(MkRippleEffect, { x, y }, {}, 'end');
-	}
-}
-
 let showContent = $ref(false);
 
 watch(() => props.expandAllCws, (expandAllCws) => {
@@ -342,7 +314,6 @@ function quote() {
 					os.popup(MkRippleEffect, { x, y }, {}, 'end');
 				}
 
-				quoted.value = res.length > 0;
 				os.toast(i18n.ts.quoted);
 			});
 		});
@@ -365,7 +336,6 @@ function quote() {
 					os.popup(MkRippleEffect, { x, y }, {}, 'end');
 				}
 
-				quoted.value = res.length > 0;
 				os.toast(i18n.ts.quoted);
 			});
 		});

@@ -58,6 +58,7 @@ export interface Locale {
     "sendMessage": string;
     "copyRSS": string;
     "copyUsername": string;
+    "openRemoteProfile": string;
     "copyUserId": string;
     "copyNoteId": string;
     "copyFileId": string;
@@ -114,7 +115,6 @@ export interface Locale {
     "renoted": string;
     "quoted": string;
     "rmboost": string;
-    "rmquote": string;
     "cantRenote": string;
     "cantReRenote": string;
     "quote": string;
@@ -894,6 +894,7 @@ export interface Locale {
     "deleteAccountConfirm": string;
     "incorrectPassword": string;
     "voteConfirm": string;
+    "voteConfirmMulti": string;
     "hide": string;
     "useDrawerReactionPickerForMobile": string;
     "welcomeBackWithName": string;
@@ -990,6 +991,7 @@ export interface Locale {
     "numberOfProfileView": string;
     "like": string;
     "unlike": string;
+    "defaultLike": string;
     "numberOfLikes": string;
     "show": string;
     "neverShow": string;
@@ -2125,6 +2127,7 @@ export interface Locale {
             "chooseList": string;
         };
         "clicker": string;
+        "search": string;
     };
     "_cw": {
         "hide": string;
@@ -2154,6 +2157,7 @@ export interface Locale {
         "remainingHours": string;
         "remainingMinutes": string;
         "remainingSeconds": string;
+        "multiple": string;
     };
     "_visibility": {
         "public": string;

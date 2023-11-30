@@ -11,7 +11,7 @@ export interface IObject {
 	type: string | string[];
 	id?: string;
 	name?: string | null;
-	summary?: string;
+	summary?: string | null;
 	_misskey_summary?: string;
 	published?: string;
 	cc?: ApObject;

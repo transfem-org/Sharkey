@@ -17,6 +17,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</ul>
 	<p v-if="!readOnly" :class="$style.info">
 		<span>{{ i18n.t('_poll.totalVotes', { n: total }) }}</span>
+		<span v-if="note.poll.multiple"> · </span>
+		<span v-if="note.poll.multiple">{{ i18n.ts._poll.multiple }}</span>
 		<span> · </span>
 		<a v-if="!closed && !isVoted" style="color: inherit;" @click="showResult = !showResult">{{ showResult ? i18n.ts._poll.vote : i18n.ts._poll.showResult }}</a>
 		<span v-if="isVoted">{{ i18n.ts._poll.voted }}</span>
@@ -78,12 +80,19 @@ const vote = async (id) => {
 	pleaseLogin();
 
 	if (props.readOnly || closed.value || isVoted.value) return;
-
-	const { canceled } = await os.confirm({
-		type: 'question',
-		text: i18n.t('voteConfirm', { choice: props.note.poll.choices[id].text }),
-	});
-	if (canceled) return;
+	if (!props.note.poll.multiple) {
+		const { canceled } = await os.confirm({
+			type: 'question',
+			text: i18n.t('voteConfirm', { choice: props.note.poll.choices[id].text }),
+		});
+		if (canceled) return;
+	} else {
+		const { canceled } = await os.confirm({
+			type: 'question',
+			text: i18n.t('voteConfirmMulti', { choice: props.note.poll.choices[id].text }),
+		});
+		if (canceled) return;
+	}
 
 	await os.api('notes/polls/vote', {
 		noteId: props.note.id,

@@ -16,7 +16,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<MkLoading v-if="translating" mini/>
 			<div v-else>
 				<b>{{ i18n.t('translatedFrom', { x: translation.sourceLang }) }}: </b>
-				<Mfm :text="translation.text" :author="note.user" :nyaize="'account'" :emojiUrls="note.emojis"/>
+				<Mfm :text="translation.text" :author="note.user" :nyaize="'respect'" :emojiUrls="note.emojis"/>
 			</div>
 		</div>
 		<MkA v-if="note.renoteId" :class="$style.rp" :to="`/notes/${note.renoteId}`" v-on:click.stop>RN: ...</MkA>
@@ -63,7 +63,10 @@ const props = defineProps<{
 const router = useRouter();
 
 function noteclick(id: string) {
-	router.push(`/notes/${id}`);
+	const selection = document.getSelection();
+	if (selection?.toString().length === 0) {
+		router.push(`/notes/${id}`);
+	}
 }
 
 const parsed = $computed(() => props.note.text ? mfm.parse(props.note.text) : null);

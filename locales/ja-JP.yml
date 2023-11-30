@@ -55,6 +55,7 @@ addToAntenna: "アンテナに追加"
 sendMessage: "メッセージを送信"
 copyRSS: "RSSをコピー"
 copyUsername: "ユーザー名をコピー"
+openRemoteProfile: "リモートプロファイルを開く"
 copyUserId: "ユーザーIDをコピー"
 copyNoteId: "ノートIDをコピー"
 copyFileId: "ファイルIDをコピー"
@@ -111,7 +112,6 @@ unrenote: "リノート解除"
 renoted: "ブースト。"
 quoted: "引用。"
 rmboost: "アンブースト。"
-rmquote: "引用を削除しました。"
 cantRenote: "この投稿はリノートできません。"
 cantReRenote: "リノートをリノートすることはできません。"
 quote: "引用"
@@ -891,6 +891,7 @@ continueThread: "さらにスレッドを見る"
 deleteAccountConfirm: "アカウントが削除されます。よろしいですか？"
 incorrectPassword: "パスワードが間違っています。"
 voteConfirm: "「{choice}」に投票しますか？"
+voteConfirmMulti: "「{choice}」に投票しますか？\n　確認後、選択肢を増やすことができます。"
 hide: "隠す"
 useDrawerReactionPickerForMobile: "モバイルデバイスのときドロワーで表示"
 welcomeBackWithName: "おかえりなさい、{name}さん"
@@ -987,6 +988,7 @@ cannotLoad: "読み込めません"
 numberOfProfileView: "プロフィール表示回数"
 like: "いいね！"
 unlike: "いいねを解除"
+defaultLike: "絵文字のようなデフォルト"
 numberOfLikes: "いいね数"
 show: "表示"
 neverShow: "今後表示しない"
@@ -2029,6 +2031,7 @@ _widgets:
   _userList:
     chooseList: "リストを選択"
   clicker: "クリッカー"
+  search: "検索"
 
 _cw:
   hide: "隠す"
@@ -2058,6 +2061,7 @@ _poll:
   remainingHours: "終了まであと{h}時間{m}分"
   remainingMinutes: "終了まであと{m}分{s}秒"
   remainingSeconds: "終了まであと{s}秒"
+  multiple: "複数の選択肢"
 
 _visibility:
   public: "パブリック"
@@ -2403,7 +2407,7 @@ _externalResourceInstaller:
     _themeInstallFailed:
       title: "テーマのインストールに失敗しました"
       description: "テーマのインストール中に問題が発生しました。もう一度お試しください。エラーの詳細はJavascriptコンソールをご覧ください。"
-      
+
 _animatedMFM:
   play: "MFMアニメーションを再生"
   stop: "MFMアニメーション停止"
