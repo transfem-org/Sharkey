@@ -744,7 +744,8 @@ function animatedMFM() {
 		z-index: 1;
 		margin-top: 0.4em;
 		width: max-content;
-		min-width: max-content;
+		min-width: min-content;
+		max-width: fit-content;
 }
 
 .replyTo {
