@@ -23,7 +23,6 @@ import { SigninService } from './api/SigninService.js';
 import { SignupApiService } from './api/SignupApiService.js';
 import { StreamingApiServerService } from './api/StreamingApiServerService.js';
 import { ClientServerService } from './web/ClientServerService.js';
-import { MastoConverters } from './api/mastodon/converters.js';
 import { FeedService } from './web/FeedService.js';
 import { UrlPreviewService } from './web/UrlPreviewService.js';
 import { MainChannelService } from './api/stream/channels/main.js';
@@ -40,7 +39,6 @@ import { QueueStatsChannelService } from './api/stream/channels/queue-stats.js';
 import { ServerStatsChannelService } from './api/stream/channels/server-stats.js';
 import { UserListChannelService } from './api/stream/channels/user-list.js';
 import { OpenApiServerService } from './api/openapi/OpenApiServerService.js';
-import { MastodonApiServerService } from './api/mastodon/MastodonApiServerService.js';
 import { ClientLoggerService } from './web/ClientLoggerService.js';
 import { RoleTimelineChannelService } from './api/stream/channels/role-timeline.js';
 import { OAuth2ProviderService } from './oauth/OAuth2ProviderService.js';
@@ -86,9 +84,7 @@ import { OAuth2ProviderService } from './oauth/OAuth2ProviderService.js';
 		ServerStatsChannelService,
 		UserListChannelService,
 		OpenApiServerService,
-		MastodonApiServerService,
 		OAuth2ProviderService,
-		MastoConverters,
 	],
 	exports: [
 		ServerService,

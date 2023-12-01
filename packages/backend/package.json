@@ -117,7 +117,6 @@
 		"json5": "2.2.3",
 		"jsonld": "8.3.1",
 		"jsrsasign": "10.8.6",
-		"megalodon": "workspace:*",
 		"meilisearch": "0.35.0",
 		"mfm-js": "0.23.3",
 		"microformats-parser": "1.5.2",
