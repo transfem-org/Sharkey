@@ -49,3 +49,7 @@ With Sharkey, you can enable sign-ups, subject to manual moderator approval and 
 </div>
 
 <div style="clear: both;"></div>
+
+## Documentation
+
+Sharkey Documentation can be found at [Sharkey Documentation](https://docs.joinsharkey.org/docs/install/fresh/)
