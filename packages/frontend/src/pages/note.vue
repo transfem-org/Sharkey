@@ -16,9 +16,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 					<div class="_margin">
 						<MkButton v-if="!showNext" :class="$style.loadNext" @click="showNext = true"><i class="ph-caret-up ph-bold ph-lg"></i></MkButton>
-						<div class="_margin _gaps_s">
+						<div v-if="defaultStore.state.noteDesign === 'misskey'" class="_margin _gaps_s">
 							<MkRemoteCaution v-if="note.user.host != null" :href="note.url ?? note.uri"/>
 							<MkNoteDetailed :key="note.id" v-model:note="note" :class="$style.note" :expandAllCws="expandAllCws"/>
+						</div>
+						<div v-else-if="defaultStore.state.noteDesign === 'sharkey'" class="_margin _gaps_s">
+							<MkRemoteCaution v-if="note.user.host != null" :href="note.url ?? note.uri"/>
+							<SkNoteDetailed :key="note.id" v-model:note="note" :class="$style.note" :expandAllCws="expandAllCws"/>
 						</div>
 						<div v-if="clips && clips.length > 0" class="_margin">
 							<div style="font-weight: bold; padding: 12px;">{{ i18n.ts.clip }}</div>
@@ -48,6 +52,7 @@ import { computed, watch } from 'vue';
 import * as Misskey from 'misskey-js';
 import MkNoteDetailed from '@/components/MkNoteDetailed.vue';
 import MkNotes from '@/components/MkNotes.vue';
+import SkNoteDetailed from '@/components/SkNoteDetailed.vue';
 import MkRemoteCaution from '@/components/MkRemoteCaution.vue';
 import MkButton from '@/components/MkButton.vue';
 import * as os from '@/os.js';
