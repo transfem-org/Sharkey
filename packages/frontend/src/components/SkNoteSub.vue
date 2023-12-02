@@ -4,15 +4,15 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<div v-if="!muted" ref="el" :class="[$style.root, { [$style.children]: depth > 1 }]">
-	<div v-if="!hideLine" :class="$style.line"></div>
+<div v-if="!muted" ref="el" :class="[$style.root, { [$style.children]: depth > 1 }, { [$style.threadAncestor]: !hideLine }]">
+	<!-- <div v-if="!hideLine" :class="$style.line"></div> -->
 	<div :class="$style.main">
 		<div v-if="note.channel" :class="$style.colorBar" :style="{ background: note.channel.color }"></div>
 		<!-- new avatar container with line (post section) -->
 		<div :class="$style.avatarContainer">
 			<MkAvatar :class="$style.avatar" :user="note.user" link preview/>
 			<template v-if="note.repliesCount > 0">
-				<div v-if="hideLine" :class="$style.threadLine"></div>
+				<div :class="[$style.threadLine, {[$style.threadAncestorLine]: !hideLine}]"></div>
 			</template>
 		</div>
 		<!-- end new avatar container -->
@@ -73,7 +73,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</div>
 	</div>
 	<template v-if="depth < 5">
-		<SkNoteSub v-for="reply in replies" :key="reply.id" :note="reply" :class="[$style.reply, { [$style.single]: replies.length === 1 }]" :detail="true" :depth="depth + 1" :expandAllCws="props.expandAllCws"/>
+		<SkNoteSub v-for="reply in replies" :key="reply.id" :note="reply" :class="[$style.reply, {[$style.single]: replies.length === 1 }]" :detail="true" :depth="depth + 1" :expandAllCws="props.expandAllCws"/>
 	</template>
 	<div v-else :class="$style.more">
 		<MkA class="_link" :to="notePage(note)">{{ i18n.ts.continueThread }} <i class="ph-caret-double-right ph-bold ph-lg"></i></MkA>
@@ -562,6 +562,10 @@ if (props.detail) {
 	flex-grow: 1;
 	border-left: 2.5px solid rgb(174, 174, 174);
 	margin-left: 29px;
+
+	&.threadAncestorLine {
+		border-color: pink;
+	}
 }
 
 .reply {
@@ -596,6 +600,18 @@ if (props.detail) {
 		left: 29px;
 		width: 0;
 		border-bottom: unset;
+	}
+}
+
+.threadAncestor {
+	&:not(:first-of-type)::before {
+		position: absolute;
+		content: '';
+		width: 0px;
+		height: 56px;
+		left: 61px; // todo: adapt for container width
+		border-left: 2.5px solid #f00;
+		top: -28px;
 	}
 }
 

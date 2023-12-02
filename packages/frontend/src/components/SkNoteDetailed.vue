@@ -1079,4 +1079,14 @@ function animatedMFM() {
 		margin-left: 0.2em;
 	}
 }
+
+[class*="threadAncestor"] + .note .noteHeader::before {
+	position: absolute;
+	content: '';
+	width: 0px;
+	height: 32px;
+	left: 29px; // todo: adapt for container width
+	border-left: 2.5px solid #0f0;
+	top: -32px;
+}
 </style>
