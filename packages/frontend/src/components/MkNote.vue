@@ -47,11 +47,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<Mfm :text="getNoteSummary(appearNote)" :plain="true" :nowrap="true" :author="appearNote.user" :nyaize="'respect'" :class="$style.collapsedRenoteTargetText" @click="renoteCollapsed = false"/>
 	</div>
 	<article v-else :class="$style.article" @contextmenu.stop="onContextmenu">
-		<div v-if="appearNote.channel" :class="$style.colorBar" :style="{ background: appearNote.channel.color }"></div>
-		<MkAvatar :class="$style.avatar" :user="appearNote.user" :link="!mock" :preview="!mock"/>
-		<div :class="[$style.main, { [$style.clickToOpen]: defaultStore.state.clickToOpen }]" @click="defaultStore.state.clickToOpen ? noteclick(appearNote.id) : undefined">
-			<MkNoteHeader :note="appearNote" :mini="true" v-on:click.stop/>
-			<MkInstanceTicker v-if="showTicker" :instance="appearNote.user.instance"/>
+		<div style="display: flex; padding-bottom: 10px;">
+			<div v-if="appearNote.channel" :class="$style.colorBar" :style="{ background: appearNote.channel.color }"></div>
+			<MkAvatar :class="[$style.avatar, { [$style.avatarReplyTo]: appearNote.reply }]" :user="appearNote.user" :link="!mock" :preview="!mock"/>
+			<div :class="$style.main">
+				<MkNoteHeader :note="appearNote" :mini="true"/>
+			</div>
+		</div>
+		<div :class="[{ [$style.clickToOpen]: defaultStore.state.clickToOpen }]" @click="defaultStore.state.clickToOpen ? noteclick(appearNote.id) : undefined">
 			<div style="container-type: inline-size;">
 				<p v-if="appearNote.cw != null" :class="$style.cw">
 					<Mfm v-if="appearNote.cw != ''" style="margin-right: 8px;" :text="appearNote.cw" :author="appearNote.user" :nyaize="'respect'"/>
@@ -60,7 +63,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<div v-show="appearNote.cw == null || showContent" :class="[{ [$style.contentCollapsed]: collapsed }]" >
 					<div :class="$style.text">
 						<span v-if="appearNote.isHidden" style="opacity: 0.5">({{ i18n.ts.private }})</span>
-						<MkA v-if="appearNote.replyId" :class="$style.replyIcon" :to="`/notes/${appearNote.replyId}`"><i class="ph-arrow-bend-left-up ph-bold ph-lg"></i></MkA>
 						<Mfm
 							v-if="appearNote.text"
 							:parsedNodes="parsed"
@@ -176,7 +178,6 @@ import MkCwButton from '@/components/MkCwButton.vue';
 import MkPoll from '@/components/MkPoll.vue';
 import MkUsersTooltip from '@/components/MkUsersTooltip.vue';
 import MkUrlPreview from '@/components/MkUrlPreview.vue';
-import MkInstanceTicker from '@/components/MkInstanceTicker.vue';
 import MkButton from '@/components/MkButton.vue';
 import { pleaseLogin } from '@/scripts/please-login.js';
 import { focusPrev, focusNext } from '@/scripts/focus.js';
@@ -830,7 +831,7 @@ function emitUpdReaction(emoji: string, delta: number) {
 	position: relative;
 	display: flex;
 	align-items: center;
-	padding: 16px 32px 8px 32px;
+	padding: 24px 38px 16px;
 	line-height: 28px;
 	white-space: pre;
 	color: var(--renote);
@@ -882,7 +883,7 @@ function emitUpdReaction(emoji: string, delta: number) {
 	align-items: center;
 	line-height: 28px;
 	white-space: pre;
-	padding: 0 32px 18px;
+	padding: 8px 38px 24px;
 }
 
 .collapsedRenoteTargetAvatar {
@@ -909,7 +910,6 @@ function emitUpdReaction(emoji: string, delta: number) {
 
 .article {
 	position: relative;
-	display: flex;
 	padding: 28px 32px;
 }
 
@@ -926,12 +926,19 @@ function emitUpdReaction(emoji: string, delta: number) {
 .avatar {
 	flex-shrink: 0;
 	display: block !important;
+	position: sticky !important;
 	margin: 0 14px 0 0;
 	width: 58px;
 	height: 58px;
 	position: sticky !important;
 	top: calc(22px + var(--stickyTop, 0px));
 	left: 0;
+	transition: top 0.5s;
+
+	&.avatarReplyTo {
+		position: relative !important;
+		top: 0 !important;
+	}
 }
 
 .main {
@@ -994,7 +1001,6 @@ function emitUpdReaction(emoji: string, delta: number) {
 
 .text {
 	overflow-wrap: break-word;
-	overflow: hidden;
 }
 
 .replyIcon {
@@ -1027,7 +1033,8 @@ function emitUpdReaction(emoji: string, delta: number) {
 
 .quoteNote {
 	padding: 16px;
-	border: dashed 1px var(--renote);
+	// Made border solid, stylistic choice
+	border: solid 1px var(--renote);
 	border-radius: var(--radius-sm);
 	overflow: clip;
 }
@@ -1067,7 +1074,11 @@ function emitUpdReaction(emoji: string, delta: number) {
 	}
 
 	.renote {
-		padding: 12px 26px 0 26px;
+		padding: 24px 28px 16px;
+	}
+
+	.collapsedRenoteTarget {
+		padding: 8px 28px 24px;
 	}
 
 	.article {
@@ -1085,12 +1096,8 @@ function emitUpdReaction(emoji: string, delta: number) {
 		font-size: 0.9em;
 	}
 
-	.renote {
-		padding: 10px 22px 0 22px;
-	}
-
 	.article {
-		padding: 20px 22px;
+		padding: 23px 25px;
 	}
 
 	.footer {
@@ -1100,7 +1107,7 @@ function emitUpdReaction(emoji: string, delta: number) {
 
 @container (max-width: 480px) {
 	.renote {
-		padding: 8px 16px 0 16px;
+		padding: 20px 24px 8px;
 	}
 
 	.tip {
@@ -1108,12 +1115,12 @@ function emitUpdReaction(emoji: string, delta: number) {
 	}
 
 	.collapsedRenoteTarget {
-		padding: 0 16px 9px;
+		padding: 8px 24px 20px;
 		margin-top: 4px;
 	}
 
 	.article {
-		padding: 14px 16px;
+		padding: 22px 24px;
 	}
 }
 
