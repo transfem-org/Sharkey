@@ -74,6 +74,10 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'account',
 		default: false,
 	},
+	uncollapseCW: {
+		where: 'account',
+		default: false,
+	},
 	rememberNoteVisibility: {
 		where: 'account',
 		default: false,

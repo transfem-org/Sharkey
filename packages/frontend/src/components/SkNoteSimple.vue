@@ -28,6 +28,7 @@ import MkNoteHeader from '@/components/MkNoteHeader.vue';
 import MkSubNoteContent from '@/components/MkSubNoteContent.vue';
 import MkCwButton from '@/components/MkCwButton.vue';
 import { $i } from '@/account.js';
+import { defaultStore } from '@/store.js';
 
 const props = defineProps<{
 	note: Misskey.entities.Note;
@@ -35,7 +36,7 @@ const props = defineProps<{
 	hideFiles?: boolean;
 }>();
 
-let showContent = $ref(false);
+let showContent = $ref(defaultStore.state.uncollapseCW);
 
 watch(() => props.expandAllCws, (expandAllCws) => {
 	if (expandAllCws !== showContent) showContent = expandAllCws;

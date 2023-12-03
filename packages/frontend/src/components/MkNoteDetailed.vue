@@ -306,7 +306,7 @@ const renoteUrl = appearNote.renote ? appearNote.renote.url : null;
 const renoteUri = appearNote.renote ? appearNote.renote.uri : null;
 
 const isMyRenote = $i && ($i.id === note.userId);
-const showContent = ref(false);
+const showContent = ref(defaultStore.state.uncollapseCW);
 const isDeleted = ref(false);
 const renoted = ref(false);
 const muted = ref($i ? checkWordMute(appearNote, $i, $i.mutedWords) : false);

@@ -244,7 +244,7 @@ function undoRenote() : void {
 	}
 }
 
-let showContent = $ref(false);
+let showContent = $ref(defaultStore.state.uncollapseCW);
 
 watch(() => props.expandAllCws, (expandAllCws) => {
 	if (expandAllCws !== showContent) showContent = expandAllCws;

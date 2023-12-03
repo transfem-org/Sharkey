@@ -47,6 +47,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<MkSwitch v-model="showClipButtonInNoteFooter">{{ i18n.ts.showClipButtonInNoteFooter }}</MkSwitch>
 				<MkSwitch v-model="collapseRenotes">{{ i18n.ts.collapseRenotes }}</MkSwitch>
 				<MkSwitch v-model="collapseFiles">{{ i18n.ts.collapseFiles }}</MkSwitch>
+				<MkSwitch v-model="uncollapseCW">Uncollapse CWs on notes</MkSwitch>
 				<MkSwitch v-model="autoloadConversation">{{ i18n.ts.autoloadConversation }}</MkSwitch>
 				<MkSwitch v-model="advancedMfm">{{ i18n.ts.enableAdvancedMfm }}</MkSwitch>
 				<MkSwitch v-if="advancedMfm" v-model="animatedMfm">{{ i18n.ts.enableAnimatedMfm }}</MkSwitch>
@@ -63,7 +64,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<template #label>Note Design</template>
 					<option value="sharkey">Sharkey</option>
 					<option value="misskey">Misskey</option>
-			</MkRadios>
+				</MkRadios>
 			</div>
 
 			<MkSelect v-model="instanceTicker">
@@ -279,6 +280,7 @@ const disableStreamingTimeline = computed(defaultStore.makeGetterSetter('disable
 const useGroupedNotifications = computed(defaultStore.makeGetterSetter('useGroupedNotifications'));
 const showTickerOnReplies = computed(defaultStore.makeGetterSetter('showTickerOnReplies'));
 const noteDesign = computed(defaultStore.makeGetterSetter('noteDesign'));
+const uncollapseCW = computed(defaultStore.makeGetterSetter('uncollapseCW'));
 
 watch(lang, () => {
 	miLocalStorage.setItem('lang', lang.value as string);

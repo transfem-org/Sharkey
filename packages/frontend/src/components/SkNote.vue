@@ -272,7 +272,7 @@ const renoteUrl = appearNote.renote ? appearNote.renote.url : null;
 const renoteUri = appearNote.renote ? appearNote.renote.uri : null;
 
 const isMyRenote = $i && ($i.id === note.userId);
-const showContent = ref(false);
+const showContent = ref(defaultStore.state.uncollapseCW);
 const parsed = $computed(() => appearNote.text ? mfm.parse(appearNote.text) : null);
 const urls = $computed(() => parsed ? extractUrlFromMfm(parsed).filter(u => u !== renoteUrl && u !== renoteUri) : null);
 const animated = $computed(() => parsed ? checkAnimationFromMfm(parsed) : null);
