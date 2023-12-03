@@ -73,7 +73,7 @@ const parsed = $computed(() => props.note.text ? mfm.parse(props.note.text) : nu
 const animated = $computed(() => parsed ? checkAnimationFromMfm(parsed) : null);
 let allowAnim = $ref(defaultStore.state.advancedMfm && defaultStore.state.animatedMfm ? true : false);
 
-const isLong = shouldCollapsed(props.note, []);
+const isLong = defaultStore.state.expandLongNote && !props.hideFiles ? false : shouldCollapsed(props.note, []);
 
 function animatedMFM() {
 	if (allowAnim) {

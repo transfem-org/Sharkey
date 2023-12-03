@@ -278,7 +278,7 @@ const urls = $computed(() => parsed ? extractUrlFromMfm(parsed).filter(u => u !=
 const animated = $computed(() => parsed ? checkAnimationFromMfm(parsed) : null);
 const allowAnim = ref(defaultStore.state.advancedMfm && defaultStore.state.animatedMfm ? true : false);
 const isLong = shouldCollapsed(appearNote, urls ?? []);
-const collapsed = ref(appearNote.cw == null && isLong);
+const collapsed = defaultStore.state.expandLongNote && appearNote.cw == null ? false : ref(appearNote.cw == null && isLong);
 const isDeleted = ref(false);
 const renoted = ref(false);
 const muted = ref($i ? checkWordMute(appearNote, $i, $i.mutedWords) : false);
