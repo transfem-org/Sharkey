@@ -72,7 +72,7 @@ describe('api:notes/create', () => {
 					.toBe(INVALID);
 			});
 
-			test('over 100 characters cw', async () => {
+			test('over 500 characters cw', async () => {
 				expect(v({ text: 'Body', cw: await tooLong }))
 					.toBe(INVALID);
 			});
