@@ -768,7 +768,7 @@ function animatedMFM() {
 .renote {
 	display: flex;
 	align-items: center;
-	padding: 16px 32px 8px 32px;
+	padding: 16px 32px 8px 47px;
 	line-height: 28px;
 	white-space: pre;
 	color: var(--renote);
@@ -1080,13 +1080,47 @@ function animatedMFM() {
 	}
 }
 
+// thread line
 [class*="threadAncestor"] + .note .noteHeader::before {
 	position: absolute;
 	content: '';
 	width: 0px;
 	height: 32px;
-	left: 29px; // todo: adapt for container width
-	border-left: 2.5px solid #0f0;
+	left: 29px;
+	border-left: 2.5px solid rgb(174, 174, 174);
 	top: -32px;
+}
+
+@container (max-width: 580px) {
+	.renote {
+		padding-left: 37px;
+	}
+	[class*="threadAncestor"] + .note .noteHeader::before {
+		left: 19px;
+	}
+}
+@container (max-width: 500px) {
+	.renote {
+		padding-left: 36px;
+	}
+	[class*="threadAncestor"] + .note .noteHeader::before {
+		left: 18px;
+	}
+}
+@container (max-width: 480px) {
+	.renote {
+		padding-left: 35px;
+	}
+	[class*="threadAncestor"] + .note .noteHeader::before {
+		left: 17px;
+	}
+}
+@container (max-width: 450px) {
+	.renote {
+		padding-left: 33px;
+	}
+	[class*="threadAncestor"] + .note .noteHeader::before {
+		left: 31px;
+	}
 }
 </style>

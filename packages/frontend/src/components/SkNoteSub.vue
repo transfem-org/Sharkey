@@ -562,10 +562,6 @@ if (props.detail) {
 	flex-grow: 1;
 	border-left: 2.5px solid rgb(174, 174, 174);
 	margin-left: 29px;
-
-	&.threadAncestorLine {
-		border-color: pink;
-	}
 }
 
 .reply {
@@ -603,16 +599,21 @@ if (props.detail) {
 	}
 }
 
-.threadAncestor {
-	&:not(:first-of-type)::before {
-		position: absolute;
-		content: '';
-		width: 0px;
-		height: 56px;
-		left: 61px; // todo: adapt for container width
-		border-left: 2.5px solid #f00;
-		top: -28px;
-	}
+.threadAncestor + .threadAncestor::before,
+[class*="renote"] + .threadAncestor::before {
+	position: absolute;
+	content: '';
+	width: 0px;
+	height: 56px;
+	left: 61px;
+	border-left: 2.5px solid rgb(174, 174, 174);
+	top: -28px;
+}
+
+// TODO FIX specificity issue
+[class*="renote"] + .threadAncestor::before {
+	height: 36px;
+	top: -8px;
 }
 
 @container (max-width: 580px) {
@@ -629,7 +630,18 @@ if (props.detail) {
 		margin-left: 0;
 	}
 }
-
+@container (max-width: 500px) {
+	[class*="renote"] + .threadAncestor::before {
+		height: 31px;
+		top: -8px;
+	}
+}
+@container (max-width: 480px) {
+	[class*="renote"] + .threadAncestor::before {
+		height: 0px;
+		top: -8px;
+	}
+}
 @container (max-width: 450px) {
 	.threadLine, .reply {
 		margin-left: 23px;
@@ -643,6 +655,35 @@ if (props.detail) {
 	}
 	.single {
 		margin-left: 0;
+	}
+	[class*="renote"] + .threadAncestor::before {
+		height: 22px;
+		top: 0;
+	}
+}
+
+@container (max-width: 580px) {
+	.threadAncestor:not(:first-of-type)::before {
+		left: 51px;
+		height: 28px;
+		top: 0;
+	}
+}
+@container (max-width: 500px) {
+	.threadAncestor:not(:first-of-type)::before {
+		left: 50px;
+		height: 46px;
+		top: -23px;
+	}
+}
+@container (max-width: 480px) {
+	.threadAncestor:not(:first-of-type)::before {
+		left: 49px;
+	}
+}
+@container (max-width: 450px) {
+	.threadAncestor:not(:first-of-type)::before {
+		left: 47px;
 	}
 }
 </style>

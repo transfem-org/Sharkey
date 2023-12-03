@@ -1198,4 +1198,31 @@ function emitUpdReaction(emoji: string, delta: number) {
 .clickToOpen {
 	cursor: pointer;
 }
+
+// thread line
+.avatarReplyTo::before {
+	position: absolute;
+	content: '';
+	width: 0px;
+	height: 28px;
+	left: 29px;
+	border-left: 2.5px solid rgb(174, 174, 174);
+	top: -28px;
+}
+
+@container (max-width: 580px) {
+	.avatarReplyTo::before {
+		height: 24px;
+		top: -24px;
+		left: 25px;
+	}
+}
+
+@container (max-width: 450px) {
+	.avatarReplyTo::before {
+		height: 22px;
+		top: -22px;
+		left: 23px;
+	}
+}
 </style>
