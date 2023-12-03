@@ -31,7 +31,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					class="_button"
 					:class="$style.noteFooterButton"
 					:style="renoted ? 'color: var(--accent) !important;' : ''"
-					@mousedown="renoted ? undoRenote() : renote()"
+					@mousedown="renoted ? undoRenote() : boostVisibility()"
 				>
 					<i class="ph-rocket-launch ph-bold ph-lg"></i>
 					<p v-if="note.renoteCount > 0" :class="$style.noteFooterButtonCount">{{ note.renoteCount }}</p>
@@ -252,7 +252,43 @@ watch(() => props.expandAllCws, (expandAllCws) => {
 
 let replies: Misskey.entities.Note[] = $ref([]);
 
-function renote() {
+function boostVisibility() {
+	os.popupMenu([
+		{
+			type: 'button',
+			icon: 'ph-globe-hemisphere-west ph-bold ph-lg',
+			text: i18n.ts._visibility['public'],
+			action: () => {
+				renote('public');
+			},
+		},
+		{
+			type: 'button',
+			icon: 'ph-house ph-bold ph-lg',
+			text: i18n.ts._visibility['home'],
+			action: () => {
+				renote('home');
+			},
+		},
+		{
+			type: 'button',
+			icon: 'ph-lock ph-bold ph-lg',
+			text: i18n.ts._visibility['followers'],
+			action: () => {
+				renote('followers');
+			},
+		},
+		{
+			type: 'button',
+			icon: 'ph-planet ph-bold ph-lg',
+			text: i18n.ts._timelines.local,
+			action: () => {
+				renote('local');
+			},
+		}], renoteButton.value);
+}
+
+function renote(visibility: 'public' | 'home' | 'followers' | 'specified' | 'local') {
 	pleaseLogin();
 	showMovedDialog();
 
@@ -283,6 +319,8 @@ function renote() {
 
 		os.api('notes/create', {
 			renoteId: props.note.id,
+			localOnly: visibility === 'local' ? true : false,
+			visibility: visibility === 'local' ? props.note.visibility : visibility,
 		}).then(() => {
 			os.toast(i18n.ts.renoted);
 			renoted.value = true;

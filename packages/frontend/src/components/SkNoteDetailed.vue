@@ -132,7 +132,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				class="_button"
 				:class="$style.noteFooterButton"
 				:style="renoted ? 'color: var(--accent) !important;' : ''"
-				@mousedown="renoted ? undoRenote() : renote()"
+				@mousedown="renoted ? undoRenote() : boostVisibility()"
 			>
 				<i class="ph-rocket-launch ph-bold ph-lg"></i>
 				<p v-if="appearNote.renoteCount > 0" :class="$style.noteFooterButtonCount">{{ appearNote.renoteCount }}</p>
@@ -435,7 +435,43 @@ function smallerVisibility(a: Visibility | string, b: Visibility | string): Visi
 	return 'public';
 }
 
-function renote() {
+function boostVisibility() {
+	os.popupMenu([
+		{
+			type: 'button',
+			icon: 'ph-globe-hemisphere-west ph-bold ph-lg',
+			text: i18n.ts._visibility['public'],
+			action: () => {
+				renote('public');
+			},
+		},
+		{
+			type: 'button',
+			icon: 'ph-house ph-bold ph-lg',
+			text: i18n.ts._visibility['home'],
+			action: () => {
+				renote('home');
+			},
+		},
+		{
+			type: 'button',
+			icon: 'ph-lock ph-bold ph-lg',
+			text: i18n.ts._visibility['followers'],
+			action: () => {
+				renote('followers');
+			},
+		},
+		{
+			type: 'button',
+			icon: 'ph-planet ph-bold ph-lg',
+			text: i18n.ts._timelines.local,
+			action: () => {
+				renote('local');
+			},
+		}], renoteButton.value);
+}
+
+function renote(visibility: Visibility | 'local') {
 	pleaseLogin();
 	showMovedDialog();
 
@@ -465,17 +501,16 @@ function renote() {
 		}
 
 		const configuredVisibility = defaultStore.state.rememberNoteVisibility ? defaultStore.state.visibility : defaultStore.state.defaultNoteVisibility;
-		const localOnly = defaultStore.state.rememberNoteVisibility ? defaultStore.state.localOnly : defaultStore.state.defaultNoteLocalOnly;
+		const localOnlySetting = defaultStore.state.rememberNoteVisibility ? defaultStore.state.localOnly : defaultStore.state.defaultNoteLocalOnly;
 
-		let visibility = appearNote.visibility;
-		visibility = smallerVisibility(visibility, configuredVisibility);
+		let noteVisibility = visibility === 'local' ? smallerVisibility(appearNote.visibility, configuredVisibility) : smallerVisibility(visibility, configuredVisibility);
 		if (appearNote.channel?.isSensitive) {
-			visibility = smallerVisibility(visibility, 'home');
+			noteVisibility = smallerVisibility(visibility === 'local' ? appearNote.visibility : visibility, 'home');
 		}
 
 		os.api('notes/create', {
-			localOnly,
-			visibility,
+			localOnly: visibility === 'local' ? true : localOnlySetting,
+			visibility: noteVisibility,
 			renoteId: appearNote.id,
 		}).then(() => {
 			os.toast(i18n.ts.renoted);
