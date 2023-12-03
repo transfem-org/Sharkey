@@ -13,14 +13,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<i class="ph-arrow-square-out ph-bold ph-lg"></i>
 		</span>
 	</a>
-	<MkA v-else-if="to" :class="[$style.main, { [$style.active]: active }]" class="_button" :to="to" :behavior="behavior">
-		<span :class="$style.icon"><slot name="icon"></slot></span>
-		<span :class="$style.text"><slot></slot></span>
-		<span :class="$style.suffix">
-			<span :class="$style.suffixText"><slot name="suffix"></slot></span>
-			<i class="ph-caret-right ph-bold ph-lg"></i>
-		</span>
-	</MkA>
 	<a v-else-if="onClick" :class="[$style.main, { [$style.active]: active }]" class="_button" :behavior="behavior" @click="onClick">
 		<span :class="$style.icon"><slot name="icon"></slot></span>
 		<span :class="$style.text"><slot></slot></span>
@@ -29,6 +21,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<i class="ph-caret-right ph-bold ph-lg"></i>
 		</span>
 	</a>
+	<MkA v-else :class="[$style.main, { [$style.active]: active }]" class="_button" :to="to" :behavior="behavior">
+		<span :class="$style.icon"><slot name="icon"></slot></span>
+		<span :class="$style.text"><slot></slot></span>
+		<span :class="$style.suffix">
+			<span :class="$style.suffixText"><slot name="suffix"></slot></span>
+			<i class="ph-caret-right ph-bold ph-lg"></i>
+		</span>
+	</MkA>
 </div>
 </template>
 
@@ -36,7 +36,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { } from 'vue';
 
 const props = defineProps<{
-	to?: string;
+	to: string;
 	active?: boolean;
 	external?: boolean;
 	onClick?: () => void;
