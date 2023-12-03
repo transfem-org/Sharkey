@@ -512,7 +512,6 @@ if (props.detail) {
 	padding: 0;
 }
 
-
 .reply, .more {
 	//border-left: solid 0.5px var(--divider);
 	margin-top: 10px;
