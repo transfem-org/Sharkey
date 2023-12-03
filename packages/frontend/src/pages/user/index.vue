@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <MkStickyContainer>
-	<template #header><MkPageHeader v-model:tab="tab" :actions="headerActions" :tabs="headerTabs"/></template>
+	<template #header><MkPageHeader v-model:tab="tab" :displayBackButton="true" :actions="headerActions" :tabs="headerTabs"/></template>
 	<div>
 		<div v-if="user">
 			<XHome v-if="tab === 'home'" :user="user"/>

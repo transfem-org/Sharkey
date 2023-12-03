@@ -99,6 +99,7 @@ provideMetadataReceiver((info) => {
 provide('shouldOmitHeaderTitle', true);
 provide('shouldHeaderThin', true);
 provide('forceSpacerMin', true);
+provide('shouldBackButton', false);
 
 const contextmenu = $computed(() => ([{
 	icon: 'ph-eject ph-bold ph-lg',
