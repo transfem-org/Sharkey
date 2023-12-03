@@ -57,7 +57,6 @@ import { scrollToTop } from '@/scripts/scroll.js';
 import { globalEvents } from '@/events.js';
 import { injectPageMetadata } from '@/scripts/page-metadata.js';
 import { $i, openAccountMenu as openAccountMenu_ } from '@/account.js';
-import { instance } from '@/instance.js';
 
 const props = withDefaults(defineProps<{
 	tabs?: Tab[];
