@@ -16,8 +16,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</div>
 
 		<template v-if="metadata">
-			<div v-if="displayBackButton && !narrow" :class="$style.buttonsLeft">
-				<button class="_button" :class="$style.button" @click.stop="goBack()" @touchstart="preventDrag">
+			<div v-if="displayBackButton && !narrow" style="margin: 0 -45px 0 0;" :class="$style.buttonsLeft">
+				<button class="_button" :class="$style.button" style="left: 5px;" @click.stop="goBack()" @touchstart="preventDrag">
 					<i class="ph-caret-left ph-bold ph-lg"></i>
 				</button>
 			</div>
