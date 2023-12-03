@@ -185,7 +185,7 @@ import { dateString } from '@/filters/date.js';
 import { confetti } from '@/scripts/confetti.js';
 import MkNotes from '@/components/MkNotes.vue';
 import { api } from '@/os.js';
-import {  } from '@/store.js';
+import { defaultStore } from '@/store.js';
 import { isFfVisibleForMe } from '@/scripts/isFfVisibleForMe.js';
 
 function calcAge(birthdate: string): number {
