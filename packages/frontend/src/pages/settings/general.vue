@@ -49,6 +49,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<MkSwitch v-model="collapseFiles">{{ i18n.ts.collapseFiles }}</MkSwitch>
 				<MkSwitch v-model="uncollapseCW">Uncollapse CWs on notes</MkSwitch>
 				<MkSwitch v-model="autoloadConversation">{{ i18n.ts.autoloadConversation }}</MkSwitch>
+				<MkSwitch v-model="expandLongNote">Always expand long notes</MkSwitch>
 				<MkSwitch v-model="advancedMfm">{{ i18n.ts.enableAdvancedMfm }}</MkSwitch>
 				<MkSwitch v-if="advancedMfm" v-model="animatedMfm">{{ i18n.ts.enableAnimatedMfm }}</MkSwitch>
 				<MkSwitch v-model="showGapBetweenNotesInTimeline">{{ i18n.ts.showGapBetweenNotesInTimeline }}</MkSwitch>
@@ -281,6 +282,7 @@ const useGroupedNotifications = computed(defaultStore.makeGetterSetter('useGroup
 const showTickerOnReplies = computed(defaultStore.makeGetterSetter('showTickerOnReplies'));
 const noteDesign = computed(defaultStore.makeGetterSetter('noteDesign'));
 const uncollapseCW = computed(defaultStore.makeGetterSetter('uncollapseCW'));
+const expandLongNote = computed(defaultStore.makeGetterSetter('expandLongNote'));
 
 watch(lang, () => {
 	miLocalStorage.setItem('lang', lang.value as string);
