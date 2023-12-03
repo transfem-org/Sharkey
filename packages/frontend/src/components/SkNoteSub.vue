@@ -362,6 +362,7 @@ if (props.detail) {
 	os.api('notes/children', {
 		noteId: props.note.id,
 		limit: 5,
+		showQuotes: false,
 	}).then(res => {
 		replies = res;
 	});
