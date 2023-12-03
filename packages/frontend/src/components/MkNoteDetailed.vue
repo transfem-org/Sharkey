@@ -495,9 +495,9 @@ function renote(visibility: Visibility | 'local') {
 		const configuredVisibility = defaultStore.state.rememberNoteVisibility ? defaultStore.state.visibility : defaultStore.state.defaultNoteVisibility;
 		const localOnlySetting = defaultStore.state.rememberNoteVisibility ? defaultStore.state.localOnly : defaultStore.state.defaultNoteLocalOnly;
 
-		let noteVisibility = visibility === 'local' ? smallerVisibility(appearNote.visibility, configuredVisibility) : smallerVisibility(visibility, configuredVisibility);
+		let noteVisibility = visibility === 'local' || visibility === 'specified' ? smallerVisibility(appearNote.visibility, configuredVisibility) : smallerVisibility(visibility, configuredVisibility);
 		if (appearNote.channel?.isSensitive) {
-			noteVisibility = smallerVisibility(visibility === 'local' ? appearNote.visibility : visibility, 'home');
+			noteVisibility = smallerVisibility(visibility === 'local' || visibility === 'specified' ? appearNote.visibility : visibility, 'home');
 		}
 
 		os.api('notes/create', {

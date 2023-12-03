@@ -329,7 +329,7 @@ function renote(visibility: 'public' | 'home' | 'followers' | 'specified' | 'loc
 		os.api('notes/create', {
 			renoteId: props.note.id,
 			localOnly: visibility === 'local' ? true : false,
-			visibility: visibility === 'local' ? props.note.visibility : visibility,
+			visibility: visibility === 'local' || visibility === 'specified' ? props.note.visibility : visibility,
 		}).then(() => {
 			os.toast(i18n.ts.renoted);
 			renoted.value = true;
