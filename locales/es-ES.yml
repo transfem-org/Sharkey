@@ -1871,6 +1871,7 @@ _poll:
   remainingHours: "Quedan {h} horas y {m} minutos para que finalice"
   remainingMinutes: "Quedan {m} minutos y {s} segundos para que finalice"
   remainingSeconds: "Quedan {s} segundos para que finalice"
+  multiple: "Opciones múltiples"
 _visibility:
   public: "Público"
   publicDescription: "Visible para todos los usuarios"
