@@ -123,6 +123,18 @@ export const meta = {
 			code: 'CANNOT_RENOTE_OUTSIDE_OF_CHANNEL',
 			id: '33510210-8452-094c-6227-4a6c05d99f00',
 		},
+
+		cannotQuoteaQuoteOfCurrentPost: {
+			message: 'Cannot quote a quote of edited note.',
+			code: 'CANNOT_QUOTE_A_QUOTE_OF_EDITED_NOTE',
+			id: '33510210-8452-094c-6227-4a6c05d99f01',
+		},
+
+		cannotQuoteCurrentPost: {
+			message: 'Cannot quote the current note.',
+			code: 'CANNOT_QUOTE_THE_CURRENT_NOTE',
+			id: '33510210-8452-094c-6227-4a6c05d99f02',
+		},
 	},
 } as const;
 
@@ -268,6 +280,11 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 			}
 
 			let renote: MiNote | null = null;
+
+			if (ps.renoteId === ps.editId) {
+				throw new ApiError(meta.errors.cannotQuoteCurrentPost);
+			}
+			
 			if (ps.renoteId != null) {
 				// Fetch renote to note
 				renote = await this.notesRepository.findOneBy({ id: ps.renoteId });
@@ -276,6 +293,10 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 					throw new ApiError(meta.errors.noSuchRenoteTarget);
 				} else if (renote.renoteId && !renote.text && !renote.fileIds && !renote.hasPoll) {
 					throw new ApiError(meta.errors.cannotReRenote);
+				}
+
+				if (renote.renoteId === ps.editId) {
+					throw new ApiError(meta.errors.cannotQuoteaQuoteOfCurrentPost);
 				}
 
 				// Check blocking
