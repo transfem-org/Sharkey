@@ -32,6 +32,17 @@ SPDX-License-Identifier: AGPL-3.0-only
 							</MkSwitch>
 						</MkFolder>
 
+						<MkFolder v-if="matchQuery([i18n.ts._role._options.btlAvailable, 'btlAvailable'])">
+							<template #label>{{ i18n.ts._role._options.btlAvailable }}</template>
+							<template #suffix>{{ policies.btlAvailable ? i18n.ts.yes : i18n.ts.no }}</template>
+							<div class="_gaps_s">
+								<MkInfo :warn="true">After enabling this option navigate to the Moderation section to configure which instances should be shown.</MkInfo>
+								<MkSwitch v-model="policies.btlAvailable">
+									<template #label>{{ i18n.ts.enable }}</template>
+								</MkSwitch>
+							</div>
+						</MkFolder>
+
 						<MkFolder v-if="matchQuery([i18n.ts._role._options.ltlAvailable, 'ltlAvailable'])">
 							<template #label>{{ i18n.ts._role._options.ltlAvailable }}</template>
 							<template #suffix>{{ policies.ltlAvailable ? i18n.ts.yes : i18n.ts.no }}</template>
@@ -232,6 +243,7 @@ import MkFolder from '@/components/MkFolder.vue';
 import MkSwitch from '@/components/MkSwitch.vue';
 import MkButton from '@/components/MkButton.vue';
 import MkRange from '@/components/MkRange.vue';
+import MkInfo from '@/components/MkInfo.vue';
 import MkRolePreview from '@/components/MkRolePreview.vue';
 import * as os from '@/os.js';
 import { i18n } from '@/i18n.js';

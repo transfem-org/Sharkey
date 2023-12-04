@@ -26,6 +26,7 @@ import type { OnApplicationShutdown } from '@nestjs/common';
 export type RolePolicies = {
 	gtlAvailable: boolean;
 	ltlAvailable: boolean;
+	btlAvailable: boolean;
 	canPublicNote: boolean;
 	canInvite: boolean;
 	inviteLimit: number;
@@ -53,6 +54,7 @@ export type RolePolicies = {
 export const DEFAULT_POLICIES: RolePolicies = {
 	gtlAvailable: true,
 	ltlAvailable: true,
+	btlAvailable: false,
 	canPublicNote: true,
 	canInvite: false,
 	inviteLimit: 0,
@@ -303,6 +305,7 @@ export class RoleService implements OnApplicationShutdown {
 
 		return {
 			gtlAvailable: calc('gtlAvailable', vs => vs.some(v => v === true)),
+			btlAvailable: calc('btlAvailable', vs => vs.some(v => v === true)),
 			ltlAvailable: calc('ltlAvailable', vs => vs.some(v => v === true)),
 			canPublicNote: calc('canPublicNote', vs => vs.some(v => v === true)),
 			canInvite: calc('canInvite', vs => vs.some(v => v === true)),

@@ -1598,6 +1598,7 @@ _role:
     high: "High"
   _options:
     gtlAvailable: "Can view the global timeline"
+    btlAvailable: "Can view the bubble timeline"
     ltlAvailable: "Can view the local timeline"
     canPublicNote: "Can send public notes"
     canImportNotes: "Can import notes"

@@ -54,6 +54,7 @@ provide('shouldOmitHeaderTitle', true);
 
 const isLocalTimelineAvailable = ($i == null && instance.policies.ltlAvailable) || ($i != null && $i.policies.ltlAvailable);
 const isGlobalTimelineAvailable = ($i == null && instance.policies.gtlAvailable) || ($i != null && $i.policies.gtlAvailable);
+const isBubbleTimelineAvailable = ($i == null && instance.policies.btlAvailable) || ($i != null && $i.policies.btlAvailable);
 const keymap = {
 	't': focus,
 };
@@ -206,6 +207,11 @@ const headerTabs = $computed(() => [...(defaultStore.reactiveState.pinnedUserLis
 	key: 'social',
 	title: i18n.ts._timelines.social,
 	icon: 'ph-rocket-launch ph-bold ph-lg',
+	iconOnly: true,
+}] : []), ...(isBubbleTimelineAvailable ? [{
+	key: 'bubble',
+	title: 'Bubble',
+	icon: 'ph-drop ph-bold ph-lg',
 	iconOnly: true,
 }] : []), ...(isGlobalTimelineAvailable ? [{
 	key: 'global',

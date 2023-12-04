@@ -16,6 +16,7 @@ namespace MisskeyEntity {
     emojis: Array<Emoji>
     policies: {
       gtlAvailable: boolean
+      btlAvailable: boolean
       ltlAvailable: boolean
       canPublicNote: boolean
       canImportNotes: boolean

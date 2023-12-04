@@ -9,11 +9,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<i v-if="column.tl === 'home'" class="ph-house ph-bold ph-lg"></i>
 		<i v-else-if="column.tl === 'local'" class="ph-planet ph-bold ph-lg"></i>
 		<i v-else-if="column.tl === 'social'" class="ph-rocket-launch ph-bold ph-lg"></i>
+		<i v-else-if="column.tl === 'bubble'" class="ph-thumb-up ph-bold ph-lg"></i>
 		<i v-else-if="column.tl === 'global'" class="ph-globe-hemisphere-west ph-bold ph-lg"></i>
 		<span style="margin-left: 8px;">{{ column.name }}</span>
 	</template>
 
-	<div v-if="(((column.tl === 'local' || column.tl === 'social') && !isLocalTimelineAvailable) || (column.tl === 'global' && !isGlobalTimelineAvailable))" :class="$style.disabled">
+	<div v-if="(((column.tl === 'local' || column.tl === 'social') && !isLocalTimelineAvailable) || (column.tl === 'bubble' && !isBubbleTimelineAvailable)) || (column.tl === 'global' && !isGlobalTimelineAvailable))" :class="$style.disabled">
 		<p :class="$style.disabledTitle">
 			<i class="ph-minus-circle ph-bold ph-lg"></i>
 			{{ i18n.ts._disabledTimeline.title }}
@@ -52,6 +53,7 @@ let timeline = $shallowRef<InstanceType<typeof MkTimeline>>();
 
 const isLocalTimelineAvailable = (($i == null && instance.policies.ltlAvailable) || ($i != null && $i.policies.ltlAvailable));
 const isGlobalTimelineAvailable = (($i == null && instance.policies.gtlAvailable) || ($i != null && $i.policies.gtlAvailable));
+const isBubbleTimelineAvailable = ($i == null && instance.policies.btlAvailable) || ($i != null && $i.policies.btlAvailable);
 const withRenotes = $ref(props.column.withRenotes ?? true);
 const withReplies = $ref(props.column.withReplies ?? false);
 const onlyFiles = $ref(props.column.onlyFiles ?? false);
@@ -80,7 +82,8 @@ onMounted(() => {
 	} else if ($i) {
 		disabled = (
 			(!((instance.policies.ltlAvailable) || ($i.policies.ltlAvailable)) && ['local', 'social'].includes(props.column.tl)) ||
-			(!((instance.policies.gtlAvailable) || ($i.policies.gtlAvailable)) && ['global'].includes(props.column.tl)));
+			(!((instance.policies.gtlAvailable) || ($i.policies.gtlAvailable)) && ['global'].includes(props.column.tl)) ||
+			(!((instance.policies.btlAvailable) || ($i.policies.btlAvailable)) && ['bubble'].includes(props.column.tl)));
 	}
 });
 
@@ -93,6 +96,8 @@ async function setType() {
 			value: 'local' as const, text: i18n.ts._timelines.local,
 		}, {
 			value: 'social' as const, text: i18n.ts._timelines.social,
+		}, {
+			value: 'bubble' as const, text: 'Bubble',
 		}, {
 			value: 'global' as const, text: i18n.ts._timelines.global,
 		}],

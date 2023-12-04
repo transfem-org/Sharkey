@@ -123,6 +123,7 @@ export const paramDef = {
 		enableIdenticonGeneration: { type: 'boolean' },
 		serverRules: { type: 'array', items: { type: 'string' } },
 		preservedUsernames: { type: 'array', items: { type: 'string' } },
+		bubbleInstances: { type: 'array', items: { type: 'string' } },
 		manifestJsonOverride: { type: 'string' },
 		enableFanoutTimeline: { type: 'boolean' },
 		enableFanoutTimelineDbFallback: { type: 'boolean' },
@@ -480,6 +481,10 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 
 			if (ps.preservedUsernames !== undefined) {
 				set.preservedUsernames = ps.preservedUsernames;
+			}
+
+			if (ps.bubbleInstances !== undefined) {
+				set.bubbleInstances = ps.bubbleInstances;
 			}
 
 			if (ps.manifestJsonOverride !== undefined) {

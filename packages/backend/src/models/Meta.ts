@@ -544,4 +544,9 @@ export class MiMeta {
 		nullable: true,
 	})
 	public defaultLike: string | null;
+
+	@Column('varchar', {
+		length: 256, array: true, default: '{}',
+	})
+	public bubbleInstances: string[];
 }

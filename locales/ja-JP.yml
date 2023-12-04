@@ -1607,6 +1607,7 @@ _role:
     high: "高"
   _options:
     gtlAvailable: "グローバルタイムラインの閲覧"
+    btlAvailable: "バブルのタイムラインを見ることができる"
     ltlAvailable: "ローカルタイムラインの閲覧"
     canPublicNote: "パブリック投稿の許可"
     canImportNotes: "ノートのインポートが可能"

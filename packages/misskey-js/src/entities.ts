@@ -361,6 +361,7 @@ export type LiteInstanceMetadata = {
 	privacyPolicyUrl: string | null;
 	disableRegistration: boolean;
 	disableLocalTimeline: boolean;
+	disableBubbleTimeline: boolean;
 	disableGlobalTimeline: boolean;
 	driveCapacityPerLocalUserMb: number;
 	driveCapacityPerRemoteUserMb: number;

@@ -154,6 +154,13 @@ export const meta = {
 					type: 'string',
 				},
 			},
+			bubbleInstances: {
+				type: 'array',
+				optional: false, nullable: false,
+				items: {
+					type: 'string',
+				},
+			},
 			hcaptchaSecretKey: {
 				type: 'string',
 				optional: false, nullable: true,
@@ -402,6 +409,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				silencedHosts: instance.silencedHosts,
 				sensitiveWords: instance.sensitiveWords,
 				preservedUsernames: instance.preservedUsernames,
+				bubbleInstances: instance.bubbleInstances,
 				hcaptchaSecretKey: instance.hcaptchaSecretKey,
 				recaptchaSecretKey: instance.recaptchaSecretKey,
 				turnstileSecretKey: instance.turnstileSecretKey,

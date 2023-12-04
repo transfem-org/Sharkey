@@ -70,6 +70,13 @@ export type Channels = {
 		};
 		receives: null;
 	};
+	bubbleTimeline: {
+		params: null;
+		events: {
+			note: (payload: Note) => void;
+		};
+		receives: null;
+	};
 	messaging: {
 		params: {
 			otherparty?: User['id'] | null;

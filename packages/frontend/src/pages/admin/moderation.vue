@@ -34,6 +34,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<template #label>{{ i18n.ts.privacyPolicyUrl }}</template>
 					</MkInput>
 
+					<MkTextarea v-if="bubbleTimelineEnabled" v-model="bubbleTimeline">
+						<template #label>Bubble timeline</template>
+						<template #caption>Choose which instances should be displayed in the bubble.</template>
+					</MkTextarea>
+
 					<MkTextarea v-model="preservedUsernames">
 						<template #label>{{ i18n.ts.preservedUsernames }}</template>
 						<template #caption>{{ i18n.ts.preservedUsernamesDescription }}</template>
@@ -76,8 +81,10 @@ import FormLink from '@/components/form/link.vue';
 let enableRegistration: boolean = $ref(false);
 let emailRequiredForSignup: boolean = $ref(false);
 let approvalRequiredForSignup: boolean = $ref(false);
+let bubbleTimelineEnabled: boolean = $ref(false);
 let sensitiveWords: string = $ref('');
 let preservedUsernames: string = $ref('');
+let bubbleTimeline: string = $ref('');
 let tosUrl: string | null = $ref(null);
 let privacyPolicyUrl: string | null = $ref(null);
 
@@ -90,6 +97,8 @@ async function init() {
 	preservedUsernames = meta.preservedUsernames.join('\n');
 	tosUrl = meta.tosUrl;
 	privacyPolicyUrl = meta.privacyPolicyUrl;
+	bubbleTimeline = meta.bubbleInstances.join('\n');
+	bubbleTimelineEnabled = meta.policies.btlAvailable;
 }
 
 function save() {
@@ -101,6 +110,7 @@ function save() {
 		privacyPolicyUrl,
 		sensitiveWords: sensitiveWords.split('\n'),
 		preservedUsernames: preservedUsernames.split('\n'),
+		bubbleInstances: bubbleTimeline.split('\n'),
 	}).then(() => {
 		fetchInstance();
 	});

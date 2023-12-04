@@ -1698,6 +1698,7 @@ export interface Locale {
         };
         "_options": {
             "gtlAvailable": string;
+            "btlAvailable": string;
             "ltlAvailable": string;
             "canPublicNote": string;
             "canImportNotes": string;
