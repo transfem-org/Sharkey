@@ -14,7 +14,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<span style="margin-left: 8px;">{{ column.name }}</span>
 	</template>
 
-	<div v-if="(((column.tl === 'local' || column.tl === 'social') && !isLocalTimelineAvailable) || (column.tl === 'bubble' && !isBubbleTimelineAvailable)) || (column.tl === 'global' && !isGlobalTimelineAvailable))" :class="$style.disabled">
+	<div v-if="(((column.tl === 'local' || column.tl === 'social') && !isLocalTimelineAvailable) || (column.tl === 'bubble' && !isBubbleTimelineAvailable) || (column.tl === 'global' && !isGlobalTimelineAvailable))" :class="$style.disabled">
 		<p :class="$style.disabledTitle">
 			<i class="ph-minus-circle ph-bold ph-lg"></i>
 			{{ i18n.ts._disabledTimeline.title }}
