@@ -34,7 +34,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: Setup Python
-        uses: actions/setup-python@v4.7.1
+        uses: actions/setup-python@v4.8.0
         with:
           python-version: ${{ matrix.python-version }}
 
