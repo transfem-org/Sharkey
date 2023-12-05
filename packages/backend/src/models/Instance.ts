@@ -144,4 +144,9 @@ export class MiInstance {
 		nullable: true,
 	})
 	public infoUpdatedAt: Date | null;
+
+	@Column('boolean', {
+		default: false,
+	})
+	public isNSFW: boolean;
 }

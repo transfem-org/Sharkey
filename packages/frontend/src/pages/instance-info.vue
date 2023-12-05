@@ -37,6 +37,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<MkSwitch v-model="suspended" :disabled="!instance" @update:modelValue="toggleSuspend">{{ i18n.ts.stopActivityDelivery }}</MkSwitch>
 					<MkSwitch v-model="isBlocked" :disabled="!meta || !instance" @update:modelValue="toggleBlock">{{ i18n.ts.blockThisInstance }}</MkSwitch>
 					<MkSwitch v-model="isSilenced" :disabled="!meta || !instance" @update:modelValue="toggleSilenced">{{ i18n.ts.silenceThisInstance }}</MkSwitch>
+					<MkSwitch v-model="isNSFW" :disabled="!instance" @update:modelValue="toggleNSFW">Mark as NSFW</MkSwitch>
 					<MkButton @click="refreshMetadata"><i class="ph-arrows-counter-clockwise ph-bold ph-lg"></i> Refresh metadata</MkButton>
 				</div>
 			</FormSection>
@@ -149,6 +150,7 @@ let instance = $ref<Misskey.entities.Instance | null>(null);
 let suspended = $ref(false);
 let isBlocked = $ref(false);
 let isSilenced = $ref(false);
+let isNSFW = $ref(false);
 let faviconUrl = $ref<string | null>(null);
 
 const usersPagination = {
@@ -172,6 +174,7 @@ async function fetch(): Promise<void> {
 	suspended = instance.isSuspended;
 	isBlocked = instance.isBlocked;
 	isSilenced = instance.isSilenced;
+	isNSFW = instance.isNSFW;
 	faviconUrl = getProxiedImageUrlNullable(instance.faviconUrl, 'preview') ?? getProxiedImageUrlNullable(instance.iconUrl, 'preview');
 }
 
@@ -198,6 +201,14 @@ async function toggleSuspend(): Promise<void> {
 	await os.api('admin/federation/update-instance', {
 		host: instance.host,
 		isSuspended: suspended,
+	});
+}
+
+async function toggleNSFW(): Promise<void> {
+	if (!instance) throw new Error('No instance?');
+	await os.api('admin/federation/update-instance', {
+		host: instance.host,
+		isNSFW: isNSFW,
 	});
 }
 

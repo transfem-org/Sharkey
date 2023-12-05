@@ -5,7 +5,7 @@
 
 import { Inject, Injectable } from '@nestjs/common';
 import { DI } from '@/di-symbols.js';
-import type { DriveFilesRepository } from '@/models/_.js';
+import type { DriveFilesRepository, InstancesRepository } from '@/models/_.js';
 import type { MiRemoteUser } from '@/models/User.js';
 import type { MiDriveFile } from '@/models/DriveFile.js';
 import { MetaService } from '@/core/MetaService.js';
@@ -18,6 +18,7 @@ import { checkHttps } from '@/misc/check-https.js';
 import { ApResolverService } from '../ApResolverService.js';
 import { ApLoggerService } from '../ApLoggerService.js';
 import type { IObject } from '../type.js';
+import { UtilityService } from '@/core/UtilityService.js';
 
 @Injectable()
 export class ApImageService {
@@ -27,10 +28,14 @@ export class ApImageService {
 		@Inject(DI.driveFilesRepository)
 		private driveFilesRepository: DriveFilesRepository,
 
+		@Inject(DI.instancesRepository)
+		private instancesRepository: InstancesRepository,
+
 		private metaService: MetaService,
 		private apResolverService: ApResolverService,
 		private driveService: DriveService,
 		private apLoggerService: ApLoggerService,
+		private utilityService: UtilityService,
 	) {
 		this.logger = this.apLoggerService.logger;
 	}
@@ -67,6 +72,12 @@ export class ApImageService {
 		// 1. remote sensitive file is also on
 		// 2. or the image is not sensitive
 		const shouldBeCached = instance.cacheRemoteFiles && (instance.cacheRemoteSensitiveFiles || !image.sensitive);
+
+		const shouldBeSensitive = await this.instancesRepository.findOneBy({ host: this.utilityService.toPuny(actor.host), isNSFW: true });
+
+		if (shouldBeSensitive) {
+			image.sensitive = true;
+		}
 
 		const file = await this.driveService.uploadFromUrl({
 			url: image.url,

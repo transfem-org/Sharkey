@@ -609,6 +609,7 @@ export type Instance = {
 	faviconUrl: string | null;
 	themeColor: string | null;
 	infoUpdatedAt: DateString | null;
+	isNSFW: boolean;
 };
 
 export type Signin = {

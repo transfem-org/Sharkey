@@ -23,8 +23,9 @@ export const paramDef = {
 	properties: {
 		host: { type: 'string' },
 		isSuspended: { type: 'boolean' },
+		isNSFW: { type: 'boolean' },
 	},
-	required: ['host', 'isSuspended'],
+	required: ['host'],
 } as const;
 
 @Injectable()
@@ -44,22 +45,30 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				throw new Error('instance not found');
 			}
 
-			await this.federatedInstanceService.update(instance.id, {
-				isSuspended: ps.isSuspended,
-			});
+			if (ps.isSuspended != null) {
+				await this.federatedInstanceService.update(instance.id, {
+					isSuspended: ps.isSuspended,
+				});
 
-			if (instance.isSuspended !== ps.isSuspended) {
-				if (ps.isSuspended) {
-					this.moderationLogService.log(me, 'suspendRemoteInstance', {
-						id: instance.id,
-						host: instance.host,
-					});
-				} else {
-					this.moderationLogService.log(me, 'unsuspendRemoteInstance', {
-						id: instance.id,
-						host: instance.host,
-					});
+				if (instance.isSuspended !== ps.isSuspended) {
+					if (ps.isSuspended) {
+						this.moderationLogService.log(me, 'suspendRemoteInstance', {
+							id: instance.id,
+							host: instance.host,
+						});
+					} else {
+						this.moderationLogService.log(me, 'unsuspendRemoteInstance', {
+							id: instance.id,
+							host: instance.host,
+						});
+					}
 				}
+			}
+
+			if (ps.isNSFW != null) {
+				await this.federatedInstanceService.update(instance.id, {
+					isNSFW: ps.isNSFW,
+				});
 			}
 		});
 	}

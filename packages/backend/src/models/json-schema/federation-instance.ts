@@ -108,5 +108,10 @@ export const packedFederationInstanceSchema = {
 			optional: false, nullable: true,
 			format: 'date-time',
 		},
+		isNSFW: {
+			type: 'boolean',
+			optional: false,
+			nullable: false,
+		},
 	},
 } as const;
