@@ -89,6 +89,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<option value="1_1">{{ i18n.t('limitTo', { x: '1:1' }) }}</option>
 				<option value="2_3">{{ i18n.t('limitTo', { x: '2:3' }) }}</option>
 			</MkRadios>
+
+			<MkRange v-model="numberOfReplies" :min="2" :max="20" :step="1" easing>
+				<template #label>{{ i18n.ts.numberOfReplies }}</template>
+				<template #caption>{{ i18n.ts.numberOfRepliesDescription }}</template>
+			</MkRange>
 		</div>
 	</FormSection>
 
@@ -268,6 +273,7 @@ const nsfw = computed(defaultStore.makeGetterSetter('nsfw'));
 const showFixedPostForm = computed(defaultStore.makeGetterSetter('showFixedPostForm'));
 const showFixedPostFormInChannel = computed(defaultStore.makeGetterSetter('showFixedPostFormInChannel'));
 const numberOfPageCache = computed(defaultStore.makeGetterSetter('numberOfPageCache'));
+const numberOfReplies = computed(defaultStore.makeGetterSetter('numberOfReplies'));
 const instanceTicker = computed(defaultStore.makeGetterSetter('instanceTicker'));
 const enableInfiniteScroll = computed(defaultStore.makeGetterSetter('enableInfiniteScroll'));
 const useReactionPickerForContextMenu = computed(defaultStore.makeGetterSetter('useReactionPickerForContextMenu'));

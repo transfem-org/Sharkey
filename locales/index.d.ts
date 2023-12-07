@@ -947,6 +947,8 @@ export interface Locale {
     "document": string;
     "numberOfPageCache": string;
     "numberOfPageCacheDescription": string;
+    "numberOfReplies": string;
+    "numberOfRepliesDescription": string;
     "logoutConfirm": string;
     "lastActiveDate": string;
     "statusbar": string;

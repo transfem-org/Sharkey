@@ -72,7 +72,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</footer>
 		</div>
 	</div>
-	<template v-if="depth < 5">
+	<template v-if="depth < numberOfReplies">
 		<SkNoteSub v-for="reply in replies" :key="reply.id" :note="reply" :class="[$style.reply, { [$style.single]: replies.length === 1 }]" :detail="true" :depth="depth + 1" :expandAllCws="props.expandAllCws"/>
 	</template>
 	<div v-else :class="$style.more">
@@ -133,6 +133,7 @@ const translation = ref<any>(null);
 const translating = ref(false);
 const isDeleted = ref(false);
 const renoted = ref(false);
+const numberOfReplies = ref(defaultStore.state.numberOfReplies);
 const reactButton = shallowRef<HTMLElement>();
 const renoteButton = shallowRef<HTMLElement>();
 const quoteButton = shallowRef<HTMLElement>();
@@ -399,7 +400,7 @@ function menu(viaKeyboard = false): void {
 if (props.detail) {
 	os.api('notes/children', {
 		noteId: props.note.id,
-		limit: 5,
+		limit: numberOfReplies.value,
 		showQuotes: false,
 	}).then(res => {
 		replies = res;

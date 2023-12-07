@@ -90,6 +90,7 @@ const defaultStoreSaveKeys: (keyof typeof defaultStore['state'])[] = [
 	'reportError',
 	'squareAvatars',
 	'numberOfPageCache',
+	'numberOfReplies',
 	'aiChanMode',
 	'mediaListWithOneImageAppearance',
 ];
