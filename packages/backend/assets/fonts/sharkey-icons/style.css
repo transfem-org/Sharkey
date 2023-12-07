@@ -25,3 +25,7 @@
 .sk-icons.sk-shark:before {
   content: "\61";
 }
+
+.sk-icons.sk-misskey:before {
+  content: "\62";
+}
