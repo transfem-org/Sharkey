@@ -58,5 +58,5 @@ COPY packages/misskey-js/package.json ./packages/misskey-js/package.json
 
 ENV NODE_ENV=production
 RUN corepack enable
-ENTRYPOINT ["/usr/bin/tini", "--"]
+ENTRYPOINT ["/sbin/tini", "--"]
 CMD ["pnpm", "run", "migrateandstart"]
