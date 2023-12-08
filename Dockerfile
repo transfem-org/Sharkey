@@ -6,7 +6,7 @@ FROM node:${NODE_VERSION} as build
 
 RUN corepack enable
 
-WORKDIR /outpatient
+WORKDIR /sharkey
 
 RUN apk add git
 
@@ -26,20 +26,20 @@ RUN rm -rf .git
 
 FROM node:${NODE_VERSION}
 
-WORKDIR /outpatient
+WORKDIR /sharkey
 
 RUN apk add ffmpeg tini
 
-COPY --from=build /outpatient/built ./built
-COPY --from=build /outpatient/node_modules ./node_modules
-COPY --from=build /outpatient/packages/backend/built ./packages/backend/built
-COPY --from=build /outpatient/packages/backend/node_modules ./packages/backend/node_modules
-COPY --from=build /outpatient/packages/megalodon/lib ./packages/megalodon/lib
-COPY --from=build /outpatient/packages/megalodon/node_modules ./packages/megalodon/node_modules
-COPY --from=build /outpatient/packages/misskey-js/built ./packages/misskey-js/built
-COPY --from=build /outpatient/packages/misskey-js/node_modules ./packages/misskey-js/node_modules
-COPY --from=build /outpatient/fluent-emojis ./fluent-emojis
-COPY --from=build /outpatient/sharkey-assets ./packages/frontend/assets
+COPY --from=build /sharkey/built ./built
+COPY --from=build /sharkey/node_modules ./node_modules
+COPY --from=build /sharkey/packages/backend/built ./packages/backend/built
+COPY --from=build /sharkey/packages/backend/node_modules ./packages/backend/node_modules
+COPY --from=build /sharkey/packages/megalodon/lib ./packages/megalodon/lib
+COPY --from=build /sharkey/packages/megalodon/node_modules ./packages/megalodon/node_modules
+COPY --from=build /sharkey/packages/misskey-js/built ./packages/misskey-js/built
+COPY --from=build /sharkey/packages/misskey-js/node_modules ./packages/misskey-js/node_modules
+COPY --from=build /sharkey/fluent-emojis ./fluent-emojis
+COPY --from=build /sharkey/sharkey-assets ./packages/frontend/assets
 
 COPY package.json ./package.json
 COPY pnpm-workspace.yaml ./pnpm-workspace.yaml
