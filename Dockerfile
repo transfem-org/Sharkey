@@ -8,7 +8,7 @@ RUN corepack enable
 
 WORKDIR /sharkey
 
-RUN apk add git
+RUN apk add git linux-headers build-base
 
 ENV PYTHONUNBUFFERED=1
 RUN apk add --update python3 && ln -sf python3 /usr/bin/python
