@@ -1,101 +1,57 @@
 # syntax = docker/dockerfile:1.4
 
-ARG NODE_VERSION=20.5.1-bullseye
+ARG NODE_VERSION=21.4.0-alpine3.18
 
-# build assets & compile TypeScript
-
-FROM --platform=$BUILDPLATFORM node:${NODE_VERSION} AS native-builder
-
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
-	--mount=type=cache,target=/var/lib/apt,sharing=locked \
-	rm -f /etc/apt/apt.conf.d/docker-clean \
-	; echo 'Binary::apt::APT::Keep-Downloaded-Packages "true";' > /etc/apt/apt.conf.d/keep-cache \
-	&& apt-get update \
-	&& apt-get install -yqq --no-install-recommends \
-	build-essential curl ca-certificates
-
-ARG TARGETARCH
-
-RUN curl -L https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-$TARGETARCH-static.tar.xz -o /ffmpeg.tar.xz \
-	&& tar xvf /ffmpeg.tar.xz -C / --strip-components 1 --wildcards 'ffmpeg-*-static/ffmpeg' 'ffmpeg-*-static/ffprobe'
+FROM node:${NODE_VERSION} as build
 
 RUN corepack enable
 
-WORKDIR /sharkey
+WORKDIR /outpatient
 
-COPY --link ["pnpm-lock.yaml", "pnpm-workspace.yaml", "package.json", "./"]
-COPY --link ["scripts", "./scripts"]
-COPY --link ["packages/megalodon/package.json", "./packages/megalodon/"]
-COPY --link ["packages/backend/package.json", "./packages/backend/"]
-COPY --link ["packages/frontend/package.json", "./packages/frontend/"]
-COPY --link ["packages/sw/package.json", "./packages/sw/"]
-COPY --link ["packages/misskey-js/package.json", "./packages/misskey-js/"]
+RUN apk add git
 
+COPY . ./
+
+RUN git submodule update
+RUN pnpm config set fetch-retries 5
 RUN --mount=type=cache,target=/root/.local/share/pnpm/store,sharing=locked \
-	pnpm i --frozen-lockfile --aggregate-output
-
-COPY --link . ./
-
-ARG NODE_ENV=production
-
-RUN git submodule update --init
+	pnpm i
 RUN pnpm build
-RUN rm -rf .git/
-
-# build native dependencies for target platform
-
-FROM --platform=$TARGETPLATFORM node:${NODE_VERSION} AS target-builder
-
-RUN apt-get update \
-	&& apt-get install -yqq --no-install-recommends \
-	build-essential
-
-RUN corepack enable
-
-WORKDIR /sharkey
-
-COPY --link ["pnpm-lock.yaml", "pnpm-workspace.yaml", "package.json", "./"]
-COPY --link ["scripts", "./scripts"]
-COPY --link ["packages/megalodon/package.json", "./packages/megalodon/"]
-COPY --link ["packages/backend/package.json", "./packages/backend/"]
-
+RUN node scripts/trim-deps.mjs
+RUN mv packages/frontend/assets sharkey-assets
+RUN rm -r node_modules packages/frontend packages/sw
 RUN --mount=type=cache,target=/root/.local/share/pnpm/store,sharing=locked \
-	pnpm i --frozen-lockfile --aggregate-output
+	pnpm i --prod
+RUN rm -rf .git
 
-FROM --platform=$TARGETPLATFORM node:${NODE_VERSION}-slim AS runner
+FROM node:${NODE_VERSION}
 
-ARG UID="991"
-ARG GID="991"
+WORKDIR /outpatient
 
-RUN apt-get update \
-	&& apt-get install -y --no-install-recommends \
-	tini curl libjemalloc-dev libjemalloc2 \
-	&& ln -s /usr/lib/$(uname -m)-linux-gnu/libjemalloc.so.2 /usr/local/lib/libjemalloc.so \
-	&& corepack enable \
-	&& groupadd -g "${GID}" sharkey \
-	&& useradd -l -u "${UID}" -g "${GID}" -m -d /sharkey sharkey \
-	&& find / -type d -path /proc -prune -o -type f -perm /u+s -ignore_readdir_race -exec chmod u-s {} \; \
-	&& find / -type d -path /proc -prune -o -type f -perm /g+s -ignore_readdir_race -exec chmod g-s {} \; \
-	&& apt-get clean \
-	&& rm -rf /var/lib/apt/lists
+RUN apk add ffmpeg tini
 
-USER sharkey
-WORKDIR /sharkey
+COPY --from=build /outpatient/built ./built
+COPY --from=build /outpatient/node_modules ./node_modules
+COPY --from=build /outpatient/packages/backend/built ./packages/backend/built
+COPY --from=build /outpatient/packages/backend/node_modules ./packages/backend/node_modules
+COPY --from=build /outpatient/packages/megalodon/lib ./packages/megalodon/lib
+COPY --from=build /outpatient/packages/megalodon/node_modules ./packages/megalodon/node_modules
+COPY --from=build /outpatient/packages/misskey-js/built ./packages/misskey-js/built
+COPY --from=build /outpatient/packages/misskey-js/node_modules ./packages/misskey-js/node_modules
+COPY --from=build /outpatient/fluent-emojis ./fluent-emojis
+COPY --from=build /outpatient/sharkey-assets ./packages/frontend/assets
 
-COPY --chown=sharkey:sharkey --from=target-builder /sharkey/node_modules ./node_modules
-COPY --chown=sharkey:sharkey --from=target-builder /sharkey/packages/megalodon/node_modules ./packages/megalodon/node_modules
-COPY --chown=sharkey:sharkey --from=target-builder /sharkey/packages/backend/node_modules ./packages/backend/node_modules
-COPY --chown=sharkey:sharkey --from=native-builder /ffmpeg /usr/local/bin/
-COPY --chown=sharkey:sharkey --from=native-builder /ffprobe /usr/local/bin/
-COPY --chown=sharkey:sharkey --from=native-builder /sharkey/built ./built
-COPY --chown=sharkey:sharkey --from=native-builder /sharkey/packages/megalodon/lib ./packages/megalodon/lib
-COPY --chown=sharkey:sharkey --from=native-builder /sharkey/packages/backend/built ./packages/backend/built
-COPY --chown=sharkey:sharkey --from=native-builder /sharkey/fluent-emojis /sharkey/fluent-emojis
-COPY --chown=sharkey:sharkey . ./
+COPY package.json ./package.json
+COPY pnpm-workspace.yaml ./pnpm-workspace.yaml
+COPY packages/backend/package.json ./packages/backend/package.json
+COPY packages/backend/check_connect.js ./packages/backend/check_connect.js
+COPY packages/backend/ormconfig.js ./packages/backend/ormconfig.js
+COPY packages/backend/migration ./packages/backend/migration
+COPY packages/backend/assets ./packages/backend/assets
+COPY packages/megalodon/package.json ./packages/megalodon/package.json
+COPY packages/misskey-js/package.json ./packages/misskey-js/package.json
 
-ENV LD_PRELOAD=/usr/local/lib/libjemalloc.so
 ENV NODE_ENV=production
-VOLUME "/sharkey/files"
-HEALTHCHECK --interval=5s --retries=20 CMD ["/bin/bash", "/sharkey/healthcheck.sh"]
+RUN corepack enable
 ENTRYPOINT ["/usr/bin/tini", "--"]
 CMD ["pnpm", "run", "migrateandstart"]
