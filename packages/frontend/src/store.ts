@@ -346,6 +346,10 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: 3,
 	},
+	numberOfReplies: {
+		where: 'device',
+		default: 5,
+	},
 	showNoteActionsOnlyHover: {
 		where: 'device',
 		default: false,
