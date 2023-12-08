@@ -12,7 +12,7 @@ RUN apk add git
 
 COPY . ./
 
-RUN git submodule update
+RUN git submodule update --init --recursive
 RUN pnpm config set fetch-retries 5
 RUN --mount=type=cache,target=/root/.local/share/pnpm/store,sharing=locked \
 	pnpm i
