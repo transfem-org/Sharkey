@@ -27,6 +27,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<MkA :class="$style.name" :to="userPage(user)"><MkUserName :user="user" :nowrap="false"/></MkA>
 				<div :class="$style.username"><MkAcct :user="user"/></div>
 			</div>
+			<div v-if="user.memo" :class="$style.memo">
+				<div :class="$style.heading" v-text="i18n.ts.memo"/>
+				<div :class="$style.memo-body">{{ user.memo }}</div>
+			</div>
 			<div :class="$style.description">
 				<Mfm v-if="user.description" :nyaize="false" :class="$style.mfm" :text="user.description" :author="user"/>
 				<div v-else style="opacity: 0.7;">{{ i18n.ts.noAccountDescription }}</div>
@@ -222,6 +226,34 @@ onMounted(() => {
 	display: block;
 	font-size: 0.8em;
 	opacity: 0.7;
+}
+
+.memo {
+	padding: 8px 8px 16px 8px;
+	margin: 0 8px 0 8px;
+	background: transparent;
+	color: var(--fg);
+	border: 1px solid var(--divider);
+	border-radius: var(--radius-sm);
+	line-height: 0;
+
+	> .heading {
+		text-align: left;
+		color: var(--fgTransparent);
+		line-height: 1.5;
+		font-size: 85%;
+	}
+
+	> .memo-body {
+		width: 100%;
+		height: auto;
+		min-height: 0;
+		line-height: 1.5;
+		color: var(--fg);
+		overflow: hidden;
+		background: transparent;
+		font-family: inherit;
+	}
 }
 
 .description {
