@@ -83,7 +83,7 @@ jobs:
         RESULT=$(curl --retry 5 --retry-delay 5 --retry-max-time 60 http://localhost:3000/api.json)
         echo $RESULT > api-base.json
     - name: Upload Artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: api-artifact
         path: api-base.json
@@ -165,7 +165,7 @@ jobs:
         RESULT=$(curl --retry 5 --retry-delay 5 --retry-max-time 60 http://localhost:3000/api.json)
         echo $RESULT > api-head.json
     - name: Upload Artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: api-artifact
         path: api-head.json
@@ -180,7 +180,7 @@ jobs:
           PR_NUMBER: ${{ github.event.number }}
         run: |
           echo "$PR_NUMBER" > ./pr_number
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: api-artifact
           path: pr_number
